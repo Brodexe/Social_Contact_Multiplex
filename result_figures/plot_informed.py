@@ -51,14 +51,18 @@ ax.fill_between(time,
                 informed_full + informed_std_full,
                 color='blue', alpha=0.3)
 
-ax.set_xlabel("Time")
-ax.set_ylabel("Fraction Informed")
-ax.set_title("Proportion of Informed Individuals")
+ax.vlines(split_point, ymin=0, ymax=200, colors='gray', linestyles='dashed', label='Quarantine Begins')
+
+ax.set_xlabel("Time (days)")
+ax.set_ylabel("# of Informed")
+ax.set_title("Information Dynamics")
 ax.legend()
 ax.grid(True, alpha=0.3)
 
 plt.tight_layout()
 plt.savefig('result_figures/proportion_informed.pdf', bbox_inches='tight')
+plt.show()
+
 plt.close()
 
 # ---------------------------

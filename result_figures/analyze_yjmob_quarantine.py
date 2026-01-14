@@ -5,7 +5,7 @@ from scipy.optimize import minimize
 import random
 import pickle 
 
-# Global matplotlib settings for publication-quality figures
+# Global matplotlib settings
 plt.rcParams.update({
     "font.size": 18,
     "axes.titlesize": 22,
@@ -16,7 +16,7 @@ plt.rcParams.update({
     "lines.linewidth": 2.5,
 })
 
-# Consistent figure size for all plots (suitable for Overleaf inclusion)
+# Consistent figure size for all plots
 FIGURE_SIZE_LINE = (10, 6)
 FIGURE_SIZE_BAR = (14, 8)
 
@@ -65,12 +65,8 @@ i_prime_mean = np.mean(np.array(inf_inf_runs), axis=0)
 i_prime_std = np.std(np.array(inf_inf_runs), axis=0)
 
 def plot_mfa_estimated_degree():
-    # Use first SIR realization only; variance comes from optimizer runs
     plotting_samples = [sample[0] for sample in all_samples]
 
-    # ============================
-    # Align TRUE to ESTIMATED for a single sample
-    # ============================
     def align_true_to_est(sample):
         x_est = np.array(sample["w1 Estimated"]["x"])
         y_est = np.array(sample["w1 Estimated"]["y"])
@@ -81,35 +77,30 @@ def plot_mfa_estimated_degree():
         mask = np.isin(x_true, x_est)
         return x_est, y_est, y_true[mask]
 
-    # ============================
-    # Plotting
-    # ============================
-    fig, ax = plt.subplots(figsize=(14, 8))
+    fig, ax = plt.subplots(figsize=FIGURE_SIZE_LINE)
 
-    # ----------------------------
-    # TRUE mean degree (piecewise)
-    # ----------------------------
+    piecewise_pre_color = "#ff7f0e"
+    piecewise_post_color = "#d62728"
+
     true_interval_means = []
 
+    # =============================
+    # TRUE mean degree (piecewise) — SOLID
+    # =============================
     for i, sample in enumerate(plotting_samples):
         x_local, _, y_true_local = align_true_to_est(sample)
-
-        # interval-local → global time
         t_global = x_local + i * days_per_sample
-
-        true_interval_means.append(y_true_local.mean())
+        color = piecewise_pre_color if i < 2 else piecewise_post_color
 
         ax.plot(
             t_global,
             y_true_local,
-            color="black",
-            linestyle=":",
+            color=color,
+            linestyle="-",
             linewidth=3
         )
 
-    # ----------------------------
-    # TRUE pre/post-quarantine means
-    # ----------------------------
+    # TRUE pre/post means — SOLID
     pre_quarantine_mean = np.mean(true_interval_means[:2])
     post_quarantine_mean = np.mean(true_interval_means[2:])
 
@@ -117,7 +108,8 @@ def plot_mfa_estimated_degree():
         pre_quarantine_mean,
         xmin=0,
         xmax=2 * days_per_sample,
-        colors="black",
+        colors=piecewise_pre_color,
+        linestyles="-",
         linewidth=4
     )
 
@@ -125,27 +117,28 @@ def plot_mfa_estimated_degree():
         post_quarantine_mean,
         xmin=2 * days_per_sample,
         xmax=5 * days_per_sample,
-        colors="black",
+        colors=piecewise_post_color,
+        linestyles="-",
         linewidth=4
     )
 
-    # ----------------------------
-    # ESTIMATED mean degree (piecewise)
-    # ----------------------------
+    # =============================
+    # ESTIMATED mean degree — DOTTED
+    # =============================
     for i, sample in enumerate(plotting_samples):
         x_local, _, _ = align_true_to_est(sample)
         t_global = x_local + i * days_per_sample
 
-        runs_interp = []
-        for run_y in sample["w1 all runs"]["y"]:
-            run_interp = np.interp(x_local, sample["w1 all runs"]["x"], run_y)
-            runs_interp.append(run_interp)
+        runs_interp = [
+            np.interp(x_local, sample["w1 all runs"]["x"], run_y)
+            for run_y in sample["w1 all runs"]["y"]
+        ]
 
         runs_array = np.array(runs_interp)
         mean_est = runs_array.mean(axis=0)
         std_est = runs_array.std(axis=0)
 
-        color = "#ff7f0e" if i < 2 else "#d62728"
+        color = piecewise_pre_color if i < 2 else piecewise_post_color
 
         ax.plot(
             t_global,
@@ -153,8 +146,8 @@ def plot_mfa_estimated_degree():
             color=color,
             linestyle="--",
             linewidth=3,
-            label="Estimated ⟨k⟩ (pre-quarantine)" if i == 0 else
-                  "Estimated ⟨k⟩ (post-quarantine)" if i == 2 else None
+            label=r"$\langle k_0 \rangle$ (known network changes)" if i == 0 else
+                  r"$\langle k_q \rangle$ (known network changes)" if i == 2 else None
         )
 
         ax.fill_between(
@@ -165,18 +158,14 @@ def plot_mfa_estimated_degree():
             alpha=0.25
         )
 
-    # ============================
+    # =============================
     # FULL YJMOB optimizations
-    # ============================
+    # =============================
+    full_pre_color = "#2ca02c"
+    full_post_color = "#9467bd"
 
-    full_pre_color = "#2ca02c"   # green
-    full_post_color = "#9467bd"  # purple
-
-    # --------
-    # Full pre-quarantine (global time already)
-    # --------
+    # --- Full pre ---
     full_pre = yjmob_full_samples[0]
-
     x_pre = np.array(full_pre["w1 Estimated"]["x"])
     runs_pre = np.array(full_pre["w1 all runs"]["y"])
 
@@ -187,8 +176,9 @@ def plot_mfa_estimated_degree():
         x_pre,
         mean_pre,
         color=full_pre_color,
+        linestyle="--",
         linewidth=3.5,
-        label="Full optimization (pre-quarantine)"
+        label=r"$\langle k_0 \rangle$ (SIRS dynamics only)"
     )
 
     ax.fill_between(
@@ -199,11 +189,20 @@ def plot_mfa_estimated_degree():
         alpha=0.20
     )
 
-    # --------
-    # Full post-quarantine (ALREADY GLOBAL — NO SHIFT)
-    # --------
-    full_post = yjmob_full_samples[1]
+    x_true_pre = np.array(full_pre["w1 True (Mean Node Degree)"]["x"])
+    y_true_pre = np.array(full_pre["w1 True (Mean Node Degree)"]["y"])
+    mask_pre = np.isin(x_true_pre, x_pre)
 
+    ax.plot(
+        x_pre,
+        y_true_pre[mask_pre],
+        color=full_pre_color,
+        linestyle="-",
+        linewidth=3
+    )
+
+    # --- Full post ---
+    full_post = yjmob_full_samples[1]
     x_post = np.array(full_post["w1 Estimated"]["x"])
     runs_post = np.array(full_post["w1 all runs"]["y"])
 
@@ -214,8 +213,9 @@ def plot_mfa_estimated_degree():
         x_post,
         mean_post,
         color=full_post_color,
+        linestyle="--",
         linewidth=3.5,
-        label="Full optimization (post-quarantine)"
+        label=r"$\langle k_q \rangle$ (SIRS dynamics only)"
     )
 
     ax.fill_between(
@@ -226,9 +226,18 @@ def plot_mfa_estimated_degree():
         alpha=0.20
     )
 
-    # ----------------------------
-    # Quarantine marker
-    # ----------------------------
+    x_true_post = np.array(full_post["w1 True (Mean Node Degree)"]["x"])
+    y_true_post = np.array(full_post["w1 True (Mean Node Degree)"]["y"])
+    mask_post = np.isin(x_true_post, x_post)
+
+    ax.plot(
+        x_post,
+        y_true_post[mask_post],
+        color=full_post_color,
+        linestyle="-",
+        linewidth=3
+    )
+
     ax.axvline(
         split_point,
         color="gray",
@@ -237,25 +246,20 @@ def plot_mfa_estimated_degree():
         label="Quarantine begins"
     )
 
-    # ============================
-    # Formatting
-    # ============================
     ax.set_xlabel("Time (days)")
     ax.set_ylabel("Mean Node Degree ⟨k⟩")
     ax.set_title("Estimated Degree on YJMob100k Dataset")
 
     ax.set_xlim(0, 75)
     ax.grid(True, alpha=0.3)
-    ax.legend(frameon=False, loc="upper left")
+    ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.30),
+    ncol=2)
 
     plt.tight_layout()
-    plt.savefig(
-        "result_figures/mfa_degree_estimates_continuous_5samples.pdf",
-        format="pdf",
-        bbox_inches="tight"
-    )
+    plt.savefig("result_figures/YJMOB_k_est.pdf", format="pdf", bbox_inches="tight")
     plt.show()
     plt.close(fig)
+
 
 plot_mfa_estimated_degree()
 
@@ -370,7 +374,7 @@ ax.legend(frameon=False)
 plt.tight_layout()
 
 plt.savefig(
-    "result_figures/cumulative_adherence_estimate.pdf",
+    "result_figures/YJMOB_adherence.pdf",
     format="pdf",
     bbox_inches="tight"
 )

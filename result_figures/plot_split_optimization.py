@@ -14,6 +14,8 @@ plt.rcParams.update({
     "lines.linewidth": 2.5,
 })
 
+FIGURE_SIZE_LINE = (10, 6)
+
 samples = extract_mfa.parse_sample_data("experiment_data/mfa_xy_data.txt")
 pre = samples[0]
 post = samples[1]
@@ -52,7 +54,7 @@ post_mean, post_std = mean_std(post["w1 all runs"]["y"], x_post)
 # ============================
 # Plot
 # ============================
-fig, ax = plt.subplots(figsize=(14, 7))
+fig, ax = plt.subplots(figsize=FIGURE_SIZE_LINE)
 
 # ---- True (clipped to halves) ----
 ax.plot(

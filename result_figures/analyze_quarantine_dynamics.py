@@ -22,7 +22,7 @@ plt.rcParams.update({
     "lines.linewidth": 2.5,
 })
 
-# Consistent figure size for all plots (suitable for Overleaf inclusion)
+# Consistent figure size for all plots
 FIGURE_SIZE_LINE = (10, 6)
 FIGURE_SIZE_BAR = (14, 8)
 
@@ -72,7 +72,6 @@ for r in range(num_simulations):
 
 # Collection of i_prime curves
 inf_inf_runs = np.array(inf_inf_runs)  # shape: (runs, T_after_q)
-# NOTE: Ensure this is time after quarantine
 T = inf_inf_runs.shape[1]
 
 # Average informed&infected proportion over runs (i_prime)
@@ -80,7 +79,7 @@ i_prime = np.mean(inf_inf_runs, axis=0)  # shape: (T,)
 
 # --------------
 #
-#  Naive adherence calculation quick-check: Simple deviation of k_q from k_eff
+#  Naive adherence calculation check: Simple deviation of k_q from k_eff
 #
 # --------------
 
@@ -307,7 +306,7 @@ ax.legend()
 ax.grid(True, linestyle='--', alpha=0.5)
 
 plt.tight_layout()
-plt.savefig('result_figures/cumulative_adherence.pdf', bbox_inches='tight')
+plt.savefig('result_figures/adherence.pdf', bbox_inches='tight')
 plt.show()
 
 plt.close()

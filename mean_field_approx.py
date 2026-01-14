@@ -87,13 +87,13 @@ if load_initial == True:
         adhering = None
 
 # Simulation parameters
-T = 100
+T = 30
 beta = 0.15  # Infection rate
 gamma = 0.07  # Recovery rate
 mu = 0.05  # Immunity loss rate
 init = 0.05 # Initial infected portion
 q = "r"  # Quarantine type: indiviuals restore edges when recovered
-split_point = 30  # Set to None if you want to optimize over the full SIR simulation, or a specific time point to split the optimization
+split_point = None  # Set to None if you want to optimize over the full SIR simulation, or a specific time point to split the optimization
 density_social = None  # Set to None for default density, or an integer number of edges in the social graph
 
 # YJMOB mode: First, run optimization for each time interval separately

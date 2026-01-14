@@ -64,11 +64,11 @@ def plot_sensitivity_results(file_path, parameter_name, value_range):
             y=true_k0,
             xmin=0,
             xmax=time_points[-1],
-            colors='black',
+            colors=color,
             linestyles='--',
         )
 
-    ax.set_xlabel("Time")
+    ax.set_xlabel("Time (days)")
     ax.set_ylabel(r"Estimated $\langle k_0 \rangle$")
     ax.set_title(f"Sensitivity Analysis: {parameter_name}")
     ax.legend()
@@ -84,7 +84,7 @@ seed_range = [5, 10, 15]
 seed_file = "experiment_data/sensitivity_num_seeds.txt"
 init_range = [0.025, 0.05, 0.10]
 init_file = "experiment_data/sensitivity_init.txt"
-density_range = [0.035, 0.05, 0.065]
+density_range = [0.03, 0.04, 0.05]
 density_file = "experiment_data/sensitivity_density.txt"
 
 plot_sensitivity_results(seed_file, "Number of Seeds", seed_range)

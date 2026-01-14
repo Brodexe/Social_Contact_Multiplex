@@ -101,7 +101,7 @@ def sensitivity_analysis():
                             ])
     
     # Finally, vary density of the contact network
-    density_list = [0.035, 0.05, 0.065]
+    density_list = [0.03, 0.04, 0.05]
     for density in density_list:
         contact_network = nx.erdos_renyi_graph(n=n, p=density)
         # Generate new contact network with given density
@@ -122,6 +122,6 @@ def sensitivity_analysis():
 
 if __name__ == "__main__":
     # adherence_mode()
-    yjmob_mode()
-    # sensitivity_analysis()
+    # yjmob_mode()
+    sensitivity_analysis()
     # simple_repeat()

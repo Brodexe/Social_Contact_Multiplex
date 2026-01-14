@@ -1,3 +1,5 @@
+This README covers purpose and functionality of main folder .py files.
+
 correlated_graphs.py:
 Implements several methods for generating and analyzing directed graphs with various correlation and similarity structures.
 

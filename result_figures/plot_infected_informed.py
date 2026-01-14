@@ -27,6 +27,8 @@ PKL_FILENAME = "result_figures/plot_infected_informed_data.pkl"
 FIG_GROUPED_PDF = "result_figures/quarantine_dynamics_by_adherence.pdf"
 FIG_SINGLE_PDF  = "result_figures/joint_informed_infected_dynamics.pdf"
 
+FIGURE_SIZE_LINE = (10, 6)
+
 # ============================================================
 # Adherence data locations
 # ============================================================
@@ -149,11 +151,10 @@ def plot_groups_by_adherence(show=False):
 # Single adherence plot
 # ============================================================
 
-def plot_one_adherence_group(samples, show=False):
+def plot_one_adherence_group(samples):
     if not samples:
         return
 
-    n = samples[0]['Number of nodes']
     split_point = int(samples[1]['Informed']['x'][0])  # Quarantine start index
 
     # Separate even (pre-quarantine) and odd (post-quarantine) samples
@@ -170,7 +171,7 @@ def plot_one_adherence_group(samples, show=False):
 
     # Flatten pre- and post-quarantine separately
     def stack_samples(arr_name, group, length):
-        return np.vstack([s[arr_name]['y'][:length] for s in group]) / n
+        return np.vstack([s[arr_name]['y'][:length] for s in group])
 
     infected_pre = stack_samples('SIR Infections', pre_samples, T_pre)
     infected_post = stack_samples('SIR Infections', post_samples, T_post)
@@ -192,7 +193,7 @@ def plot_one_adherence_group(samples, show=False):
     informed_std = np.concatenate([informed_pre.std(0), informed_post.std(0)])
     inf_inf_std  = np.concatenate([inf_inf_pre.std(0), inf_inf_post.std(0)])
 
-    fig, ax = plt.subplots(figsize=(13, 8))
+    fig, ax = plt.subplots(figsize=FIGURE_SIZE_LINE)
 
     # Plotting helper
     def plot_band(mean, std, label, color):
@@ -203,23 +204,24 @@ def plot_one_adherence_group(samples, show=False):
     plot_band(inf_inf_arr, inf_inf_std, "Informed & Infected", "#ff7f0e")
     plot_band(infected_arr, infected_std, "Infected", "#d62728")
 
+    ax.set_title("Information and Infection Dynamics")
+
     # Vertical dotted line at quarantine start
     ax.axvline(split_point, color='k', linestyle=':', linewidth=2, label="Quarantine Start")
 
     ax.set_xlabel("Time (days)")
     ax.set_ylabel("Fraction of population")
-    ax.set_ylim(0, 1.02)
+    # ax.set_ylim(0, 1.02)
     ax.grid(alpha=0.3)
 
     # Inset legend
-    ax.legend(loc='upper left', fontsize=14, frameon=True)
+    ax.legend(loc='center right', fontsize=16, frameon=True)
 
     fig.tight_layout()
     fig.savefig(FIG_SINGLE_PDF, format="pdf", bbox_inches="tight")
-    plt.close(fig)
+    plt.show()
 
-    if show:
-        plt.show()
+    plt.close(fig)
 
     print(f"Saved single adherence figure → {FIG_SINGLE_PDF}")
 
@@ -227,4 +229,4 @@ def plot_one_adherence_group(samples, show=False):
 if __name__ == "__main__":
     read_file = "experiment_data/mfa_xy_data.txt"
     samples = extract_mfa.parse_sample_data(read_file)
-    plot_one_adherence_group(samples, show=True)
+    plot_one_adherence_group(samples)

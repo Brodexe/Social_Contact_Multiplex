@@ -1,3 +1,5 @@
+This README covers usage and functionality of result figure generating .py files.
+
 analyze_quarantine_dynamics.py:
 Analyzes post-quarantine network simulation data to estimate adherence and fit model parameters. It performs the following tasks:
 
