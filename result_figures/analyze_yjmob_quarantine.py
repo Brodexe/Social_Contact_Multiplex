@@ -4,6 +4,7 @@ import numpy as np
 from scipy.optimize import minimize
 import random
 import pickle 
+import matplotlib.lines as mlines
 
 # Global matplotlib settings
 plt.rcParams.update({
@@ -146,8 +147,8 @@ def plot_mfa_estimated_degree():
             color=color,
             linestyle="--",
             linewidth=3,
-            label=r"$\langle k_0 \rangle$ (known network changes)" if i == 0 else
-                  r"$\langle k_q \rangle$ (known network changes)" if i == 2 else None
+            label=r"Estimated $\langle k_0 \rangle$ (known network changes)" if i == 0 else
+                  r"Estimated $\langle k_q \rangle$ (known network changes)" if i == 2 else None
         )
 
         ax.fill_between(
@@ -178,7 +179,7 @@ def plot_mfa_estimated_degree():
         color=full_pre_color,
         linestyle="--",
         linewidth=3.5,
-        label=r"$\langle k_0 \rangle$ (SIRS dynamics only)"
+        label=r"Estimated $\langle k_0 \rangle$ (SIRS dynamics only)"
     )
 
     ax.fill_between(
@@ -215,7 +216,7 @@ def plot_mfa_estimated_degree():
         color=full_post_color,
         linestyle="--",
         linewidth=3.5,
-        label=r"$\langle k_q \rangle$ (SIRS dynamics only)"
+        label=r"Estimated $\langle k_q \rangle$ (SIRS dynamics only)"
     )
 
     ax.fill_between(
@@ -252,8 +253,22 @@ def plot_mfa_estimated_degree():
 
     ax.set_xlim(0, 75)
     ax.grid(True, alpha=0.3)
-    ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.30),
-    ncol=2)
+
+    # Existing legend handles (automatic)
+    handles, labels = ax.get_legend_handles_labels()
+
+    # Add extra proxies for line style explanation
+    solid_proxy = mlines.Line2D([], [], color='gray', linestyle='-', linewidth=3, label='Solid line = Ground truth')
+
+    # Combine old handles with new proxies
+    handles += [solid_proxy]
+
+    ax.legend(
+        handles=handles,
+        loc='upper center',
+        bbox_to_anchor=(0.5, -0.30),
+        ncol=2
+    )
 
     plt.tight_layout()
     plt.savefig("result_figures/YJMOB_k_est.pdf", format="pdf", bbox_inches="tight")
@@ -343,7 +358,7 @@ t_vals = np.arange(split_point, split_point + T_post)
 fig, ax = plt.subplots(figsize=FIGURE_SIZE_LINE)
 
 ax.plot(t_vals, adh_mean, linewidth=2.5, color='#ff7f0e',
-        label='Estimated adherence (mean)')
+        label='Estimated adherence')
 ax.fill_between(
     t_vals,
     adh_mean - adh_std,
@@ -358,8 +373,8 @@ ax.hlines(
     y=adhering_proportion,
     xmin=t_vals[0],
     xmax=t_vals[-1],
-    colors='blue',
-    linestyles='--',
+    colors='black',
+    linestyles='solid',
     linewidth=2,
     label='True adherence'
 )

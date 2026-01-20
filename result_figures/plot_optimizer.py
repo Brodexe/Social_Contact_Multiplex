@@ -54,7 +54,7 @@ def plot_optimizer_results(samples, even_or_odd):
         # --- Plot estimate & retrieve its color ---
         line = plt.plot(
             time_points, mean_w1,
-            label=f'(β = {0.15 - 0.015 * i})'
+            label=f'(β = {0.15 - 0.015 * i})', linestyle='--'
         )[0]
 
         color = line.get_color()
@@ -67,12 +67,12 @@ def plot_optimizer_results(samples, even_or_odd):
 
         # Ground truth uses the same color
         true_val = None
-        if 'w1 True (Mean Node Degree)' in sample:
+        if 'w1 True (Mean Node Degree)' in sample and i == 2:
             true_val = sample['w1 True (Mean Node Degree)']['y'][-1]
             plt.hlines(
                 y=true_val, xmin=0, xmax=time_points[-1],
-                linestyles='--',
-                color=color,
+                linestyles='solid',
+                color='black',
                 label=f'Ground Truth'
             )
 
@@ -111,4 +111,4 @@ def plot_optimizer_results(samples, even_or_odd):
 
 if __name__ == "__main__":
     samples = extract_mfa.parse_sample_data('experiment_data/mfa_xy_data.txt')
-    plot_optimizer_results(samples, even_or_odd=0)
+    plot_optimizer_results(samples, even_or_odd=2)

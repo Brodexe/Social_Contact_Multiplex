@@ -87,7 +87,7 @@ if load_initial == True:
         adhering = None
 
 # Simulation parameters
-T = 30
+T = 100
 beta = 0.15  # Infection rate
 gamma = 0.07  # Recovery rate
 mu = 0.05  # Immunity loss rate

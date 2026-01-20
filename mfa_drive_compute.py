@@ -5,7 +5,7 @@ import find_seeds
 import networkx as nx
 import correlated_graphs
 
-repeat = 1  # Number of times to run the MFA
+repeat = 25  # Number of times to run the MFA
 
 # Run mean field approximation with varying adherence levels
 def adherence_mode():
@@ -122,6 +122,6 @@ def sensitivity_analysis():
 
 if __name__ == "__main__":
     # adherence_mode()
-    # yjmob_mode()
-    sensitivity_analysis()
+    yjmob_mode()
+    # sensitivity_analysis()
     # simple_repeat()

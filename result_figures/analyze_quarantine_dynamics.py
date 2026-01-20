@@ -276,6 +276,7 @@ ax.plot(
     t_vals,
     adh_mean,
     color='#ff7f0e',
+    linestyle='--',
     label='Estimated adherence (mean)'
 )
 
@@ -293,8 +294,8 @@ ax.hlines(
     y=adhering_proportion,
     xmin=t_vals[0],
     xmax=t_vals[-1],
-    colors='blue',
-    linestyles='--',
+    colors='black',
+    linestyles='solid',
     label='True adherence'
 )
 

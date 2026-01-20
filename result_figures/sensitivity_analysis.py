@@ -42,6 +42,7 @@ def plot_sensitivity_results(file_path, parameter_name, value_range):
         line, = ax.plot(
             time_points,
             mean_w1,
+            linestyle='--',
             label=f'({parameter_name} = {value_range[i]})'
         )
 
@@ -65,8 +66,10 @@ def plot_sensitivity_results(file_path, parameter_name, value_range):
             xmin=0,
             xmax=time_points[-1],
             colors=color,
-            linestyles='--',
+            linestyles='solid',
+            # label = 'Ground Truth'
         )
+
 
     ax.set_xlabel("Time (days)")
     ax.set_ylabel(r"Estimated $\langle k_0 \rangle$")
