@@ -71,210 +71,119 @@ def plot_mfa_estimated_degree():
     def align_true_to_est(sample):
         x_est = np.array(sample["w1 Estimated"]["x"])
         y_est = np.array(sample["w1 Estimated"]["y"])
-
         x_true = np.array(sample["w1 True (Mean Node Degree)"]["x"])
         y_true = np.array(sample["w1 True (Mean Node Degree)"]["y"])
+        # Interpolate to align points exactly
+        # y_true_local = np.interp(x_est, x_true, y_true)
 
+        # try no interpolation:
         mask = np.isin(x_true, x_est)
-        return x_est, y_est, y_true[mask]
+        y_true_local = y_true[mask]
+        
+        return x_est, y_est, y_true_local
 
     fig, ax = plt.subplots(figsize=FIGURE_SIZE_LINE)
 
     piecewise_pre_color = "#ff7f0e"
     piecewise_post_color = "#d62728"
-
     true_interval_means = []
 
     # =============================
     # TRUE mean degree (piecewise) — SOLID
     # =============================
+    cumulative_time = 0
+    spacing = None  # will determine spacing from first segment
+
     for i, sample in enumerate(plotting_samples):
         x_local, _, y_true_local = align_true_to_est(sample)
-        t_global = x_local + i * days_per_sample
+        if spacing is None and len(x_local) > 1:
+            spacing = x_local[1] - x_local[0]  # assume uniform spacing
+
+        # Shift each segment to global time
+        t_global = x_local + cumulative_time
+        cumulative_time = t_global[-1] + spacing  # add spacing to avoid overlap
+
         color = piecewise_pre_color if i < 2 else piecewise_post_color
 
-        ax.plot(
-            t_global,
-            y_true_local,
-            color=color,
-            linestyle="-",
-            linewidth=3
-        )
+        ax.plot(t_global, y_true_local, color=color, linestyle="-", linewidth=3)
+        true_interval_means.append(np.mean(y_true_local))
 
     # TRUE pre/post means — SOLID
     pre_quarantine_mean = np.mean(true_interval_means[:2])
     post_quarantine_mean = np.mean(true_interval_means[2:])
-
-    ax.hlines(
-        pre_quarantine_mean,
-        xmin=0,
-        xmax=2 * days_per_sample,
-        colors=piecewise_pre_color,
-        linestyles="-",
-        linewidth=4
-    )
-
-    ax.hlines(
-        post_quarantine_mean,
-        xmin=2 * days_per_sample,
-        xmax=5 * days_per_sample,
-        colors=piecewise_post_color,
-        linestyles="-",
-        linewidth=4
-    )
+    # ax.hlines(pre_quarantine_mean, xmin=0, xmax=split_point, colors=piecewise_pre_color,
+    #           linestyles="-", linewidth=4)
+    # ax.hlines(post_quarantine_mean, xmin=split_point, xmax=cumulative_time, colors=piecewise_post_color,
+    #           linestyles="-", linewidth=4)
 
     # =============================
     # ESTIMATED mean degree — DOTTED
     # =============================
+    cumulative_time = 0
     for i, sample in enumerate(plotting_samples):
         x_local, _, _ = align_true_to_est(sample)
-        t_global = x_local + i * days_per_sample
+        t_global = x_local + cumulative_time
+        cumulative_time = t_global[-1] + spacing
 
-        runs_interp = [
-            np.interp(x_local, sample["w1 all runs"]["x"], run_y)
-            for run_y in sample["w1 all runs"]["y"]
-        ]
-
+        runs_interp = [np.interp(x_local, sample["w1 all runs"]["x"], run_y)
+                       for run_y in sample["w1 all runs"]["y"]]
         runs_array = np.array(runs_interp)
         mean_est = runs_array.mean(axis=0)
         std_est = runs_array.std(axis=0)
 
         color = piecewise_pre_color if i < 2 else piecewise_post_color
+        label = None
+        if i == 0:
+            label = r"Estimated $\langle k_0 \rangle$ (known network changes)"
+        elif i == 2:
+            label = r"Estimated $\langle k_q \rangle$ (known network changes)"
 
-        ax.plot(
-            t_global,
-            mean_est,
-            color=color,
-            linestyle="--",
-            linewidth=3,
-            label=r"Estimated $\langle k_0 \rangle$ (known network changes)" if i == 0 else
-                  r"Estimated $\langle k_q \rangle$ (known network changes)" if i == 2 else None
-        )
-
-        ax.fill_between(
-            t_global,
-            mean_est - std_est,
-            mean_est + std_est,
-            color=color,
-            alpha=0.25
-        )
+        ax.plot(t_global, mean_est, color=color, linestyle="--", linewidth=3, label=label)
+        ax.fill_between(t_global, mean_est - std_est, mean_est + std_est, color=color, alpha=0.25)
 
     # =============================
     # FULL YJMOB optimizations
     # =============================
-    full_pre_color = "#2ca02c"
-    full_post_color = "#9467bd"
+    def plot_full_sample(full_sample, color, label_est, label_true):
+        x = np.array(full_sample["w1 Estimated"]["x"])
+        runs = np.array(full_sample["w1 all runs"]["y"])
+        mean = runs.mean(axis=0)
+        std = runs.std(axis=0)
+        y_true = np.array(full_sample["w1 True (Mean Node Degree)"]["y"])
 
-    # --- Full pre ---
-    full_pre = yjmob_full_samples[0]
-    x_pre = np.array(full_pre["w1 Estimated"]["x"])
-    runs_pre = np.array(full_pre["w1 all runs"]["y"])
+        ax.plot(x, mean, color=color, linestyle="--", linewidth=3.5, label=label_est)
+        ax.fill_between(x, mean - std, mean + std, color=color, alpha=0.2)
+        ax.plot(x, y_true, color=color, linestyle="-", linewidth=3, label=label_true)
 
-    mean_pre = runs_pre.mean(axis=0)
-    std_pre = runs_pre.std(axis=0)
+    plot_full_sample(yjmob_full_samples[0],
+                     full_pre_color := "#2ca02c",
+                     label_est=r"Estimated $\langle k_0 \rangle$ (SIRS dynamics only)",
+                     label_true=None)
+    plot_full_sample(yjmob_full_samples[1],
+                     full_post_color := "#9467bd",
+                     label_est=r"Estimated $\langle k_q \rangle$ (SIRS dynamics only)",
+                     label_true=None)
 
-    ax.plot(
-        x_pre,
-        mean_pre,
-        color=full_pre_color,
-        linestyle="--",
-        linewidth=3.5,
-        label=r"Estimated $\langle k_0 \rangle$ (SIRS dynamics only)"
-    )
+    # Quarantine line
+    ax.axvline(split_point, color="gray", linestyle="--", linewidth=2, label="Quarantine begins")
 
-    ax.fill_between(
-        x_pre,
-        mean_pre - std_pre,
-        mean_pre + std_pre,
-        color=full_pre_color,
-        alpha=0.20
-    )
-
-    x_true_pre = np.array(full_pre["w1 True (Mean Node Degree)"]["x"])
-    y_true_pre = np.array(full_pre["w1 True (Mean Node Degree)"]["y"])
-    mask_pre = np.isin(x_true_pre, x_pre)
-
-    ax.plot(
-        x_pre,
-        y_true_pre[mask_pre],
-        color=full_pre_color,
-        linestyle="-",
-        linewidth=3
-    )
-
-    # --- Full post ---
-    full_post = yjmob_full_samples[1]
-    x_post = np.array(full_post["w1 Estimated"]["x"])
-    runs_post = np.array(full_post["w1 all runs"]["y"])
-
-    mean_post = runs_post.mean(axis=0)
-    std_post = runs_post.std(axis=0)
-
-    ax.plot(
-        x_post,
-        mean_post,
-        color=full_post_color,
-        linestyle="--",
-        linewidth=3.5,
-        label=r"Estimated $\langle k_q \rangle$ (SIRS dynamics only)"
-    )
-
-    ax.fill_between(
-        x_post,
-        mean_post - std_post,
-        mean_post + std_post,
-        color=full_post_color,
-        alpha=0.20
-    )
-
-    x_true_post = np.array(full_post["w1 True (Mean Node Degree)"]["x"])
-    y_true_post = np.array(full_post["w1 True (Mean Node Degree)"]["y"])
-    mask_post = np.isin(x_true_post, x_post)
-
-    ax.plot(
-        x_post,
-        y_true_post[mask_post],
-        color=full_post_color,
-        linestyle="-",
-        linewidth=3
-    )
-
-    ax.axvline(
-        split_point,
-        color="gray",
-        linestyle="--",
-        linewidth=2,
-        label="Quarantine begins"
-    )
-
+    # Labels, title, grid
     ax.set_xlabel("Time (days)")
     ax.set_ylabel("Mean Node Degree ⟨k⟩")
     ax.set_title("Estimated Degree on YJMob100k Dataset")
-
-    ax.set_xlim(0, 75)
+    ax.set_xlim(0, cumulative_time)
     ax.grid(True, alpha=0.3)
 
-    # Existing legend handles (automatic)
+    # Legend with proxy for solid line
     handles, labels = ax.get_legend_handles_labels()
-
-    # Add extra proxies for line style explanation
     solid_proxy = mlines.Line2D([], [], color='gray', linestyle='-', linewidth=3, label='Solid line = Ground truth')
-
-    # Combine old handles with new proxies
     handles += [solid_proxy]
-
-    ax.legend(
-        handles=handles,
-        loc='upper center',
-        bbox_to_anchor=(0.5, -0.30),
-        ncol=2
-    )
+    ax.legend(handles=handles, loc='upper center', bbox_to_anchor=(0.5, -0.30), ncol=2)
 
     plt.tight_layout()
     plt.savefig("result_figures/YJMOB_k_est.pdf", format="pdf", bbox_inches="tight")
     plt.show()
     plt.close(fig)
-
 
 plot_mfa_estimated_degree()
 

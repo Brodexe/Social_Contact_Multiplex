@@ -110,7 +110,7 @@ def restore_edges(g_init, g, node, already_quarantining):
 # initial_state_dict: Optional dictionary mapping node -> state (0=S, 1=I, 2=R). If provided, uses this instead of random initial infections.
 def Simulate_SIR(contact_network,social_network,T,beta,gamma,mu,init,
                  q=False,lt_threshold=None,adherence=None,begin_q=0,seeds=None,initial_state_dict=None):
-    
+
     if begin_q is None:
         begin_q = 0
 
@@ -191,9 +191,10 @@ def Simulate_SIR(contact_network,social_network,T,beta,gamma,mu,init,
     for node in social_network.nodes():
         nx.set_node_attributes(social_network, {node: {'Informed?': 'Uninformed'}})
 
-    all_quaratines = []
-    all_infections = []
-    all_informed = []
+    all_quaratines = []  # Hold list of quarantining individuals at each time step
+    all_infections = []  # Hold list of infected at each time step
+    all_informed = []  # Hold list of informed at each time step
+    all_edges = []  # Hold list of contact network edges at each time step (after removals)
 
     dynamic_degree = []
 
@@ -224,18 +225,19 @@ def Simulate_SIR(contact_network,social_network,T,beta,gamma,mu,init,
 
         #  People become aware of need to quarantine at time t==begin_q
         elif t == begin_q:
+            initial_informed_lst = []
             # Get the initial set of informed nodes
             if isinstance(seeds, set) or isinstance(seeds, list):
-                initial_informed_list = seeds
+                initial_informed_lst = seeds
             elif isinstance(seeds, int) and seeds > 0:
                 num_seeds = seeds
-                initial_informed_list = find_seeds.find_seed_set(social_network, num_seeds=num_seeds, exponent=2)
+                initial_informed_lst = find_seeds.find_seed_set(social_network, num_seeds=num_seeds, exponent=2)
             # Handle cases where no seeds are provided
             elif seeds is None or seeds == [] or seeds == 0:
-                initial_informed_list = []
+                initial_informed_lst = []
 
             # Convert to set if not already a set
-            informed = set(initial_informed_list)
+            informed = set(initial_informed_lst)
 
             # NOTE: Non-adhering can still be informed
 
@@ -247,7 +249,7 @@ def Simulate_SIR(contact_network,social_network,T,beta,gamma,mu,init,
         #  Influence spreads
         elif t > begin_q:
             # Can only spread if there are some seed nodes
-            if initial_informed_list != []:
+            if initial_informed_lst != []:
                 if lt_threshold == None: # If we are using I.C., that is
                     ic_results = IM.IC_prob_matrix(social_network, S=list(informed), p=0.02, mc=1000, quarantining=quarantine_statuses)
                     prob_matrix = ic_results[0]
@@ -332,6 +334,9 @@ def Simulate_SIR(contact_network,social_network,T,beta,gamma,mu,init,
         all_quaratines.append(quarantine_statuses.copy())
         all_infections.append(state.copy())
 
+        live_edges = contact_network.edges()
+        all_edges.append(live_edges)
+
         # quick diagnostics
         m_init = G_initial.number_of_edges()
         m_now = contact_network.number_of_edges()
@@ -375,4 +380,4 @@ def Simulate_SIR(contact_network,social_network,T,beta,gamma,mu,init,
     # See how far off avg. actually removed is from expected (k_0)
     print("Average of avg. degrees of just-started quarantining nodes, over all time steps: ", np.mean([x for x in avg_avg_just if x is not None]))
 
-    return contact_network, state_changes, infection_data, quarantine_prob_matrix, all_infections, social_network, dynamic_degree, informed_and_infected, all_informed, adhering
+    return contact_network, state_changes, infection_data, quarantine_prob_matrix, all_infections, social_network, dynamic_degree, informed_and_infected, all_informed, adhering, all_edges

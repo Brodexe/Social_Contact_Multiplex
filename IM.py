@@ -1,6 +1,7 @@
 import numpy as np
 import random
 import networkx as nx
+import copy
 
 # Returns probability matrix of node i being informed
 # S: Nodes that are already informed
@@ -40,23 +41,29 @@ def IC_prob_matrix(g, S, p, mc=1000, quarantining=None):
 
 def IC(g, S, p, mc=1000):
     spread = []
-    for _ in range(mc):
-        A = S[:]
-        while new_ones != []:  # While there are new nodes to be activated
-            new_ones = []
-            for node in S:
-                out_neighbors = list(g.successors(node))  # Get successors of current node
-                success = [u for u in out_neighbors if random.uniform(0, 1) < p]  # Check if activation succeeds
-                new_ones += success  # Add successful activations to new_ones
-            new_active = list(set(new_ones) - set(A))
-            A += new_active
-            A = list(set(A))
-            spread.append(len(A))
 
-    return np.mean(spread), A
+    for _ in range(mc):
+        A = set(S)               # All activated nodes
+        new_active = set(S)      # Nodes activated in last round
+
+        while new_active:
+            next_active = set()
+
+            for node in new_active:
+                for neighbor in g.successors(node):
+                    if neighbor not in A:
+                        if random.random() < p:
+                            next_active.add(neighbor)
+
+            A |= next_active
+            new_active = next_active
+
+        spread.append(len(A))
+
+    return np.mean(spread), list(A)
 
 # k: Number of nodes that are allowed to be informed
-def greedy(g,k,p=0.1,mc=10,S=None):
+def greedy_for_ic(g,k,p,mc,S=None):
     if S == None: S = []
     spread = []
 
@@ -143,3 +150,50 @@ def LT(g, threshold, initial_active: set = None):
                     new_ones = True
 
     return list(influence_result)
+
+# Greedy influence maximization algorithm for small networks
+# Gives a ranking of nodes by influence spread, 
+# and the cumulative spread as we add more nodes to the seed set
+# target: desired spread to reach
+# S: minimal seed set to reach target
+def greedy_for_ic_target(g, p, mc, target, S_init=None):
+    if S_init is None:
+        S_init = []
+
+    S = copy.deepcopy(S_init)
+    ranking = []
+    cumulative_spread = []
+
+    # Current spread of initial seeds
+    current_spread = IC(g, S, p, mc)[0] if S else 0
+
+    if current_spread >= target:
+        return S, ranking, cumulative_spread
+
+    remaining_nodes = set(g.nodes()) - set(S)
+
+    while remaining_nodes:
+
+        best_spread = -1
+        best_node = None
+
+        for node in remaining_nodes:
+            spread = IC(g, S + [node], p, mc)[0]
+
+            if spread > best_spread:
+                best_spread = spread
+                best_node = node
+
+        # Add best node
+        S.append(best_node)
+        ranking.append(best_node)
+        cumulative_spread.append(best_spread)
+
+        remaining_nodes.remove(best_node)
+        current_spread = best_spread
+
+        # Stop once target is reached
+        if current_spread >= target:
+            break
+
+    return S, ranking, cumulative_spread

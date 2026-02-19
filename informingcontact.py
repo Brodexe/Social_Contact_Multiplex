@@ -160,7 +160,7 @@ def Informing(k, social_network, contact_network, num_seeds):
 
     print("seeds: ", seeds)
 
-    maximization_result = IM.greedy(g=social_network,k=k,S=seeds)
+    maximization_result = IM.greedy_for_ic(g=social_network,k=k,S=seeds)
     max_influence_nodes = maximization_result[0]
 
     print("Influence Maximization Results (Greedy Algorithm): ", max_influence_nodes)

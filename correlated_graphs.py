@@ -90,7 +90,7 @@ def jaccard_similarity(set1, set2):
     union = len(set1 | set2)
     return intersection / union if union > 0 else 0
 
-def create_social_graph(H, nE):
+def create_social_graph(H, nE=None):
     if nE == None:
         nE = H.number_of_edges() * 2  # Default to twice the number of edges in H
 

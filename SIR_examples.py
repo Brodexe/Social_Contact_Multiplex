@@ -28,7 +28,7 @@ FIGURE_SIZE_BAR = (14, 8)
 
 n = 200
 T = 100
-NUM_SEEDS = 10
+NUM_SEEDS = 200
 
 beta = 0.15 # Infection rate
 gamma = 0.07 # Recovery rate
@@ -463,7 +463,7 @@ def compare_infections_adherence(adherence, plot_data=False):
     return (x, mean_full, std_full), (x, mean_partial, std_partial)
 
 def r_quarantine(plot_data=False):
-    num_trials = 25
+    num_trials = 5
 
     T_runs = []
     Y_runs_r_quarantine = []
@@ -473,7 +473,7 @@ def r_quarantine(plot_data=False):
         data1 = SIR.Simulate_SIR(
             contact_network=deepcopy(contact_network),
             social_network=deepcopy(social_network),
-            T=T, num_seeds=NUM_SEEDS,
+            T=T, seeds=NUM_SEEDS,
             beta=beta, gamma=gamma, mu=mu, init=init,
              q="r", adherence=1.0
         )[2]
@@ -513,6 +513,7 @@ def r_quarantine(plot_data=False):
         ax.legend()
         ax.grid(True)
 
+        plt.show()
         plt.tight_layout()
         plt.savefig('result_figures/r_quarantine.pdf', bbox_inches='tight')
         plt.close()
@@ -658,7 +659,8 @@ def pickle_load(filename='experiment_data/pickles.pkl'):
     print(data)
 
 if __name__ == "__main__":
-    plot_all_quarantine()
+    r_quarantine(plot_data=True)
+    # plot_all_quarantine()
     # random_vs_nonrandom_seeds(4, plot_data=True)
     # r_quarantine(plot_data=True)
     # const_quarantines(plot_data=True)

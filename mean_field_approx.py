@@ -61,7 +61,7 @@ elif mode == "YJMOB":
 elif mode == "sensitivity analysis":
     write_file = sys.argv[3]
 
-adherence = 0.0 # Proportion of individuals who sever contact edges upon infection
+adherence = 0.6 # Proportion of individuals who sever contact edges upon infection
 # Overwrite adherence if provided as command line argument
 if mode == "adherence":
     adherence = float(sys.argv[2])
@@ -93,7 +93,7 @@ gamma = 0.07  # Recovery rate
 mu = 0.05  # Immunity loss rate
 init = 0.05 # Initial infected portion
 q = "r"  # Quarantine type: indiviuals restore edges when recovered
-split_point = None  # Set to None if you want to optimize over the full SIR simulation, or a specific time point to split the optimization
+split_point = 30  # Set to None if you want to optimize over the full SIR simulation, or a specific time point to split the optimization
 density_social = None  # Set to None for default density, or an integer number of edges in the social graph
 
 # YJMOB mode: First, run optimization for each time interval separately
@@ -268,10 +268,17 @@ if mode == "YJMOB" and file_index == 5:
     dynamic_deg = deepcopy(deg_lst)
 
 def given_at_time(time):
-    new_r_ratio = sum(1 for node in contact_graph.nodes() 
-                            if true_dynamics[time][node] == 2 and true_dynamics[time-1][node] != 2) / n
-    new_i_ratio = sum(1 for node in contact_graph.nodes() 
-                            if true_dynamics[time][node] == 1 and true_dynamics[time-1][node] != 1) / n
+    if time > 0:
+        new_r_ratio = sum(1 for node in contact_graph.nodes() 
+                                if true_dynamics[time][node] == 2 and true_dynamics[time-1][node] != 2) / n
+        new_i_ratio = sum(1 for node in contact_graph.nodes() 
+                                if true_dynamics[time][node] == 1 and true_dynamics[time-1][node] != 1) / n
+    elif time == 0:
+        new_r_ratio = sum(1 for node in contact_graph.nodes() 
+                                if true_dynamics[time][node] == 2) / n
+        new_i_ratio = sum(1 for node in contact_graph.nodes() 
+                                if true_dynamics[time][node] == 1) / n
+        
     x1 = beta * (new_r_ratio / gamma)
     x2 = 1 - (new_r_ratio / gamma)
 
@@ -327,7 +334,7 @@ for time in range(T):
 
 # eps_w1: Controls exploration of w1
 # eps_w2: Controls smoothness of w2
-def optimize_segment(start=1, end=T, bounds = [(1, binomial_bound), (0, 1)],eps_w1=binomial_bound, eps_w2=0.075, num_runs=25):
+def optimize_segment(start=0, end=T, bounds = [(1, binomial_bound), (0, 1)],eps_w1=binomial_bound, eps_w2=0.075, num_runs=25):
 
     #---------
     #
@@ -407,7 +414,7 @@ def drive_optimizer(split_point=None):
     w1_avg2, w2_avg2 = None, None
 
     if split_point is not None:
-        w1_all_runs1, w2_avg1 = optimize_segment(start=1, end=split_point)
+        w1_all_runs1, w2_avg1 = optimize_segment(start=0, end=split_point)
         w1_all_runs2, w2_avg2 = optimize_segment(start=split_point, end=T)
 
         #  Run-wise average of w1 across runs
