@@ -30,7 +30,10 @@ social_network = correlated_graphs.create_social_graph(contact_network, 2 * init
 # social_network = nx.erdos_renyi_graph(n, p, seed=24)
 initial_social = deepcopy(social_network)
 T = 100
-beta = 0.15
+# Homogeneous beta: everyone equally susceptible
+# beta = 0.15
+# Heterogeneous beta: generate random n x n matrix with values in [0, 1]
+beta = np.random.rand(n, n)
 gamma = 0.05
 mu = 0.03
 init = 0.10
@@ -368,100 +371,6 @@ def hill_climb_constant_size():
 
     return most_common_seed_set, all_cost_curves, all_edge_curves, all_newly_infected_counts, all_newly_infected_frac
 
-
-# At each time step, choose the K nodes with highest degree 
-#  in the contact network as seeds for the next time step
-# At each time step, choose the K nodes with highest degree 
-# in the contact network as seeds for the next time step
-def degree_based_selection():
-    contact_network = deepcopy(initial_network)
-
-    K = 5
-
-    all_cost_curves = []
-    winner_sets = []
-    all_edge_curves = []
-    all_newly_infected_counts = []
-    all_newly_infected_frac   = []
-
-    for i in range(num_simulations):
-        print("Degree-based Simulation:", i)
-
-        cost_lst = []
-        full_dynamics = None
-        prev_state_dict = None
-        full_live_edges = None
-        edge_counts = []
-        seed_set_history = set()
-
-        newly_infected_per_sim = []
-        newly_infected_frac_per_sim = []
-
-        for t_cur in range(T):
-            # --- Select top-K highest degree nodes ---
-            current_graph = nx.Graph()
-            current_graph.add_edges_from(full_live_edges[-1] if full_live_edges else contact_network.edges())
-            
-            # Rank nodes by degree in the modified contact network (after edge removals)
-            degree_dict = dict(current_graph.degree())
-
-            sorted_nodes = sorted(degree_dict, key=degree_dict.get, reverse=True)
-            seed_set = sorted_nodes[:K]
-            seed_set_history.update(seed_set)
-
-            # --- Run one-step SIR ---
-            simulation_results = SIR.Simulate_SIR(
-                contact_network=contact_network,
-                social_network=social_network,
-                T=1,
-                beta=beta,
-                gamma=gamma,
-                mu=mu,
-                init=init,
-                q="r",
-                adherence=adherence,
-                begin_q=0,
-                seeds=list(seed_set_history),
-                initial_state_dict=prev_state_dict
-            )
-            # Restore contact network for next iteration, 
-            # since edge restoration depends on initial structure
-            contact_network = deepcopy(initial_network)
-
-            sirs_dynamics = simulation_results[4]
-            prev_state_dict = sirs_dynamics[0]
-
-            # Accumulate full time-series
-            full_dynamics = sirs_dynamics if full_dynamics is None else full_dynamics + sirs_dynamics
-
-            # Compute newly infected
-            current_new_i = given_at_time(t_cur, full_dynamics, contact_network)
-            newly_infected_per_sim.append(current_new_i)
-            newly_infected_frac_per_sim.append(current_new_i / n)
-
-            graph_vec = simulation_results[10]
-            live_edges = [list(network) for network in graph_vec]
-
-            full_live_edges = live_edges if full_live_edges is None else full_live_edges + live_edges
-            edge_counts.append(len(live_edges[-1]))
-
-            cost, _ = global_cost_function(
-                newly_infected_per_sim,
-                full_live_edges,
-                len(seed_set),
-                t_cur
-            )
-
-            cost_lst.append(cost)
-
-        winner_sets.append(seed_set)
-        all_cost_curves.append(cost_lst)
-        all_edge_curves.append(edge_counts)
-        all_newly_infected_counts.append(newly_infected_per_sim)
-        all_newly_infected_frac.append(newly_infected_frac_per_sim)
-
-    return winner_sets[0], all_cost_curves, all_edge_curves, all_newly_infected_counts, all_newly_infected_frac
-
 def degree_based_selection_never_repeat():
     contact_network = deepcopy(initial_network)
 
@@ -682,7 +591,6 @@ def plot_newly_infected_comparison(hill_counts, hill_frac, degree_counts, degree
     plt.grid(True)
     plt.tight_layout()
     plt.show()
-
 
 # See what the cost would be if every node where informed at the start,
 #  vs if no node was informed

@@ -8,36 +8,60 @@ import correlated_graphs
 import IM
 from copy import deepcopy
 
+# NOTE: directed dynamics; edge-wise
+# def sirs_step(G, state, L, beta, gamma, mu):
+#     new_state = state.copy()
+    
+#     # Determine if beta is a 2D adjacency matrix or a scalar
+#     beta_is_matrix = hasattr(beta, '__getitem__')
+
+#     # Spread infection: Infected individuals attempt to infect susceptible neighbors
+#     for u in G.nodes:
+#         if state[u] == 1:  # If u is infected
+#             for v in G.neighbors(u):
+#                 if state[v] == 0 and L[u] == 0:  # If v is susceptible and u can infect v
+#                     infection_prob = beta[u][v] if beta_is_matrix else beta
+#                     if random.random() < infection_prob:
+#                         new_state[v] = 1  # v becomes infected
+
+#     # Recovery: Infected individuals may recover
+#     for u in G.nodes:
+#         if state[u] == 1:
+#             if random.random() < gamma:
+#                 new_state[u] = 2
+
+#     # Immunity loss: Recovered individuals may become susceptible again
+#     for u in G.nodes:
+#         if state[u] == 2:
+#             if random.random() < mu:
+#                 new_state[u] = 0
+
+#     return new_state
+
+# NOTE: undirected dynamics; node-wise
 def sirs_step(G, state, L, beta, gamma, mu):
-    # Copy the current state to avoid modifying the dictionary while iterating
     new_state = state.copy()
 
-    # Spread infection: Infected individuals attempt to infect susceptible neighbors
     for u in G.nodes:
-        if state[u] == 1:  # If u is infected
+        if state[u] == 1:  # u is infected
             for v in G.neighbors(u):
-                if state[v] == 0 and L[u] == 0:  # If v is susceptible and u can infect v
-                    # Probabilistic infection spread
-                    if random.random() < beta:
-                        new_state[v] = 1  # v becomes infected
+                if state[v] == 0 and L[u] == 0:  # v is susceptible and u can infect
+                    if random.random() < beta[u]:
+                        new_state[v] = 1
 
-    # Recovery: Infected individuals may recover
     for u in G.nodes:
-        if state[u] == 1:  # If u is infected
+        if state[u] == 1:
             if random.random() < gamma:
-                new_state[u] = 2  # u recovers
+                new_state[u] = 2
 
-    # Immunity loss: Recovered individuals may become susceptible again
     for u in G.nodes:
         if state[u] == 2:
-            # If u is recovered
             if random.random() < mu:
-                new_state[u] = 0  # u becomes susceptible again
+                new_state[u] = 0
 
     return new_state
 
 def transition(L, P_prime):
-
     all_0s = [i for i in range(len(L)) if L[i] == 0]
     all_1s = [i for i in range(len(L)) if L[i] == 1]
 
@@ -108,8 +132,9 @@ def restore_edges(g_init, g, node, already_quarantining):
 #            Can also be a list of nodes that adhere to quarantine
 # seeds: a list of seed nodes for information spread. If None, seeds are chosen randomly.
 # initial_state_dict: Optional dictionary mapping node -> state (0=S, 1=I, 2=R). If provided, uses this instead of random initial infections.
+# p: diffusion probability for indepedent cascade model (only used if lt_threshold is None). Can be a scalar or weighted adjacency matrix.
 def Simulate_SIR(contact_network,social_network,T,beta,gamma,mu,init,
-                 q=False,lt_threshold=None,adherence=None,begin_q=0,seeds=None,initial_state_dict=None):
+                 q=False,lt_threshold=None,adherence=None,begin_q=0,seeds=None,initial_state_dict=None, p=0.02):
 
     if begin_q is None:
         begin_q = 0
@@ -252,7 +277,7 @@ def Simulate_SIR(contact_network,social_network,T,beta,gamma,mu,init,
             # Can only spread if there are some seed nodes
             if initial_informed_lst != []:
                 if lt_threshold == None: # If we are using I.C., that is
-                    ic_results = IM.IC_prob_matrix(social_network, S=list(informed), p=0.02, mc=1000, quarantining=quarantine_statuses)
+                    ic_results = IM.IC_prob_matrix(social_network, S=list(informed), p=p, mc=1000, quarantining=quarantine_statuses)
                     prob_matrix = ic_results[0]
                     new_informed_list = ic_results[1]
                 else:
@@ -260,7 +285,9 @@ def Simulate_SIR(contact_network,social_network,T,beta,gamma,mu,init,
                     prob_matrix = lt_results[0]
                     new_informed_list = lt_results[1]
 
-                quarantine_prob_matrix[t] = prob_matrix
+                # NOTE: Generate new case for p as a matrix of activation probabilities
+                if isinstance(p, float):
+                    quarantine_prob_matrix[t] = prob_matrix
 
                 assert len(informed) > 0, "Informed set is empty!"
 

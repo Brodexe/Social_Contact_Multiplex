@@ -9,6 +9,7 @@ import pandas as pd
 import random
 import find_seeds
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes, mark_inset, zoomed_inset_axes
+from collections import defaultdict
 
 
 # Global matplotlib settings for publication-quality figures
@@ -28,7 +29,7 @@ FIGURE_SIZE_BAR = (14, 8)
 
 n = 200
 T = 100
-NUM_SEEDS = 200
+NUM_SEEDS = 5
 
 beta = 0.15 # Infection rate
 gamma = 0.07 # Recovery rate
@@ -623,6 +624,67 @@ def plot_all_quarantine():
 
     return results
 
+# Plot SIRS infection curve from Reality Commons coupled social-contact network
+# Dataset: Social Evolution: survey + proximity data
+def rc():
+    beta = None
+
+    # NOTE: For now, assume the most susceptible individuals 
+    # are those around the highest degree nodes (across iterations)
+    # Accumulate degree across all networks
+    degree_totals = defaultdict(int)
+
+    for i in range(1, 20):  # [1, 19] inclusive
+        G = nx.read_gml(f"rc_contact_network_bin{i}.gml")
+        for node, deg in G.degree():
+            degree_totals[node] += deg
+
+    # Sort by total degree descending, return as list (0th = most connected)
+    ranking = sorted(degree_totals, key=lambda n: degree_totals[n], reverse=True)
+
+    # Set beta for each node inversely proportional to degree rank: beta[i] = n / (rank[i] + 1)
+    beta = np.array([n / (ranking.index(node) + 1) for node in sorted(ranking)])
+
+    rc_social = nx.read_gml('capstone_proj_data/rc_social_network.gml')
+    # 15 is a well-connected bin
+    rc_contact = nx.read_gml('capstone_proj_data/rc_contact_network_bin15.gml')
+
+    # Compare social_network and contact_network nodes to ensure they are aligned
+    social_nodes = set(rc_social.nodes())
+    contact_nodes = set(rc_contact.nodes())
+
+    # Reorder social and contact network nodes to be sequential integers starting from 0 (if not already)
+    mapping_social = {node: i for i, node in enumerate(sorted(social_nodes))}
+    mapping_contact = {node: i for i, node in enumerate(sorted(contact_nodes))}
+    rc_social = nx.relabel_nodes(rc_social, mapping_social)
+    rc_contact = nx.relabel_nodes(rc_contact, mapping_contact)
+
+    # Obtain weighted adjacency matrix from social network for activation probabilities
+    A_weighted = nx.to_numpy_array(rc_social, weight='weight')
+
+    # Obtain infection curve from simulation data
+    data = SIR.Simulate_SIR(
+        contact_network=rc_contact,
+        social_network=rc_social,
+        T=T, beta=beta, gamma=gamma, mu=mu, init=init, seeds=NUM_SEEDS,
+        q=True, adherence=1.0, lt_threshold=None, p=A_weighted
+    )[2]
+
+    # Plot data
+    x = data[0]
+    y = data[1]
+    fig, ax = plt.subplots(figsize=FIGURE_SIZE_LINE)
+    ax.plot(x, y, label='Infected', color='blue')
+    ax.set_xlabel('Time (days)')
+    ax.set_ylabel('# of Infected')
+    ax.set_title('SIR Simulation on Reality Commons Network')
+    ax.legend()
+    ax.grid(True)
+    plt.tight_layout()
+    plt.savefig('result_figures/rc_sir_simulation.pdf', bbox_inches='tight')
+    plt.show()
+    plt.close()
+
 def run_simulations():
     data0 = informed_vs_noninformed()
     data1 = const_quarantines()
@@ -659,7 +721,7 @@ def pickle_load(filename='experiment_data/pickles.pkl'):
     print(data)
 
 if __name__ == "__main__":
-    r_quarantine(plot_data=True)
+    # r_quarantine(plot_data=True)
     # plot_all_quarantine()
     # random_vs_nonrandom_seeds(4, plot_data=True)
     # r_quarantine(plot_data=True)
@@ -667,3 +729,4 @@ if __name__ == "__main__":
     # permanent_quarantine(plot_data=True)
     # random_vs_nonrandom_seeds(3, plot_data=True)
     # jaccard_similarity(plot_data=True)
+    rc()

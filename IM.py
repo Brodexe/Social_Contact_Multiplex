@@ -9,35 +9,50 @@ import copy
 # mc: Number of Monte Carlo simulations
 # quarantining: List of nodes currently quarantining
 def IC_prob_matrix(g, S, p, mc=1000, quarantining=None):
-    if S == []: raise ValueError("S cannot be empty")
+    if S == []:
+        raise ValueError("S cannot be empty")
+
+    n = len(g.nodes())
     quarantine_list = []
-    
+
     for _ in range(mc):
-        A = S[:]
+        A = S[:]                     # active set starts with seeds
         new_ones = []
-        for node in S:
+        
+        for node in S:               # only seeds attempt activation (same mechanics)
             out_neighbors = list(g.successors(node))
-            # Activation probability is uniform if a scalar is given, otherwise use the node's specific probability
-            if isinstance(p, float): success = [u for u in out_neighbors if random.uniform(0, 1) < p]  
-            elif isinstance(p, np.ndarray): success = [u for u in out_neighbors if random.uniform(0, 1) < p[0][u]]
+            
+            if isinstance(p, (int, float)):
+                # homogeneous case - uniform probability on every edge
+                success = [u for u in out_neighbors if random.uniform(0, 1) < p]
+            elif isinstance(p, np.ndarray):
+                # heterogeneous case - edge-specific probability p[node, u]
+                # (works whether p is dense or you pass a full adjacency matrix)
+                success = [u for u in out_neighbors if random.uniform(0, 1) < p[node, u]]
+            else:
+                raise TypeError("p must be a float (homogeneous) or np.ndarray (n x n weighted adjacency matrix)")
+            
             new_ones += success
+        
+        # add newly activated nodes (union semantics - a node activates if at least one incoming edge from S succeeds)
         new_active = list(set(new_ones) - set(A))
         A += new_active
         A = list(set(A))
-
-        # Create informed matrix of size len(g.nodes()) x 1
-        one_run = np.zeros((1, len(g.nodes())))
+        
+        # record the outcome of this Monte-Carlo run
+        one_run = np.zeros((1, n))
         for node in A:
-            # if node in quarantining:
             one_run[0][node] = 1
         quarantine_list.append(one_run)
 
+    # average over all simulations → marginal activation probability vector
     quarantine_matrix = np.array(quarantine_list)
-    quarantine_matrix = np.mean(quarantine_matrix, axis=0)  # Average over all Monte Carlo simulations
+    quarantine_matrix = np.mean(quarantine_matrix, axis=0)   # shape (1, n)
 
-    A = [node for node in g.nodes() if random.uniform(0, 1) < quarantine_matrix[0][node]]  # Final informed set based on average probabilities
+    # final informed set: one stochastic realization drawn from the marginal probabilities
+    A_final = [node for node in g.nodes() if random.uniform(0, 1) < quarantine_matrix[0][node]]
 
-    return quarantine_matrix, A  # Return the average probability matrix and the final set of informed nodes
+    return quarantine_matrix, A_final
 
 def IC(g, S, p, mc=1000):
     spread = []
