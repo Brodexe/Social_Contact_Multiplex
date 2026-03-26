@@ -8,45 +8,19 @@ import correlated_graphs
 import IM
 from copy import deepcopy
 
-# NOTE: directed dynamics; edge-wise
-# def sirs_step(G, state, L, beta, gamma, mu):
-#     new_state = state.copy()
-    
-#     # Determine if beta is a 2D adjacency matrix or a scalar
-#     beta_is_matrix = hasattr(beta, '__getitem__')
-
-#     # Spread infection: Infected individuals attempt to infect susceptible neighbors
-#     for u in G.nodes:
-#         if state[u] == 1:  # If u is infected
-#             for v in G.neighbors(u):
-#                 if state[v] == 0 and L[u] == 0:  # If v is susceptible and u can infect v
-#                     infection_prob = beta[u][v] if beta_is_matrix else beta
-#                     if random.random() < infection_prob:
-#                         new_state[v] = 1  # v becomes infected
-
-#     # Recovery: Infected individuals may recover
-#     for u in G.nodes:
-#         if state[u] == 1:
-#             if random.random() < gamma:
-#                 new_state[u] = 2
-
-#     # Immunity loss: Recovered individuals may become susceptible again
-#     for u in G.nodes:
-#         if state[u] == 2:
-#             if random.random() < mu:
-#                 new_state[u] = 0
-
-#     return new_state
-
 # NOTE: undirected dynamics; node-wise
 def sirs_step(G, state, L, beta, gamma, mu):
     new_state = state.copy()
 
     for u in G.nodes:
-        if state[u] == 1:  # u is infected
+        if state[u] == 1:
             for v in G.neighbors(u):
-                if state[v] == 0 and L[u] == 0:  # v is susceptible and u can infect
-                    if random.random() < beta[u]:
+                if isinstance(beta, float):
+                    beta_val = beta
+                else:
+                    beta_val = beta[u]
+                if state[v] == 0 and L[u] == 0:
+                    if random.random() < beta_val:
                         new_state[v] = 1
 
     for u in G.nodes:
@@ -133,8 +107,8 @@ def restore_edges(g_init, g, node, already_quarantining):
 # seeds: a list of seed nodes for information spread. If None, seeds are chosen randomly.
 # initial_state_dict: Optional dictionary mapping node -> state (0=S, 1=I, 2=R). If provided, uses this instead of random initial infections.
 # p: diffusion probability for indepedent cascade model (only used if lt_threshold is None). Can be a scalar or weighted adjacency matrix.
-def Simulate_SIR(contact_network,social_network,T,beta,gamma,mu,init,
-                 q=False,lt_threshold=None,adherence=None,begin_q=0,seeds=None,initial_state_dict=None, p=0.02):
+def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
+                 q=False, lt_threshold=None, adherence=None, begin_q=0, seeds=None, initial_state_dict=None, p=0.02):
 
     if begin_q is None:
         begin_q = 0
@@ -209,23 +183,23 @@ def Simulate_SIR(contact_network,social_network,T,beta,gamma,mu,init,
 
     # Holds dynamic quarantine lengths (only used when q is True or int)
     quarantine_statuses = [0 for _ in range(n)]
-    quarantine_prob_matrix = np.zeros((T, n)) # T x n matrix: hold probabilities of quarantine for each node at each time step
+    quarantine_prob_matrix = np.zeros((T, n))  # T x n matrix: hold probabilities of quarantine for each node at each time step
     #  Initialize every node to 'Uninformed'
     for node in contact_network.nodes():
         nx.set_node_attributes(contact_network, {node: {'Informed?': 'Uninformed'}})
     for node in social_network.nodes():
         nx.set_node_attributes(social_network, {node: {'Informed?': 'Uninformed'}})
 
-    all_quaratines = []  # Hold list of quarantining individuals at each time step
-    all_infections = []  # Hold list of infected at each time step
-    all_informed = []  # Hold list of informed at each time step
-    all_edges = []  # Hold list of contact network edges at each time step (after removals)
+    quarantine_series = []   # Hold list of quarantining individuals at each time step
+    state_series = []        # Hold state of all nodes at each time step
+    informed_series = []     # Hold list of informed at each time step
+    all_edges = []           # Hold list of contact network edges at each time step (after removals)
 
     dynamic_degree = []
 
     # Save informed and infected count over time
     # Used when determining expected # of edges removed (extract_mfa.py)
-    informed_and_infected = []
+    informed_infected_series = []
     
     # Keep track of who is already quarantining (so we don't restore their edges prematurely)
     already_quarantining = []
@@ -276,7 +250,7 @@ def Simulate_SIR(contact_network,social_network,T,beta,gamma,mu,init,
         elif t > begin_q:
             # Can only spread if there are some seed nodes
             if initial_informed_lst != []:
-                if lt_threshold == None: # If we are using I.C., that is
+                if lt_threshold == None:  # If we are using I.C., that is
                     ic_results = IM.IC_prob_matrix(social_network, S=list(informed), p=p, mc=1000, quarantining=quarantine_statuses)
                     prob_matrix = ic_results[0]
                     new_informed_list = ic_results[1]
@@ -315,19 +289,26 @@ def Simulate_SIR(contact_network,social_network,T,beta,gamma,mu,init,
         P_prime, P, N = update_N_P(P, N, n)
         L = transition(L, P_prime)
 
-        # Make copy before modifying
+        # Snapshot state before any changes this timestep
         copy_state = deepcopy(state)
+
+        # Trigger nodes: currently infected nodes, plus newly informed nodes that are infected.
+        # These are computed from the PRE-step state so that quarantine decisions are made
+        # on the basis of known infection status, before disease can spread further.
+        currently_infected = set([u for u in range(n) if state[u] == 1])
+        trigger_nodes = currently_infected | set([u for u in new_informed if state[u] == 1])
+
+        # 1. Cut valid ties first (quarantine on the pre-step graph)
+        if q is not False:
+            for u in trigger_nodes:
+                quarantine_statuses = quarantine_edge_removal(contact_network, u, state, quarantine_statuses, already_quarantining)
+
+        # 2. Then run SIRS dynamics on the pruned contact network
         state = sirs_step(contact_network, state, L, beta, gamma, mu)
 
         # List of nodes that would quarantine ideally
         i_prime_current = []
         infm_current = []
-
-        became_infected = [u for u in range(n) if state[u] == 1 and copy_state[u] != 1]
-        trigger_nodes = set(became_infected) | set([u for u in new_informed if state[u] == 1])
-
-        for u in trigger_nodes:
-            quarantine_statuses = quarantine_edge_removal(contact_network, u, state, quarantine_statuses, already_quarantining)
 
         # Analyze state changes across all nodes
         for u in range(n):
@@ -363,11 +344,11 @@ def Simulate_SIR(contact_network,social_network,T,beta,gamma,mu,init,
                 quarantine_statuses[u] = 0
                 restore_edges(G_initial, contact_network, u, already_quarantining=already_quarantining)
 
-        informed_and_infected.append(i_prime_current)
-        all_informed.append(infm_current)
+        informed_infected_series.append(i_prime_current)
+        informed_series.append(infm_current)
 
-        all_quaratines.append(quarantine_statuses.copy())
-        all_infections.append(state.copy())
+        quarantine_series.append(quarantine_statuses.copy())
+        state_series.append(state.copy())
 
         live_edges = contact_network.edges()
         all_edges.append(live_edges)
@@ -378,20 +359,18 @@ def Simulate_SIR(contact_network,social_network,T,beta,gamma,mu,init,
         actual_removed_cumulative = m_init - m_now
 
         # who is currently quarantining (status>0)
-        current_quarantining = [i for i, qv in enumerate(quarantine_statuses) if qv>0]
+        current_quarantining = [i for i, qv in enumerate(quarantine_statuses) if qv > 0]
         num_current_q = len(current_quarantining)
 
-        # nodes that *just* started quarantining this timestep
+        # nodes that *just* started quarantining this timestep:
+        # those in trigger_nodes that are informed and adhering
         just_started = set()
-        for u in became_infected:
+        for u in trigger_nodes:
             if contact_network.nodes[u].get('Informed?') == 'Informed' and contact_network.nodes[u].get('Adheres?') == 'Yes':
-                just_started.add(u)
-        for u in new_informed:
-            if state[u] == 1 and contact_network.nodes[u].get('Adheres?') == 'Yes':
                 just_started.add(u)
 
         # avg degree in initial graph of those who just started
-        if len(just_started)>0:
+        if len(just_started) > 0:
             avg_deg_just = np.mean([G_initial.degree(u) for u in just_started])
         else:
             avg_deg_just = None
@@ -421,4 +400,4 @@ def Simulate_SIR(contact_network,social_network,T,beta,gamma,mu,init,
     # See how far off avg. actually removed is from expected (k_0)
     print("Average of avg. degrees of just-started quarantining nodes, over all time steps: ", np.mean([x for x in avg_avg_just if x is not None]))
 
-    return contact_network, state_changes, infection_data, quarantine_prob_matrix, all_infections, social_network, dynamic_degree, informed_and_infected, all_informed, adhering, all_edges
+    return contact_network, state_changes, infection_data, quarantine_prob_matrix, state_series, social_network, dynamic_degree, informed_infected_series, informed_series, adhering, all_edges

@@ -29,10 +29,10 @@ FIGURE_SIZE_BAR = (14, 8)
 
 n = 200
 T = 100
-NUM_SEEDS = 5
+NUM_SEEDS = 10
 
 beta = 0.15 # Infection rate
-gamma = 0.07 # Recovery rate
+gamma = 0.1 # Recovery rate
 mu = 0.05 # Immunity loss rate
 init = 0.05 # Initial infected portion
 
@@ -464,7 +464,7 @@ def compare_infections_adherence(adherence, plot_data=False):
     return (x, mean_full, std_full), (x, mean_partial, std_partial)
 
 def r_quarantine(plot_data=False):
-    num_trials = 5
+    num_trials = 10
 
     T_runs = []
     Y_runs_r_quarantine = []
@@ -685,6 +685,53 @@ def rc():
     plt.show()
     plt.close()
 
+# Plot newly infected curve
+def plot_newly_infected():
+    num_trials = 5
+    q = False
+
+    def given_at_time(time, sirs_dynamics, contact_graph):
+        if time > 0:
+            return sum(1 for node in contact_graph.nodes()
+                       if sirs_dynamics[time][node] == 1 and sirs_dynamics[time-1][node] != 1)
+        else:
+            return sum(1 for node in contact_graph.nodes()
+                       if sirs_dynamics[time][node] == 1)
+
+    all_trials = []
+    for _ in range(num_trials):
+        cn_copy = deepcopy(contact_network)
+        sn_copy = deepcopy(social_network)
+
+        state_dynamics = SIR.Simulate_SIR(
+            contact_network=cn_copy,
+            social_network=sn_copy,
+            T=T, beta=beta, gamma=gamma, mu=mu, init=init,
+            q=q, adherence=1.0, seeds=NUM_SEEDS
+        )[4]
+
+        y = [given_at_time(t, state_dynamics, cn_copy) for t in range(T)]
+        all_trials.append(y)
+
+    arr  = np.array(all_trials)
+    mean = arr.mean(axis=0)
+    std  = arr.std(axis=0)
+    x    = np.arange(T)
+
+    fig, ax = plt.subplots(figsize=FIGURE_SIZE_LINE)
+    ax.plot(x, mean, color='orange', linewidth=2.5, label='Newly Infected (mean)')
+    ax.fill_between(x, mean - std, mean + std, color='orange', alpha=0.20, label='±1 std')
+
+    ax.set_xlabel('Time (days)')
+    ax.set_ylabel('# of Newly Infected')
+    ax.set_title('Daily New Infections Under Quarantine Until Recovery')
+    ax.legend()
+    ax.grid(True, linewidth=0.4)
+    plt.tight_layout()
+    plt.savefig('result_figures/new_infections.pdf', bbox_inches='tight')
+    plt.show()
+    plt.close()
+
 def run_simulations():
     data0 = informed_vs_noninformed()
     data1 = const_quarantines()
@@ -724,9 +771,10 @@ if __name__ == "__main__":
     # r_quarantine(plot_data=True)
     # plot_all_quarantine()
     # random_vs_nonrandom_seeds(4, plot_data=True)
-    # r_quarantine(plot_data=True)
+    r_quarantine(plot_data=True)
     # const_quarantines(plot_data=True)
     # permanent_quarantine(plot_data=True)
     # random_vs_nonrandom_seeds(3, plot_data=True)
     # jaccard_similarity(plot_data=True)
-    rc()
+    # rc()
+    # plot_newly_infected()
