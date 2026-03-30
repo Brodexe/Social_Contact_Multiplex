@@ -32,7 +32,7 @@ T = 100
 NUM_SEEDS = 10
 
 beta = 0.15 # Infection rate
-gamma = 0.1 # Recovery rate
+gamma = 0.07 # Recovery rate
 mu = 0.05 # Immunity loss rate
 init = 0.05 # Initial infected portion
 

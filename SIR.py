@@ -74,7 +74,7 @@ def quarantine_edge_removal(g, node, states, quarantine_statuses, already_quaran
         quarantine_statuses[node] = 1  # Set quarantine status to 1 (quarantining)
         # Get all neighbors of current node
         neighbors = list(g.neighbors(node))
-        print("Number of neighbors to remove for node ", node, ": ", len(neighbors))
+        # print("Number of neighbors to remove for node ", node, ": ", len(neighbors))
         # Remove edges to all neighbors
         for neighbor in neighbors:
             g.remove_edge(node, neighbor)
@@ -377,7 +377,7 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
 
         avg_avg_just.append(avg_deg_just)
 
-        print(f"t={t} edges_init={m_init} edges_now={m_now} removed_cumulative={actual_removed_cumulative} #cur_q={num_current_q} #just_start={len(just_started)} avg_deg_just={avg_deg_just}")
+        # print(f"t={t} edges_init={m_init} edges_now={m_now} removed_cumulative={actual_removed_cumulative} #cur_q={num_current_q} #just_start={len(just_started)} avg_deg_just={avg_deg_just}")
 
         # Update infection count for plotting
         Inf.append(len([u for u in state.keys() if state[u] == 1]))
@@ -398,6 +398,6 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
     infection_data.append(y_data_inf)
     
     # See how far off avg. actually removed is from expected (k_0)
-    print("Average of avg. degrees of just-started quarantining nodes, over all time steps: ", np.mean([x for x in avg_avg_just if x is not None]))
+    # print("Average of avg. degrees of just-started quarantining nodes, over all time steps: ", np.mean([x for x in avg_avg_just if x is not None]))
 
     return contact_network, state_changes, infection_data, quarantine_prob_matrix, state_series, social_network, dynamic_degree, informed_infected_series, informed_series, adhering, all_edges
