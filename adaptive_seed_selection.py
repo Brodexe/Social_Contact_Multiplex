@@ -46,7 +46,9 @@ num_simulations = 10
 batch_interval = 1  # Seeds and cost updated once every batch_interval steps
 q = "r"
 # Try introducing random infections in intervals to better differentiate methods
-introduced_infections = (0, 1) # (fraction of population, time step to introduce)
+introduced_infections = (0, T) # (fraction of population, time step to introduce)
+
+K = 150 # Number of seeds to select at each batch
 
 # Pre-generate infection targets so every method sees the same nodes targeted per
 # simulation and per injection time step.  Shape: [num_simulations][num_injection_steps]
@@ -72,33 +74,48 @@ def given_at_time(time, sirs_dynamics, contact_graph):
     return new_i
     # return i
 
-def baseline_infections():
-    # Simulate on fresh network
+def baseline_infections(sim_index=0):
     contact_network = deepcopy(initial_contact)
     social_network = deepcopy(initial_social)
 
-    # Run SIR with no seeds, to get baseline infection curve for comparison
-    simulation_results = SIR.Simulate_SIR(
-        contact_network=contact_network,
-        social_network=social_network,
-        T=T,
-        q=False,
-        beta=beta,
-        gamma=gamma,
-        mu=mu,
-        init=init,
-    )
+    full_dynamics = None
+    prev_state_dict = None
+    baseline_newly_counts = []
 
-    sirs_dynamics = simulation_results[4]
-    baseline_newly_counts = [given_at_time(t, sirs_dynamics, contact_network) for t in range(T)]
+    for t_cur in range(T):
+        if t_cur % introduced_infections[1] == 0 and t_cur > 0:
+            new_infections = infection_candidates[sim_index][injection_times.index(t_cur)]
+            for node in new_infections:
+                if prev_state_dict[node] == 2:
+                    prev_state_dict[node] = 1
+
+        simulation_results = SIR.Simulate_SIR(
+            contact_network=contact_network,
+            social_network=social_network,
+            T=1,
+            q=False,
+            beta=beta,
+            gamma=gamma,
+            mu=mu,
+            init=init,
+            initial_state_dict=prev_state_dict,
+        )
+
+        contact_network = deepcopy(initial_contact)
+        sirs_dynamics = simulation_results[4]
+        prev_state_dict = sirs_dynamics[-1]
+        full_dynamics = sirs_dynamics if full_dynamics is None else full_dynamics + sirs_dynamics
+
+        current_new_i = given_at_time(t_cur, full_dynamics, contact_network)
+        baseline_newly_counts.append(current_new_i)
+
     baseline_newly_frac = [count / n for count in baseline_newly_counts]
-
     return baseline_newly_counts, baseline_newly_frac
 
 # Collect per-timestep newly infected counts from baseline runs
 baseline_runs = []
-for _ in range(num_simulations):
-    baseline_newly_counts, _ = baseline_infections()
+for i in range(num_simulations):
+    baseline_newly_counts, _ = baseline_infections(i)
     baseline_runs.append(baseline_newly_counts)
 
 # Global utility function: Find a small seed set which minimizes infection spread,
@@ -126,17 +143,14 @@ def global_cost_function(newly_infected, live_edges, seed_set_size, t_cur):
         total_edge_removal_cost += edge_removals
 
     cost_elements = (np.sum(newly_infected), total_edge_removal_cost, seed_set_size)
-    I_0 = init * n
 
     # Adjust penalty weights so that each term contributes equally to cost function
     removal_cost = 1
-    # NOTE: changed cost. Maybe the estimate for n_i was too high, causing the term to be undervalued?
-    # alpha_w = 1 / (0.05 * n * T - I_0) # Assumption: n_i(0) = I_0, as in previous paper
+    g = sum(max(run[t] for run in baseline_runs) for t in range(t_cur + 1))
+
+    alpha_w = 1 / g if g > 0 else 1.0
     beta_w = 1 / ((t_cur + 1) * edge_cost_bound)
     gamma_w = 1 / (n)
-
-    g = max(sum(run[:t_cur + 1]) for run in baseline_runs)
-    alpha_w = 1 / g if g > 0 else 1.0
 
     # Print cost components
     print(f"Cost components at time {t_cur}:")
@@ -178,8 +192,8 @@ def stepwise_cost_function(newly_infected_t, live_edges_t, seed_set_size):
 
     # Compute alpha_w stochasticly based on newly infected relative to baseline
     n_i_sums = []
-    for _ in range(num_simulations):
-        baseline_newly_counts, _ = baseline_infections()
+    for i in range(num_simulations):
+        baseline_newly_counts, _ = baseline_infections(i)
         n_i_sums.append(sum(baseline_newly_counts))
     max_sum = max(n_i_sums)
 
@@ -190,8 +204,8 @@ def stepwise_cost_function(newly_infected_t, live_edges_t, seed_set_size):
             + gamma_w * seed_set_size)
 
 def hill_climb():
-    K = 10
-    k = 10
+    K = 150
+    k = int(K / 2)
     EWMA_alpha = 0.5
     epsilon = 1e-6  # Small constant to avoid division by zero
 
@@ -200,14 +214,16 @@ def hill_climb():
     all_edge_curves = []
     all_newly_infected_counts = []
     all_newly_infected_frac = []
-    all_full_dynamics = []
+    all_state_vectors = []
 
     for i in range(num_simulations):
         print("Simulation: ", i)
 
+        # Fresh networks for each simulation
         contact_network = deepcopy(initial_contact)
         social_network = deepcopy(initial_social)
 
+        # Randomly initialized utilities
         utilities = {node: random.uniform(0, 1) for node in contact_network.nodes()}
 
         # Randomly initialize K many seeds
@@ -215,19 +231,17 @@ def hill_climb():
         prev_seed_vec = seed_vec.copy()
 
         cost_lst = []
-        full_dynamics = None
+        states_at_time = None
         prev_state_dict = None
-        full_live_edges = None
+        live_edge_at_time = None
         edge_counts = []
-        seed_set_history = set()
         last_batch_cost = None
-        newly_infected_per_sim = []
+        newly_infected_at_time = []
         newly_infected_frac_per_sim = []
         cur_informed = set()
 
         for t_cur in range(T):
             seed_set = [node for node in contact_network.nodes() if seed_vec[node] == 1]
-            seed_set_history.update(seed_set)
 
             # Introduce random new infections
             if t_cur % introduced_infections[1] == 0 and t_cur > 0:
@@ -236,45 +250,49 @@ def hill_climb():
                     if prev_state_dict[node] == 2: # Only infect if node is currently susceptible
                         prev_state_dict[node] = 1  # Infect these nodes at the start of this time step
 
-                infected_count = sum(1 for v in prev_state_dict.values() if v == 1)
-                print(f"t={t_cur}: infected in prev_state_dict after injection = {infected_count}")
-
             simulation_results = SIR.Simulate_SIR(
-                contact_network=contact_network,
-                social_network=social_network,
-                T=1,
-                beta=beta,
-                gamma=gamma,
-                mu=mu,
-                init=init,
+                contact_network=contact_network, social_network=social_network,
+                # Stepwise simulation: t=0 => no information spread beyond the current seeds
+                T=0,
+                beta=beta, gamma=gamma, mu=mu, init=init,
+                # Quarantine mode: quarantine until recovery
                 q=q,
                 adherence=adherence,
+                # Start quarantine immediately
                 begin_q=0,
-                # NOTE: decoupling selected seeds from those that happened to become informed in the simulation
-                seeds=list(seed_set_history.union(cur_informed)),
+                # seeds=list(set(seed_set).union(cur_informed)),
+                seeds=seed_set,
+                # States from end of last step
                 initial_state_dict=prev_state_dict
             )
 
-            cur_informed = set(simulation_results[8][-1])
+            # Reset contact so initial connections are always known (but may be removed by quarantine)
             contact_network = deepcopy(initial_contact)
-            sirs_dynamics = simulation_results[4]
-            prev_state_dict = sirs_dynamics[-1]
-            full_dynamics = sirs_dynamics if full_dynamics is None else full_dynamics + sirs_dynamics
+            # List of dictionaries
+            sirs_states = simulation_results[4]
+            # Dictionary from node to state at the end of this time step, to be fed into next step
+            prev_state_dict = sirs_states[-1]
+            # List of state dicts over time
+            states_at_time = sirs_states if states_at_time is None else states_at_time + sirs_states
 
-            current_new_i = given_at_time(t_cur, full_dynamics, contact_network)
-            newly_infected_per_sim.append(current_new_i)
+            new_informed = simulation_results[8][-1]
+            cur_informed.update(new_informed)
+            # Current new infections this step
+            current_new_i = given_at_time(t_cur, states_at_time, contact_network)
+            newly_infected_at_time.append(current_new_i)
             newly_infected_frac_per_sim.append(current_new_i / n)
 
+            # Live edges this step
             graph_vec = simulation_results[10]
-            live_edges = [list(network) for network in graph_vec]
+            live_edges = [list(edge_set) for edge_set in graph_vec]
 
             # Update time-series of live edges
-            full_live_edges = live_edges if full_live_edges is None else full_live_edges + live_edges
+            live_edge_at_time = live_edges if live_edge_at_time is None else live_edge_at_time + live_edges
             edge_counts.append(len(live_edges[-1]))
 
             # At batch boundary: compute cost, update utilities, flip seeds
             if (t_cur + 1) % batch_interval == 0 or t_cur == T - 1:
-                cost, _ = global_cost_function(newly_infected_per_sim, full_live_edges, len(seed_set), t_cur)
+                cost, _ = global_cost_function(newly_infected_at_time, live_edge_at_time, len(seed_set), t_cur)
                 cost_lst.append(cost)
 
                 # Stability-weighted utility update for active seeds
@@ -295,45 +313,49 @@ def hill_climb():
                 # Save current seed vec before flipping
                 prev_seed_vec = seed_vec.copy()
 
-                # Flip phase with revised probabilities
+                # Flip phase with revised probabilities (size-preserving)
                 flip_bound = random.randint(1, k)
                 for _ in range(flip_bound):
                     node = random.choice(list(contact_network.nodes()))
                     g = utilities[node]
                     if seed_vec[node] == 0:
                         flip_prob = 1.0 / (g + epsilon)
-                        # Clamp to [0, 1] since 1/(G+eps) can exceed 1 for small G
                         flip_prob = min(flip_prob, 1.0)
                         if random.random() < flip_prob:
-                            seed_vec[node] = 1
+                            # Flip this node ON, flip a random current seed OFF
+                            current_seeds = [n for n in contact_network.nodes() if seed_vec[n] == 1]
+                            if current_seeds:
+                                drop_node = random.choice(current_seeds)
+                                seed_vec[node] = 1
+                                seed_vec[drop_node] = 0
                     else:
                         flip_prob = 1.0 - 1.0 / (g + epsilon)
                         flip_prob = max(flip_prob, 0.0)
                         if random.random() < flip_prob:
-                            seed_vec[node] = 0
-            else:
-                cost_lst.append(cost_lst[-1] if cost_lst else 0)
+                            # Flip this node OFF, flip a random non-seed ON
+                            non_seeds = [n for n in contact_network.nodes() if seed_vec[n] == 0]
+                            if non_seeds:
+                                add_node = random.choice(non_seeds)
+                                seed_vec[node] = 0
+                                seed_vec[add_node] = 1
 
         final_seed_set = [node for node in contact_network.nodes() if seed_vec[node] == 1]
 
         winner_sets.append(final_seed_set)
         all_cost_curves.append(cost_lst)
         all_edge_curves.append(edge_counts)
-        all_newly_infected_counts.append(newly_infected_per_sim)
+        all_newly_infected_counts.append(newly_infected_at_time)
         all_newly_infected_frac.append(newly_infected_frac_per_sim)
-        all_full_dynamics.append(full_dynamics)
+        all_state_vectors.append(states_at_time)
 
     seed_set_counts = Counter(tuple(seed_set) for seed_set in winner_sets)
     most_common_seed_set = seed_set_counts.most_common(1)[0][0]
 
-    return most_common_seed_set, all_cost_curves, all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_full_dynamics
+    return most_common_seed_set, all_cost_curves, all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_state_vectors
 
 # Degree based selection: at each time step, select top K nodes by degree in the CURRENT contact network as seeds
 # Allows re-selection
 def degree_based_selection():
-    # K = 
-    K = 10
-
     all_cost_curves = []
     winner_sets = []
     all_edge_curves = []
@@ -356,12 +378,13 @@ def degree_based_selection():
         seed_set = None
         newly_infected_per_sim = []
         newly_infected_frac_per_sim = []
-        cur_informed = set()
-        seed_set_history = set()
 
         for t_cur in range(T):
             # Current view of the graph
             current_graph = nx.Graph()
+            # Ensure all nodes are present
+            current_graph.add_nodes_from(contact_network.nodes())
+            # Add edges from latest live edge time-series
             current_graph.add_edges_from(
                 full_live_edges[-1] if full_live_edges else contact_network.edges()
             )
@@ -370,7 +393,6 @@ def degree_based_selection():
             if t_cur % batch_interval == 0:
                 degree_dict = dict(current_graph.degree())
                 seed_set = sorted(degree_dict, key=lambda node: degree_dict[node], reverse=True)[:K]
-                seed_set_history.update(seed_set)
 
             # Introduce random new infections
             if t_cur % introduced_infections[1] == 0 and t_cur > 0:
@@ -384,7 +406,7 @@ def degree_based_selection():
             simulation_results = SIR.Simulate_SIR(
                 contact_network=contact_network,
                 social_network=social_network,
-                T=1,
+                T=0,
                 beta=beta,
                 gamma=gamma,
                 mu=mu,
@@ -392,14 +414,12 @@ def degree_based_selection():
                 q=q,
                 adherence=adherence,
                 begin_q=0,
-                # NOTE: decoupling selected seeds from those that happened to become informed in the simulation
-                seeds=list(set(seed_set_history).union(cur_informed)),
+                seeds=seed_set,
                 initial_state_dict=prev_state_dict
             )
 
             contact_network = deepcopy(initial_contact)
 
-            cur_informed = set(simulation_results[8][-1])
             sirs_dynamics = simulation_results[4]
             prev_state_dict = sirs_dynamics[-1]
 
@@ -422,8 +442,6 @@ def degree_based_selection():
                     t_cur
                 )
                 cost_lst.append(cost)
-            else:
-                cost_lst.append(cost_lst[-1] if cost_lst else 0)
 
         winner_sets.append(seed_set)
         all_cost_curves.append(cost_lst)
@@ -498,8 +516,6 @@ def no_quarantine_baseline_runs():
                 alpha_w = 1 / g if g > 0 else 1.0
                 cost = alpha_w * np.sum(newly_infected_per_sim)
                 cost_lst.append(cost)
-            else:
-                cost_lst.append(cost_lst[-1] if cost_lst else 0)
 
         all_cost_curves.append(cost_lst)
         all_edge_curves.append(edge_counts)

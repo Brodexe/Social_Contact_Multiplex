@@ -464,7 +464,7 @@ def compare_infections_adherence(adherence, plot_data=False):
     return (x, mean_full, std_full), (x, mean_partial, std_partial)
 
 def r_quarantine(plot_data=False):
-    num_trials = 10
+    num_trials = 25
 
     T_runs = []
     Y_runs_r_quarantine = []

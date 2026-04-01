@@ -116,6 +116,15 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
     if social_network is None:
         social_network = correlated_graphs.create_social_graph(contact_network)[0]
 
+    # 2 modes: T==0 => no information spread
+    #          T==1 => information spread for 1 step
+    # Both involve 1 step
+    T_param = T
+    if T_param == 0:
+        T_param = 0
+        # T must be >= 1
+        T = 1
+
     n = len(contact_network.nodes())
     N = n - 1
     P = n - N
@@ -147,6 +156,10 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
     # Handle user-provided initial_state_dict
     if initial_state_dict is not None:
         state = initial_state_dict.copy()  # Use provided dictionary directly
+    elif isinstance(init, (list, set)):
+        # Treat init as a collection of initially infected nodes
+        infected_nodes = set(init)
+        state = {u: 1 if u in infected_nodes else 0 for u in range(n)}
     else:
         # Fall back to original random initialization using 'init' probability
         state = {u: np.random.choice(a=[1, 0], size=1, p=[init, 1 - init])[0]
@@ -247,7 +260,7 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
                 nx.set_node_attributes(social_network, {node: {'Informed?': 'Informed'}})
 
         #  Influence spreads
-        elif t > begin_q:
+        elif (t > begin_q) or (T_param == 1):
             # Can only spread if there are some seed nodes
             if initial_informed_lst != []:
                 if lt_threshold == None:  # If we are using I.C., that is
@@ -333,7 +346,6 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
             if q is True:
                 if is_informed and (1 <= quarantine_statuses[u] <= d[u]):
                     quarantine_statuses[u] += 1
-
                     # If the quarantine time has been reached, end quarantine and restore edges
                     if quarantine_statuses[u] >= d[u]:
                         quarantine_statuses[u] = 0   # Reset quarantine counter
