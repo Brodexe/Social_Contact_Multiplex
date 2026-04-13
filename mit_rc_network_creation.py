@@ -3,6 +3,9 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from datetime import timedelta
 import numpy as np
+import py4cytoscape as p4c
+
+# NOTE: normalize weights
 
 # Create weighted, undirected social network from Reality Commons Social Evolution dataset
 # Weights will represent cascade probabilities
@@ -218,3 +221,71 @@ for i, G in enumerate(per_bin_networks):
 nx.write_gml(G_unified, "capstone_proj_data/rc_contact_unified_all_bins.gml")
 print(f"Saved unified network → rc_contact_unified_all_bins.gml "
       f"({G_unified.number_of_nodes()} nodes, {G_unified.number_of_edges()} edges)")
+
+# ==============================================================================
+#  WEIGHTED CONTACT NETWORKS (one per bin)
+#  - For bin i: ground truth edges = edges present in bin i
+#  - Weight of each edge = fraction of the OTHER bins that contain that edge
+#  - Saved as rc_weighted_contact_bin{i+1}.gml
+# ==============================================================================
+
+num_per_bins = len(per_bin_networks)
+
+for i, G_truth in enumerate(per_bin_networks):
+    W = nx.Graph()
+    W.graph['bin_start']   = G_truth.graph['bin_start']
+    W.graph['bin_end']     = G_truth.graph['bin_end']
+    W.graph['bin_index']   = G_truth.graph['bin_index']
+    W.graph['description'] = G_truth.graph['description']
+    W.add_nodes_from(G_truth.nodes(data=True))
+
+    other_bins = [G for j, G in enumerate(per_bin_networks) if j != i]
+    n_other = len(other_bins)
+
+    for u, v in G_truth.edges():
+        key = (min(u, v), max(u, v))
+        count = sum(1 for G_other in other_bins if G_other.has_edge(*key))
+        weight = count / n_other if n_other > 0 else 0.0
+        W.add_edge(u, v, weight=weight)
+
+    fname = f"capstone_proj_data/rc_weighted_contact_bin{i+1}.gml"
+    nx.write_gml(W, fname)
+    print(f"Saved {fname}  ({W.number_of_nodes()} nodes, {W.number_of_edges()} edges)")
+
+print(f"\nCreated {num_per_bins} weighted contact networks.")
+
+# ==============================================================================
+#  PUSH PER-BIN CONTACT NETWORKS TO CYTOSCAPE VIA py4cytoscape
+# ==============================================================================
+
+print("\nConnecting to Cytoscape...")
+p4c.cytoscape_ping()
+
+for i, G in enumerate(per_bin_networks):
+    network_name = f"RC Contact Network – Bin {i + 1} ({G.graph['description']})"
+    print(f"Pushing: {network_name}  ({G.number_of_nodes()} nodes, {G.number_of_edges()} edges)")
+    p4c.create_network_from_networkx(
+        G,
+        title=network_name,
+        collection="RC Contact Networks"
+    )
+
+print(f"\nPushed {len(per_bin_networks)} contact networks to Cytoscape.")
+
+# Push weighted contact networks
+weighted_networks = []
+for i in range(num_per_bins):
+    fname = f"capstone_proj_data/rc_weighted_contact_bin{i+1}.gml"
+    W = nx.read_gml(fname)
+    weighted_networks.append(W)
+
+for i, W in enumerate(weighted_networks):
+    network_name = f"RC Weighted Contact Network – Bin {i + 1} ({W.graph['description']})"
+    print(f"Pushing: {network_name}  ({W.number_of_nodes()} nodes, {W.number_of_edges()} edges)")
+    p4c.create_network_from_networkx(
+        W,
+        title=network_name,
+        collection="RC Weighted Contact Networks"
+    )
+
+print(f"\nPushed {num_per_bins} weighted contact networks to Cytoscape.")

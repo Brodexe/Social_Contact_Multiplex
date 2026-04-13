@@ -344,11 +344,11 @@ graph [
     target 68
   ]
   edge [
-    source 34
+    source 31
     target 68
   ]
   edge [
-    source 68
-    target 75
+    source 34
+    target 68
   ]
 ]

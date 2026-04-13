@@ -344,15 +344,15 @@ graph [
     target 68
   ]
   edge [
-    source 4
-    target 68
-  ]
-  edge [
     source 8
     target 68
   ]
   edge [
     source 14
+    target 68
+  ]
+  edge [
+    source 17
     target 68
   ]
   edge [
@@ -372,8 +372,24 @@ graph [
     target 68
   ]
   edge [
+    source 63
+    target 68
+  ]
+  edge [
     source 64
     target 68
+  ]
+  edge [
+    source 66
+    target 68
+  ]
+  edge [
+    source 67
+    target 68
+  ]
+  edge [
+    source 68
+    target 75
   ]
   edge [
     source 68

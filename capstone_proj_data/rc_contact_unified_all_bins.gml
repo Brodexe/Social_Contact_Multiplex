@@ -385,6 +385,7 @@ graph [
     target 35
     contact_bin_7 1
     contact_bin_8 1
+    contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -397,60 +398,35 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 0
+    target 69
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 6
-  ]
-  edge [
-    source 0
-    target 69
-    contact_bin_8 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 0
-    target 13
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
   ]
   edge [
     source 0
@@ -478,78 +454,6 @@ graph [
   ]
   edge [
     source 0
-    target 55
-    contact_bin_8 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 0
-    target 70
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_11 0
-    contact_bin_18 0
-    total_realized_contacts 9
-  ]
-  edge [
-    source 0
-    target 4
-    contact_bin_8 1
-    contact_bin_10 1
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 0
     target 47
     contact_bin_8 1
     contact_bin_0 0
@@ -574,8 +478,13 @@ graph [
   ]
   edge [
     source 0
-    target 5
+    target 13
     contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
@@ -586,20 +495,17 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
     contact_bin_13 0
-    contact_bin_14 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 8
   ]
   edge [
     source 0
-    target 7
+    target 70
     contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -613,16 +519,14 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
     contact_bin_11 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 8
   ]
   edge [
     source 0
-    target 65
+    target 55
     contact_bin_8 1
     contact_bin_0 0
     contact_bin_1 0
@@ -646,13 +550,9 @@ graph [
   ]
   edge [
     source 0
-    target 19
+    target 4
     contact_bin_8 1
-    contact_bin_13 1
-    contact_bin_14 1
     contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -665,8 +565,84 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 2
+  ]
+  edge [
+    source 0
+    target 65
+    contact_bin_8 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 0
+    target 5
+    contact_bin_8 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 0
+    target 66
+    contact_bin_8 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
   ]
   edge [
     source 0
@@ -694,30 +670,6 @@ graph [
   ]
   edge [
     source 0
-    target 33
-    contact_bin_8 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 0
     target 60
     contact_bin_8 1
     contact_bin_9 1
@@ -742,10 +694,8 @@ graph [
   ]
   edge [
     source 0
-    target 63
+    target 41
     contact_bin_8 1
-    contact_bin_10 1
-    contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
@@ -758,35 +708,13 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_9 0
+    contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
+    contact_bin_13 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 0
-    target 30
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_18 0
-    total_realized_contacts 9
+    total_realized_contacts 4
   ]
   edge [
     source 0
@@ -814,32 +742,10 @@ graph [
   ]
   edge [
     source 0
-    target 43
+    target 30
     contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 0
-    target 10
-    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -855,34 +761,8 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
     contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 0
-    target 21
-    contact_bin_9 1
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 9
   ]
   edge [
     source 0
@@ -934,6 +814,54 @@ graph [
   ]
   edge [
     source 0
+    target 10
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 0
+    target 19
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 0
     target 15
     contact_bin_9 1
     contact_bin_10 1
@@ -958,8 +886,34 @@ graph [
   ]
   edge [
     source 0
+    target 63
+    contact_bin_10 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 0
     target 3
     contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
@@ -975,10 +929,8 @@ graph [
     contact_bin_8 0
     contact_bin_9 0
     contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
     contact_bin_18 0
-    total_realized_contacts 5
+    total_realized_contacts 7
   ]
   edge [
     source 0
@@ -1003,6 +955,30 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 6
+  ]
+  edge [
+    source 0
+    target 24
+    contact_bin_11 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
   ]
   edge [
     source 0
@@ -1031,10 +1007,10 @@ graph [
   edge [
     source 0
     target 42
-    contact_bin_12 1
+    contact_bin_11 1
+    contact_bin_13 1
     contact_bin_15 1
     contact_bin_16 1
-    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -1046,11 +1022,35 @@ graph [
     contact_bin_8 0
     contact_bin_9 0
     contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_13 0
+    contact_bin_12 0
     contact_bin_14 0
+    contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 4
+  ]
+  edge [
+    source 0
+    target 43
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
   ]
   edge [
     source 0
@@ -1078,32 +1078,9 @@ graph [
   ]
   edge [
     source 0
-    target 29
-    contact_bin_12 1
-    contact_bin_14 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 0
-    target 66
+    target 78
     contact_bin_13 1
+    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -1118,63 +1095,15 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_14 0
-    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 2
   ]
   edge [
     source 0
-    target 71
+    target 7
     contact_bin_13 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 0
-    target 67
-    contact_bin_14 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 0
-    target 41
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
@@ -1191,15 +1120,15 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_13 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 4
   ]
   edge [
     source 0
-    target 54
+    target 29
     contact_bin_14 1
+    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -1214,39 +1143,38 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
-    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 2
+  ]
+  edge [
+    source 0
+    target 33
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
   ]
   edge [
     source 0
     target 11
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 0
-    target 78
     contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
@@ -1271,6 +1199,54 @@ graph [
   edge [
     source 0
     target 74
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 0
+    target 59
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 0
+    target 71
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -1317,10 +1293,13 @@ graph [
     total_realized_contacts 1
   ]
   edge [
-    source 0
-    target 59
+    source 1
+    target 57
+    contact_bin_0 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
     contact_bin_16 1
-    contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
     contact_bin_3 0
@@ -1333,33 +1312,6 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 1
-    target 67
-    contact_bin_2 1
-    contact_bin_9 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 5
@@ -1368,6 +1320,8 @@ graph [
     source 1
     target 4
     contact_bin_8 1
+    contact_bin_10 1
+    contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -1381,17 +1335,15 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_9 0
-    contact_bin_10 0
     contact_bin_11 0
-    contact_bin_12 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 5
+    total_realized_contacts 7
   ]
   edge [
     source 1
     target 19
-    contact_bin_9 1
+    contact_bin_8 1
     contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
@@ -1406,11 +1358,35 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_8 0
+    contact_bin_9 0
     contact_bin_10 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 7
+  ]
+  edge [
+    source 1
+    target 7
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
   ]
   edge [
     source 1
@@ -1438,9 +1414,10 @@ graph [
   ]
   edge [
     source 1
-    target 3
+    target 17
     contact_bin_9 1
-    contact_bin_14 1
+    contact_bin_11 1
+    contact_bin_12 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -1451,19 +1428,19 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
     contact_bin_13 0
+    contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 3
   ]
   edge [
     source 1
-    target 46
+    target 58
     contact_bin_9 1
+    contact_bin_10 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -1477,9 +1454,32 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_10 0
     contact_bin_11 0
     contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 1
+    target 43
+    contact_bin_9 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 5
@@ -1510,10 +1510,34 @@ graph [
   ]
   edge [
     source 1
+    target 46
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 1
     target 54
     contact_bin_9 1
     contact_bin_10 1
-    contact_bin_11 1
+    contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_0 0
@@ -1525,7 +1549,7 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_12 0
+    contact_bin_11 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
@@ -1536,7 +1560,6 @@ graph [
     source 1
     target 21
     contact_bin_9 1
-    contact_bin_10 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -1546,6 +1569,7 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
@@ -1554,31 +1578,7 @@ graph [
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 1
-    target 7
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 1
   ]
   edge [
     source 1
@@ -1606,7 +1606,7 @@ graph [
   ]
   edge [
     source 1
-    target 30
+    target 45
     contact_bin_9 1
     contact_bin_12 1
     contact_bin_13 1
@@ -1633,33 +1633,7 @@ graph [
     target 14
     contact_bin_9 1
     contact_bin_12 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 1
-    target 45
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
     contact_bin_14 1
-    contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -1672,9 +1646,11 @@ graph [
     contact_bin_8 0
     contact_bin_10 0
     contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 4
   ]
   edge [
     source 1
@@ -1702,13 +1678,11 @@ graph [
   ]
   edge [
     source 1
-    target 58
+    target 71
     contact_bin_10 1
-    contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
-    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -1720,57 +1694,11 @@ graph [
     contact_bin_8 0
     contact_bin_9 0
     contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 1
-    target 17
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_13 0
+    contact_bin_12 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 4
-  ]
-  edge [
-    source 1
-    target 69
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
   ]
   edge [
     source 1
@@ -1798,7 +1726,7 @@ graph [
   ]
   edge [
     source 1
-    target 43
+    target 69
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -1822,7 +1750,7 @@ graph [
   ]
   edge [
     source 1
-    target 78
+    target 30
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -1870,7 +1798,7 @@ graph [
   ]
   edge [
     source 1
-    target 57
+    target 74
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -1894,55 +1822,79 @@ graph [
   ]
   edge [
     source 1
+    target 78
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 1
+    target 67
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 1
+    target 31
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 1
     target 51
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 1
-    target 71
-    contact_bin_14 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 1
-    target 34
     contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
@@ -1966,7 +1918,7 @@ graph [
   ]
   edge [
     source 1
-    target 74
+    target 20
     contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
@@ -1987,87 +1939,61 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 2
+  ]
+  edge [
+    source 1
+    target 66
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 1
+    target 3
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
   ]
   edge [
     source 3
     target 68
     contact_bin_4 1
     contact_bin_8 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 3
-    target 46
-    contact_bin_8 1
-    contact_bin_13 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 3
-    target 55
-    contact_bin_8 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 3
-    target 70
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
     contact_bin_11 1
-    contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -2076,13 +2002,15 @@ graph [
     contact_bin_1 0
     contact_bin_2 0
     contact_bin_3 0
-    contact_bin_4 0
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_12 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 9
+    total_realized_contacts 7
   ]
   edge [
     source 3
@@ -2092,6 +2020,7 @@ graph [
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
+    contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -2103,10 +2032,9 @@ graph [
     contact_bin_7 0
     contact_bin_9 0
     contact_bin_11 0
-    contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 7
   ]
   edge [
     source 3
@@ -2158,9 +2086,32 @@ graph [
   ]
   edge [
     source 3
-    target 47
+    target 46
     contact_bin_8 1
-    contact_bin_15 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 3
+    target 37
+    contact_bin_8 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -2175,38 +2126,15 @@ graph [
     contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
+    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 1
   ]
   edge [
     source 3
-    target 43
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 3
-    target 28
+    target 55
     contact_bin_8 1
     contact_bin_14 1
     contact_bin_15 1
@@ -2224,6 +2152,30 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 3
+    target 58
+    contact_bin_8 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 4
@@ -2278,6 +2230,30 @@ graph [
   ]
   edge [
     source 3
+    target 70
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 8
+  ]
+  edge [
+    source 3
     target 45
     contact_bin_8 1
     contact_bin_9 1
@@ -2302,32 +2278,15 @@ graph [
   ]
   edge [
     source 3
-    target 22
+    target 43
     contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 3
-    target 41
-    contact_bin_8 1
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -2337,13 +2296,30 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_9 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 9
+  ]
+  edge [
+    source 3
+    target 5
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
+    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 2
@@ -2374,10 +2350,9 @@ graph [
   ]
   edge [
     source 3
-    target 17
+    target 60
     contact_bin_9 1
     contact_bin_10 1
-    contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -2392,22 +2367,19 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_11 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 8
+    total_realized_contacts 7
   ]
   edge [
     source 3
-    target 63
+    target 71
     contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
-    contact_bin_18 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -2417,7 +2389,35 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
     contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 3
+    target 6
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_18 0
     total_realized_contacts 9
   ]
   edge [
@@ -2470,13 +2470,9 @@ graph [
   ]
   edge [
     source 3
-    target 14
+    target 59
     contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_12 1
     contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -2488,16 +2484,18 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 3
   ]
   edge [
     source 3
-    target 67
+    target 24
     contact_bin_9 1
-    contact_bin_14 1
-    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -2511,65 +2509,18 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 3
-    target 6
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_18 0
-    total_realized_contacts 9
-  ]
-  edge [
-    source 3
-    target 5
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
     contact_bin_14 0
+    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 1
   ]
   edge [
     source 3
     target 10
     contact_bin_9 1
     contact_bin_10 1
-    contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -2585,8 +2536,9 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_11 0
     contact_bin_18 0
-    total_realized_contacts 9
+    total_realized_contacts 8
   ]
   edge [
     source 3
@@ -2614,6 +2566,30 @@ graph [
   ]
   edge [
     source 3
+    target 17
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 8
+  ]
+  edge [
+    source 3
     target 23
     contact_bin_9 1
     contact_bin_10 1
@@ -2638,7 +2614,7 @@ graph [
   ]
   edge [
     source 3
-    target 60
+    target 63
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_12 1
@@ -2646,6 +2622,8 @@ graph [
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_18 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -2656,9 +2634,7 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 9
   ]
   edge [
     source 3
@@ -2686,33 +2662,8 @@ graph [
   ]
   edge [
     source 3
-    target 58
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_15 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 3
     target 57
     contact_bin_10 1
-    contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -2728,9 +2679,10 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_9 0
+    contact_bin_11 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 6
   ]
   edge [
     source 3
@@ -2760,7 +2712,6 @@ graph [
     source 3
     target 69
     contact_bin_10 1
-    contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -2776,33 +2727,10 @@ graph [
     contact_bin_8 0
     contact_bin_9 0
     contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 3
-    target 24
-    contact_bin_11 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
     contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 5
   ]
   edge [
     source 3
@@ -2830,11 +2758,11 @@ graph [
   ]
   edge [
     source 3
-    target 71
-    contact_bin_11 1
+    target 14
+    contact_bin_12 1
+    contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
-    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -2846,16 +2774,15 @@ graph [
     contact_bin_8 0
     contact_bin_9 0
     contact_bin_10 0
-    contact_bin_12 0
-    contact_bin_13 0
+    contact_bin_11 0
+    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 4
   ]
   edge [
     source 3
-    target 7
-    contact_bin_11 1
+    target 31
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -2872,9 +2799,10 @@ graph [
     contact_bin_8 0
     contact_bin_9 0
     contact_bin_10 0
+    contact_bin_11 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 5
   ]
   edge [
     source 3
@@ -2902,7 +2830,7 @@ graph [
   ]
   edge [
     source 3
-    target 29
+    target 7
     contact_bin_12 1
     contact_bin_15 1
     contact_bin_16 1
@@ -2923,102 +2851,6 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 3
-  ]
-  edge [
-    source 3
-    target 59
-    contact_bin_13 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 3
-    target 61
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 3
-    target 44
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 3
-    target 13
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
   ]
   edge [
     source 3
@@ -3046,6 +2878,54 @@ graph [
   ]
   edge [
     source 3
+    target 61
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 3
+    target 21
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_15 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 3
     target 78
     contact_bin_13 1
     contact_bin_14 1
@@ -3070,7 +2950,31 @@ graph [
   ]
   edge [
     source 3
-    target 31
+    target 34
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 3
+    target 67
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -3091,6 +2995,54 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 4
+  ]
+  edge [
+    source 3
+    target 44
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 3
+    target 22
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
   ]
   edge [
     source 3
@@ -3118,7 +3070,7 @@ graph [
   ]
   edge [
     source 3
-    target 34
+    target 66
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_0 0
@@ -3142,7 +3094,7 @@ graph [
   ]
   edge [
     source 3
-    target 66
+    target 28
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
@@ -3166,8 +3118,9 @@ graph [
   ]
   edge [
     source 3
-    target 54
-    contact_bin_14 1
+    target 13
+    contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -3182,11 +3135,10 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
+    contact_bin_14 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 2
   ]
   edge [
     source 3
@@ -3214,7 +3166,31 @@ graph [
   ]
   edge [
     source 3
-    target 19
+    target 47
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 3
+    target 29
     contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
@@ -3238,7 +3214,31 @@ graph [
   ]
   edge [
     source 3
-    target 21
+    target 19
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 3
+    target 41
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -3262,35 +3262,13 @@ graph [
   ]
   edge [
     source 4
-    target 5
+    target 13
     contact_bin_1 1
     contact_bin_8 1
     contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 4
-    target 7
-    contact_bin_1 1
-    contact_bin_9 1
     contact_bin_10 1
     contact_bin_12 1
+    contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
@@ -3301,20 +3279,68 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_8 0
     contact_bin_11 0
-    contact_bin_13 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 9
   ]
   edge [
     source 4
-    target 18
+    target 41
     contact_bin_1 1
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 9
+  ]
+  edge [
+    source 4
+    target 60
+    contact_bin_1 1
+    contact_bin_8 1
+    contact_bin_10 1
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 4
+    target 65
+    contact_bin_1 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_2 0
     contact_bin_3 0
@@ -3323,38 +3349,12 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
     contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_16 0
+    contact_bin_14 0
+    contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 4
-    target 46
-    contact_bin_1 1
-    contact_bin_2 1
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_11 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 9
+    total_realized_contacts 6
   ]
   edge [
     source 4
@@ -3390,28 +3390,6 @@ graph [
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 4
-    target 28
-    contact_bin_2 1
-    contact_bin_9 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -3420,13 +3398,35 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 8
+  ]
+  edge [
+    source 4
+    target 46
+    contact_bin_2 1
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_11 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 8
   ]
   edge [
     source 4
@@ -3454,126 +3454,6 @@ graph [
   ]
   edge [
     source 4
-    target 69
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_11 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 4
-    target 60
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 4
-    target 68
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 4
-    target 26
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 4
-    target 13
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_11 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 4
     target 29
     contact_bin_8 1
     contact_bin_9 1
@@ -3595,78 +3475,6 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 8
-  ]
-  edge [
-    source 4
-    target 43
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 4
-    target 41
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 4
-    target 75
-    contact_bin_8 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
   ]
   edge [
     source 4
@@ -3694,10 +3502,131 @@ graph [
   ]
   edge [
     source 4
+    target 56
+    contact_bin_8 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 4
+    target 61
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_11 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 4
+    target 66
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 4
+    target 7
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 4
+    target 5
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 4
     target 17
     contact_bin_8 1
     contact_bin_13 1
-    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -3710,19 +3639,18 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_15 0
-    contact_bin_16 0
+    contact_bin_14 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 4
   ]
   edge [
     source 4
-    target 48
+    target 18
     contact_bin_8 1
-    contact_bin_9 1
     contact_bin_13 1
     contact_bin_14 1
+    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -3731,10 +3659,10 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
+    contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
@@ -3742,7 +3670,79 @@ graph [
   ]
   edge [
     source 4
+    target 64
+    contact_bin_8 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 4
     target 47
+    contact_bin_8 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 4
+    target 75
+    contact_bin_8 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 4
+    target 48
     contact_bin_8 1
     contact_bin_13 1
     contact_bin_0 0
@@ -3886,7 +3886,7 @@ graph [
   ]
   edge [
     source 4
-    target 23
+    target 26
     contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
@@ -3910,36 +3910,15 @@ graph [
   ]
   edge [
     source 4
-    target 42
+    target 22
     contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 4
-    target 21
-    contact_bin_8 1
-    contact_bin_9 1
     contact_bin_12 1
     contact_bin_13 1
+    contact_bin_14 1
     contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -3948,13 +3927,10 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_10 0
     contact_bin_11 0
-    contact_bin_14 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 5
+    total_realized_contacts 8
   ]
   edge [
     source 4
@@ -3982,13 +3958,83 @@ graph [
   ]
   edge [
     source 4
-    target 61
+    target 42
     contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_12 1
+    contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 8
+  ]
+  edge [
+    source 4
+    target 23
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 4
+    target 43
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 8
+  ]
+  edge [
+    source 4
+    target 21
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -3999,15 +4045,19 @@ graph [
     contact_bin_7 0
     contact_bin_11 0
     contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 4
   ]
   edge [
     source 4
-    target 56
+    target 69
     contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -4021,65 +4071,16 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
     contact_bin_11 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 4
-    target 66
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 8
   ]
   edge [
     source 4
     target 71
     contact_bin_8 1
     contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 4
-    target 22
-    contact_bin_9 1
     contact_bin_10 1
     contact_bin_12 1
     contact_bin_13 1
@@ -4094,35 +4095,10 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_8 0
     contact_bin_11 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 4
-    target 67
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 8
   ]
   edge [
     source 4
@@ -4150,59 +4126,13 @@ graph [
   ]
   edge [
     source 4
-    target 15
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 4
-    target 10
-    contact_bin_9 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 4
-    target 65
+    target 67
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_12 1
     contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -4214,11 +4144,81 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_11 0
-    contact_bin_14 0
-    contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 5
+    total_realized_contacts 7
+  ]
+  edge [
+    source 4
+    target 15
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_13 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 4
+    target 10
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 4
+    target 28
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
   ]
   edge [
     source 4
@@ -4246,6 +4246,30 @@ graph [
   ]
   edge [
     source 4
+    target 68
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 4
     target 54
     contact_bin_9 1
     contact_bin_10 1
@@ -4270,9 +4294,10 @@ graph [
   ]
   edge [
     source 4
-    target 31
+    target 34
     contact_bin_9 1
     contact_bin_13 1
+    contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -4285,16 +4310,39 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 4
+    target 31
+    contact_bin_9 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 1
   ]
   edge [
     source 4
-    target 34
+    target 30
     contact_bin_10 1
     contact_bin_13 1
     contact_bin_15 1
@@ -4318,33 +4366,8 @@ graph [
   ]
   edge [
     source 4
-    target 30
-    contact_bin_10 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 4
     target 51
     contact_bin_10 1
-    contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -4360,13 +4383,39 @@ graph [
     contact_bin_8 0
     contact_bin_9 0
     contact_bin_11 0
+    contact_bin_12 0
     contact_bin_16 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 5
+  ]
+  edge [
+    source 4
+    target 24
+    contact_bin_10 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
   ]
   edge [
     source 4
     target 14
+    contact_bin_10 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -4380,13 +4429,12 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_9 0
-    contact_bin_10 0
     contact_bin_11 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 4
   ]
   edge [
     source 4
@@ -4464,7 +4512,6 @@ graph [
     source 4
     target 11
     contact_bin_13 1
-    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -4479,14 +4526,16 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_14 0
+    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 1
   ]
   edge [
     source 4
     target 6
+    contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -4503,10 +4552,33 @@ graph [
     contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
-    contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 2
+  ]
+  edge [
+    source 5
+    target 34
+    contact_bin_2 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
   ]
   edge [
     source 5
@@ -4518,6 +4590,7 @@ graph [
     contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
+    contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_3 0
@@ -4525,12 +4598,11 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 8
   ]
   edge [
     source 5
@@ -4544,7 +4616,6 @@ graph [
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
-    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -4552,9 +4623,10 @@ graph [
     contact_bin_4 0
     contact_bin_5 0
     contact_bin_6 0
+    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 10
+    total_realized_contacts 9
   ]
   edge [
     source 5
@@ -4562,80 +4634,6 @@ graph [
     contact_bin_8 1
     contact_bin_13 1
     contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 5
-    target 18
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 5
-    target 64
-    contact_bin_8 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 5
-    target 19
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -4645,60 +4643,14 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 5
-    target 61
-    contact_bin_8 1
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
     contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_14 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 5
-    target 17
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 4
   ]
   edge [
     source 5
@@ -4726,11 +4678,61 @@ graph [
   ]
   edge [
     source 5
-    target 71
+    target 61
+    contact_bin_8 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 5
+    target 19
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 5
+    target 18
     contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_0 0
@@ -4741,8 +4743,102 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 8
+  ]
+  edge [
+    source 5
+    target 13
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 5
+    target 70
+    contact_bin_8 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_14 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 5
+    target 71
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
     contact_bin_12 0
     contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 5
+    target 17
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_11 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
@@ -4774,34 +4870,9 @@ graph [
   ]
   edge [
     source 5
-    target 29
+    target 47
     contact_bin_8 1
     contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 5
-    target 50
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_12 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -4812,13 +4883,14 @@ graph [
     contact_bin_7 0
     contact_bin_10 0
     contact_bin_11 0
+    contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 2
   ]
   edge [
     source 5
@@ -4846,14 +4918,10 @@ graph [
   ]
   edge [
     source 5
-    target 70
+    target 50
     contact_bin_8 1
-    contact_bin_11 1
+    contact_bin_9 1
     contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -4862,15 +4930,44 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_9 0
     contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_13 0
     contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 3
+  ]
+  edge [
+    source 5
+    target 29
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
   ]
   edge [
     source 5
     target 43
+    contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_11 1
@@ -4887,10 +4984,57 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_8 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 8
+    total_realized_contacts 9
+  ]
+  edge [
+    source 5
+    target 67
+    contact_bin_9 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 5
+    target 20
+    contact_bin_9 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
   ]
   edge [
     source 5
@@ -4918,33 +5062,9 @@ graph [
   ]
   edge [
     source 5
-    target 13
+    target 26
     contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 5
-    target 67
-    contact_bin_9 1
-    contact_bin_15 1
+    contact_bin_13 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -4957,36 +5077,12 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_13 0
     contact_bin_14 0
+    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 2
-  ]
-  edge [
-    source 5
-    target 47
-    contact_bin_9 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
   ]
   edge [
     source 5
@@ -5014,55 +5110,31 @@ graph [
   ]
   edge [
     source 5
-    target 30
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 5
-    target 34
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 5
     target 78
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 5
+    target 30
     contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
@@ -5090,7 +5162,6 @@ graph [
     contact_bin_9 1
     contact_bin_11 1
     contact_bin_13 1
-    contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -5102,11 +5173,12 @@ graph [
     contact_bin_8 0
     contact_bin_10 0
     contact_bin_12 0
+    contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 3
   ]
   edge [
     source 6
@@ -5134,6 +5206,30 @@ graph [
   ]
   edge [
     source 6
+    target 51
+    contact_bin_9 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 6
     target 43
     contact_bin_10 1
     contact_bin_12 1
@@ -5158,14 +5254,10 @@ graph [
   ]
   edge [
     source 6
-    target 51
-    contact_bin_11 1
-    contact_bin_12 1
+    target 63
+    contact_bin_10 1
     contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
     contact_bin_16 1
-    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -5176,37 +5268,17 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_9 0
-    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 3
   ]
   edge [
     source 6
     target 56
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 6
-    target 45
     contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
@@ -5278,7 +5350,7 @@ graph [
   ]
   edge [
     source 6
-    target 70
+    target 45
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -5326,32 +5398,10 @@ graph [
   ]
   edge [
     source 6
-    target 60
+    target 70
     contact_bin_12 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 6
-    target 26
     contact_bin_13 1
+    contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
@@ -5366,16 +5416,16 @@ graph [
     contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 5
   ]
   edge [
     source 6
-    target 63
+    target 60
+    contact_bin_12 1
     contact_bin_13 1
+    contact_bin_14 1
     contact_bin_15 1
     contact_bin_17 1
     contact_bin_0 0
@@ -5390,59 +5440,9 @@ graph [
     contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
     contact_bin_16 0
     contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 6
-    target 69
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 6
-    target 42
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 5
   ]
   edge [
     source 6
@@ -5470,6 +5470,102 @@ graph [
   ]
   edge [
     source 6
+    target 26
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 6
+    target 67
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 6
+    target 31
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 6
+    target 42
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 6
     target 35
     contact_bin_13 1
     contact_bin_14 1
@@ -5494,10 +5590,9 @@ graph [
   ]
   edge [
     source 6
-    target 78
+    target 41
     contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -5511,10 +5606,11 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_16 0
+    contact_bin_14 0
+    contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 2
   ]
   edge [
     source 6
@@ -5542,9 +5638,8 @@ graph [
   ]
   edge [
     source 6
-    target 31
+    target 58
     contact_bin_14 1
-    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -5559,10 +5654,11 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
+    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 1
   ]
   edge [
     source 6
@@ -5614,7 +5710,7 @@ graph [
   ]
   edge [
     source 6
-    target 74
+    target 78
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_0 0
@@ -5635,6 +5731,54 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 2
+  ]
+  edge [
+    source 6
+    target 61
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 6
+    target 69
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
   ]
   edge [
     source 6
@@ -5662,8 +5806,9 @@ graph [
   ]
   edge [
     source 6
-    target 66
+    target 74
     contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -5679,10 +5824,9 @@ graph [
     contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 2
   ]
   edge [
     source 6
@@ -5710,30 +5854,6 @@ graph [
   ]
   edge [
     source 6
-    target 61
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 6
     target 28
     contact_bin_15 1
     contact_bin_0 0
@@ -5782,8 +5902,8 @@ graph [
   ]
   edge [
     source 6
-    target 41
-    contact_bin_16 1
+    target 68
+    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -5799,14 +5919,14 @@ graph [
     contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
-    contact_bin_15 0
+    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 1
   ]
   edge [
     source 6
-    target 19
+    target 7
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -5853,11 +5973,12 @@ graph [
     total_realized_contacts 1
   ]
   edge [
-    source 7
-    target 55
-    contact_bin_2 1
+    source 6
+    target 19
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
+    contact_bin_2 0
     contact_bin_3 0
     contact_bin_4 0
     contact_bin_5 0
@@ -5871,15 +5992,39 @@ graph [
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 1
   ]
   edge [
     source 7
+    target 27
+    contact_bin_2 1
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 7
     target 46
     contact_bin_2 1
+    contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_11 1
@@ -5893,19 +6038,17 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_8 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 8
   ]
   edge [
     source 7
-    target 35
-    contact_bin_7 1
-    contact_bin_12 1
-    contact_bin_15 1
+    target 66
+    contact_bin_8 1
+    contact_bin_10 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -5913,16 +6056,41 @@ graph [
     contact_bin_4 0
     contact_bin_5 0
     contact_bin_6 0
-    contact_bin_8 0
+    contact_bin_7 0
     contact_bin_9 0
-    contact_bin_10 0
     contact_bin_11 0
+    contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
+    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 2
+  ]
+  edge [
+    source 7
+    target 41
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 8
   ]
   edge [
     source 7
@@ -5950,6 +6118,102 @@ graph [
   ]
   edge [
     source 7
+    target 60
+    contact_bin_8 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 7
+    target 28
+    contact_bin_8 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 7
+    target 18
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 7
+    target 64
+    contact_bin_8 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 7
     target 19
     contact_bin_8 1
     contact_bin_9 1
@@ -5971,222 +6235,6 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 8
-  ]
-  edge [
-    source 7
-    target 28
-    contact_bin_8 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 7
-    target 27
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 7
-    target 29
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 7
-    target 56
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 7
-    target 18
-    contact_bin_8 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 7
-    target 43
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 7
-    target 60
-    contact_bin_8 1
-    contact_bin_12 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 7
-    target 41
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 7
-    target 26
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 9
   ]
   edge [
     source 7
@@ -6262,11 +6310,15 @@ graph [
   ]
   edge [
     source 7
-    target 42
+    target 26
     contact_bin_9 1
     contact_bin_10 1
+    contact_bin_11 1
     contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
     contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -6276,17 +6328,13 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 8
   ]
   edge [
     source 7
-    target 20
+    target 69
     contact_bin_9 1
     contact_bin_12 1
     contact_bin_13 1
@@ -6314,6 +6362,7 @@ graph [
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_11 1
+    contact_bin_12 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -6323,38 +6372,13 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 7
-    target 69
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 4
   ]
   edge [
     source 7
@@ -6409,6 +6433,8 @@ graph [
     target 21
     contact_bin_9 1
     contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -6420,20 +6446,42 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_10 0
-    contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
-    contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 5
+  ]
+  edge [
+    source 7
+    target 29
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
   ]
   edge [
     source 7
     target 65
     contact_bin_9 1
-    contact_bin_10 1
     contact_bin_11 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -6443,62 +6491,62 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_10 0
     contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 7
+    target 43
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 7
+    target 22
+    contact_bin_9 1
+    contact_bin_11 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_12 0
+    contact_bin_13 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 7
-    target 10
-    contact_bin_9 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 7
-    target 61
-    contact_bin_9 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 4
   ]
   edge [
     source 7
@@ -6526,7 +6574,31 @@ graph [
   ]
   edge [
     source 7
-    target 71
+    target 17
+    contact_bin_9 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 7
+    target 47
     contact_bin_9 1
     contact_bin_0 0
     contact_bin_1 0
@@ -6547,6 +6619,102 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 1
+  ]
+  edge [
+    source 7
+    target 45
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 7
+    target 42
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 7
+    target 20
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 7
+    target 35
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
   ]
   edge [
     source 7
@@ -6574,30 +6742,6 @@ graph [
   ]
   edge [
     source 7
-    target 22
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_13 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 7
     target 30
     contact_bin_11 1
     contact_bin_12 1
@@ -6622,7 +6766,7 @@ graph [
   ]
   edge [
     source 7
-    target 45
+    target 34
     contact_bin_12 1
     contact_bin_15 1
     contact_bin_0 0
@@ -6643,6 +6787,54 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 2
+  ]
+  edge [
+    source 7
+    target 10
+    contact_bin_12 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 7
+    target 56
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
   ]
   edge [
     source 7
@@ -6667,30 +6859,6 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 4
-  ]
-  edge [
-    source 7
-    target 75
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
   ]
   edge [
     source 7
@@ -6765,6 +6933,78 @@ graph [
     total_realized_contacts 2
   ]
   edge [
+    source 7
+    target 75
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 7
+    target 71
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 7
+    target 61
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
     source 8
     target 68
     contact_bin_4 1
@@ -6794,6 +7034,7 @@ graph [
     contact_bin_8 1
     contact_bin_10 1
     contact_bin_11 1
+    contact_bin_12 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -6803,14 +7044,13 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_9 0
-    contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 4
   ]
   edge [
     source 8
@@ -6835,102 +7075,6 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 4
-  ]
-  edge [
-    source 8
-    target 61
-    contact_bin_10 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 8
-    target 28
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 8
-    target 31
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 8
-    target 26
-    contact_bin_10 1
-    contact_bin_13 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
   ]
   edge [
     source 8
@@ -6959,8 +7103,59 @@ graph [
   edge [
     source 8
     target 46
+    contact_bin_10 1
     contact_bin_11 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 8
+    target 31
+    contact_bin_10 1
     contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 8
+    target 28
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -6972,13 +7167,58 @@ graph [
     contact_bin_8 0
     contact_bin_9 0
     contact_bin_10 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 8
+    target 26
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
     contact_bin_12 0
     contact_bin_14 0
-    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 2
+  ]
+  edge [
+    source 8
+    target 61
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
   ]
   edge [
     source 10
@@ -7006,102 +7246,6 @@ graph [
   ]
   edge [
     source 10
-    target 20
-    contact_bin_6 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 10
-    target 14
-    contact_bin_6 1
-    contact_bin_9 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 10
-    target 41
-    contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 10
-    target 70
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 10
     target 35
     contact_bin_9 1
     contact_bin_10 1
@@ -7126,14 +7270,14 @@ graph [
   ]
   edge [
     source 10
-    target 26
+    target 70
     contact_bin_9 1
-    contact_bin_10 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
+    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -7143,32 +7287,8 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_10 0
     contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 10
-    target 56
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_12 0
-    contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 7
   ]
@@ -7198,10 +7318,11 @@ graph [
   ]
   edge [
     source 10
-    target 31
+    target 26
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_12 1
+    contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
@@ -7215,16 +7336,20 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_11 0
-    contact_bin_13 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 7
   ]
   edge [
     source 10
-    target 24
+    target 20
     contact_bin_9 1
+    contact_bin_10 1
     contact_bin_11 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -7234,15 +7359,10 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_10 0
     contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 7
   ]
   edge [
     source 10
@@ -7270,12 +7390,33 @@ graph [
   ]
   edge [
     source 10
-    target 69
+    target 31
     contact_bin_9 1
+    contact_bin_10 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 10
+    target 24
+    contact_bin_9 1
+    contact_bin_12 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -7287,7 +7428,58 @@ graph [
     contact_bin_8 0
     contact_bin_10 0
     contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
     contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 10
+    target 69
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 10
+    target 56
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 5
@@ -7318,10 +7510,13 @@ graph [
   ]
   edge [
     source 10
-    target 46
+    target 41
     contact_bin_9 1
-    contact_bin_13 1
+    contact_bin_11 1
+    contact_bin_14 1
     contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -7332,37 +7527,10 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_10 0
-    contact_bin_11 0
     contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
+    contact_bin_13 0
     contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 10
-    target 42
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
+    total_realized_contacts 6
   ]
   edge [
     source 10
@@ -7390,9 +7558,10 @@ graph [
   ]
   edge [
     source 10
-    target 29
+    target 42
     contact_bin_9 1
-    contact_bin_14 1
+    contact_bin_10 1
+    contact_bin_13 1
     contact_bin_15 1
     contact_bin_16 1
     contact_bin_17 1
@@ -7405,12 +7574,11 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_13 0
+    contact_bin_14 0
     contact_bin_18 0
-    total_realized_contacts 5
+    total_realized_contacts 6
   ]
   edge [
     source 10
@@ -7419,6 +7587,7 @@ graph [
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -7431,10 +7600,9 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 5
   ]
   edge [
     source 10
@@ -7486,6 +7654,30 @@ graph [
   ]
   edge [
     source 10
+    target 29
+    contact_bin_9 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 10
     target 51
     contact_bin_9 1
     contact_bin_12 1
@@ -7510,8 +7702,79 @@ graph [
   ]
   edge [
     source 10
-    target 60
+    target 50
     contact_bin_9 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 10
+    target 47
+    contact_bin_9 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 10
+    target 13
+    contact_bin_10 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 10
+    target 60
     contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
@@ -7528,15 +7791,19 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_9 0
     contact_bin_10 0
     contact_bin_18 0
-    total_realized_contacts 8
+    total_realized_contacts 7
   ]
   edge [
     source 10
-    target 13
-    contact_bin_10 1
+    target 14
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
     contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -7547,19 +7814,17 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_9 0
+    contact_bin_10 0
     contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 5
   ]
   edge [
     source 10
     target 75
     contact_bin_12 1
+    contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
@@ -7576,14 +7841,16 @@ graph [
     contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
-    contact_bin_13 0
     contact_bin_18 0
-    total_realized_contacts 5
+    total_realized_contacts 6
   ]
   edge [
     source 10
-    target 54
+    target 19
     contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -7597,17 +7864,13 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 4
   ]
   edge [
     source 10
-    target 19
-    contact_bin_13 1
+    target 71
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_0 0
@@ -7623,10 +7886,11 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
+    contact_bin_13 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 2
   ]
   edge [
     source 10
@@ -7654,30 +7918,6 @@ graph [
   ]
   edge [
     source 10
-    target 34
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 10
     target 55
     contact_bin_15 1
     contact_bin_0 0
@@ -7702,7 +7942,7 @@ graph [
   ]
   edge [
     source 10
-    target 66
+    target 34
     contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
@@ -7777,7 +8017,6 @@ graph [
     target 22
     contact_bin_9 1
     contact_bin_14 1
-    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -7791,14 +8030,39 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
+    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 2
   ]
   edge [
     source 11
-    target 24
+    target 17
+    contact_bin_9 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_16 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 11
+    target 30
     contact_bin_9 1
     contact_bin_0 0
     contact_bin_1 0
@@ -7822,7 +8086,31 @@ graph [
   ]
   edge [
     source 11
-    target 71
+    target 31
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 11
+    target 19
     contact_bin_9 1
     contact_bin_14 1
     contact_bin_15 1
@@ -7846,55 +8134,7 @@ graph [
   ]
   edge [
     source 11
-    target 28
-    contact_bin_9 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 11
-    target 14
-    contact_bin_9 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 11
-    target 46
+    target 45
     contact_bin_9 1
     contact_bin_14 1
     contact_bin_0 0
@@ -7910,30 +8150,6 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 11
-    target 47
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
@@ -7966,10 +8182,8 @@ graph [
   ]
   edge [
     source 11
-    target 31
+    target 47
     contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -7981,23 +8195,23 @@ graph [
     contact_bin_8 0
     contact_bin_10 0
     contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 1
   ]
   edge [
     source 11
-    target 17
-    contact_bin_11 1
-    contact_bin_12 1
+    target 14
+    contact_bin_9 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
-    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -8007,10 +8221,36 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_9 0
     contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 5
+  ]
+  edge [
+    source 11
+    target 71
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
   ]
   edge [
     source 11
@@ -8038,10 +8278,10 @@ graph [
   ]
   edge [
     source 11
-    target 70
+    target 26
     contact_bin_13 1
     contact_bin_14 1
-    contact_bin_16 1
+    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -8055,16 +8295,63 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_15 0
+    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 3
   ]
   edge [
     source 11
-    target 19
+    target 69
+    contact_bin_13 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 11
+    target 46
     contact_bin_14 1
-    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 11
+    target 70
+    contact_bin_14 1
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -8080,13 +8367,14 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
+    contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 2
   ]
   edge [
     source 11
-    target 57
+    target 41
     contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
@@ -8111,54 +8399,6 @@ graph [
   edge [
     source 11
     target 29
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 11
-    target 45
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 11
-    target 41
     contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
@@ -8208,53 +8448,7 @@ graph [
     source 11
     target 67
     contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 11
-    target 26
     contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 11
-    target 69
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -8270,18 +8464,14 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 3
   ]
   edge [
     source 13
     target 27
     contact_bin_2 1
-    contact_bin_9 1
-    contact_bin_11 1
     contact_bin_13 1
     contact_bin_0 0
     contact_bin_1 0
@@ -8291,38 +8481,16 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_9 0
     contact_bin_10 0
+    contact_bin_11 0
     contact_bin_12 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 13
-    target 28
-    contact_bin_2 1
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 9
+    total_realized_contacts 2
   ]
   edge [
     source 13
@@ -8350,9 +8518,11 @@ graph [
   ]
   edge [
     source 13
-    target 69
-    contact_bin_8 1
+    target 35
+    contact_bin_7 1
+    contact_bin_9 1
     contact_bin_10 1
+    contact_bin_11 1
     contact_bin_12 1
     contact_bin_0 0
     contact_bin_1 0
@@ -8361,22 +8531,21 @@ graph [
     contact_bin_4 0
     contact_bin_5 0
     contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_11 0
+    contact_bin_8 0
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 5
   ]
   edge [
     source 13
     target 26
     contact_bin_8 1
-    contact_bin_14 1
+    contact_bin_11 1
+    contact_bin_13 1
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -8388,23 +8557,20 @@ graph [
     contact_bin_7 0
     contact_bin_9 0
     contact_bin_10 0
-    contact_bin_11 0
     contact_bin_12 0
-    contact_bin_13 0
+    contact_bin_14 0
     contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 4
   ]
   edge [
     source 13
-    target 29
+    target 19
     contact_bin_8 1
     contact_bin_9 1
-    contact_bin_10 1
     contact_bin_11 1
     contact_bin_12 1
-    contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
@@ -8416,9 +8582,11 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_13 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 9
+    total_realized_contacts 7
   ]
   edge [
     source 13
@@ -8446,30 +8614,6 @@ graph [
   ]
   edge [
     source 13
-    target 61
-    contact_bin_8 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 13
     target 31
     contact_bin_8 1
     contact_bin_9 1
@@ -8491,54 +8635,6 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 4
-  ]
-  edge [
-    source 13
-    target 66
-    contact_bin_8 1
-    contact_bin_10 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 13
-    target 19
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
   ]
   edge [
     source 13
@@ -8566,13 +8662,11 @@ graph [
   ]
   edge [
     source 13
-    target 71
+    target 61
     contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_14 1
     contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
@@ -8582,11 +8676,37 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
+    contact_bin_12 0
     contact_bin_13 0
+    contact_bin_14 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 5
+  ]
+  edge [
+    source 13
+    target 66
+    contact_bin_8 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
   ]
   edge [
     source 13
@@ -8614,9 +8734,10 @@ graph [
   ]
   edge [
     source 13
-    target 47
+    target 69
     contact_bin_8 1
     contact_bin_10 1
+    contact_bin_12 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -8626,6 +8747,125 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_9 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 13
+    target 28
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 13
+    target 50
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 13
+    target 29
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_15 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 8
+  ]
+  edge [
+    source 13
+    target 71
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 8
+  ]
+  edge [
+    source 13
+    target 47
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
@@ -8638,105 +8878,10 @@ graph [
   ]
   edge [
     source 13
-    target 33
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 13
-    target 35
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 13
-    target 50
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 13
-    target 43
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_13 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 13
     target 58
     contact_bin_9 1
     contact_bin_10 1
+    contact_bin_11 1
     contact_bin_12 1
     contact_bin_14 1
     contact_bin_0 0
@@ -8748,13 +8893,36 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_11 0
     contact_bin_13 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 5
+  ]
+  edge [
+    source 13
+    target 43
+    contact_bin_9 1
+    contact_bin_11 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
   ]
   edge [
     source 13
@@ -8762,6 +8930,8 @@ graph [
     contact_bin_9 1
     contact_bin_11 1
     contact_bin_12 1
+    contact_bin_14 1
+    contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -8774,35 +8944,9 @@ graph [
     contact_bin_8 0
     contact_bin_10 0
     contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 13
-    target 18
-    contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 6
   ]
   edge [
     source 13
@@ -8827,6 +8971,78 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 5
+  ]
+  edge [
+    source 13
+    target 65
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 13
+    target 33
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 13
+    target 18
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
   ]
   edge [
     source 13
@@ -8880,6 +9096,7 @@ graph [
     source 13
     target 30
     contact_bin_10 1
+    contact_bin_14 1
     contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
@@ -8894,11 +9111,10 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
-    contact_bin_14 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 3
   ]
   edge [
     source 13
@@ -8926,32 +9142,9 @@ graph [
   ]
   edge [
     source 13
-    target 65
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 13
     target 15
     contact_bin_10 1
+    contact_bin_13 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -8964,19 +9157,18 @@ graph [
     contact_bin_9 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 2
   ]
   edge [
     source 13
     target 37
-    contact_bin_10 1
     contact_bin_11 1
+    contact_bin_12 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -8987,7 +9179,7 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_9 0
-    contact_bin_12 0
+    contact_bin_10 0
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
@@ -9000,7 +9192,6 @@ graph [
     source 13
     target 17
     contact_bin_11 1
-    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -9015,16 +9206,18 @@ graph [
     contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
+    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 1
   ]
   edge [
     source 14
     target 68
+    contact_bin_3 1
     contact_bin_4 1
-    contact_bin_10 1
+    contact_bin_9 1
     contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
@@ -9035,38 +9228,13 @@ graph [
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
-    contact_bin_3 0
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_18 0
-    total_realized_contacts 9
-  ]
-  edge [
-    source 14
-    target 67
-    contact_bin_6 1
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_7 0
-    contact_bin_8 0
     contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 10
   ]
   edge [
     source 14
@@ -9097,6 +9265,7 @@ graph [
     target 33
     contact_bin_9 1
     contact_bin_14 1
+    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -9110,476 +9279,17 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 14
-    target 15
-    contact_bin_9 1
-    contact_bin_13 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 14
-    target 41
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 14
-    target 17
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 14
-    target 56
-    contact_bin_9 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 14
-    target 70
-    contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 14
-    target 46
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 14
-    target 43
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 14
-    target 22
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_14 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 14
-    target 47
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 14
-    target 71
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 14
-    target 61
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_13 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 14
-    target 34
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_11 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 14
-    target 28
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 14
-    target 18
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 14
-    target 58
-    contact_bin_9 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 3
-  ]
-  edge [
-    source 14
-    target 21
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_18 0
-    total_realized_contacts 9
-  ]
-  edge [
-    source 14
-    target 31
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 14
-    target 45
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 14
-    target 66
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_18 0
-    total_realized_contacts 9
   ]
   edge [
     source 14
     target 63
     contact_bin_9 1
     contact_bin_12 1
-    contact_bin_13 1
     contact_bin_14 1
-    contact_bin_15 1
     contact_bin_16 1
     contact_bin_17 1
     contact_bin_18 1
@@ -9594,13 +9304,65 @@ graph [
     contact_bin_8 0
     contact_bin_10 0
     contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_15 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 14
+    target 17
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_18 0
     total_realized_contacts 8
   ]
   edge [
     source 14
-    target 64
-    contact_bin_10 1
+    target 24
+    contact_bin_9 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 14
+    target 45
+    contact_bin_9 1
+    contact_bin_12 1
     contact_bin_13 1
+    contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
@@ -9612,13 +9374,395 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 14
+    target 67
+    contact_bin_9 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 14
+    target 70
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
     contact_bin_11 0
     contact_bin_12 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 14
+    target 46
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 14
+    target 22
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 14
+    target 47
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 8
+  ]
+  edge [
+    source 14
+    target 66
+    contact_bin_9 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_18 0
+    total_realized_contacts 8
+  ]
+  edge [
+    source 14
+    target 71
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 8
+  ]
+  edge [
+    source 14
+    target 34
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 14
+    target 18
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 14
+    target 58
+    contact_bin_9 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 14
+    target 21
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_18 0
+    total_realized_contacts 9
+  ]
+  edge [
+    source 14
+    target 61
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_18 0
+    total_realized_contacts 9
+  ]
+  edge [
+    source 14
+    target 28
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_18 0
+    total_realized_contacts 9
+  ]
+  edge [
+    source 14
+    target 15
+    contact_bin_9 1
+    contact_bin_13 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 14
+    target 64
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
     contact_bin_14 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 4
+  ]
+  edge [
+    source 14
+    target 31
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
   ]
   edge [
     source 14
@@ -9646,7 +9790,55 @@ graph [
   ]
   edge [
     source 14
-    target 74
+    target 41
+    contact_bin_12 1
+    contact_bin_14 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_15 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 14
+    target 20
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 14
+    target 43
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -9670,8 +9862,9 @@ graph [
   ]
   edge [
     source 14
-    target 55
+    target 74
     contact_bin_12 1
+    contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
@@ -9688,15 +9881,13 @@ graph [
     contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
-    contact_bin_13 0
     contact_bin_18 0
-    total_realized_contacts 5
+    total_realized_contacts 6
   ]
   edge [
     source 14
     target 54
     contact_bin_12 1
-    contact_bin_13 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -9709,36 +9900,13 @@ graph [
     contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
+    contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 14
-    target 20
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 1
   ]
   edge [
     source 14
@@ -9769,7 +9937,6 @@ graph [
     target 23
     contact_bin_13 1
     contact_bin_14 1
-    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -9784,6 +9951,31 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 14
+    target 55
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 3
@@ -9791,6 +9983,30 @@ graph [
   edge [
     source 14
     target 75
+    contact_bin_14 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_15 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 14
+    target 69
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_0 0
@@ -9817,6 +10033,30 @@ graph [
     target 51
     contact_bin_14 1
     contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 14
+    target 57
+    contact_bin_14 1
+    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -9838,7 +10078,7 @@ graph [
   ]
   edge [
     source 14
-    target 57
+    target 56
     contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
@@ -9886,7 +10126,7 @@ graph [
   ]
   edge [
     source 14
-    target 69
+    target 19
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
@@ -9910,9 +10150,9 @@ graph [
   ]
   edge [
     source 14
-    target 19
-    contact_bin_15 1
+    target 29
     contact_bin_16 1
+    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -9928,47 +10168,23 @@ graph [
     contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
-    contact_bin_17 0
+    contact_bin_15 0
     contact_bin_18 0
     total_realized_contacts 2
   ]
   edge [
     source 15
-    target 20
-    contact_bin_6 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
+    target 50
+    contact_bin_2 1
     contact_bin_0 0
     contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_12 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 15
-    target 33
-    contact_bin_9 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
     contact_bin_3 0
     contact_bin_4 0
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
@@ -9979,6 +10195,30 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 1
+  ]
+  edge [
+    source 15
+    target 20
+    contact_bin_6 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_12 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
   ]
   edge [
     source 15
@@ -10006,7 +10246,103 @@ graph [
   ]
   edge [
     source 15
-    target 29
+    target 41
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_12 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 15
+    target 35
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_13 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 15
+    target 17
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_13 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 15
+    target 26
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_12 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 15
+    target 58
     contact_bin_9 1
     contact_bin_13 1
     contact_bin_14 1
@@ -10030,31 +10366,7 @@ graph [
   ]
   edge [
     source 15
-    target 35
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 15
-    target 17
+    target 31
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_11 1
@@ -10099,78 +10411,6 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 3
-  ]
-  edge [
-    source 15
-    target 26
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 15
-    target 58
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 15
-    target 31
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_13 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
   ]
   edge [
     source 15
@@ -10222,54 +10462,6 @@ graph [
   ]
   edge [
     source 15
-    target 41
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_12 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 15
-    target 56
-    contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_12 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 15
     target 60
     contact_bin_9 1
     contact_bin_10 1
@@ -10318,6 +10510,54 @@ graph [
   ]
   edge [
     source 15
+    target 65
+    contact_bin_9 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 15
+    target 27
+    contact_bin_9 1
+    contact_bin_13 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 15
     target 51
     contact_bin_9 1
     contact_bin_10 1
@@ -10343,7 +10583,6 @@ graph [
   edge [
     source 15
     target 42
-    contact_bin_9 1
     contact_bin_10 1
     contact_bin_11 1
     contact_bin_13 1
@@ -10356,8 +10595,33 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_9 0
     contact_bin_12 0
     contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 15
+    target 56
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_12 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
@@ -10366,56 +10630,8 @@ graph [
   ]
   edge [
     source 15
-    target 50
-    contact_bin_10 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 15
     target 46
     contact_bin_11 1
-    contact_bin_13 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 15
-    target 71
-    contact_bin_11 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -10435,6 +10651,30 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 1
+  ]
+  edge [
+    source 15
+    target 29
+    contact_bin_11 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_12 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
   ]
   edge [
     source 15
@@ -10462,7 +10702,7 @@ graph [
   ]
   edge [
     source 15
-    target 27
+    target 34
     contact_bin_13 1
     contact_bin_0 0
     contact_bin_1 0
@@ -10486,7 +10726,7 @@ graph [
   ]
   edge [
     source 15
-    target 34
+    target 71
     contact_bin_13 1
     contact_bin_0 0
     contact_bin_1 0
@@ -10512,9 +10752,9 @@ graph [
     source 17
     target 68
     contact_bin_4 1
-    contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
+    contact_bin_11 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -10526,7 +10766,7 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_11 0
+    contact_bin_8 0
     contact_bin_12 0
     contact_bin_17 0
     contact_bin_18 0
@@ -10582,30 +10822,6 @@ graph [
   ]
   edge [
     source 17
-    target 64
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 17
     target 66
     contact_bin_8 1
     contact_bin_9 1
@@ -10630,6 +10846,30 @@ graph [
   ]
   edge [
     source 17
+    target 48
+    contact_bin_8 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_11 0
+    contact_bin_18 0
+    total_realized_contacts 8
+  ]
+  edge [
+    source 17
     target 31
     contact_bin_8 1
     contact_bin_9 1
@@ -10651,30 +10891,6 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 8
-  ]
-  edge [
-    source 17
-    target 48
-    contact_bin_8 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
   ]
   edge [
     source 17
@@ -10705,8 +10921,33 @@ graph [
     target 41
     contact_bin_8 1
     contact_bin_9 1
+    contact_bin_12 1
     contact_bin_13 1
-    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 17
+    target 64
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -10718,11 +10959,34 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 17
+    target 60
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 2
   ]
   edge [
     source 17
@@ -10736,7 +11000,6 @@ graph [
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
-    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -10745,8 +11008,33 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
+    contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 10
+    total_realized_contacts 9
+  ]
+  edge [
+    source 17
+    target 28
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 9
   ]
   edge [
     source 17
@@ -10774,30 +11062,6 @@ graph [
   ]
   edge [
     source 17
-    target 28
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 17
     target 21
     contact_bin_8 1
     contact_bin_9 1
@@ -10822,13 +11086,15 @@ graph [
   ]
   edge [
     source 17
-    target 22
+    target 43
     contact_bin_8 1
     contact_bin_9 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
-    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -10838,35 +11104,9 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 17
-    target 33
-    contact_bin_8 1
-    contact_bin_13 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 8
   ]
   edge [
     source 17
@@ -10896,8 +11136,8 @@ graph [
     source 17
     target 46
     contact_bin_8 1
-    contact_bin_10 1
     contact_bin_13 1
+    contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -10907,33 +11147,9 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 17
-    target 27
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_13 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
@@ -10946,6 +11162,7 @@ graph [
     contact_bin_9 1
     contact_bin_12 1
     contact_bin_13 1
+    contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -10959,15 +11176,15 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_14 0
-    contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 5
   ]
   edge [
     source 17
     target 54
     contact_bin_9 1
+    contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -10981,36 +11198,11 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
-    contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 17
-    target 43
-    contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 2
   ]
   edge [
     source 17
@@ -11040,8 +11232,7 @@ graph [
     source 17
     target 67
     contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
+    contact_bin_11 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -11055,10 +11246,11 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_11 0
+    contact_bin_10 0
+    contact_bin_12 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 6
   ]
   edge [
     source 17
@@ -11086,30 +11278,6 @@ graph [
   ]
   edge [
     source 17
-    target 34
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 17
     target 47
     contact_bin_9 1
     contact_bin_10 1
@@ -11134,34 +11302,9 @@ graph [
   ]
   edge [
     source 17
-    target 25
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 17
-    target 29
+    target 55
     contact_bin_9 1
     contact_bin_14 1
-    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -11177,6 +11320,151 @@ graph [
     contact_bin_13 0
     contact_bin_15 0
     contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 17
+    target 34
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 8
+  ]
+  edge [
+    source 17
+    target 20
+    contact_bin_9 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 17
+    target 25
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 17
+    target 27
+    contact_bin_9 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 17
+    target 29
+    contact_bin_9 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 17
+    target 51
+    contact_bin_10 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_16 0
+    contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 3
   ]
@@ -11230,55 +11518,7 @@ graph [
   ]
   edge [
     source 17
-    target 44
-    contact_bin_12 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 17
     target 50
-    contact_bin_12 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 17
-    target 57
     contact_bin_12 1
     contact_bin_0 0
     contact_bin_1 0
@@ -11326,34 +11566,11 @@ graph [
   ]
   edge [
     source 17
-    target 51
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 17
     target 58
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -11367,40 +11584,14 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 4
   ]
   edge [
     source 17
-    target 76
+    target 57
     contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 17
-    target 20
-    contact_bin_13 1
-    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -11415,10 +11606,35 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_14 0
+    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 1
+  ]
+  edge [
+    source 17
+    target 22
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_18 0
+    total_realized_contacts 5
   ]
   edge [
     source 17
@@ -11446,55 +11662,7 @@ graph [
   ]
   edge [
     source 17
-    target 26
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 17
-    target 65
-    contact_bin_13 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 17
-    target 69
+    target 44
     contact_bin_13 1
     contact_bin_16 1
     contact_bin_0 0
@@ -11518,8 +11686,9 @@ graph [
   ]
   edge [
     source 17
-    target 63
+    target 69
     contact_bin_13 1
+    contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -11533,12 +11702,11 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 2
   ]
   edge [
     source 17
@@ -11566,7 +11734,8 @@ graph [
   ]
   edge [
     source 17
-    target 55
+    target 33
+    contact_bin_13 1
     contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
@@ -11581,21 +11750,22 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_13 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 2
   ]
   edge [
-    source 18
-    target 55
-    contact_bin_2 1
-    contact_bin_12 1
+    source 17
+    target 76
+    contact_bin_13 1
+    contact_bin_14 1
     contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
+    contact_bin_2 0
     contact_bin_3 0
     contact_bin_4 0
     contact_bin_5 0
@@ -11605,12 +11775,82 @@ graph [
     contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 17
+    target 26
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 1
+  ]
+  edge [
+    source 18
+    target 27
+    contact_bin_2 1
+    contact_bin_9 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 18
+    target 46
+    contact_bin_2 1
+    contact_bin_9 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_13 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
   ]
   edge [
     source 18
@@ -11642,6 +11882,7 @@ graph [
     contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
+    contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -11654,11 +11895,58 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_11 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 8
+  ]
+  edge [
+    source 18
+    target 60
+    contact_bin_8 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 18
+    target 28
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 8
   ]
   edge [
     source 18
@@ -11683,54 +11971,6 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 6
-  ]
-  edge [
-    source 18
-    target 41
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 18
-    target 29
-    contact_bin_8 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
   ]
   edge [
     source 18
@@ -11782,7 +12022,7 @@ graph [
   ]
   edge [
     source 18
-    target 28
+    target 45
     contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
@@ -11803,54 +12043,6 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 8
-  ]
-  edge [
-    source 18
-    target 21
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 18
-    target 33
-    contact_bin_8 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
   ]
   edge [
     source 18
@@ -11884,7 +12076,6 @@ graph [
     contact_bin_10 1
     contact_bin_11 1
     contact_bin_12 1
-    contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -11894,17 +12085,47 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_13 0
+    contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 5
   ]
   edge [
     source 18
-    target 50
+    target 21
+    contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 8
+  ]
+  edge [
+    source 18
+    target 43
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -11914,10 +12135,29 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 18
+    target 33
+    contact_bin_9 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
-    contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
@@ -11950,6 +12190,54 @@ graph [
   ]
   edge [
     source 18
+    target 30
+    contact_bin_9 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 18
+    target 55
+    contact_bin_9 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 18
     target 34
     contact_bin_9 1
     contact_bin_10 1
@@ -11974,83 +12262,11 @@ graph [
   ]
   edge [
     source 18
-    target 43
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_12 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 18
-    target 46
-    contact_bin_9 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 18
-    target 27
-    contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_12 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 18
     target 58
     contact_bin_9 1
+    contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
-    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -12062,7 +12278,7 @@ graph [
     contact_bin_8 0
     contact_bin_10 0
     contact_bin_11 0
-    contact_bin_12 0
+    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
@@ -12072,8 +12288,6 @@ graph [
     source 18
     target 26
     contact_bin_9 1
-    contact_bin_14 1
-    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -12087,20 +12301,17 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 1
   ]
   edge [
     source 18
-    target 45
+    target 41
     contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -12111,6 +12322,35 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 18
+    target 42
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_14 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
@@ -12118,32 +12358,9 @@ graph [
   ]
   edge [
     source 18
-    target 42
-    contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 18
     target 44
     contact_bin_9 1
+    contact_bin_12 1
     contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
@@ -12156,42 +12373,18 @@ graph [
     contact_bin_8 0
     contact_bin_10 0
     contact_bin_11 0
-    contact_bin_12 0
     contact_bin_13 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 18
-    target 69
-    contact_bin_10 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 3
   ]
   edge [
     source 18
     target 19
     contact_bin_11 1
+    contact_bin_12 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -12203,14 +12396,13 @@ graph [
     contact_bin_8 0
     contact_bin_9 0
     contact_bin_10 0
-    contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 2
   ]
   edge [
     source 18
@@ -12241,6 +12433,7 @@ graph [
     target 78
     contact_bin_13 1
     contact_bin_14 1
+    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -12254,7 +12447,30 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 18
+    target 20
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
@@ -12262,7 +12478,7 @@ graph [
   ]
   edge [
     source 18
-    target 54
+    target 29
     contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
@@ -12285,14 +12501,33 @@ graph [
     total_realized_contacts 1
   ]
   edge [
+    source 18
+    target 69
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
     source 19
-    target 27
+    target 55
     contact_bin_2 1
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
     contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
@@ -12301,12 +12536,17 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 2
   ]
   edge [
     source 19
@@ -12358,10 +12598,13 @@ graph [
   ]
   edge [
     source 19
-    target 68
+    target 65
     contact_bin_8 1
-    contact_bin_14 1
-    contact_bin_15 1
+    contact_bin_9 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_16 1
+    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -12370,15 +12613,12 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_9 0
     contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
     contact_bin_13 0
-    contact_bin_16 0
-    contact_bin_17 0
+    contact_bin_14 0
+    contact_bin_15 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 6
   ]
   edge [
     source 19
@@ -12406,6 +12646,54 @@ graph [
   ]
   edge [
     source 19
+    target 61
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 19
+    target 27
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 19
     target 29
     contact_bin_8 1
     contact_bin_9 1
@@ -12427,6 +12715,30 @@ graph [
     contact_bin_10 0
     contact_bin_18 0
     total_realized_contacts 9
+  ]
+  edge [
+    source 19
+    target 66
+    contact_bin_8 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
   ]
   edge [
     source 19
@@ -12454,102 +12766,6 @@ graph [
   ]
   edge [
     source 19
-    target 64
-    contact_bin_8 1
-    contact_bin_13 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 19
-    target 66
-    contact_bin_8 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 19
-    target 70
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_18 0
-    total_realized_contacts 9
-  ]
-  edge [
-    source 19
-    target 45
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 19
     target 75
     contact_bin_8 1
     contact_bin_12 1
@@ -12574,11 +12790,61 @@ graph [
   ]
   edge [
     source 19
-    target 65
+    target 64
+    contact_bin_8 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 19
+    target 60
+    contact_bin_8 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 19
+    target 70
     contact_bin_8 1
     contact_bin_9 1
-    contact_bin_11 1
     contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
     contact_bin_16 1
     contact_bin_17 1
     contact_bin_0 0
@@ -12590,11 +12856,9 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_10 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
+    contact_bin_11 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 8
   ]
   edge [
     source 19
@@ -12670,54 +12934,6 @@ graph [
   ]
   edge [
     source 19
-    target 54
-    contact_bin_8 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 19
-    target 56
-    contact_bin_8 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 19
     target 37
     contact_bin_8 1
     contact_bin_9 1
@@ -12739,30 +12955,6 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 4
-  ]
-  edge [
-    source 19
-    target 61
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
   ]
   edge [
     source 19
@@ -12790,9 +12982,10 @@ graph [
   ]
   edge [
     source 19
-    target 20
-    contact_bin_9 1
+    target 42
+    contact_bin_8 1
     contact_bin_11 1
+    contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -12805,17 +12998,18 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_8 0
+    contact_bin_9 0
     contact_bin_10 0
-    contact_bin_12 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 7
   ]
   edge [
     source 19
-    target 26
+    target 20
     contact_bin_9 1
+    contact_bin_11 1
+    contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -12830,17 +13024,14 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 5
+    total_realized_contacts 7
   ]
   edge [
     source 19
     target 24
     contact_bin_9 1
-    contact_bin_11 1
     contact_bin_12 1
     contact_bin_0 0
     contact_bin_1 0
@@ -12852,18 +13043,20 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_10 0
+    contact_bin_11 0
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 2
   ]
   edge [
     source 19
     target 30
     contact_bin_9 1
+    contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -12880,13 +13073,36 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_10 0
-    contact_bin_11 0
+    contact_bin_18 0
+    total_realized_contacts 8
+  ]
+  edge [
+    source 19
+    target 23
+    contact_bin_9 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 7
   ]
   edge [
     source 19
-    target 23
+    target 26
     contact_bin_9 1
     contact_bin_12 1
     contact_bin_13 1
@@ -12907,6 +13123,30 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 6
+  ]
+  edge [
+    source 19
+    target 45
+    contact_bin_9 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
   ]
   edge [
     source 19
@@ -12934,12 +13174,11 @@ graph [
   ]
   edge [
     source 19
-    target 21
+    target 54
     contact_bin_9 1
-    contact_bin_11 1
     contact_bin_12 1
-    contact_bin_15 1
-    contact_bin_16 1
+    contact_bin_13 1
+    contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -12950,11 +13189,12 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_10 0
-    contact_bin_13 0
-    contact_bin_14 0
+    contact_bin_11 0
+    contact_bin_15 0
+    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 5
+    total_realized_contacts 4
   ]
   edge [
     source 19
@@ -12982,34 +13222,9 @@ graph [
   ]
   edge [
     source 19
-    target 47
+    target 21
     contact_bin_9 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 19
-    target 42
     contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
@@ -13022,11 +13237,36 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_9 0
     contact_bin_10 0
+    contact_bin_12 0
+    contact_bin_13 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 5
+  ]
+  edge [
+    source 19
+    target 68
+    contact_bin_11 1
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
   ]
   edge [
     source 19
@@ -13054,7 +13294,7 @@ graph [
   ]
   edge [
     source 19
-    target 34
+    target 28
     contact_bin_12 1
     contact_bin_15 1
     contact_bin_0 0
@@ -13075,6 +13315,30 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 2
+  ]
+  edge [
+    source 19
+    target 34
+    contact_bin_12 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
   ]
   edge [
     source 19
@@ -13102,6 +13366,30 @@ graph [
   ]
   edge [
     source 19
+    target 78
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 19
     target 51
     contact_bin_13 1
     contact_bin_14 1
@@ -13126,31 +13414,7 @@ graph [
   ]
   edge [
     source 19
-    target 78
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 19
-    target 74
+    target 56
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
@@ -13198,9 +13462,10 @@ graph [
   ]
   edge [
     source 19
-    target 28
-    contact_bin_15 1
+    target 74
+    contact_bin_14 1
     contact_bin_16 1
+    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -13215,58 +13480,9 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 19
-    target 60
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 19
-    target 55
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
     contact_bin_15 0
-    contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 3
   ]
   edge [
     source 20
@@ -13318,30 +13534,6 @@ graph [
   ]
   edge [
     source 20
-    target 23
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 20
     target 56
     contact_bin_9 1
     contact_bin_10 1
@@ -13366,127 +13558,7 @@ graph [
   ]
   edge [
     source 20
-    target 60
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 20
     target 26
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 20
-    target 33
-    contact_bin_9 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 20
-    target 69
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 20
-    target 57
-    contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 20
-    target 43
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_11 1
@@ -13534,15 +13606,15 @@ graph [
   ]
   edge [
     source 20
-    target 51
+    target 23
     contact_bin_9 1
     contact_bin_10 1
+    contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
-    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -13552,13 +13624,37 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_11 0
+    contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 8
   ]
   edge [
     source 20
-    target 71
+    target 69
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 8
+  ]
+  edge [
+    source 20
+    target 60
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_13 1
@@ -13582,7 +13678,31 @@ graph [
   ]
   edge [
     source 20
-    target 58
+    target 33
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 20
+    target 57
     contact_bin_9 1
     contact_bin_12 1
     contact_bin_13 1
@@ -13606,9 +13726,59 @@ graph [
   ]
   edge [
     source 20
+    target 29
+    contact_bin_9 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 20
+    target 58
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 20
     target 46
+    contact_bin_9 1
     contact_bin_10 1
     contact_bin_11 1
+    contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -13621,12 +13791,58 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_12 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 5
+    total_realized_contacts 7
+  ]
+  edge [
+    source 20
+    target 47
+    contact_bin_9 1
+    contact_bin_13 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 20
+    target 43
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
   ]
   edge [
     source 20
@@ -13654,33 +13870,15 @@ graph [
   ]
   edge [
     source 20
-    target 54
+    target 51
     contact_bin_10 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 20
-    target 68
     contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
     contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -13691,18 +13889,13 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 8
   ]
   edge [
     source 20
-    target 70
+    target 45
+    contact_bin_10 1
     contact_bin_11 1
     contact_bin_13 1
     contact_bin_14 1
@@ -13718,16 +13911,14 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_9 0
-    contact_bin_10 0
     contact_bin_12 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 5
+    total_realized_contacts 6
   ]
   edge [
     source 20
-    target 45
-    contact_bin_11 1
+    target 71
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -13744,16 +13935,18 @@ graph [
     contact_bin_8 0
     contact_bin_9 0
     contact_bin_10 0
+    contact_bin_11 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 5
   ]
   edge [
     source 20
-    target 21
-    contact_bin_11 1
+    target 70
     contact_bin_13 1
+    contact_bin_14 1
     contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -13765,12 +13958,11 @@ graph [
     contact_bin_8 0
     contact_bin_9 0
     contact_bin_10 0
+    contact_bin_11 0
     contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 4
   ]
   edge [
     source 20
@@ -13798,105 +13990,8 @@ graph [
   ]
   edge [
     source 20
-    target 61
-    contact_bin_13 1
+    target 54
     contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 20
-    target 29
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 20
-    target 22
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 20
-    target 47
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 20
-    target 74
-    contact_bin_14 1
-    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -13912,9 +14007,10 @@ graph [
     contact_bin_12 0
     contact_bin_13 0
     contact_bin_15 0
+    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 1
   ]
   edge [
     source 20
@@ -13942,7 +14038,7 @@ graph [
   ]
   edge [
     source 20
-    target 67
+    target 22
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
@@ -13966,7 +14062,7 @@ graph [
   ]
   edge [
     source 20
-    target 28
+    target 68
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_0 0
@@ -13984,6 +14080,126 @@ graph [
     contact_bin_12 0
     contact_bin_13 0
     contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 20
+    target 28
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 20
+    target 61
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 20
+    target 74
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 20
+    target 66
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 20
+    target 67
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 2
@@ -14014,15 +14230,9 @@ graph [
   ]
   edge [
     source 21
-    target 58
+    target 70
     contact_bin_5 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
     contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -14031,15 +14241,20 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
     contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 8
+    total_realized_contacts 2
   ]
   edge [
     source 21
     target 31
-    contact_bin_5 1
     contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
@@ -14053,12 +14268,13 @@ graph [
     contact_bin_2 0
     contact_bin_3 0
     contact_bin_4 0
+    contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 9
+    total_realized_contacts 8
   ]
   edge [
     source 21
@@ -14083,30 +14299,6 @@ graph [
     contact_bin_7 0
     contact_bin_18 0
     total_realized_contacts 10
-  ]
-  edge [
-    source 21
-    target 45
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 9
   ]
   edge [
     source 21
@@ -14144,6 +14336,30 @@ graph [
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 9
+  ]
+  edge [
+    source 21
+    target 66
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
     contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
@@ -14167,6 +14383,7 @@ graph [
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
+    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -14176,9 +14393,8 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_13 0
-    contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 8
+    total_realized_contacts 9
   ]
   edge [
     source 21
@@ -14206,7 +14422,7 @@ graph [
   ]
   edge [
     source 21
-    target 67
+    target 45
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_11 1
@@ -14230,12 +14446,13 @@ graph [
   ]
   edge [
     source 21
-    target 29
+    target 67
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_11 1
+    contact_bin_12 1
     contact_bin_13 1
-    contact_bin_14 1
+    contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -14246,35 +14463,10 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_12 0
-    contact_bin_15 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 21
-    target 41
-    contact_bin_9 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
     contact_bin_14 0
-    contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 7
   ]
   edge [
     source 21
@@ -14302,30 +14494,6 @@ graph [
   ]
   edge [
     source 21
-    target 66
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_18 0
-    total_realized_contacts 9
-  ]
-  edge [
-    source 21
     target 59
     contact_bin_9 1
     contact_bin_10 1
@@ -14350,10 +14518,12 @@ graph [
   ]
   edge [
     source 21
-    target 69
+    target 54
     contact_bin_9 1
     contact_bin_10 1
+    contact_bin_11 1
     contact_bin_13 1
+    contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -14363,14 +14533,12 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_11 0
     contact_bin_12 0
-    contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 5
   ]
   edge [
     source 21
@@ -14398,6 +14566,78 @@ graph [
   ]
   edge [
     source 21
+    target 29
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 21
+    target 58
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 21
+    target 26
+    contact_bin_9 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 21
     target 34
     contact_bin_9 1
     contact_bin_10 1
@@ -14422,9 +14662,9 @@ graph [
   ]
   edge [
     source 21
-    target 70
+    target 41
     contact_bin_9 1
-    contact_bin_13 1
+    contact_bin_10 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -14434,39 +14674,15 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
+    contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 2
-  ]
-  edge [
-    source 21
-    target 43
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
   ]
   edge [
     source 21
@@ -14494,33 +14710,8 @@ graph [
   ]
   edge [
     source 21
-    target 54
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 21
     target 25
     contact_bin_9 1
-    contact_bin_12 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -14532,13 +14723,62 @@ graph [
     contact_bin_8 0
     contact_bin_10 0
     contact_bin_11 0
+    contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 1
+  ]
+  edge [
+    source 21
+    target 43
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 21
+    target 69
+    contact_bin_10 1
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
   ]
   edge [
     source 21
@@ -14566,30 +14806,6 @@ graph [
   ]
   edge [
     source 21
-    target 55
-    contact_bin_12 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 21
     target 78
     contact_bin_13 1
     contact_bin_14 1
@@ -14614,9 +14830,10 @@ graph [
   ]
   edge [
     source 21
-    target 26
+    target 55
     contact_bin_14 1
     contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -14631,16 +14848,16 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 3
   ]
   edge [
     source 21
     target 76
     contact_bin_14 1
     contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -14655,14 +14872,13 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 3
   ]
   edge [
     source 21
-    target 30
+    target 51
     contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
@@ -14686,30 +14902,6 @@ graph [
   ]
   edge [
     source 22
-    target 68
-    contact_bin_4 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 22
     target 41
     contact_bin_8 1
     contact_bin_9 1
@@ -14720,6 +14912,7 @@ graph [
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
+    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -14728,9 +14921,8 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 9
+    total_realized_contacts 10
   ]
   edge [
     source 22
@@ -14854,34 +15046,9 @@ graph [
   ]
   edge [
     source 22
-    target 45
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 22
     target 56
     contact_bin_9 1
     contact_bin_14 1
-    contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -14896,9 +15063,10 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
+    contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 3
   ]
   edge [
     source 22
@@ -14926,55 +15094,7 @@ graph [
   ]
   edge [
     source 22
-    target 54
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 22
-    target 46
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 22
-    target 71
+    target 45
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_11 1
@@ -14998,9 +15118,106 @@ graph [
   ]
   edge [
     source 22
-    target 58
+    target 70
+    contact_bin_9 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 22
+    target 54
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 22
+    target 46
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 22
+    target 71
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 22
+    target 68
     contact_bin_10 1
     contact_bin_11 1
+    contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -15015,17 +15232,38 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_9 0
-    contact_bin_12 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 7
   ]
   edge [
     source 22
-    target 70
+    target 47
     contact_bin_10 1
-    contact_bin_13 1
-    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 22
+    target 67
+    contact_bin_10 1
     contact_bin_15 1
     contact_bin_16 1
     contact_bin_17 1
@@ -15041,13 +15279,15 @@ graph [
     contact_bin_9 0
     contact_bin_11 0
     contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 4
   ]
   edge [
     source 22
-    target 75
-    contact_bin_12 1
+    target 28
+    contact_bin_11 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -15064,13 +15304,37 @@ graph [
     contact_bin_8 0
     contact_bin_9 0
     contact_bin_10 0
-    contact_bin_11 0
+    contact_bin_12 0
     contact_bin_18 0
     total_realized_contacts 6
   ]
   edge [
     source 22
-    target 74
+    target 58
+    contact_bin_11 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_12 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 22
+    target 75
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -15118,6 +15382,30 @@ graph [
   ]
   edge [
     source 22
+    target 31
+    contact_bin_12 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 22
     target 78
     contact_bin_12 1
     contact_bin_13 1
@@ -15142,7 +15430,31 @@ graph [
   ]
   edge [
     source 22
-    target 57
+    target 69
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_15 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 22
+    target 59
     contact_bin_13 1
     contact_bin_0 0
     contact_bin_1 0
@@ -15166,55 +15478,7 @@ graph [
   ]
   edge [
     source 22
-    target 69
-    contact_bin_13 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 22
-    target 34
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 22
-    target 28
+    target 74
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -15238,11 +15502,9 @@ graph [
   ]
   edge [
     source 22
-    target 67
+    target 34
     contact_bin_14 1
     contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -15257,15 +15519,16 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
+    contact_bin_16 0
+    contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 2
   ]
   edge [
     source 22
     target 26
     contact_bin_14 1
     contact_bin_15 1
-    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -15280,14 +15543,40 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
+    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 2
+  ]
+  edge [
+    source 22
+    target 57
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
   ]
   edge [
     source 22
     target 55
     contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -15303,10 +15592,9 @@ graph [
     contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 2
   ]
   edge [
     source 23
@@ -15358,6 +15646,30 @@ graph [
   ]
   edge [
     source 23
+    target 26
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 23
     target 69
     contact_bin_9 1
     contact_bin_12 1
@@ -15379,30 +15691,6 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 6
-  ]
-  edge [
-    source 23
-    target 26
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
   ]
   edge [
     source 23
@@ -15431,6 +15719,7 @@ graph [
   edge [
     source 23
     target 54
+    contact_bin_13 1
     contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
@@ -15445,12 +15734,11 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_13 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 2
   ]
   edge [
     source 23
@@ -15530,7 +15818,6 @@ graph [
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_11 1
-    contact_bin_12 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -15540,30 +15827,7 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 24
-    target 29
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_11 0
+    contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
@@ -15622,8 +15886,10 @@ graph [
   ]
   edge [
     source 24
-    target 27
+    target 29
     contact_bin_9 1
+    contact_bin_11 1
+    contact_bin_12 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -15634,15 +15900,13 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 3
   ]
   edge [
     source 24
@@ -15667,6 +15931,78 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 3
+  ]
+  edge [
+    source 24
+    target 27
+    contact_bin_9 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 24
+    target 46
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 24
+    target 65
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
   ]
   edge [
     source 24
@@ -15718,11 +16054,8 @@ graph [
   ]
   edge [
     source 24
-    target 65
+    target 69
     contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -15732,28 +16065,7 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 24
-    target 46
-    contact_bin_10 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
+    contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
@@ -15862,7 +16174,31 @@ graph [
   ]
   edge [
     source 25
-    target 71
+    target 68
+    contact_bin_9 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 25
+    target 64
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_15 1
@@ -15886,7 +16222,7 @@ graph [
   ]
   edge [
     source 25
-    target 64
+    target 71
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_15 1
@@ -15934,33 +16270,9 @@ graph [
   ]
   edge [
     source 25
-    target 67
-    contact_bin_9 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 25
     target 34
     contact_bin_9 1
-    contact_bin_12 1
+    contact_bin_10 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -15970,8 +16282,8 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_10 0
     contact_bin_11 0
+    contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
@@ -15982,8 +16294,8 @@ graph [
   ]
   edge [
     source 25
-    target 68
-    contact_bin_9 1
+    target 78
+    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -15993,12 +16305,36 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
-    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 25
+    target 28
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
@@ -16029,34 +16365,11 @@ graph [
     total_realized_contacts 1
   ]
   edge [
-    source 25
-    target 78
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
     source 26
-    target 28
+    target 55
     contact_bin_2 1
     contact_bin_8 1
+    contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
@@ -16071,10 +16384,105 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
-    contact_bin_14 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 5
+  ]
+  edge [
+    source 26
+    target 33
+    contact_bin_2 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 26
+    target 27
+    contact_bin_2 1
+    contact_bin_8 1
+    contact_bin_13 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 26
+    target 28
+    contact_bin_2 1
+    contact_bin_10 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 26
+    target 46
+    contact_bin_2 1
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
   ]
   edge [
     source 26
@@ -16106,7 +16514,6 @@ graph [
     contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
-    contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -16120,88 +16527,16 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 26
-    target 68
-    contact_bin_8 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
     contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 26
-    target 47
-    contact_bin_8 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 26
-    target 55
-    contact_bin_8 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 7
   ]
   edge [
     source 26
     target 37
     contact_bin_8 1
     contact_bin_9 1
-    contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_0 0
@@ -16213,12 +16548,37 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_10 0
+    contact_bin_11 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 5
+    total_realized_contacts 4
+  ]
+  edge [
+    source 26
+    target 70
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
   ]
   edge [
     source 26
@@ -16270,6 +16630,30 @@ graph [
   ]
   edge [
     source 26
+    target 58
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 9
+  ]
+  edge [
+    source 26
     target 43
     contact_bin_8 1
     contact_bin_9 1
@@ -16294,10 +16678,9 @@ graph [
   ]
   edge [
     source 26
-    target 29
+    target 42
     contact_bin_8 1
     contact_bin_10 1
-    contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -16311,110 +16694,15 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 26
-    target 70
-    contact_bin_8 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 26
-    target 50
-    contact_bin_8 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 6
   ]
   edge [
     source 26
     target 41
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 26
-    target 27
-    contact_bin_8 1
-    contact_bin_13 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 26
-    target 58
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_11 1
@@ -16462,31 +16750,7 @@ graph [
   ]
   edge [
     source 26
-    target 42
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 26
-    target 71
+    target 35
     contact_bin_9 1
     contact_bin_13 1
     contact_bin_14 1
@@ -16510,9 +16774,56 @@ graph [
   ]
   edge [
     source 26
+    target 34
+    contact_bin_9 1
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 26
+    target 67
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 26
     target 61
     contact_bin_9 1
-    contact_bin_10 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -16526,17 +16837,18 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 5
   ]
   edge [
     source 26
     target 51
+    contact_bin_9 1
     contact_bin_10 1
-    contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -16552,7 +16864,7 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_9 0
+    contact_bin_11 0
     contact_bin_18 0
     total_realized_contacts 8
   ]
@@ -16560,7 +16872,6 @@ graph [
     source 26
     target 54
     contact_bin_10 1
-    contact_bin_13 1
     contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
@@ -16574,126 +16885,7 @@ graph [
     contact_bin_9 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 26
-    target 33
-    contact_bin_10 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 26
-    target 34
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 26
-    target 74
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 26
-    target 35
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 26
-    target 67
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_14 0
+    contact_bin_13 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
@@ -16702,7 +16894,103 @@ graph [
   ]
   edge [
     source 26
+    target 29
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 26
     target 45
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 26
+    target 74
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 26
+    target 31
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 26
+    target 78
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -16726,10 +17014,11 @@ graph [
   ]
   edge [
     source 26
-    target 46
+    target 71
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -16743,17 +17032,14 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 4
   ]
   edge [
     source 26
-    target 78
-    contact_bin_13 1
+    target 68
     contact_bin_14 1
-    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -16767,6 +17053,32 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 27
+    target 55
+    contact_bin_2 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
@@ -16800,9 +17112,8 @@ graph [
     source 27
     target 47
     contact_bin_2 1
-    contact_bin_9 1
-    contact_bin_12 1
     contact_bin_13 1
+    contact_bin_14 1
     contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
@@ -16812,13 +17123,14 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
-    contact_bin_14 0
+    contact_bin_12 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 5
+    total_realized_contacts 4
   ]
   edge [
     source 27
@@ -16826,7 +17138,6 @@ graph [
     contact_bin_2 1
     contact_bin_8 1
     contact_bin_13 1
-    contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_3 0
@@ -16838,11 +17149,12 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
+    contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 3
   ]
   edge [
     source 27
@@ -16894,32 +17206,11 @@ graph [
   ]
   edge [
     source 27
-    target 31
+    target 35
     contact_bin_2 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 27
-    target 55
-    contact_bin_2 1
+    contact_bin_7 1
+    contact_bin_9 1
+    contact_bin_13 1
     contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
@@ -16927,18 +17218,15 @@ graph [
     contact_bin_4 0
     contact_bin_5 0
     contact_bin_6 0
-    contact_bin_7 0
     contact_bin_8 0
-    contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_13 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 5
   ]
   edge [
     source 27
@@ -16970,7 +17258,6 @@ graph [
     contact_bin_2 1
     contact_bin_8 1
     contact_bin_9 1
-    contact_bin_11 1
     contact_bin_13 1
     contact_bin_15 1
     contact_bin_17 1
@@ -16982,11 +17269,12 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_10 0
+    contact_bin_11 0
     contact_bin_12 0
     contact_bin_14 0
     contact_bin_16 0
     contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 6
   ]
   edge [
     source 27
@@ -17014,27 +17302,27 @@ graph [
   ]
   edge [
     source 27
-    target 35
-    contact_bin_7 1
-    contact_bin_9 1
-    contact_bin_13 1
+    target 31
+    contact_bin_2 1
     contact_bin_0 0
     contact_bin_1 0
-    contact_bin_2 0
     contact_bin_3 0
     contact_bin_4 0
     contact_bin_5 0
     contact_bin_6 0
+    contact_bin_7 0
     contact_bin_8 0
+    contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
+    contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 1
   ]
   edge [
     source 27
@@ -17063,9 +17351,32 @@ graph [
   edge [
     source 27
     target 45
+    contact_bin_8 1
     contact_bin_9 1
     contact_bin_13 1
     contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 27
+    target 71
+    contact_bin_9 1
+    contact_bin_13 1
     contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
@@ -17079,16 +17390,16 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
+    contact_bin_14 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 3
   ]
   edge [
     source 27
-    target 71
+    target 42
     contact_bin_13 1
-    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -17103,10 +17414,107 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 27
+    target 34
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 2
+  ]
+  edge [
+    source 27
+    target 30
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 27
+    target 65
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 28
+    target 55
+    contact_bin_2 1
+    contact_bin_8 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
   ]
   edge [
     source 28
@@ -17134,7 +17542,7 @@ graph [
   ]
   edge [
     source 28
-    target 33
+    target 69
     contact_bin_2 1
     contact_bin_15 1
     contact_bin_16 1
@@ -17158,9 +17566,13 @@ graph [
   ]
   edge [
     source 28
-    target 54
+    target 46
     contact_bin_2 1
+    contact_bin_9 1
+    contact_bin_11 1
+    contact_bin_13 1
     contact_bin_14 1
+    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_3 0
@@ -17169,16 +17581,36 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_9 0
     contact_bin_10 0
-    contact_bin_11 0
     contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 6
+  ]
+  edge [
+    source 28
+    target 59
+    contact_bin_2 1
+    contact_bin_9 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 8
   ]
   edge [
     source 28
@@ -17209,7 +17641,7 @@ graph [
     target 35
     contact_bin_2 1
     contact_bin_7 1
-    contact_bin_8 1
+    contact_bin_10 1
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -17217,8 +17649,8 @@ graph [
     contact_bin_4 0
     contact_bin_5 0
     contact_bin_6 0
+    contact_bin_8 0
     contact_bin_9 0
-    contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
@@ -17230,31 +17662,7 @@ graph [
   ]
   edge [
     source 28
-    target 59
-    contact_bin_2 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 9
-  ]
-  edge [
-    source 28
-    target 60
+    target 54
     contact_bin_2 1
     contact_bin_0 0
     contact_bin_1 0
@@ -17278,8 +17686,9 @@ graph [
   ]
   edge [
     source 28
-    target 29
+    target 33
     contact_bin_2 1
+    contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -17295,10 +17704,105 @@ graph [
     contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 28
+    target 43
+    contact_bin_2 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 28
+    target 66
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_11 0
+    contact_bin_18 0
+    total_realized_contacts 9
+  ]
+  edge [
+    source 28
+    target 65
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_11 0
+    contact_bin_14 0
     contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 6
+  ]
+  edge [
+    source 28
+    target 61
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_18 0
+    total_realized_contacts 7
   ]
   edge [
     source 28
@@ -17326,34 +17830,10 @@ graph [
   ]
   edge [
     source 28
-    target 61
-    contact_bin_8 1
+    target 71
     contact_bin_9 1
     contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 28
-    target 66
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
+    contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -17367,62 +17847,14 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_11 0
+    contact_bin_8 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 8
   ]
   edge [
     source 28
-    target 55
-    contact_bin_8 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 28
-    target 65
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 28
-    target 71
+    target 42
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_11 1
@@ -17449,53 +17881,6 @@ graph [
     target 45
     contact_bin_9 1
     contact_bin_10 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 28
-    target 43
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 28
-    target 34
-    contact_bin_9 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -17510,11 +17895,34 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_10 0
     contact_bin_11 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 7
+  ]
+  edge [
+    source 28
+    target 34
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
   ]
   edge [
     source 28
@@ -17542,56 +17950,10 @@ graph [
   ]
   edge [
     source 28
-    target 46
-    contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 28
-    target 42
-    contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 28
     target 48
+    contact_bin_9 1
     contact_bin_10 1
+    contact_bin_12 1
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_0 0
@@ -17603,14 +17965,12 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_9 0
     contact_bin_11 0
-    contact_bin_12 0
     contact_bin_13 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 5
   ]
   edge [
     source 28
@@ -17710,9 +18070,9 @@ graph [
   ]
   edge [
     source 28
-    target 30
+    target 56
     contact_bin_14 1
-    contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -17727,7 +18087,7 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
-    contact_bin_16 0
+    contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 2
@@ -17735,7 +18095,6 @@ graph [
   edge [
     source 28
     target 41
-    contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
@@ -17752,9 +18111,34 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
+    contact_bin_14 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 2
+  ]
+  edge [
+    source 28
+    target 30
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
   ]
   edge [
     source 28
@@ -17782,31 +18166,7 @@ graph [
   ]
   edge [
     source 28
-    target 56
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 28
-    target 69
+    target 29
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -17902,7 +18262,31 @@ graph [
   ]
   edge [
     source 29
-    target 58
+    target 43
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_18 0
+    total_realized_contacts 10
+  ]
+  edge [
+    source 29
+    target 56
     contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
@@ -17923,54 +18307,6 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 9
-  ]
-  edge [
-    source 29
-    target 75
-    contact_bin_8 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 29
-    target 61
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
   ]
   edge [
     source 29
@@ -18022,7 +18358,7 @@ graph [
   ]
   edge [
     source 29
-    target 43
+    target 58
     contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
@@ -18032,7 +18368,6 @@ graph [
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
-    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -18041,8 +18376,33 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
+    contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 10
+    total_realized_contacts 9
+  ]
+  edge [
+    source 29
+    target 33
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
   ]
   edge [
     source 29
@@ -18070,30 +18430,6 @@ graph [
   ]
   edge [
     source 29
-    target 33
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 29
     target 55
     contact_bin_8 1
     contact_bin_0 0
@@ -18115,6 +18451,54 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 1
+  ]
+  edge [
+    source 29
+    target 47
+    contact_bin_8 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 29
+    target 61
+    contact_bin_9 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
   ]
   edge [
     source 29
@@ -18142,32 +18526,9 @@ graph [
   ]
   edge [
     source 29
-    target 56
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 29
     target 71
     contact_bin_9 1
+    contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -18183,16 +18544,62 @@ graph [
     contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
-    contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 3
+  ]
+  edge [
+    source 29
+    target 54
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 29
+    target 30
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_18 0
+    total_realized_contacts 8
   ]
   edge [
     source 29
     target 59
     contact_bin_9 1
-    contact_bin_12 1
     contact_bin_16 1
     contact_bin_17 1
     contact_bin_0 0
@@ -18206,11 +18613,12 @@ graph [
     contact_bin_8 0
     contact_bin_10 0
     contact_bin_11 0
+    contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 3
   ]
   edge [
     source 29
@@ -18241,82 +18649,31 @@ graph [
     target 70
     contact_bin_9 1
     contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_11 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 29
-    target 54
-    contact_bin_9 1
-    contact_bin_10 1
     contact_bin_11 1
     contact_bin_12 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 29
-    target 68
-    contact_bin_10 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 29
-    target 30
-    contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
     contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_18 0
+    total_realized_contacts 9
+  ]
+  edge [
+    source 29
+    target 34
+    contact_bin_11 1
+    contact_bin_13 1
+    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -18328,18 +18685,41 @@ graph [
     contact_bin_8 0
     contact_bin_9 0
     contact_bin_10 0
-    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 29
+    target 57
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 6
   ]
   edge [
     source 29
-    target 57
+    target 31
     contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -18352,9 +18732,13 @@ graph [
     contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 5
+    total_realized_contacts 1
   ]
   edge [
     source 29
@@ -18406,6 +18790,30 @@ graph [
   ]
   edge [
     source 29
+    target 68
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 29
     target 48
     contact_bin_13 1
     contact_bin_0 0
@@ -18430,9 +18838,12 @@ graph [
   ]
   edge [
     source 29
-    target 34
+    target 75
     contact_bin_13 1
+    contact_bin_14 1
     contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -18446,11 +18857,8 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 5
   ]
   edge [
     source 29
@@ -18472,6 +18880,30 @@ graph [
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 30
+    target 67
+    contact_bin_9 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 1
@@ -18529,7 +18961,6 @@ graph [
     target 63
     contact_bin_9 1
     contact_bin_10 1
-    contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -18545,8 +18976,9 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_11 0
     contact_bin_18 0
-    total_realized_contacts 9
+    total_realized_contacts 8
   ]
   edge [
     source 30
@@ -18606,6 +19038,7 @@ graph [
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
+    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -18616,9 +19049,8 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_11 0
-    contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 8
   ]
   edge [
     source 30
@@ -18646,7 +19078,7 @@ graph [
   ]
   edge [
     source 30
-    target 35
+    target 70
     contact_bin_10 1
     contact_bin_12 1
     contact_bin_13 1
@@ -18720,6 +19152,7 @@ graph [
     source 30
     target 54
     contact_bin_10 1
+    contact_bin_13 1
     contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
@@ -18733,16 +19166,15 @@ graph [
     contact_bin_9 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_13 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 3
   ]
   edge [
     source 30
-    target 45
+    target 35
     contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
@@ -18763,6 +19195,54 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 6
+  ]
+  edge [
+    source 30
+    target 74
+    contact_bin_12 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 30
+    target 46
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
   ]
   edge [
     source 30
@@ -18790,55 +19270,8 @@ graph [
   ]
   edge [
     source 30
-    target 46
+    target 45
     contact_bin_12 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 30
-    target 34
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 30
-    target 70
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -18855,14 +19288,37 @@ graph [
     contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
-    contact_bin_12 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 5
   ]
   edge [
     source 30
-    target 67
+    target 34
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 30
+    target 66
     contact_bin_13 1
     contact_bin_0 0
     contact_bin_1 0
@@ -18883,6 +19339,54 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 1
+  ]
+  edge [
+    source 30
+    target 78
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 30
+    target 55
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
   ]
   edge [
     source 30
@@ -18910,79 +19414,8 @@ graph [
   ]
   edge [
     source 30
-    target 55
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 30
-    target 78
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 30
-    target 71
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 30
     target 61
+    contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
@@ -18999,62 +19432,13 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
-    contact_bin_14 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 3
   ]
   edge [
     source 30
-    target 66
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 30
-    target 31
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 30
-    target 74
+    target 65
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -19072,30 +19456,6 @@ graph [
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 31
-    target 55
-    contact_bin_2 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 1
@@ -19104,8 +19464,9 @@ graph [
     source 31
     target 46
     contact_bin_2 1
-    contact_bin_10 1
+    contact_bin_11 1
     contact_bin_12 1
+    contact_bin_13 1
     contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
@@ -19116,17 +19477,17 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_13 0
+    contact_bin_10 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 5
   ]
   edge [
     source 31
     target 68
+    contact_bin_3 1
     contact_bin_4 1
     contact_bin_8 1
     contact_bin_9 1
@@ -19138,7 +19499,6 @@ graph [
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
-    contact_bin_3 0
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
@@ -19146,31 +19506,7 @@ graph [
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 31
-    target 35
-    contact_bin_7 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_8 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 9
   ]
   edge [
     source 31
@@ -19198,7 +19534,7 @@ graph [
   ]
   edge [
     source 31
-    target 45
+    target 70
     contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
@@ -19227,6 +19563,7 @@ graph [
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_12 1
+    contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -19237,12 +19574,35 @@ graph [
     contact_bin_7 0
     contact_bin_11 0
     contact_bin_13 0
-    contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 5
+  ]
+  edge [
+    source 31
+    target 45
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 8
   ]
   edge [
     source 31
@@ -19271,30 +19631,6 @@ graph [
   edge [
     source 31
     target 61
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 31
-    target 70
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_11 1
@@ -19342,6 +19678,30 @@ graph [
   ]
   edge [
     source 31
+    target 35
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 31
     target 34
     contact_bin_9 1
     contact_bin_10 1
@@ -19366,33 +19726,10 @@ graph [
   ]
   edge [
     source 31
-    target 58
-    contact_bin_9 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 31
-    target 51
+    target 42
     contact_bin_9 1
     contact_bin_12 1
+    contact_bin_13 1
     contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
@@ -19405,20 +19742,19 @@ graph [
     contact_bin_8 0
     contact_bin_10 0
     contact_bin_11 0
-    contact_bin_13 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 4
   ]
   edge [
     source 31
     target 43
     contact_bin_9 1
-    contact_bin_10 1
     contact_bin_12 1
     contact_bin_14 1
+    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -19428,9 +19764,9 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_10 0
     contact_bin_11 0
     contact_bin_13 0
-    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
@@ -19462,33 +19798,9 @@ graph [
   ]
   edge [
     source 31
-    target 65
-    contact_bin_9 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 31
     target 44
-    contact_bin_9 1
     contact_bin_11 1
+    contact_bin_13 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -19498,9 +19810,9 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_9 0
     contact_bin_10 0
     contact_bin_12 0
-    contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
@@ -19512,6 +19824,7 @@ graph [
     source 31
     target 74
     contact_bin_11 1
+    contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -19526,39 +19839,14 @@ graph [
     contact_bin_8 0
     contact_bin_9 0
     contact_bin_10 0
-    contact_bin_12 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 5
   ]
   edge [
     source 31
-    target 42
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 31
-    target 54
+    target 41
     contact_bin_12 1
     contact_bin_0 0
     contact_bin_1 0
@@ -19574,6 +19862,102 @@ graph [
     contact_bin_11 0
     contact_bin_13 0
     contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 31
+    target 55
+    contact_bin_12 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 31
+    target 58
+    contact_bin_13 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 31
+    target 78
+    contact_bin_13 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 31
+    target 51
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
@@ -19606,13 +19990,8 @@ graph [
   ]
   edge [
     source 33
-    target 42
+    target 55
     contact_bin_2 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_3 0
@@ -19622,11 +20001,112 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 33
+    target 41
+    contact_bin_2 1
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_12 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 9
+  ]
+  edge [
+    source 33
+    target 42
+    contact_bin_2 1
+    contact_bin_8 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 6
+  ]
+  edge [
+    source 33
+    target 48
+    contact_bin_2 1
+    contact_bin_8 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 33
+    target 58
+    contact_bin_2 1
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 10
   ]
   edge [
     source 33
@@ -19654,59 +20134,38 @@ graph [
   ]
   edge [
     source 33
-    target 60
-    contact_bin_8 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 33
-    target 48
-    contact_bin_8 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 33
-    target 50
-    contact_bin_8 1
+    target 35
+    contact_bin_7 1
     contact_bin_9 1
     contact_bin_11 1
     contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 33
+    target 69
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -19716,13 +20175,10 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_10 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
+    contact_bin_11 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 7
   ]
   edge [
     source 33
@@ -19750,59 +20206,10 @@ graph [
   ]
   edge [
     source 33
-    target 58
+    target 50
     contact_bin_8 1
     contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
     contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 9
-  ]
-  edge [
-    source 33
-    target 41
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 33
-    target 43
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_13 1
-    contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -19813,36 +20220,13 @@ graph [
     contact_bin_7 0
     contact_bin_10 0
     contact_bin_11 0
-    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 33
-    target 69
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 3
   ]
   edge [
     source 33
@@ -19870,11 +20254,12 @@ graph [
   ]
   edge [
     source 33
-    target 61
+    target 43
     contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
-    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -19883,20 +20268,21 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_13 0
+    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 5
   ]
   edge [
     source 33
-    target 56
+    target 61
     contact_bin_8 1
     contact_bin_9 1
+    contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -19910,11 +20296,9 @@ graph [
     contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 4
   ]
   edge [
     source 33
@@ -19942,30 +20326,6 @@ graph [
   ]
   edge [
     source 33
-    target 65
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 33
     target 57
     contact_bin_9 1
     contact_bin_0 0
@@ -19990,8 +20350,10 @@ graph [
   ]
   edge [
     source 33
-    target 68
+    target 65
     contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -20002,46 +20364,18 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 4
   ]
   edge [
     source 33
-    target 35
-    contact_bin_9 1
-    contact_bin_11 1
+    target 44
     contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 33
-    target 71
-    contact_bin_10 1
-    contact_bin_14 1
-    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -20052,13 +20386,15 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_9 0
+    contact_bin_10 0
     contact_bin_11 0
-    contact_bin_12 0
     contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 1
   ]
   edge [
     source 33
@@ -20086,57 +20422,10 @@ graph [
   ]
   edge [
     source 33
-    target 34
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 33
-    target 51
-    contact_bin_14 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 33
     target 74
     contact_bin_14 1
     contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -20151,14 +20440,13 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 3
   ]
   edge [
     source 33
-    target 55
+    target 68
     contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
@@ -20181,10 +20469,105 @@ graph [
     total_realized_contacts 1
   ]
   edge [
+    source 33
+    target 51
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 33
+    target 34
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 33
+    target 71
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 34
+    target 50
+    contact_bin_2 1
+    contact_bin_9 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
     source 34
     target 59
     contact_bin_2 1
-    contact_bin_9 1
     contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
@@ -20199,10 +20582,11 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_9 0
     contact_bin_10 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 8
+    total_realized_contacts 7
   ]
   edge [
     source 34
@@ -20230,30 +20614,6 @@ graph [
   ]
   edge [
     source 34
-    target 65
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 34
     target 71
     contact_bin_9 1
     contact_bin_10 1
@@ -20278,59 +20638,8 @@ graph [
   ]
   edge [
     source 34
-    target 61
+    target 65
     contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 34
-    target 66
-    contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 34
-    target 46
-    contact_bin_9 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -20343,10 +20652,61 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 1
+  ]
+  edge [
+    source 34
+    target 61
+    contact_bin_9 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 34
+    target 64
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
   ]
   edge [
     source 34
@@ -20371,6 +20731,30 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 3
+  ]
+  edge [
+    source 34
+    target 66
+    contact_bin_9 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
   ]
   edge [
     source 34
@@ -20400,6 +20784,7 @@ graph [
     source 34
     target 44
     contact_bin_9 1
+    contact_bin_10 1
     contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
@@ -20414,20 +20799,17 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_10 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 7
   ]
   edge [
     source 34
-    target 64
+    target 43
     contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
+    contact_bin_14 1
     contact_bin_15 1
-    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -20438,59 +20820,13 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 34
-    target 67
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
+    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 34
-    target 75
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 3
   ]
   edge [
     source 34
@@ -20498,6 +20834,29 @@ graph [
     contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 34
+    target 75
+    contact_bin_12 1
+    contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
@@ -20512,9 +20871,10 @@ graph [
     contact_bin_8 0
     contact_bin_9 0
     contact_bin_10 0
+    contact_bin_11 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 5
   ]
   edge [
     source 34
@@ -20542,7 +20902,7 @@ graph [
   ]
   edge [
     source 34
-    target 43
+    target 74
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -20566,10 +20926,8 @@ graph [
   ]
   edge [
     source 34
-    target 74
-    contact_bin_12 1
+    target 46
     contact_bin_13 1
-    contact_bin_14 1
     contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
@@ -20583,10 +20941,12 @@ graph [
     contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 2
   ]
   edge [
     source 34
@@ -20614,32 +20974,10 @@ graph [
   ]
   edge [
     source 34
-    target 51
+    target 67
     contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 34
-    target 35
     contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -20654,35 +20992,9 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 34
-    target 56
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 3
   ]
   edge [
     source 34
@@ -20739,7 +21051,7 @@ graph [
     contact_bin_9 1
     contact_bin_13 1
     contact_bin_14 1
-    contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -20751,7 +21063,55 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_16 0
+    contact_bin_15 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 35
+    target 69
+    contact_bin_7 1
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 35
+    target 65
+    contact_bin_7 1
+    contact_bin_9 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 5
@@ -20763,6 +21123,7 @@ graph [
     contact_bin_8 1
     contact_bin_12 1
     contact_bin_13 1
+    contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
@@ -20775,10 +21136,57 @@ graph [
     contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
-    contact_bin_14 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 7
+  ]
+  edge [
+    source 35
+    target 61
+    contact_bin_7 1
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 35
+    target 66
+    contact_bin_7 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
   ]
   edge [
     source 35
@@ -20806,102 +21214,6 @@ graph [
   ]
   edge [
     source 35
-    target 65
-    contact_bin_7 1
-    contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 35
-    target 61
-    contact_bin_7 1
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 35
-    target 66
-    contact_bin_7 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 35
-    target 71
-    contact_bin_7 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_8 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 35
     target 45
     contact_bin_7 1
     contact_bin_8 1
@@ -20923,6 +21235,30 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 10
+  ]
+  edge [
+    source 35
+    target 71
+    contact_bin_7 1
+    contact_bin_10 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
   ]
   edge [
     source 35
@@ -20950,54 +21286,6 @@ graph [
   ]
   edge [
     source 35
-    target 69
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 35
-    target 50
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 35
     target 42
     contact_bin_8 1
     contact_bin_10 1
@@ -21022,8 +21310,35 @@ graph [
   ]
   edge [
     source 35
-    target 47
+    target 50
+    contact_bin_8 1
     contact_bin_9 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 35
+    target 57
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -21033,9 +21348,30 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
-    contact_bin_12 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 35
+    target 47
+    contact_bin_12 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
@@ -21043,54 +21379,6 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 1
-  ]
-  edge [
-    source 35
-    target 57
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 37
-    target 47
-    contact_bin_8 1
-    contact_bin_12 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
   ]
   edge [
     source 37
@@ -21166,30 +21454,6 @@ graph [
   ]
   edge [
     source 41
-    target 64
-    contact_bin_8 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 41
     target 58
     contact_bin_8 1
     contact_bin_9 1
@@ -21238,30 +21502,6 @@ graph [
   ]
   edge [
     source 41
-    target 70
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_18 0
-    total_realized_contacts 10
-  ]
-  edge [
-    source 41
     target 42
     contact_bin_8 1
     contact_bin_9 1
@@ -21281,6 +21521,30 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_13 0
+    contact_bin_18 0
+    total_realized_contacts 9
+  ]
+  edge [
+    source 41
+    target 70
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 9
   ]
@@ -21331,6 +21595,54 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 4
+  ]
+  edge [
+    source 41
+    target 56
+    contact_bin_8 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 41
+    target 71
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
   ]
   edge [
     source 41
@@ -21362,6 +21674,7 @@ graph [
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_11 1
+    contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -21375,10 +21688,9 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_12 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 8
   ]
   edge [
     source 41
@@ -21406,12 +21718,12 @@ graph [
   ]
   edge [
     source 41
-    target 71
-    contact_bin_9 1
-    contact_bin_11 1
+    target 51
+    contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
+    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -21421,60 +21733,12 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_9 0
     contact_bin_10 0
+    contact_bin_11 0
     contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 5
-  ]
-  edge [
-    source 41
-    target 57
-    contact_bin_9 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 41
-    target 66
-    contact_bin_9 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
   ]
   edge [
     source 41
@@ -21502,12 +21766,11 @@ graph [
   ]
   edge [
     source 41
-    target 51
+    target 74
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
-    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -21521,39 +21784,16 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 41
-    target 74
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 4
   ]
   edge [
     source 41
-    target 56
+    target 57
+    contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
-    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -21567,7 +21807,7 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_13 0
+    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 3
@@ -21598,8 +21838,8 @@ graph [
   ]
   edge [
     source 41
-    target 60
-    contact_bin_15 1
+    target 66
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -21615,21 +21855,17 @@ graph [
     contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
-    contact_bin_16 0
+    contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 1
   ]
   edge [
     source 42
-    target 45
+    target 58
     contact_bin_8 1
-    contact_bin_11 1
-    contact_bin_12 1
     contact_bin_13 1
-    contact_bin_14 1
     contact_bin_15 1
-    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -21640,9 +21876,13 @@ graph [
     contact_bin_7 0
     contact_bin_9 0
     contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 3
   ]
   edge [
     source 42
@@ -21664,6 +21904,30 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 8
+  ]
+  edge [
+    source 42
+    target 45
+    contact_bin_8 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 8
@@ -21696,6 +21960,7 @@ graph [
     source 42
     target 71
     contact_bin_8 1
+    contact_bin_9 1
     contact_bin_10 1
     contact_bin_11 1
     contact_bin_12 1
@@ -21711,18 +21976,18 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_9 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 8
+    total_realized_contacts 9
   ]
   edge [
     source 42
-    target 50
+    target 47
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_11 1
     contact_bin_12 1
+    contact_bin_13 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -21732,13 +21997,12 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 5
   ]
   edge [
     source 42
@@ -21796,8 +22060,8 @@ graph [
     contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
+    contact_bin_14 1
     contact_bin_15 1
-    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -21807,15 +22071,17 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_14 0
+    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 7
   ]
   edge [
     source 42
-    target 66
+    target 50
     contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -21826,44 +22092,17 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 42
-    target 60
-    contact_bin_10 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 3
   ]
   edge [
     source 42
     target 65
-    contact_bin_10 1
     contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
@@ -21879,34 +22118,11 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_9 0
+    contact_bin_10 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 42
-    target 47
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_13 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 5
   ]
   edge [
     source 42
@@ -21958,10 +22174,8 @@ graph [
   ]
   edge [
     source 42
-    target 58
+    target 60
     contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -21976,14 +22190,66 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 2
+  ]
+  edge [
+    source 42
+    target 66
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 43
+    target 46
+    contact_bin_2 1
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 9
   ]
   edge [
     source 43
     target 69
     contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
     contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
@@ -21998,11 +22264,9 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 9
   ]
   edge [
     source 43
@@ -22010,7 +22274,6 @@ graph [
     contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
-    contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -22025,8 +22288,9 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
+    contact_bin_11 0
     contact_bin_18 0
-    total_realized_contacts 10
+    total_realized_contacts 9
   ]
   edge [
     source 43
@@ -22080,8 +22344,6 @@ graph [
     source 43
     target 55
     contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
@@ -22092,13 +22354,15 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
+    contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
+    contact_bin_14 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 5
+    total_realized_contacts 3
   ]
   edge [
     source 43
@@ -22106,34 +22370,9 @@ graph [
     contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 43
-    target 46
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
-    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -22143,41 +22382,17 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_11 0
+    contact_bin_15 0
     contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 43
-    target 56
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 6
   ]
   edge [
     source 43
-    target 70
+    target 56
     contact_bin_9 1
     contact_bin_10 1
-    contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -22192,9 +22407,10 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_11 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 8
+    total_realized_contacts 7
   ]
   edge [
     source 43
@@ -22222,15 +22438,37 @@ graph [
   ]
   edge [
     source 43
-    target 71
+    target 70
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 43
+    target 54
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -22240,14 +22478,17 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_15 0
+    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 8
+    total_realized_contacts 6
   ]
   edge [
     source 43
-    target 57
+    target 71
     contact_bin_9 1
+    contact_bin_10 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -22262,8 +22503,31 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_10 0
     contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 43
+    target 60
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 6
@@ -22315,34 +22579,11 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 6
-  ]
-  edge [
-    source 43
-    target 51
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_18 0
-    total_realized_contacts 7
   ]
   edge [
     source 43
     target 44
+    contact_bin_9 1
     contact_bin_10 1
     contact_bin_12 1
     contact_bin_13 1
@@ -22357,42 +22598,17 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_9 0
     contact_bin_11 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 5
+    total_realized_contacts 6
   ]
   edge [
     source 43
-    target 54
-    contact_bin_10 1
-    contact_bin_11 1
+    target 66
+    contact_bin_9 1
     contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 43
-    target 60
-    contact_bin_12 1
-    contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_0 0
@@ -22404,9 +22620,9 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
+    contact_bin_13 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
@@ -22414,31 +22630,8 @@ graph [
   ]
   edge [
     source 43
-    target 66
-    contact_bin_12 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 43
-    target 75
+    target 57
+    contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -22455,10 +22648,33 @@ graph [
     contact_bin_8 0
     contact_bin_9 0
     contact_bin_10 0
-    contact_bin_11 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 5
+    total_realized_contacts 6
+  ]
+  edge [
+    source 43
+    target 51
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_18 0
+    total_realized_contacts 6
   ]
   edge [
     source 43
@@ -22486,8 +22702,11 @@ graph [
   ]
   edge [
     source 43
-    target 64
+    target 75
+    contact_bin_13 1
+    contact_bin_14 1
     contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -22501,21 +22720,18 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 4
   ]
   edge [
     source 44
     target 46
     contact_bin_9 1
+    contact_bin_10 1
     contact_bin_11 1
     contact_bin_12 1
     contact_bin_14 1
-    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -22525,8 +22741,8 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_10 0
     contact_bin_13 0
+    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
@@ -22558,7 +22774,7 @@ graph [
   ]
   edge [
     source 44
-    target 45
+    target 51
     contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
@@ -22630,58 +22846,11 @@ graph [
   ]
   edge [
     source 45
-    target 69
-    contact_bin_8 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 45
-    target 50
+    target 61
     contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_12 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 45
-    target 61
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -22694,111 +22863,15 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_10 0
     contact_bin_11 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 45
-    target 47
-    contact_bin_8 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 45
-    target 56
-    contact_bin_9 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 45
-    target 67
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 45
-    target 59
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 8
   ]
   edge [
     source 45
     target 46
+    contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_11 1
@@ -22814,11 +22887,130 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_8 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
+    total_realized_contacts 8
+  ]
+  edge [
+    source 45
+    target 50
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 45
+    target 68
+    contact_bin_8 1
+    contact_bin_10 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 45
+    target 47
+    contact_bin_8 1
+    contact_bin_10 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 45
+    target 56
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
     total_realized_contacts 7
+  ]
+  edge [
+    source 45
+    target 76
+    contact_bin_9 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
   ]
   edge [
     source 45
@@ -22870,6 +23062,54 @@ graph [
   ]
   edge [
     source 45
+    target 67
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 45
+    target 69
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 45
     target 65
     contact_bin_9 1
     contact_bin_10 1
@@ -22891,6 +23131,30 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 6
+  ]
+  edge [
+    source 45
+    target 59
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
   ]
   edge [
     source 45
@@ -22918,8 +23182,31 @@ graph [
   ]
   edge [
     source 45
-    target 54
+    target 66
+    contact_bin_9 1
     contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 45
+    target 54
     contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
@@ -22934,35 +23221,12 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_9 0
+    contact_bin_10 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 45
-    target 66
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 4
   ]
   edge [
     source 45
@@ -23014,30 +23278,6 @@ graph [
   ]
   edge [
     source 45
-    target 76
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 45
     target 78
     contact_bin_13 1
     contact_bin_14 1
@@ -23059,30 +23299,6 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 4
-  ]
-  edge [
-    source 45
-    target 64
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
   ]
   edge [
     source 45
@@ -23110,10 +23326,8 @@ graph [
   ]
   edge [
     source 45
-    target 68
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
+    target 55
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -23127,10 +23341,12 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_16 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 1
   ]
   edge [
     source 46
@@ -23155,6 +23371,102 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 2
+  ]
+  edge [
+    source 46
+    target 69
+    contact_bin_2 1
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 46
+    target 70
+    contact_bin_2 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 8
+  ]
+  edge [
+    source 46
+    target 59
+    contact_bin_2 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 46
+    target 54
+    contact_bin_2 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
   ]
   edge [
     source 46
@@ -23182,107 +23494,9 @@ graph [
   ]
   edge [
     source 46
-    target 70
-    contact_bin_2 1
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 9
-  ]
-  edge [
-    source 46
-    target 69
-    contact_bin_2 1
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_11 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 46
-    target 54
-    contact_bin_2 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 46
     target 64
     contact_bin_2 1
     contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 46
-    target 60
-    contact_bin_2 1
-    contact_bin_8 1
-    contact_bin_13 1
-    contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_3 0
@@ -23291,28 +23505,6 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 46
-    target 48
-    contact_bin_2 1
-    contact_bin_9 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
@@ -23331,7 +23523,6 @@ graph [
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_11 1
-    contact_bin_12 1
     contact_bin_13 1
     contact_bin_0 0
     contact_bin_1 0
@@ -23341,12 +23532,37 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
+    contact_bin_12 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 5
+  ]
+  edge [
+    source 46
+    target 48
+    contact_bin_2 1
+    contact_bin_9 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
   ]
   edge [
     source 46
@@ -23374,7 +23590,31 @@ graph [
   ]
   edge [
     source 46
-    target 63
+    target 60
+    contact_bin_8 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 46
+    target 58
     contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
@@ -23398,7 +23638,7 @@ graph [
   ]
   edge [
     source 46
-    target 58
+    target 63
     contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
@@ -23446,6 +23686,78 @@ graph [
   ]
   edge [
     source 46
+    target 71
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 46
+    target 56
+    contact_bin_9 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 46
+    target 76
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 46
     target 67
     contact_bin_9 1
     contact_bin_10 1
@@ -23470,81 +23782,10 @@ graph [
   ]
   edge [
     source 46
-    target 71
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 46
-    target 57
-    contact_bin_9 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 46
-    target 59
-    contact_bin_9 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 46
     target 68
     contact_bin_9 1
     contact_bin_13 1
+    contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -23557,16 +23798,17 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 3
   ]
   edge [
     source 46
     target 66
+    contact_bin_9 1
+    contact_bin_10 1
     contact_bin_11 1
     contact_bin_0 0
     contact_bin_1 0
@@ -23577,8 +23819,6 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
     contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
@@ -23586,11 +23826,11 @@ graph [
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 3
   ]
   edge [
     source 46
-    target 76
+    target 78
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -23617,30 +23857,6 @@ graph [
     target 51
     contact_bin_13 1
     contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 46
-    target 56
-    contact_bin_13 1
-    contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -23662,7 +23878,7 @@ graph [
   ]
   edge [
     source 46
-    target 78
+    target 74
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -23686,9 +23902,8 @@ graph [
   ]
   edge [
     source 46
-    target 74
+    target 57
     contact_bin_14 1
-    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -23703,42 +23918,19 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
+    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 1
   ]
   edge [
     source 47
     target 55
     contact_bin_2 1
     contact_bin_8 1
-    contact_bin_12 1
-    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 47
-    target 69
-    contact_bin_8 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
     contact_bin_3 0
     contact_bin_4 0
     contact_bin_5 0
@@ -23754,7 +23946,7 @@ graph [
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 2
   ]
   edge [
     source 47
@@ -23785,30 +23977,8 @@ graph [
     target 68
     contact_bin_8 1
     contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 47
-    target 64
-    contact_bin_8 1
-    contact_bin_9 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -23819,43 +23989,18 @@ graph [
     contact_bin_7 0
     contact_bin_10 0
     contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 47
-    target 50
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 4
   ]
   edge [
     source 47
     target 48
     contact_bin_8 1
+    contact_bin_9 1
     contact_bin_12 1
     contact_bin_0 0
     contact_bin_1 0
@@ -23865,7 +24010,6 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_13 0
@@ -23874,7 +24018,31 @@ graph [
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 3
+  ]
+  edge [
+    source 47
+    target 58
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
   ]
   edge [
     source 47
@@ -23885,7 +24053,6 @@ graph [
     contact_bin_11 1
     contact_bin_12 1
     contact_bin_14 1
-    contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -23896,16 +24063,17 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_13 0
+    contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 8
+    total_realized_contacts 7
   ]
   edge [
     source 47
     target 61
+    contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
-    contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_0 0
@@ -23916,7 +24084,7 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_8 0
+    contact_bin_11 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
@@ -23974,10 +24142,8 @@ graph [
   ]
   edge [
     source 47
-    target 65
+    target 50
     contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_12 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -23988,20 +24154,21 @@ graph [
     contact_bin_7 0
     contact_bin_8 0
     contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 1
   ]
   edge [
     source 47
-    target 58
+    target 64
     contact_bin_9 1
     contact_bin_12 1
-    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -24016,14 +24183,15 @@ graph [
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
+    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 2
   ]
   edge [
     source 47
-    target 57
-    contact_bin_14 1
+    target 65
+    contact_bin_9 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -24033,11 +24201,11 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
+    contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
@@ -24050,6 +24218,7 @@ graph [
     contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
+    contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -24064,9 +24233,8 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_11 0
     contact_bin_18 0
-    total_realized_contacts 9
+    total_realized_contacts 10
   ]
   edge [
     source 48
@@ -24095,7 +24263,6 @@ graph [
   edge [
     source 48
     target 78
-    contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -24112,16 +24279,16 @@ graph [
     contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
+    contact_bin_12 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 5
+    total_realized_contacts 4
   ]
   edge [
     source 50
     target 66
     contact_bin_8 1
     contact_bin_9 1
-    contact_bin_10 1
     contact_bin_12 1
     contact_bin_0 0
     contact_bin_1 0
@@ -24131,6 +24298,7 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
+    contact_bin_10 0
     contact_bin_11 0
     contact_bin_13 0
     contact_bin_14 0
@@ -24138,7 +24306,7 @@ graph [
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 3
   ]
   edge [
     source 50
@@ -24146,7 +24314,6 @@ graph [
     contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
-    contact_bin_12 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -24155,29 +24322,6 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 50
-    target 55
-    contact_bin_9 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
@@ -24186,7 +24330,7 @@ graph [
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 3
   ]
   edge [
     source 50
@@ -24216,7 +24360,6 @@ graph [
     source 50
     target 71
     contact_bin_9 1
-    contact_bin_10 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -24226,32 +24369,9 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 50
-    target 69
-    contact_bin_12 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
+    contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
@@ -24310,30 +24430,6 @@ graph [
   ]
   edge [
     source 51
-    target 60
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_18 0
-    total_realized_contacts 9
-  ]
-  edge [
-    source 51
     target 70
     contact_bin_9 1
     contact_bin_12 1
@@ -24389,6 +24485,7 @@ graph [
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
+    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -24400,14 +24497,13 @@ graph [
     contact_bin_8 0
     contact_bin_10 0
     contact_bin_11 0
-    contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 7
   ]
   edge [
     source 51
     target 63
-    contact_bin_9 1
+    contact_bin_10 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -24423,7 +24519,31 @@ graph [
     contact_bin_6 0
     contact_bin_7 0
     contact_bin_8 0
-    contact_bin_10 0
+    contact_bin_9 0
+    contact_bin_11 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 51
+    target 60
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
     contact_bin_11 0
     contact_bin_18 0
     total_realized_contacts 7
@@ -24460,7 +24580,6 @@ graph [
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
-    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -24473,15 +24592,15 @@ graph [
     contact_bin_9 0
     contact_bin_10 0
     contact_bin_11 0
+    contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 5
   ]
   edge [
     source 51
-    target 58
-    contact_bin_14 1
+    target 68
+    contact_bin_13 1
     contact_bin_15 1
-    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -24495,14 +24614,16 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_13 0
+    contact_bin_14 0
     contact_bin_16 0
+    contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 2
   ]
   edge [
     source 51
-    target 78
+    target 71
+    contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
@@ -24519,16 +24640,17 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
-    contact_bin_13 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 4
   ]
   edge [
     source 51
-    target 74
+    target 58
     contact_bin_14 1
     contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -24543,10 +24665,8 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
-    contact_bin_16 0
-    contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 4
   ]
   edge [
     source 51
@@ -24574,105 +24694,32 @@ graph [
   ]
   edge [
     source 51
-    target 71
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 51
-    target 67
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 51
-    target 68
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 51
-    target 66
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 51
     target 55
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 51
+    target 74
     contact_bin_15 1
-    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -24688,9 +24735,58 @@ graph [
     contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
+    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 1
+  ]
+  edge [
+    source 51
+    target 78
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 51
+    target 59
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
   ]
   edge [
     source 54
@@ -24718,9 +24814,8 @@ graph [
   ]
   edge [
     source 54
-    target 71
+    target 59
     contact_bin_9 1
-    contact_bin_14 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -24734,11 +24829,12 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
+    contact_bin_14 0
     contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 1
   ]
   edge [
     source 54
@@ -24766,30 +24862,6 @@ graph [
   ]
   edge [
     source 54
-    target 59
-    contact_bin_9 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 54
     target 61
     contact_bin_9 1
     contact_bin_10 1
@@ -24811,54 +24883,6 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 3
-  ]
-  edge [
-    source 54
-    target 66
-    contact_bin_9 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 54
-    target 68
-    contact_bin_10 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
   ]
   edge [
     source 54
@@ -24886,6 +24910,30 @@ graph [
   ]
   edge [
     source 54
+    target 69
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 54
     target 78
     contact_bin_13 1
     contact_bin_14 1
@@ -24910,7 +24958,7 @@ graph [
   ]
   edge [
     source 54
-    target 69
+    target 67
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_0 0
@@ -24931,6 +24979,54 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 2
+  ]
+  edge [
+    source 54
+    target 60
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 54
+    target 66
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
   ]
   edge [
     source 54
@@ -24957,12 +25053,14 @@ graph [
     total_realized_contacts 1
   ]
   edge [
-    source 54
-    target 67
+    source 55
+    target 69
+    contact_bin_2 1
     contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
-    contact_bin_2 0
     contact_bin_3 0
     contact_bin_4 0
     contact_bin_5 0
@@ -24974,44 +25072,16 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 55
-    target 68
-    contact_bin_2 1
-    contact_bin_8 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 4
   ]
   edge [
     source 55
-    target 61
+    target 64
     contact_bin_2 1
     contact_bin_8 1
     contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
@@ -25023,39 +25093,18 @@ graph [
     contact_bin_7 0
     contact_bin_10 0
     contact_bin_11 0
+    contact_bin_12 0
     contact_bin_13 0
+    contact_bin_14 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 5
   ]
   edge [
     source 55
-    target 66
+    target 58
     contact_bin_2 1
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_14 1
-    contact_bin_15 1
     contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 55
-    target 75
-    contact_bin_2 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_3 0
@@ -25071,10 +25120,9 @@ graph [
     contact_bin_13 0
     contact_bin_14 0
     contact_bin_15 0
-    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 1
+    total_realized_contacts 2
   ]
   edge [
     source 55
@@ -25102,34 +25150,8 @@ graph [
   ]
   edge [
     source 55
-    target 64
+    target 68
     contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 55
-    target 56
-    contact_bin_8 1
-    contact_bin_14 1
-    contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -25143,10 +25165,84 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
     contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 1
+  ]
+  edge [
+    source 55
+    target 61
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 55
+    target 56
+    contact_bin_8 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 55
+    target 66
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
   ]
   edge [
     source 55
@@ -25174,7 +25270,7 @@ graph [
   ]
   edge [
     source 55
-    target 67
+    target 78
     contact_bin_14 1
     contact_bin_16 1
     contact_bin_0 0
@@ -25195,30 +25291,6 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 2
-  ]
-  edge [
-    source 55
-    target 69
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
   ]
   edge [
     source 55
@@ -25246,31 +25318,7 @@ graph [
   ]
   edge [
     source 55
-    target 58
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 55
-    target 78
+    target 67
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -25291,6 +25339,54 @@ graph [
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 1
+  ]
+  edge [
+    source 56
+    target 57
+    contact_bin_0 1
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 9
+  ]
+  edge [
+    source 56
+    target 68
+    contact_bin_8 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
   ]
   edge [
     source 56
@@ -25342,59 +25438,9 @@ graph [
   ]
   edge [
     source 56
-    target 57
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 56
     target 58
-    contact_bin_9 1
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 56
-    target 68
     contact_bin_13 1
     contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -25408,16 +25454,17 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
+    contact_bin_15 0
+    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 4
+    total_realized_contacts 2
   ]
   edge [
     source 56
     target 71
     contact_bin_14 1
     contact_bin_15 1
-    contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -25432,13 +25479,14 @@ graph [
     contact_bin_11 0
     contact_bin_12 0
     contact_bin_13 0
+    contact_bin_16 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 3
+    total_realized_contacts 2
   ]
   edge [
     source 56
-    target 59
+    target 64
     contact_bin_15 1
     contact_bin_0 0
     contact_bin_1 0
@@ -25462,8 +25510,7 @@ graph [
   ]
   edge [
     source 57
-    target 60
-    contact_bin_11 1
+    target 69
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -25480,13 +25527,14 @@ graph [
     contact_bin_8 0
     contact_bin_9 0
     contact_bin_10 0
+    contact_bin_11 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 6
+    total_realized_contacts 5
   ]
   edge [
     source 57
-    target 69
+    target 60
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -25558,32 +25606,7 @@ graph [
   ]
   edge [
     source 57
-    target 71
-    contact_bin_14 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 57
     target 66
-    contact_bin_15 1
     contact_bin_16 1
     contact_bin_0 0
     contact_bin_1 0
@@ -25600,1266 +25623,1553 @@ graph [
     contact_bin_12 0
     contact_bin_13 0
     contact_bin_14 0
+    contact_bin_15 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 2
+    total_realized_contacts 1
   ]
   edge [
     source 58
     target 68
+    contact_bin_4 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 58
+    target 69
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 9
+  ]
+  edge [
+    source 58
+    target 61
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 58
+    target 70
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 58
+    target 59
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 58
+    target 76
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 58
+    target 71
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 58
+    target 78
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 58
+    target 66
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 58
+    target 74
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 59
+    target 64
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_11 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 59
+    target 67
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_12 0
+    contact_bin_18 0
+    total_realized_contacts 8
+  ]
+  edge [
+    source 59
+    target 71
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 8
+  ]
+  edge [
+    source 59
+    target 66
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_18 0
+    total_realized_contacts 9
+  ]
+  edge [
+    source 59
+    target 68
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_12 0
+    contact_bin_18 0
+    total_realized_contacts 8
+  ]
+  edge [
+    source 59
+    target 61
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_18 0
+    total_realized_contacts 9
+  ]
+  edge [
+    source 59
+    target 78
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 59
+    target 74
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 60
+    target 69
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 60
+    target 68
+    contact_bin_8 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 60
+    target 61
+    contact_bin_8 1
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 60
+    target 65
+    contact_bin_8 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 60
+    target 70
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 60
+    target 78
+    contact_bin_13 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 60
+    target 67
+    contact_bin_14 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 61
+    target 64
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_11 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 61
+    target 66
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_18 0
+    total_realized_contacts 10
+  ]
+  edge [
+    source 61
+    target 70
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 61
+    target 71
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 9
+  ]
+  edge [
+    source 61
+    target 67
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 61
+    target 65
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 61
+    target 69
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 61
+    target 78
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 61
+    target 74
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 61
+    target 68
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 63
+    target 69
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_11 0
+    contact_bin_18 0
+    total_realized_contacts 9
+  ]
+  edge [
+    source 63
+    target 68
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 63
+    target 71
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 63
+    target 64
+    contact_bin_9 1
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 63
+    target 70
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 64
+    target 68
+    contact_bin_4 1
+    contact_bin_8 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 64
+    target 66
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_11 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 64
+    target 71
+    contact_bin_9 1
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 64
+    target 67
+    contact_bin_9 1
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 64
+    target 74
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_14 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 64
+    target 78
+    contact_bin_13 1
+    contact_bin_15 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 64
+    target 65
+    contact_bin_13 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 65
+    target 71
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 65
+    target 69
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 65
+    target 66
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_11 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_16 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 65
+    target 78
+    contact_bin_13 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 66
+    target 68
+    contact_bin_4 1
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 10
+  ]
+  edge [
+    source 66
+    target 71
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 8
+  ]
+  edge [
+    source 66
+    target 67
+    contact_bin_9 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_18 0
+    total_realized_contacts 6
+  ]
+  edge [
+    source 66
+    target 74
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 66
+    target 78
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 4
+  ]
+  edge [
+    source 66
+    target 69
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 1
+  ]
+  edge [
+    source 66
+    target 75
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 67
+    target 71
+    contact_bin_9 1
+    contact_bin_10 1
+    contact_bin_11 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 8
+  ]
+  edge [
+    source 67
+    target 68
+    contact_bin_9 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 67
+    target 78
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 67
+    target 74
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_17 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_18 0
+    total_realized_contacts 5
+  ]
+  edge [
+    source 67
+    target 70
+    contact_bin_13 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_14 0
+    contact_bin_15 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 2
+  ]
+  edge [
+    source 67
+    target 69
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_8 0
+    contact_bin_9 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_12 0
+    contact_bin_13 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 3
+  ]
+  edge [
+    source 68
+    target 75
     contact_bin_3 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 58
-    target 64
-    contact_bin_8 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 58
-    target 69
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 9
-  ]
-  edge [
-    source 58
-    target 61
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 58
-    target 70
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 58
-    target 59
-    contact_bin_9 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 58
-    target 76
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 58
-    target 71
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 58
-    target 78
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 58
-    target 66
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 58
-    target 74
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 59
-    target 67
-    contact_bin_2 1
-    contact_bin_9 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 59
-    target 71
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 59
-    target 66
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_18 0
-    total_realized_contacts 9
-  ]
-  edge [
-    source 59
-    target 68
-    contact_bin_9 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 59
-    target 64
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_11 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 59
-    target 61
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_18 0
-    total_realized_contacts 9
-  ]
-  edge [
-    source 59
-    target 78
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 59
-    target 74
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 60
-    target 69
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 60
-    target 68
-    contact_bin_8 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 60
-    target 70
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 60
-    target 71
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 60
-    target 67
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 60
-    target 74
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 61
-    target 64
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_11 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 61
-    target 66
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_18 0
-    total_realized_contacts 10
-  ]
-  edge [
-    source 61
-    target 70
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 61
-    target 71
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 9
-  ]
-  edge [
-    source 61
-    target 67
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 61
-    target 65
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 61
-    target 69
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 61
-    target 74
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 61
-    target 78
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 61
-    target 68
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 63
-    target 68
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_16 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 63
-    target 69
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_11 0
-    contact_bin_18 0
-    total_realized_contacts 9
-  ]
-  edge [
-    source 63
-    target 71
-    contact_bin_9 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 63
-    target 70
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 63
-    target 64
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 64
-    target 68
     contact_bin_4 1
     contact_bin_8 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 64
-    target 65
-    contact_bin_8 1
-    contact_bin_10 1
-    contact_bin_13 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 64
-    target 75
-    contact_bin_8 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 64
-    target 66
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_11 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 7
-  ]
-  edge [
-    source 64
-    target 71
-    contact_bin_9 1
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 64
-    target 74
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 64
-    target 67
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 64
-    target 78
-    contact_bin_13 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 65
-    target 71
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_11 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 65
-    target 66
-    contact_bin_10 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 65
-    target 78
-    contact_bin_13 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 65
-    target 69
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_15 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 1
-  ]
-  edge [
-    source 66
-    target 68
-    contact_bin_4 1
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
     contact_bin_12 1
     contact_bin_13 1
     contact_bin_14 1
@@ -26868,277 +27178,15 @@ graph [
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
-    contact_bin_3 0
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 10
-  ]
-  edge [
-    source 66
-    target 71
-    contact_bin_8 1
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
+    contact_bin_9 0
+    contact_bin_10 0
     contact_bin_11 0
     contact_bin_17 0
     contact_bin_18 0
     total_realized_contacts 8
-  ]
-  edge [
-    source 66
-    target 70
-    contact_bin_9 1
-    contact_bin_15 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_14 0
-    contact_bin_16 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 2
-  ]
-  edge [
-    source 66
-    target 67
-    contact_bin_9 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_18 0
-    total_realized_contacts 6
-  ]
-  edge [
-    source 66
-    target 78
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 66
-    target 74
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 67
-    target 71
-    contact_bin_9 1
-    contact_bin_10 1
-    contact_bin_11 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 8
-  ]
-  edge [
-    source 67
-    target 68
-    contact_bin_9 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 67
-    target 78
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 67
-    target 74
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 4
-  ]
-  edge [
-    source 67
-    target 69
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_12 0
-    contact_bin_13 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 3
-  ]
-  edge [
-    source 68
-    target 75
-    contact_bin_4 1
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 6
   ]
   edge [
     source 68
@@ -27218,8 +27266,6 @@ graph [
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_17 1
     contact_bin_0 0
     contact_bin_1 0
     contact_bin_2 0
@@ -27233,12 +27279,38 @@ graph [
     contact_bin_10 0
     contact_bin_11 0
     contact_bin_12 0
+    contact_bin_16 0
+    contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 5
+    total_realized_contacts 3
   ]
   edge [
     source 69
     target 70
+    contact_bin_8 1
+    contact_bin_9 1
+    contact_bin_12 1
+    contact_bin_13 1
+    contact_bin_14 1
+    contact_bin_15 1
+    contact_bin_16 1
+    contact_bin_0 0
+    contact_bin_1 0
+    contact_bin_2 0
+    contact_bin_3 0
+    contact_bin_4 0
+    contact_bin_5 0
+    contact_bin_6 0
+    contact_bin_7 0
+    contact_bin_10 0
+    contact_bin_11 0
+    contact_bin_17 0
+    contact_bin_18 0
+    total_realized_contacts 7
+  ]
+  edge [
+    source 69
+    target 75
     contact_bin_8 1
     contact_bin_12 1
     contact_bin_13 1
@@ -27262,31 +27334,7 @@ graph [
   ]
   edge [
     source 69
-    target 75
-    contact_bin_12 1
-    contact_bin_13 1
-    contact_bin_14 1
-    contact_bin_15 1
-    contact_bin_16 1
-    contact_bin_0 0
-    contact_bin_1 0
-    contact_bin_2 0
-    contact_bin_3 0
-    contact_bin_4 0
-    contact_bin_5 0
-    contact_bin_6 0
-    contact_bin_7 0
-    contact_bin_8 0
-    contact_bin_9 0
-    contact_bin_10 0
-    contact_bin_11 0
-    contact_bin_17 0
-    contact_bin_18 0
-    total_realized_contacts 5
-  ]
-  edge [
-    source 69
-    target 78
+    target 71
     contact_bin_13 1
     contact_bin_14 1
     contact_bin_15 1
@@ -27310,7 +27358,7 @@ graph [
   ]
   edge [
     source 69
-    target 71
+    target 78
     contact_bin_14 1
     contact_bin_15 1
     contact_bin_16 1
@@ -27359,6 +27407,7 @@ graph [
   edge [
     source 70
     target 71
+    contact_bin_8 1
     contact_bin_9 1
     contact_bin_10 1
     contact_bin_12 1
@@ -27374,11 +27423,10 @@ graph [
     contact_bin_5 0
     contact_bin_6 0
     contact_bin_7 0
-    contact_bin_8 0
     contact_bin_11 0
     contact_bin_17 0
     contact_bin_18 0
-    total_realized_contacts 7
+    total_realized_contacts 8
   ]
   edge [
     source 70

@@ -1,8 +1,8 @@
 graph [
-  bin_start "2008-08-09"
-  bin_end "2008-09-07"
-  bin_index 7
-  description "2008-08-09 &#8211; 2008-09-07"
+  bin_start "2009-07-05"
+  bin_end "2009-08-03"
+  bin_index 18
+  description "2009-07-05 &#8211; 2009-08-03"
   node [
     id 0
     label "1"
@@ -340,99 +340,13 @@ graph [
     label "84"
   ]
   edge [
-    source 0
-    target 35
+    source 14
+    target 63
+    weight 0.3333333333333333
   ]
   edge [
-    source 4
-    target 35
-  ]
-  edge [
-    source 5
-    target 35
-  ]
-  edge [
-    source 7
-    target 35
-  ]
-  edge [
-    source 13
-    target 35
-  ]
-  edge [
-    source 18
-    target 35
-  ]
-  edge [
-    source 19
-    target 35
-  ]
-  edge [
-    source 27
-    target 35
-  ]
-  edge [
-    source 28
-    target 35
-  ]
-  edge [
-    source 29
-    target 35
-  ]
-  edge [
-    source 31
-    target 35
-  ]
-  edge [
-    source 33
-    target 35
-  ]
-  edge [
-    source 35
-    target 46
-  ]
-  edge [
-    source 35
-    target 68
-  ]
-  edge [
-    source 35
-    target 69
-  ]
-  edge [
-    source 35
-    target 47
-  ]
-  edge [
-    source 35
-    target 60
-  ]
-  edge [
-    source 35
-    target 41
-  ]
-  edge [
-    source 35
-    target 65
-  ]
-  edge [
-    source 35
-    target 66
-  ]
-  edge [
-    source 35
-    target 61
-  ]
-  edge [
-    source 35
-    target 71
-  ]
-  edge [
-    source 35
-    target 45
-  ]
-  edge [
-    source 35
-    target 58
+    source 43
+    target 63
+    weight 0.5555555555555556
   ]
 ]

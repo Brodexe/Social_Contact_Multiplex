@@ -1,8 +1,8 @@
 graph [
-  bin_start "2008-08-09"
-  bin_end "2008-09-07"
-  bin_index 7
-  description "2008-08-09 &#8211; 2008-09-07"
+  bin_start "2008-04-11"
+  bin_end "2008-05-10"
+  bin_index 4
+  description "2008-04-11 &#8211; 2008-05-10"
   node [
     id 0
     label "1"
@@ -340,99 +340,83 @@ graph [
     label "84"
   ]
   edge [
-    source 0
-    target 35
+    source 3
+    target 68
+    weight 0.3888888888888889
   ]
   edge [
-    source 4
-    target 35
+    source 8
+    target 68
+    weight 0.4444444444444444
   ]
   edge [
-    source 5
-    target 35
+    source 14
+    target 68
+    weight 0.5555555555555556
   ]
   edge [
-    source 7
-    target 35
+    source 17
+    target 68
+    weight 0.3333333333333333
   ]
   edge [
-    source 13
-    target 35
-  ]
-  edge [
-    source 18
-    target 35
-  ]
-  edge [
-    source 19
-    target 35
-  ]
-  edge [
-    source 27
-    target 35
+    source 22
+    target 68
+    weight 0.3333333333333333
   ]
   edge [
     source 28
-    target 35
-  ]
-  edge [
-    source 29
-    target 35
+    target 68
+    weight 0.6111111111111112
   ]
   edge [
     source 31
-    target 35
-  ]
-  edge [
-    source 33
-    target 35
-  ]
-  edge [
-    source 35
-    target 46
-  ]
-  edge [
-    source 35
     target 68
+    weight 0.4444444444444444
   ]
   edge [
-    source 35
-    target 69
+    source 34
+    target 68
+    weight 0.5
   ]
   edge [
-    source 35
-    target 47
+    source 63
+    target 68
+    weight 0.3333333333333333
   ]
   edge [
-    source 35
-    target 60
+    source 64
+    target 68
+    weight 0.16666666666666666
   ]
   edge [
-    source 35
-    target 41
+    source 66
+    target 68
+    weight 0.5555555555555556
   ]
   edge [
-    source 35
-    target 65
+    source 67
+    target 68
+    weight 0.2777777777777778
   ]
   edge [
-    source 35
-    target 66
+    source 68
+    target 75
+    weight 0.2777777777777778
   ]
   edge [
-    source 35
-    target 61
-  ]
-  edge [
-    source 35
+    source 68
     target 71
+    weight 0.5
   ]
   edge [
-    source 35
-    target 45
+    source 68
+    target 78
+    weight 0.2222222222222222
   ]
   edge [
-    source 35
-    target 58
+    source 68
+    target 74
+    weight 0.2222222222222222
   ]
 ]

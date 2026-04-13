@@ -47,6 +47,7 @@ p = 0.05
 T = 100
 
 contact_network = nx.erdos_renyi_graph(n, p, seed=42)
+nx.set_edge_attributes(contact_network, 1, 'weight')
 initial_contact = deepcopy(contact_network)
 initial_edge_count = contact_network.number_of_edges()
 social_network = correlated_graphs.create_social_graph(contact_network, 2 * initial_edge_count)[0]
@@ -119,7 +120,7 @@ def global_cost_function(newly_infected, live_edges, seed_set_size, t_cur):
     all_edges = initial_contact.edges()
 
     # Some cost function f: V -> Reals that maps edges to cost of removal
-    edge_cost_dict = {edge: 1 for edge in all_edges}
+    edge_cost_dict = {(u, v): data.get('weight', 1) for u, v, data in initial_contact.edges(data=True)}
 
     # Compute total possible cost of edge removals (if all edges were removed)
     edge_cost_bound = sum(edge_cost_dict[edge] for edge in all_edges)
@@ -137,10 +138,10 @@ def global_cost_function(newly_infected, live_edges, seed_set_size, t_cur):
     # Adjust penalty weights so that each term contributes equally to cost function
     removal_cost = 1
 
-    g = sum(max(run[t] for run in baseline_runs) for t in range(t_cur + 1))
+    g = sum(max(run[t] for run in baseline_runs) for t in range(T))
 
     alpha_w = 1 / g if g > 0 else 1.0
-    beta_w = 1 / ((t_cur + 1) * edge_cost_bound)
+    beta_w = 1 / (T * edge_cost_bound)
     gamma_w = 1 / (n)
 
     # Print cost components
@@ -173,24 +174,26 @@ def milp_seed_selection():
     # ------------------------------------------------------------------ #
     #  Cost weights  (identical to global_cost_function)                  #
     # ------------------------------------------------------------------ #
-    edge_cost_bound = E          # uniform edge cost = 1
+    edge_cost_bound = sum(data.get('weight', 1) for _, _, data in initial_contact.edges(data=True))
     alpha_w = 1.0 / max(sum(run) for run in baseline_runs)
-    # beta_w  = 1.0 / (T * edge_cost_bound)
-    # gamma_w = 1.0 / n
+    beta_w  = 1.0 / (T * edge_cost_bound)
+    gamma_w = 1.0 / n
 
     # ------------------------------------------------------------------ #
     #  Objective  c^T v  (minimise)                                       #
     #                                                                     #
     #  x_v : +gamma_w          (seed set size penalty)                   #
     #  y_e : -beta_w           (more live edges  => less removal cost)   #
-    #  z_e : +alpha_w * beta   (active edge  =>  infection proxy)        #
+    #  z_e : +alpha_w          (active edge  =>  infection proxy)        #
     #                                                                     # 
     # ------------------------------------------------------------------ #
+    edge_weights = np.array([initial_contact[u][v].get('weight', 1) for u, v in edges])
+
     n_vars = N + 2 * E
     c = np.zeros(n_vars)
-    # c[:N]       = gamma_w
-    # c[N:N+E]    = -beta_w
-    c[N+E:]     = alpha_w * beta
+    c[:N]       = gamma_w
+    c[N:N+E]    = -beta_w * edge_weights   # heavier edges cost more to remove
+    c[N+E:]     = alpha_w
 
     # ------------------------------------------------------------------ #
     #  Variable bounds and integrality                                    #
@@ -251,16 +254,16 @@ def milp_seed_selection():
     milp_removed = {edges[i] for i in range(E) if y_sol[i] == 0}
 
     # Report objective components (add back the dropped constant for clarity)
-    infection_proxy    = alpha_w * beta * float(np.sum(z_sol))
-    # edge_removal_cost  = beta_w  * float(np.sum(1 - y_sol))
-    # seed_cost          = gamma_w * len(milp_seeds)
-    # milp_obj           = infection_proxy + edge_removal_cost + seed_cost
-    milp_obj = infection_proxy
+    infection_proxy    = alpha_w * float(np.sum(z_sol))
+    edge_removal_cost  = beta_w  * float(np.sum(1 - y_sol))
+    seed_cost          = gamma_w * len(milp_seeds)
+    milp_obj           = infection_proxy + edge_removal_cost + seed_cost
+    # milp_obj = infection_proxy
 
     print(f"MILP (alt) objective : {milp_obj:.6f}")
-    print(f"  infection proxy  (alpha_w*beta*sum z_e) : {infection_proxy:.6f}")
-    # print(f"  edge removal     (beta_w *sum(1-y_e))   : {edge_removal_cost:.6f}")
-    # print(f"  seed set size    (gamma_w*|S|)           : {seed_cost:.6f}")
+    print(f"  infection proxy  (alpha_w*beta_w*sum z_e) : {infection_proxy:.6f}")
+    print(f"  edge removal     (beta_w *sum(1-y_e))   : {edge_removal_cost:.6f}")
+    print(f"  seed set size    (gamma_w*|S|)           : {seed_cost:.6f}")
     print(f"  seeds selected   : {len(milp_seeds)} / {N}")
     print(f"  edges kept live  : {int(np.sum(y_sol))} / {E}  "
           f"(removed {len(milp_removed)})")

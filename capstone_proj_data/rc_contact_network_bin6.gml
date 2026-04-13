@@ -341,10 +341,6 @@ graph [
   ]
   edge [
     source 21
-    target 48
-  ]
-  edge [
-    source 21
-    target 31
+    target 58
   ]
 ]

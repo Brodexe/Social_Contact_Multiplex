@@ -341,14 +341,14 @@ graph [
   ]
   edge [
     source 4
-    target 5
-  ]
-  edge [
-    source 4
-    target 7
+    target 13
   ]
   edge [
     source 4
     target 41
+  ]
+  edge [
+    source 4
+    target 60
   ]
 ]
