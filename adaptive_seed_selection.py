@@ -6,6 +6,7 @@ import random
 import correlated_graphs
 from collections import Counter
 from copy import deepcopy
+import py4cytoscape as p4c
 
 # Global matplotlib settings
 plt.rcParams.update({
@@ -22,33 +23,17 @@ plt.rcParams.update({
 FIGURE_SIZE_LINE = (10, 6)
 FIGURE_SIZE_BAR = (14, 8)
 
-n = 200
+ping_cytoscape = True
+
 p = 0.05
 
-# contact_network = nx.erdos_renyi_graph(n, p, seed=42)
-# nx.set_edge_attributes(contact_network, 1, 'weight')
-
-contact_network = nx.read_gml("capstone_proj_data/rc_weighted_contact_bin10.gml")
-
-# Remove any nodes with no edges
-isolated_nodes = [node for node in contact_network.nodes() if contact_network.degree(node) == 0]
-contact_network.remove_nodes_from(isolated_nodes)
-
-contact_network = nx.convert_node_labels_to_integers(contact_network, first_label=0)
-
-initial_contact = deepcopy(contact_network)
-initial_edge_count = contact_network.number_of_edges()
-
-n = len(contact_network.nodes())
-
-# NOTE: structure of social network doesn't matter for this experiment
-social_network = nx.DiGraph()
-social_network.add_nodes_from(contact_network.nodes())
-initial_social = deepcopy(social_network)
-
+# Simulation parameters (network-independent)
 T = 100
-# Homogeneous beta: everyone equally susceptible
-beta = 0.15
+HETEROGENEOUS_BETA = True  # True: node-wise beta drawn from power-law distribution; False: scalar beta for all nodes
+beta = 0.15  # Used directly when HETEROGENEOUS_BETA=False; ignored when True
+beta_L = 0.05   # Lower bound for heterogeneous beta
+beta_R = 0.25   # Upper bound for heterogeneous beta
+Gamma  = 2      # Shape parameter: higher values skew beta toward beta_R
 gamma = 0.07 # Recovery rate
 mu = 0.05 # Immunity loss rate
 init = 0.05
@@ -59,25 +44,69 @@ q = "r"
 # Try introducing random infections in intervals to better differentiate methods
 introduced_infections = (0, 1) # (fraction of population, time step to introduce)
 
-K = int((3/4) * n)      # Number of seeds to select at each batch
+# DEFAULT_NETWORK = "capstone_proj_data/rc_weighted_contact_bin14.gml"
+DEFAULT_NETWORK = nx.erdos_renyi_graph(200, p)
 
-# Pre-generate infection targets so every method sees the same nodes targeted per
-# simulation and per injection time step.  Shape: [num_simulations][num_injection_steps]
-injection_times = [t for t in range(1, T) if t % introduced_infections[1] == 0]
-_num_to_infect = int(introduced_infections[0] * n)
-infection_candidates = [
-    [random.sample(list(initial_contact.nodes()), min(_num_to_infect, n)) for _ in injection_times]
-    for _ in range(num_simulations)
-]
+# Network-dependent globals — populated by initialize()
+contact_network   = None
+initial_contact   = None
+initial_edge_count = None
+n                 = None
+social_network    = None
+initial_social    = None
+K                 = None
+injection_times   = None
+_num_to_infect    = None
+infection_candidates = None
+baseline_runs     = None
+global_betas      = None  # List of beta maps (one per simulation), computed once in initialize()
+
+def make_initial_state(graph):
+    nodes = list(graph.nodes())
+    num_infected = int(init * len(nodes))
+    infected = set(random.sample(nodes, num_infected))
+    return {node: (1 if node in infected else 0) for node in nodes}
+
+
+def sample_betas(num_nodes, beta_low, beta_high, lam=2.0, seed=None):
+    rng = np.random.default_rng(seed)
+    u = rng.uniform(0, 1, size=num_nodes)
+    return beta_low + (beta_high - beta_low) * u ** lam
+
+def laplacian_rank_beta(G, betas, alpha=0.1, seed=None):
+    rng = np.random.default_rng(seed)
+    nodes = list(G.nodes())
+    n = len(nodes)
+
+    A = nx.to_numpy_array(G, nodelist=nodes)
+    D = np.diag(A.sum(axis=1))
+    L = D - A
+
+    z = rng.normal(0, 1, n)
+    z_prime = (np.eye(n) + alpha * L) @ z
+
+    order = np.argsort(z_prime)
+    sorted_nodes = [nodes[i] for i in order]
+    sorted_betas = betas[order]
+
+    return dict(zip(sorted_nodes, sorted_betas))
+
+def compute_node_beta(_state_dict, graph):
+    if not HETEROGENEOUS_BETA:
+        return beta
+
+    betas = sample_betas(len(graph.nodes()), beta_L, beta_R, lam=Gamma)
+    return laplacian_rank_beta(graph, betas)
+
 
 # Returns newly infected at a given time step
 def given_at_time(time, sirs_dynamics, contact_graph):
     if time > 0:
-        new_i = sum(1 for node in contact_graph.nodes() 
+        new_i = sum(1 for node in contact_graph.nodes()
                                 if sirs_dynamics[time][node] == 1 and sirs_dynamics[time-1][node] != 1)
     # Initial condition. We say that n_i(0) = i(0)
     elif time == 0:
-        new_i = sum(1 for node in contact_graph.nodes() 
+        new_i = sum(1 for node in contact_graph.nodes()
                                 if sirs_dynamics[time][node] == 1)
 
     return new_i
@@ -87,7 +116,9 @@ def baseline_infections(sim_index=0):
     social_network = deepcopy(initial_social)
 
     full_dynamics = None
-    prev_state_dict = None
+
+    prev_state_dict = make_initial_state(contact_network)
+    static_beta = global_betas[sim_index]
     baseline_newly_counts = []
 
     for t_cur in range(T):
@@ -102,7 +133,7 @@ def baseline_infections(sim_index=0):
             social_network=social_network,
             T=1,
             q=False,
-            beta=beta,
+            beta=static_beta,
             gamma=gamma,
             mu=mu,
             init=init,
@@ -120,11 +151,73 @@ def baseline_infections(sim_index=0):
     baseline_newly_frac = [count / n for count in baseline_newly_counts]
     return baseline_newly_counts, baseline_newly_frac
 
-# Collect per-timestep newly infected counts from baseline runs
-baseline_runs = []
-for i in range(num_simulations):
-    baseline_newly_counts, _ = baseline_infections(i)
-    baseline_runs.append(baseline_newly_counts)
+# network: NetworkX graph, or string path to GML file
+def initialize(network=DEFAULT_NETWORK):
+    """Load a contact network and run baseline simulations.  Must be called
+    once before any simulation function (hill2, degree_based_selection, etc.)."""
+    global contact_network, initial_contact, initial_edge_count, n
+    global social_network, initial_social, K
+    global injection_times, _num_to_infect, infection_candidates, baseline_runs
+    global global_betas
+
+    contact_network = nx.read_gml(network) if isinstance(network, str) else network
+    isolated_nodes = [node for node in contact_network.nodes()
+                      if contact_network.degree(node) == 0]
+    contact_network.remove_nodes_from(isolated_nodes)
+    contact_network = nx.convert_node_labels_to_integers(contact_network, first_label=0)
+
+    initial_contact    = deepcopy(contact_network)
+    initial_edge_count = contact_network.number_of_edges()
+    n                  = len(contact_network.nodes())
+
+    # NOTE: structure of social network doesn't matter for this experiment
+    social_network = nx.DiGraph()
+    social_network.add_nodes_from(contact_network.nodes())
+    initial_social = deepcopy(social_network)
+
+    K = int((3/4) * n)  # Number of seeds to select at each batch
+
+    # Pre-generate infection targets so every method sees the same nodes targeted per
+    # simulation and per injection time step.  Shape: [num_simulations][num_injection_steps]
+    injection_times  = [t for t in range(1, T) if t % introduced_infections[1] == 0]
+    _num_to_infect   = int(introduced_infections[0] * n)
+    infection_candidates = [
+        [random.sample(list(initial_contact.nodes()), min(_num_to_infect, n))
+         for _ in injection_times]
+        for _ in range(num_simulations)
+    ]
+
+    if n == 0:
+        baseline_runs = []
+        global_betas = []
+        return
+
+    # Compute beta maps once so every solver and baseline uses identical values per simulation
+    global_betas = [compute_node_beta(None, initial_contact) for _ in range(num_simulations)]
+
+    # Collect per-timestep newly infected counts from baseline runs
+    baseline_runs = []
+    for i in range(num_simulations):
+        baseline_newly_counts, _ = baseline_infections(i)
+        baseline_runs.append(baseline_newly_counts)
+
+
+def build_tagged_network(beta_map):
+    """Return a copy of initial_contact annotated with node 'beta'/'node_id' attributes
+    and edge 'cost' attributes drawn from GML edge weights where present."""
+    tagged = deepcopy(initial_contact)
+    bm = beta_map if isinstance(beta_map, dict) else {node: beta_map for node in tagged.nodes()}
+    nx.set_node_attributes(tagged, bm, "beta")
+    nx.set_node_attributes(tagged, {node: node for node in tagged.nodes()}, "node_id")
+    for u, v, data in tagged.edges(data=True):
+        if 'weight' in data:
+            tagged[u][v]['cost'] = data['weight']
+    return tagged
+
+def send_to_cytoscape(tagged_network, title="Contact Network"):
+    if ping_cytoscape:
+        p4c.create_network_from_networkx(tagged_network, title=title)
+
 
 # Global utility function: Find a small seed set which minimizes infection spread,
 # while maximizing number of live edges in the network.
@@ -197,7 +290,9 @@ def hill_climb():
 
         cost_lst = []
         states_at_time = None
-        prev_state_dict = None
+        prev_state_dict = make_initial_state(contact_network)
+        static_beta = global_betas[i]
+
         live_edge_at_time = None
         edge_counts = []
         last_batch_cost = None
@@ -218,7 +313,7 @@ def hill_climb():
                 contact_network=contact_network, social_network=social_network,
                 # Stepwise simulation: t=0 => no information spread beyond the current seeds
                 T=0,
-                beta=beta, gamma=gamma, mu=mu, init=init,
+                beta=static_beta, gamma=gamma, mu=mu, init=init,
                 # Quarantine mode: quarantine until recovery
                 q=q,
                 adherence=adherence,
@@ -312,7 +407,8 @@ def hill_climb():
     seed_set_counts = Counter(tuple(seed_set) for seed_set in winner_sets)
     most_common_seed_set = seed_set_counts.most_common(1)[0][0]
 
-    return most_common_seed_set, all_cost_curves, all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_state_vectors
+    tagged = build_tagged_network(global_betas[0])
+    return most_common_seed_set, all_cost_curves, all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_state_vectors, tagged
 
 # Stochastic hill-climber that considers exactly one seed swap per batch step.
 # For each node in a shuffled order, it tentatively swaps it in/out (removing the
@@ -344,7 +440,9 @@ def hill2():
 
         cost_lst = []
         states_at_time = None
-        prev_state_dict = None
+        prev_state_dict = make_initial_state(contact_network)
+        static_beta = global_betas[i]
+
         live_edge_at_time = None
         edge_counts = []
         last_batch_cost = None
@@ -367,7 +465,7 @@ def hill2():
             simulation_results = SIR.Simulate_SIR(
                 contact_network=contact_network, social_network=social_network,
                 T=0,
-                beta=beta, gamma=gamma, mu=mu, init=init,
+                beta=static_beta, gamma=gamma, mu=mu, init=init,
                 q=q,
                 adherence=adherence,
                 begin_q=0,
@@ -393,6 +491,7 @@ def hill2():
             if (t_cur + 1) % batch_interval == 0 or t_cur == T - 1:
                 cost, _ = global_cost_function(newly_infected_at_time, live_edge_at_time, len(new_seed_set), t_cur)
                 cost_lst.append(cost)
+                # NOTE: Hamming should be here?
                 delta = (last_batch_cost - cost) if last_batch_cost is not None else 0.0
 
                 for node in contact_network.nodes():
@@ -406,7 +505,7 @@ def hill2():
                     seed_vec = S_save
 
                 # Single-swap hill-climb: iterate nodes in random order, accept first improvement
-                nodes = list(contact_network.nodes()) 
+                nodes = list(contact_network.nodes())
                 random.shuffle(nodes)
 
                 S_new = seed_vec.copy()
@@ -457,7 +556,8 @@ def hill2():
     seed_set_counts = Counter(tuple(seed_set) for seed_set in winner_sets)
     most_common_seed_set = seed_set_counts.most_common(1)[0][0]
 
-    return most_common_seed_set, all_cost_curves, all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_state_vectors
+    tagged = build_tagged_network(global_betas[0])
+    return most_common_seed_set, all_cost_curves, all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_state_vectors, tagged
 
 # Degree based selection: at each time step, select top K nodes by degree in the CURRENT contact network as seeds
 # Allows re-selection
@@ -478,7 +578,8 @@ def degree_based_selection():
 
         cost_lst = []
         full_dynamics = None
-        prev_state_dict = None
+        prev_state_dict = make_initial_state(contact_network)
+        static_beta = global_betas[i]
         full_live_edges = None
         edge_counts = []
         seed_set = None
@@ -515,7 +616,7 @@ def degree_based_selection():
                 contact_network=contact_network,
                 social_network=social_network,
                 T=0,
-                beta=beta,
+                beta=static_beta,
                 gamma=gamma,
                 mu=mu,
                 init=init,
@@ -558,7 +659,8 @@ def degree_based_selection():
         all_newly_infected_frac.append(newly_infected_frac_per_sim)
         all_full_dynamics.append(full_dynamics)
 
-    return winner_sets[0], all_cost_curves, all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_full_dynamics
+    tagged = build_tagged_network(global_betas[0])
+    return winner_sets[0], all_cost_curves, all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_full_dynamics, tagged
 
 def random_seed_selection():
     all_cost_curves = []
@@ -576,7 +678,8 @@ def random_seed_selection():
 
         cost_lst = []
         full_dynamics = None
-        prev_state_dict = None
+        prev_state_dict = make_initial_state(contact_network)
+        static_beta = global_betas[i]
         full_live_edges = None
         edge_counts = []
         seed_set = None
@@ -599,7 +702,7 @@ def random_seed_selection():
                 contact_network=contact_network,
                 social_network=social_network,
                 T=0,
-                beta=beta,
+                beta=static_beta,
                 gamma=gamma,
                 mu=mu,
                 init=init,
@@ -641,7 +744,8 @@ def random_seed_selection():
         all_newly_infected_frac.append(newly_infected_frac_per_sim)
         all_full_dynamics.append(full_dynamics)
 
-    return winner_sets[0], all_cost_curves, all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_full_dynamics
+    tagged = build_tagged_network(global_betas[0])
+    return winner_sets[0], all_cost_curves, all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_full_dynamics, tagged
 
 
 def no_quarantine_baseline_runs():
@@ -663,7 +767,8 @@ def no_quarantine_baseline_runs():
 
         cost_lst = []
         full_dynamics = None
-        prev_state_dict = None
+        prev_state_dict = make_initial_state(contact_network)
+        static_beta = global_betas[i]
         edge_counts = []
         newly_infected_per_sim = []
         newly_infected_frac_per_sim = []
@@ -679,7 +784,7 @@ def no_quarantine_baseline_runs():
                 contact_network=contact_network,
                 social_network=social_network,
                 T=1,
-                beta=beta,
+                beta=static_beta,
                 gamma=gamma,
                 mu=mu,
                 init=init,
@@ -715,7 +820,26 @@ def no_quarantine_baseline_runs():
         all_newly_frac.append(newly_infected_frac_per_sim)
         all_full_dynamics.append(full_dynamics)
 
-    return all_cost_curves, all_edge_curves, all_newly_counts, all_newly_frac, all_full_dynamics
+    tagged = build_tagged_network(global_betas[0])
+    return all_cost_curves, all_edge_curves, all_newly_counts, all_newly_frac, all_full_dynamics, tagged
+
+
+def plot_beta_histogram(tagged_network, bins=20):
+    """Histogram of per-node transmission rates, illustrating the power-law assignment."""
+    betas = [data['beta'] for _, data in tagged_network.nodes(data=True) if 'beta' in data]
+    if not betas:
+        print("No beta attributes found on tagged network nodes.")
+        return
+
+    fig, ax = plt.subplots(figsize=FIGURE_SIZE_LINE)
+    ax.hist(betas, bins=bins, edgecolor='black', color='steelblue')
+    ax.set_xlabel("Transmission Rate (beta)")
+    ax.set_ylabel("Node Count")
+    ax.set_title("Distribution of Node-Level Transmission Rates")
+    ax.grid(True, linewidth=0.4)
+    fig.tight_layout()
+    fig.savefig("capstone_result_figures/beta_histogram.pdf", format="pdf", bbox_inches="tight")
+    plt.show()
 
 
 def plot_full_comparison(
@@ -877,20 +1001,25 @@ def plot_prevalence_and_new_infections(
     plt.show()
 
 if __name__ == "__main__":
-    # Run hill climb
-    # _, hill_cost_curves, hill_edge_curves, hill_newly_counts, hill_newly_frac, hill_dynamics_list = hill_climb()
+    initialize()
 
     # Run hill2 (single-swap per batch, accept first improvement)
-    _, hill_cost_curves, hill_edge_curves, hill_newly_counts, hill_newly_frac, hill_dynamics_list = hill2()
+    _, hill_cost_curves, hill_edge_curves, hill_newly_counts, hill_newly_frac, hill_dynamics_list, tagged_contact_hill = hill2()
 
     # Run degree baseline
-    _, degree_cost_curves, degree_edge_curves, degree_newly_counts, degree_newly_frac, degree_dynamics_list = degree_based_selection()
+    _, degree_cost_curves, degree_edge_curves, degree_newly_counts, degree_newly_frac, degree_dynamics_list, tagged_contact_degree = degree_based_selection()
 
-    # Run no-quarantine baseline
-    nq_cost_curves, nq_edge_curves, nq_newly_counts, nq_newly_frac, nq_dynamics_list = no_quarantine_baseline_runs()
+    # # Run no-quarantine baseline
+    # nq_cost_curves, nq_edge_curves, nq_newly_counts, nq_newly_frac, nq_dynamics_list, _ = no_quarantine_baseline_runs()
 
     # Run random seed selection baseline
-    _, rand_cost_curves, rand_edge_curves, rand_newly_counts, rand_newly_frac, rand_dynamics_list = random_seed_selection()
+    _, rand_cost_curves, rand_edge_curves, rand_newly_counts, rand_newly_frac, rand_dynamics_list, tagged_contact_rand = random_seed_selection()
+
+    # Cytoscape visualization (uses tagged network from first solver)
+    send_to_cytoscape(tagged_contact_hill, title="Contact Network (Hill Climb)")
+
+    # Beta distribution histogram
+    plot_beta_histogram(tagged_contact_hill)
 
     # Assemble methods — comment out any entry to exclude it from the plots
     comparison_methods = [
@@ -906,12 +1035,12 @@ if __name__ == "__main__":
             "counts": degree_newly_counts, "frac": degree_newly_frac,
             "dynamics_list": degree_dynamics_list,
         },
-        {
-            "label": "No Quarantine", "color": "C2",
-            "cost_curves": nq_cost_curves, "edge_curves": nq_edge_curves,
-            "counts": nq_newly_counts, "frac": nq_newly_frac,
-            "dynamics_list": nq_dynamics_list,
-        },
+        # {
+        #     "label": "No Quarantine", "color": "C2",
+        #     "cost_curves": nq_cost_curves, "edge_curves": nq_edge_curves,
+        #     "counts": nq_newly_counts, "frac": nq_newly_frac,
+        #     "dynamics_list": nq_dynamics_list,
+        # },
         {
             "label": "Random Seeds", "color": "C3",
             "cost_curves": rand_cost_curves, "edge_curves": rand_edge_curves,
