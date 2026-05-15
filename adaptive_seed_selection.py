@@ -25,7 +25,7 @@ FIGURE_SIZE_BAR = (14, 8)
 
 ping_cytoscape = True
 
-p = 0.05
+p = 0.025
 
 # Simulation parameters (network-independent)
 T = 100
@@ -45,7 +45,7 @@ q = "r"
 introduced_infections = (0, 1) # (fraction of population, time step to introduce)
 
 # DEFAULT_NETWORK = "capstone_proj_data/rc_weighted_contact_bin14.gml"
-DEFAULT_NETWORK = nx.erdos_renyi_graph(200, p)
+DEFAULT_NETWORK = nx.erdos_renyi_graph(50, p)
 
 # Network-dependent globals — populated by initialize()
 contact_network   = None
@@ -68,12 +68,7 @@ def make_initial_state(graph):
     return {node: (1 if node in infected else 0) for node in nodes}
 
 
-def sample_betas(num_nodes, beta_low, beta_high, lam=2.0, seed=None):
-    rng = np.random.default_rng(seed)
-    u = rng.uniform(0, 1, size=num_nodes)
-    return beta_low + (beta_high - beta_low) * u ** lam
-
-def laplacian_rank_beta(G, betas, alpha=0.1, seed=None):
+def laplacian_smooth_beta(G, beta_low, beta_high, lam=2.0, alpha=20, seed=None):
     rng = np.random.default_rng(seed)
     nodes = list(G.nodes())
     n = len(nodes)
@@ -83,20 +78,50 @@ def laplacian_rank_beta(G, betas, alpha=0.1, seed=None):
     L = D - A
 
     z = rng.normal(0, 1, n)
-    z_prime = (np.eye(n) + alpha * L) @ z
+    # Solve for beta vector which is smooth over the graph
+    z_prime = np.linalg.inv(np.eye(n) + alpha * L) @ z
 
-    order = np.argsort(z_prime)
-    sorted_nodes = [nodes[i] for i in order]
-    sorted_betas = betas[order]
+    # Empirical-uniform values in the order induced by z_prime, then inverse-CDF shape
+    u = (np.argsort(np.argsort(z_prime)) + 0.5) / n
+    betas = beta_low + (beta_high - beta_low) * u ** lam
 
-    return dict(zip(sorted_nodes, sorted_betas))
+    return dict(zip(nodes, betas))
 
 def compute_node_beta(_state_dict, graph):
     if not HETEROGENEOUS_BETA:
         return beta
 
-    betas = sample_betas(len(graph.nodes()), beta_L, beta_R, lam=Gamma)
-    return laplacian_rank_beta(graph, betas)
+    het_beta = laplacian_smooth_beta(graph, beta_L, beta_R, lam=Gamma)
+
+    compute_beta_clustering(het_beta, graph)
+
+    return het_beta
+
+
+def compute_beta_clustering(beta_map, graph=None):
+    """Print Moran's I and avg neighbor beta difference to check spatial structure."""
+    if graph is None:
+        graph = initial_contact
+    if not isinstance(beta_map, dict):
+        print("Beta clustering: scalar beta (no heterogeneity), skipping.")
+        return
+
+    nodes = list(graph.nodes())
+    betas = np.array([beta_map[node] for node in nodes])
+    z = betas - betas.mean()
+    node_idx = {node: i for i, node in enumerate(nodes)}
+    edges = list(graph.edges())
+
+    cross_sum = sum(z[node_idx[u]] * z[node_idx[v]] for u, v in edges)
+    W = 2 * len(edges)
+    variance_sum = float(np.sum(z ** 2))
+    morans_i = (len(nodes) / W) * (2 * cross_sum / variance_sum) if W > 0 and variance_sum > 0 else 0.0
+
+    avg_neighbor_diff = np.mean([abs(betas[node_idx[u]] - betas[node_idx[v]]) for u, v in edges]) if edges else 0.0
+
+    print(f"[Betas]  Moran's I = {morans_i:.4f}")
+    print(f"[Betas]  Avg |beta_u - beta_v| over edges = {avg_neighbor_diff:.4f}"
+          f"  (std = {betas.std():.4f}, range = [{betas.min():.3f}, {betas.max():.3f}])")
 
 
 # Returns newly infected at a given time step
@@ -251,11 +276,11 @@ def global_cost_function(newly_infected, live_edges, seed_set_size, t_cur):
     gamma_w = 1 / (n)
 
     # Print cost components
-    print(f"Cost components at time {t_cur}:")
-    print(f"  Newly infected sum: {np.sum(newly_infected)}")
-    print(f"  Total edge removal cost: {total_edge_removal_cost}")
-    print(f"  Seed set size: {seed_set_size}")
-    print(f" alpha_w: {alpha_w:.4f}, beta_w: {beta_w:.4f}, gamma_w: {gamma_w:.4f}")
+    # print(f"Cost components at time {t_cur}:")
+    # print(f"  Newly infected sum: {np.sum(newly_infected)}")
+    # print(f"  Total edge removal cost: {total_edge_removal_cost}")
+    # print(f"  Seed set size: {seed_set_size}")
+    # print(f" alpha_w: {alpha_w:.4f}, beta_w: {beta_w:.4f}, gamma_w: {gamma_w:.4f}")
 
     # return beta_w * total_edge_removal_cost, cost_elements
     # return alpha_w * np.sum(newly_infected) + beta_w * total_edge_removal_cost + gamma_w * seed_set_size, cost_elements
@@ -610,7 +635,7 @@ def degree_based_selection():
                     if prev_state_dict[node] == 2:  # Only infect if node is currently susceptible
                         prev_state_dict[node] = 1
                 infected_count = sum(1 for v in prev_state_dict.values() if v == 1)
-                print(f"t={t_cur}: infected in prev_state_dict after injection = {infected_count}")
+                # print(f"t={t_cur}: infected in prev_state_dict after injection = {infected_count}")
 
             simulation_results = SIR.Simulate_SIR(
                 contact_network=contact_network,
@@ -1019,7 +1044,7 @@ if __name__ == "__main__":
     send_to_cytoscape(tagged_contact_hill, title="Contact Network (Hill Climb)")
 
     # Beta distribution histogram
-    plot_beta_histogram(tagged_contact_hill)
+    # plot_beta_histogram(tagged_contact_hill)
 
     # Assemble methods — comment out any entry to exclude it from the plots
     comparison_methods = [
@@ -1050,4 +1075,4 @@ if __name__ == "__main__":
     ]
 
     plot_full_comparison(comparison_methods, edge_mode="fraction", infect_mode="fraction")
-    plot_prevalence_and_new_infections(comparison_methods, infect_mode="fraction")
+    # plot_prevalence_and_new_infections(comparison_methods, infect_mode="fraction")
