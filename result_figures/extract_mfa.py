@@ -62,7 +62,8 @@ def parse_sample_data(filename):
             # Detect dataset name lines
             if line.startswith(("SIR Infections", "Dynamic degree", "w1 True", "w1 Estimated",
                                 "w1 all runs", "w2 True", "w2 Estimated",
-                                "Informed and Infected", "Given Newly Infected Ratio", "Informed")):
+                                "Informed and Infected", "Given Newly Infected Ratio", "Informed",
+                                "y_true values", "y_pred all runs")):
                 if current_dataset and x_data:
                     current_sample[current_dataset] = {'x': x_data, 'y': y_data}
                     x_data, y_data = [], []
@@ -79,7 +80,7 @@ def parse_sample_data(filename):
 
             # Parse y-data
             elif line.startswith("y:"):
-                if current_dataset == 'w1 all runs':
+                if current_dataset in ('w1 all runs', 'y_pred all runs'):
                     y_data = parse_w1_all_runs_y_line(line)
                 elif current_dataset == 'Informed':
                     # Evaluate as Python object (list of lists)

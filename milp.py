@@ -141,7 +141,7 @@ def global_cost_function(newly_infected, live_edges, seed_set_size, t_cur):
     g = sum(max(run[t] for run in baseline_runs) for t in range(T))
 
     alpha_w = 1 / g if g > 0 else 1.0
-    beta_w = 1 / (T * edge_cost_bound)
+    beta_w = 1 / ((t_cur + 1) * edge_cost_bound)
     gamma_w = 1 / (n)
 
     # Print cost components
@@ -349,6 +349,165 @@ def milp_seed_selection():
             all_newly_infected_counts, all_newly_infected_frac, all_full_dynamics)
 
 
+def milp_seed_selection_stepwise():
+    """
+    Step-wise MILP seed selection: re-solve the MILP at every time step,
+    using the SIRS state from the previous step to update alpha_w.
+
+    alpha_w_t = 1 / max(current_infected_count, 1)
+      -- inversely proportional to the number currently infected, replacing
+         the global baseline-max normalization used in the one-shot version.
+
+    Seeds and edge removals are chosen fresh at each step (not accumulated).
+    The constraint matrix is built once; only the objective vector c changes.
+    """
+    nodes = list(initial_contact.nodes())
+    edges = list(initial_contact.edges())
+    N = len(nodes)
+    E = len(edges)
+    node_idx = {v: i for i, v in enumerate(nodes)}
+
+    edge_cost_bound = sum(data.get('weight', 1) for _, _, data in initial_contact.edges(data=True))
+    beta_w  = 1.0 / (T * edge_cost_bound)
+    gamma_w = 1.0 / n
+    edge_weights = np.array([initial_contact[u][v].get('weight', 1) for u, v in edges])
+
+    K = n  # unconstrained seed budget
+
+    # ------------------------------------------------------------------ #
+    #  Constraint matrix  (built once; reused every step)                 #
+    # ------------------------------------------------------------------ #
+    n_vars = N + 2 * E
+    n_con  = 1 + 3 * E
+    A      = lil_matrix((n_con, n_vars))
+    lb_con = np.full(n_con, -np.inf)
+    ub_con = np.full(n_con,  np.inf)
+
+    A[0, :N] = 1.0
+    ub_con[0] = K
+
+    for i, (u, v) in enumerate(edges):
+        ui = node_idx[u]
+        vi = node_idx[v]
+        yi = N + i
+        zi = N + E + i
+        r  = 1 + 3 * i
+        A[r,   zi] =  1;  A[r,   ui] =  1;  ub_con[r]   = 1
+        A[r+1, zi] =  1;  A[r+1, vi] =  1;  ub_con[r+1] = 1
+        A[r+2, zi] =  1;  A[r+2, yi] = -1;  ub_con[r+2] = 0
+
+    lc          = LinearConstraint(csr_matrix(A), lb_con, ub_con)
+    X_bounds    = Bounds(lb=np.zeros(n_vars), ub=np.ones(n_vars))
+    integrality = np.ones(n_vars)
+
+    all_cost_curves           = []
+    winner_sets               = []   # list[sim] of list[step] of seed lists
+    all_edge_curves           = []
+    all_newly_infected_counts = []
+    all_newly_infected_frac   = []
+    all_full_dynamics         = []
+
+    for sim_i in range(num_simulations):
+        print(f"MILP step-wise simulation {sim_i}")
+
+        social_network  = deepcopy(initial_social)
+
+        cost_lst                    = []
+        full_dynamics               = None
+        prev_state_dict             = None
+        full_live_edges             = None
+        edge_counts                 = []
+        newly_infected_per_sim      = []
+        newly_infected_frac_per_sim = []
+        seeds_per_step              = []
+
+        for t_cur in range(T):
+
+            # --- alpha_w from previous step's infection state ---
+            if prev_state_dict is None:
+                current_infected_count = max(int(n * init), 1)
+            else:
+                current_infected_count = max(
+                    sum(1 for s in prev_state_dict.values() if s == 1), 1
+                )
+            alpha_w = 1.0 / current_infected_count
+
+            # --- Objective for this step (only alpha_w changes) ---
+            c = np.zeros(n_vars)
+            c[:N]    = gamma_w
+            c[N:N+E] = -beta_w * edge_weights
+            c[N+E:]  = alpha_w
+
+            # --- Solve MILP ---
+            res = milp(c=c, bounds=X_bounds, constraints=[lc], integrality=integrality)
+
+            if not res.success:
+                print(f"  MILP failed at sim={sim_i} t={t_cur}: {res.message}")
+                milp_seeds_t   = []
+                milp_removed_t = set()
+            else:
+                x_sol = np.round(res.x[:N]).astype(int)
+                y_sol = np.round(res.x[N:N+E]).astype(int)
+                milp_seeds_t   = [nodes[i] for i in range(N) if x_sol[i] == 1]
+                milp_removed_t = {edges[i] for i in range(E) if y_sol[i] == 0}
+
+            seeds_per_step.append(milp_seeds_t)
+
+            # --- Fresh contact network with this step's MILP edge removals ---
+            contact_network = deepcopy(initial_contact)
+            contact_network.remove_edges_from(milp_removed_t)
+
+            # --- One SIRS step ---
+            simulation_results = SIR.Simulate_SIR(
+                contact_network    = contact_network,
+                social_network     = social_network,
+                T                  = 0,
+                beta               = beta,
+                gamma              = gamma,
+                mu                 = mu,
+                init               = init,
+                q                  = q,
+                adherence          = adherence,
+                begin_q            = 0,
+                seeds              = milp_seeds_t,
+                initial_state_dict = prev_state_dict,
+            )
+
+            # Reset contact_network to base (removes quarantine-induced edge changes)
+            contact_network = deepcopy(initial_contact)
+            contact_network.remove_edges_from(milp_removed_t)
+
+            sirs_dynamics   = simulation_results[4]
+            prev_state_dict = sirs_dynamics[-1]
+            full_dynamics   = (sirs_dynamics if full_dynamics is None
+                               else full_dynamics + sirs_dynamics)
+
+            current_new_i = given_at_time(t_cur, full_dynamics, contact_network)
+            newly_infected_per_sim.append(current_new_i)
+            newly_infected_frac_per_sim.append(current_new_i / n)
+
+            graph_vec       = simulation_results[10]
+            live_edges      = [list(network) for network in graph_vec]
+            full_live_edges = (live_edges if full_live_edges is None
+                               else full_live_edges + live_edges)
+            edge_counts.append(len(live_edges[-1]))
+
+            cost, _ = global_cost_function(
+                newly_infected_per_sim, full_live_edges, len(milp_seeds_t), t_cur
+            )
+            cost_lst.append(cost)
+
+        winner_sets.append(seeds_per_step)
+        all_cost_curves.append(cost_lst)
+        all_edge_curves.append(edge_counts)
+        all_newly_infected_counts.append(newly_infected_per_sim)
+        all_newly_infected_frac.append(newly_infected_frac_per_sim)
+        all_full_dynamics.append(full_dynamics)
+
+    return (winner_sets, all_cost_curves, all_edge_curves,
+            all_newly_infected_counts, all_newly_infected_frac, all_full_dynamics)
+
+
 def no_quarantine_baseline_runs():
     """
     Simulate with no quarantine (q=False) and no seeds.
@@ -510,14 +669,15 @@ def plot_milp_comparison(
 
 
 if __name__ == "__main__":
-    (milp_seeds,
+    (winner_sets,
      milp_cost_curves,
      milp_edge_curves,
      milp_newly_counts,
      milp_newly_frac,
-     milp_dynamics_list) = milp_seed_selection()
+     milp_dynamics_list) = milp_seed_selection_stepwise()
 
-    print(f"\nFinal MILP (alt) seed set ({len(milp_seeds)} nodes): {sorted(milp_seeds)}")
+    avg_seeds = np.mean([[len(s) for s in sim] for sim in winner_sets])
+    print(f"\nStep-wise MILP: avg seeds/step across all sims = {avg_seeds:.1f}")
 
     # Quick summary statistics across simulations
     mean_cost  = np.mean([c[-1] for c in milp_cost_curves])

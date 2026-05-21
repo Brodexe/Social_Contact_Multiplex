@@ -101,17 +101,23 @@ def restore_edges(g_init, g, node, already_quarantining):
 # q: Set to True if you want quarantine with fixed/variable periods and edge restoration after quarantine ends
 #    Set to False to disable quarantine entirely
 #    Set to "r" if you want quarantine (edges removed on infection) but restore edges immediately upon recovery (no fixed period)
-# lt_threshold: Set to none for independent cascade model, or an int value for linear threshold model
+# quarantine_mech: Tuple controlling the information-spread / opinion model:
+#   ("ic", p)         — Independent Cascade; p is a diffusion probability (float) or weighted adjacency matrix
+#   ("lt", threshold) — Linear Threshold; threshold is an int/float
+#   ("FJ", None)      — Friedkin-Johnsen opinion dynamics; beliefs evolve per
+#                       x_i(t+1) = (s_i + sum_j x_j) / (1 + deg_i), with s_i = 1 for seeds and 0 otherwise.
+#                       Edges are removed each step with probability e^{-(x_i + x_j)}.
 # adherence: Set to a float value between 0 and 1. Ratio of individuals that will adhere to quarantine measures.
 #            Can also be a list of nodes that adhere to quarantine
 # seeds: a list of seed nodes for information spread. If None, seeds are chosen randomly.
 # initial_state_dict: Optional dictionary mapping node -> state (0=S, 1=I, 2=R). If provided, uses this instead of random initial infections.
-# p: diffusion probability for indepedent cascade model (only used if lt_threshold is None). Can be a scalar or weighted adjacency matrix.
 def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
-                 q=False, lt_threshold=None, adherence=None, begin_q=0, seeds=None, initial_state_dict=None, p=0.02):
+                 q=False, quarantine_mech=("ic", 0.02), adherence=None, begin_q=0, seeds=None, initial_state_dict=None):
 
     if begin_q is None:
         begin_q = 0
+
+    mech_type, mech_val = quarantine_mech
 
     if social_network is None:
         social_network = correlated_graphs.create_social_graph(contact_network)[0]
@@ -217,6 +223,10 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
     # Keep track of who is already quarantining (so we don't restore their edges prematurely)
     already_quarantining = []
 
+    # FJ opinion-dynamics state (only used when mech_type == "FJ")
+    fj_x = {node: 0.0 for node in contact_network.nodes()} if mech_type == "FJ" else None
+    fj_s = None  # Prior beliefs; populated at begin_q once seeds are known
+
     # NOTE
     avg_avg_just = []
 
@@ -259,22 +269,34 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
                 nx.set_node_attributes(contact_network, {node: {'Informed?': 'Informed'}})
                 nx.set_node_attributes(social_network, {node: {'Informed?': 'Informed'}})
 
+            if mech_type == "FJ":
+                # s_i = 1 for seeds, 0 for everyone else
+                fj_s = {node: (1.0 if node in informed else 0.0)
+                        for node in social_network.nodes()}
+
         #  Influence spreads
         elif (t > begin_q) or (T_param == 1):
             # Can only spread if there are some seed nodes
             if initial_informed_lst != []:
-                if lt_threshold == None:  # If we are using I.C., that is
-                    ic_results = IM.IC_prob_matrix(social_network, S=list(informed), p=p, mc=1000, quarantining=quarantine_statuses)
+                if mech_type == "ic":
+                    ic_results = IM.IC_prob_matrix(social_network, S=list(informed), p=mech_val, mc=1000, quarantining=quarantine_statuses)
                     prob_matrix = ic_results[0]
                     new_informed_list = ic_results[1]
-                else:
-                    lt_results = IM.lt_prob_matrix(social_network, threshold=lt_threshold, S=list(informed), quarantining=quarantine_statuses)
+                    if isinstance(mech_val, float):
+                        quarantine_prob_matrix[t] = prob_matrix
+                elif mech_type == "lt":
+                    lt_results = IM.lt_prob_matrix(social_network, threshold=mech_val, S=list(informed), quarantining=quarantine_statuses)
                     prob_matrix = lt_results[0]
                     new_informed_list = lt_results[1]
-
-                # NOTE: Generate new case for p as a matrix of activation probabilities
-                if isinstance(p, float):
-                    quarantine_prob_matrix[t] = prob_matrix
+                elif mech_type == "FJ":
+                    new_fj_x = {}
+                    for node in social_network.nodes():
+                        neighbor_belief_sum = sum(fj_x[nb] for nb in social_network.neighbors(node))
+                        deg = social_network.degree(node)
+                        new_fj_x[node] = (fj_s[node] + neighbor_belief_sum) / (1 + deg)
+                    fj_x = new_fj_x
+                    new_informed_list = [node for node in social_network.nodes()
+                                         if fj_x[node] > 0 and node not in informed]
 
                 assert len(informed) > 0, "Informed set is empty!"
 
@@ -313,8 +335,14 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
 
         # 1. Cut valid ties first (quarantine on the pre-step graph)
         if q is not False:
-            for u in trigger_nodes:
-                quarantine_statuses = quarantine_edge_removal(contact_network, u, state, quarantine_statuses, already_quarantining)
+            if mech_type == "FJ" and t > begin_q and fj_x is not None:
+                # Remove each contact edge (i,j) independently with probability e^{-(x_i + x_j)}
+                for (u, v) in list(contact_network.edges()):
+                    if random.random() < math.exp(-(fj_x[u] + fj_x[v])):
+                        contact_network.remove_edge(u, v)
+            else:
+                for u in trigger_nodes:
+                    quarantine_statuses = quarantine_edge_removal(contact_network, u, state, quarantine_statuses, already_quarantining)
 
         # 2. Then run SIRS dynamics on the pruned contact network
         state = sirs_step(contact_network, state, L, beta, gamma, mu)

@@ -1,11 +1,17 @@
 import networkx as nx
 import py4cytoscape as p4c
 import numpy as np
+import random
 
 ping_cytoscape = True
 
 # Sampled from YJMob100k dataset #2
-file_path = "experiment_data/yjmob_sample.csv"
+file_path = "experiment_data/yjmob_1000_sample.csv"
+
+# Enum of sample sizes — change SAMPLE_SIZE_IDX to select a different size
+SAMPLE_SIZES = (100, 250, 500, 1000)
+SAMPLE_SIZE_IDX = 3  # 0 → 100, 1 → 250, 2 → 500, 3 → 1000
+sample_size = SAMPLE_SIZES[SAMPLE_SIZE_IDX]
 
 lines = []
 
@@ -15,10 +21,15 @@ with open(file_path, 'r') as f:
     for line in f:
         lines.append(line.strip())
 
+# Select sample_size distinct user IDs and filter all data to only those users
+all_user_ids = list({line.split(',')[0] for line in lines})
+random.seed(42)
+selected_users = set(random.sample(all_user_ids, sample_size))
+lines = [line for line in lines if line.split(',')[0] in selected_users]
+
 # Create a dictionary from day intervals to their respective data
 interval = 15
 day_data_initial = {}
-# for line in lines_to_keep:
 for line in lines:
     user_id, day, time, x_coord, y_coord = line.split(',')
     day = int(day)
@@ -31,7 +42,7 @@ for line in lines:
         (day % interval) * 48 + int(time),
         (float(x_coord), float(y_coord))
     ))
-    
+
 # Sort day_data_initial by key
 day_data_initial = dict(sorted(day_data_initial.items()))
 
@@ -187,5 +198,5 @@ for interval_key in day_data_final.keys():  # Use interval keys for naming
     print(f"Interval {interval_key}: Contact Network Edges: {contact_network.number_of_edges()}")
     print(f"Social Network Edges: {social_network.number_of_edges()}")
 
-    nx.write_gml(contact_network, f"experiment_data/yjmob_contact{interval_key}.gml")
-    nx.write_gml(social_network, f"experiment_data/yjmob_social.gml")
+    nx.write_gml(contact_network, f"experiment_data/yjmob_{sample_size}_contact{interval_key}.gml")
+    nx.write_gml(social_network, f"experiment_data/yjmob_{sample_size}_social.gml")

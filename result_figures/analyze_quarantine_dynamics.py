@@ -41,10 +41,10 @@ for sample in samples:
             sample[key]['y'] = sample[key]['y'][:70]
             sample[key]['x'] = sample[key]['x'][:70]
 
-k_0 = samples[0]['w1 True (Mean Node Degree)']['y'][-1]
-# k_0 = samples[0]['w1 Estimated']['y'][-1]
-k_q = samples[1]['w1 True (Mean Node Degree)']['y'][-1]
-# k_q = samples[1]['w1 Estimated']['y'][-1]
+# k_0 = samples[0]['w1 True (Mean Node Degree)']['y'][-1]
+k_0 = samples[0]['w1 Estimated']['y'][-1]
+# k_q = samples[1]['w1 True (Mean Node Degree)']['y'][-1]
+k_q = samples[1]['w1 Estimated']['y'][-1]
 split_point = int(samples[1]['w1 True (Mean Node Degree)']['x'][0])
 adhering_proportion = samples[1].get('Adhering proportion', None)
 population = samples[0]['Number of nodes']

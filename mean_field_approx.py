@@ -24,7 +24,7 @@ social_graph = None
 contact_graph = None
 
 # Generate contact graph
-n = 200  # number of nodes
+n = 1000  # number of nodes
 p = 0.05  # probability of edge
 
 load_initial = False  # Set to True if you want to existing epidemic states from pickle file
@@ -95,6 +95,8 @@ init = 0.05 # Initial infected portion
 q = "r"  # Quarantine type: indiviuals restore edges when recovered
 split_point = 30  # Set to None if you want to optimize over the full SIR simulation, or a specific time point to split the optimization
 density_social = None  # Set to None for default density, or an integer number of edges in the social graph
+noisy_data = False  # If True, add Gaussian noise N(0, k_noise) to newly infected/recovered measurements
+k_noise = 0.01     # Std of measurement noise (used only when noisy_data is True)
 
 # YJMOB mode: First, run optimization for each time interval separately
 #             Next, run optimization over the entire time period with split at the QUARANTINE boundary
@@ -267,21 +269,31 @@ if mode == "YJMOB" and file_index == 5:
     # Update dynamic_deg for consistency
     dynamic_deg = deepcopy(deg_lst)
 
+# Pre-compute per-timestep flow measurements once; optionally clobber with Gaussian noise.
+# Doing this once ensures every call to given_at_time(t) sees the same noisy draw for a
+# given t, keeping the optimizer loss and y_pred estimates consistent within each run.
+_raw_new_r = []
+_raw_new_i = []
+for _t in range(T):
+    if _t > 0:
+        _r = sum(1 for node in contact_graph.nodes()
+                 if true_dynamics[_t][node] == 2 and true_dynamics[_t - 1][node] != 2) / n
+        _i = sum(1 for node in contact_graph.nodes()
+                 if true_dynamics[_t][node] == 1 and true_dynamics[_t - 1][node] != 1) / n
+    else:
+        _r = sum(1 for node in contact_graph.nodes() if true_dynamics[0][node] == 2) / n
+        _i = sum(1 for node in contact_graph.nodes() if true_dynamics[0][node] == 1) / n
+    if noisy_data:
+        _r += np.random.normal(0, k_noise)
+        _i += np.random.normal(0, k_noise)
+    _raw_new_r.append(_r)
+    _raw_new_i.append(_i)
+
 def given_at_time(time):
-    if time > 0:
-        new_r_ratio = sum(1 for node in contact_graph.nodes() 
-                                if true_dynamics[time][node] == 2 and true_dynamics[time-1][node] != 2) / n
-        new_i_ratio = sum(1 for node in contact_graph.nodes() 
-                                if true_dynamics[time][node] == 1 and true_dynamics[time-1][node] != 1) / n
-    elif time == 0:
-        new_r_ratio = sum(1 for node in contact_graph.nodes() 
-                                if true_dynamics[time][node] == 2) / n
-        new_i_ratio = sum(1 for node in contact_graph.nodes() 
-                                if true_dynamics[time][node] == 1) / n
-        
+    new_r_ratio = _raw_new_r[time]
+    new_i_ratio = _raw_new_i[time]
     x1 = beta * (new_r_ratio / gamma)
     x2 = 1 - (new_r_ratio / gamma)
-
     return (x1, x2, new_i_ratio)
 
 def y_true(time):
@@ -344,16 +356,18 @@ def optimize_segment(start=0, end=T, bounds = [(1, binomial_bound), (0, 1)],eps_
 
     w1_avg = []
     w2_avg = []
+    y_pred_all_runs = []
     # Multiple runs to average out randomness
     for _ in range(num_runs):
         w1_estimates = []
         w1_run_avg = None
         temp = eps_w1
         w2_estimates = []
+        y_pred_estimates = []
         prev_w2 = None
 
         # Optimize over the given time segment
-        for t in range(start, end): 
+        for t in range(start, end):
             T_gen = t
             init_guess = None
             eps_w1 = temp * ((1 - t/T)**0.5)  # Polynomial root decay of eps_w1 over time
@@ -373,6 +387,10 @@ def optimize_segment(start=0, end=T, bounds = [(1, binomial_bound), (0, 1)],eps_
             w2 = result.x[1]
             w2_estimates.append(w2)
 
+            # n_i predicted by estimated params (identifiability companion)
+            x1_t, x2_t, _ = given_at_time(T_gen)
+            y_pred_estimates.append((w1 * x1_t) * (x2_t - w2))
+
             # Verbose output
             if verbose:
                 print("Time:", t)
@@ -390,40 +408,32 @@ def optimize_segment(start=0, end=T, bounds = [(1, binomial_bound), (0, 1)],eps_
 
         w1_avg.append(w1_estimates)  # List of w1 estimates for this run
         w2_avg.append(w2_estimates)  # List of w2 estimates for this run
+        y_pred_all_runs.append(y_pred_estimates)
 
         eps_w1 = temp  # Reset eps_w1 for the next run
 
-    return w1_avg, w2_avg
+    return w1_avg, w2_avg, y_pred_all_runs
 
 # Split_point: None means no split, otherwise it is the time at which to split the optimization
 def drive_optimizer(split_point=None):
-    w1_all_runs = []
-    w2_avg = []
-
     if split_point is None:
-        w1_all_runs, w2_avg = optimize_segment()
+        w1_all_runs, w2_avg, y_pred_all_runs = optimize_segment()
 
-        #  Run-wise average of w1 across runs
         w1_run_avg = np.mean(w1_all_runs, axis=0)
         w2_run_avg = np.mean(w2_avg, axis=0)
 
-        # Return w1_avg to plot std band in extract_mfa.py
-        return w1_run_avg, w2_run_avg, w1_all_runs
-
-    w1_avg1, w2_avg1 = None, None
-    w1_avg2, w2_avg2 = None, None
+        return w1_run_avg, w2_run_avg, w1_all_runs, y_pred_all_runs
 
     if split_point is not None:
-        w1_all_runs1, w2_avg1 = optimize_segment(start=0, end=split_point)
-        w1_all_runs2, w2_avg2 = optimize_segment(start=split_point, end=T)
+        w1_all_runs1, w2_avg1, y_pred_runs1 = optimize_segment(start=0, end=split_point)
+        w1_all_runs2, w2_avg2, y_pred_runs2 = optimize_segment(start=split_point, end=T)
 
-        #  Run-wise average of w1 across runs
         w1_avg1 = np.mean(w1_all_runs1, axis=0)
         w2_avg1 = np.mean(w2_avg1, axis=0)
         w1_avg2 = np.mean(w1_all_runs2, axis=0)
         w2_avg2 = np.mean(w2_avg2, axis=0)
 
-        return w1_avg1, w2_avg1, w1_avg2, w2_avg2, w1_all_runs1, w1_all_runs2
+        return w1_avg1, w2_avg1, w1_avg2, w2_avg2, w1_all_runs1, w1_all_runs2, y_pred_runs1, y_pred_runs2
 
 #-------------
 #
@@ -438,7 +448,7 @@ def drive_optimizer(split_point=None):
 # Save to write_file
 # This is for single runs under a given SIR configuration
 # Split: Tuple (split_point, half), where split_point is the time to split the optimization, and half is either 1 or 2
-def save_xy_data(dynamic_deg=None, w1_avg=None, w2_avg=None, w1_all_runs=None, split=None):
+def save_xy_data(dynamic_deg=None, w1_avg=None, w2_avg=None, w1_all_runs=None, split=None, y_pred_all_runs=None):
     given_n_i = [given_at_time(t)[2] for t in range(len(true_dynamics))]
 
     # Compute y values
@@ -477,9 +487,9 @@ def save_xy_data(dynamic_deg=None, w1_avg=None, w2_avg=None, w1_all_runs=None, s
             given_n_i = given_n_i[:sp]
             infm = infm[:sp]
             # Save <k_0> runs
-            w1_all_runs = [run for run in w1_all_runs]
-            # Delete all empty runs
             w1_all_runs = [run for run in w1_all_runs if len(run) > 0]
+            if y_pred_all_runs is not None:
+                y_pred_all_runs = [run for run in y_pred_all_runs if len(run) > 0]
         if half == 2:
             x_ofs = sp  # Offset for generating x values for plotting
             sir_infections_y = sir_infections_y[sp:]
@@ -492,9 +502,12 @@ def save_xy_data(dynamic_deg=None, w1_avg=None, w2_avg=None, w1_all_runs=None, s
             given_n_i = given_n_i[sp:]
             infm = infm[sp:]
             # Save <k_q> runs
-            w1_all_runs = [run for run in w1_all_runs]
-            # Delete all empty runs
             w1_all_runs = [run for run in w1_all_runs if len(run) > 0]
+            if y_pred_all_runs is not None:
+                y_pred_all_runs = [run for run in y_pred_all_runs if len(run) > 0]
+
+    # y_true is deterministic from the fixed simulation — one value per time step in this segment
+    y_true_vals = [round(y_true(t), 6) for t in range(x_ofs, x_ofs + len(w1_true_y))]
 
     with open(write_file, "a") as f:
         f.write("==New Sample==\n")
@@ -529,6 +542,15 @@ def save_xy_data(dynamic_deg=None, w1_avg=None, w2_avg=None, w1_all_runs=None, s
         f.write(f"x: {','.join(map(str, range(x_ofs, len(w1_all_runs[0]) + x_ofs)))}\n")
         f.write(f"y: {','.join(map(str, w1_all_runs))}\n\n")
 
+        f.write("y_true values:\n")
+        f.write(f"x: {','.join(map(str, range(x_ofs, len(y_true_vals) + x_ofs)))}\n")
+        f.write(f"y: {','.join(map(str, y_true_vals))}\n\n")
+
+        if y_pred_all_runs is not None:
+            f.write("y_pred all runs:\n")
+            f.write(f"x: {','.join(map(str, range(x_ofs, len(y_pred_all_runs[0]) + x_ofs)))}\n")
+            f.write(f"y: {','.join(map(str, y_pred_all_runs))}\n\n")
+
         f.write("w2 True (Recovered Fraction):\n")
         f.write(f"x: {','.join(map(str, range(x_ofs, len(w2_true_y) + x_ofs)))}\n")
         f.write(f"y: {','.join(map(str, w2_true_y))}\n\n")
@@ -551,13 +573,14 @@ def save_xy_data(dynamic_deg=None, w1_avg=None, w2_avg=None, w1_all_runs=None, s
         f.write(f"x: {','.join(map(str, range(x_ofs + minimum_n_i_time, len(given_n_i) + x_ofs)))}\n")
         f.write(f"y: {','.join(map(str, given_n_i))}\n\n")
 
+
 if split_point is None:
-    w1_run_avg, w2_run_avg, w1_all_runs = drive_optimizer(split_point=None)
-    save_xy_data(dynamic_deg=dynamic_deg, w1_avg=w1_run_avg, w2_avg=w2_run_avg, w1_all_runs=w1_all_runs)
+    w1_run_avg, w2_run_avg, w1_all_runs, y_pred_all_runs = drive_optimizer(split_point=None)
+    save_xy_data(dynamic_deg=dynamic_deg, w1_avg=w1_run_avg, w2_avg=w2_run_avg, w1_all_runs=w1_all_runs, y_pred_all_runs=y_pred_all_runs)
 else:
-    w1_avg1, w2_avg1, w1_avg2, w2_avg2, w1_all_runs1, w1_all_runs2 = drive_optimizer(split_point=split_point)
-    save_xy_data(dynamic_deg=dynamic_deg, w1_avg=w1_avg1, w2_avg=w2_avg1, w1_all_runs=w1_all_runs1, split=(split_point, 1))
-    save_xy_data(dynamic_deg=dynamic_deg, w1_avg=w1_avg2, w2_avg=w2_avg2, w1_all_runs=w1_all_runs2, split=(split_point, 2))
+    w1_avg1, w2_avg1, w1_avg2, w2_avg2, w1_all_runs1, w1_all_runs2, y_pred_runs1, y_pred_runs2 = drive_optimizer(split_point=split_point)
+    save_xy_data(dynamic_deg=dynamic_deg, w1_avg=w1_avg1, w2_avg=w2_avg1, w1_all_runs=w1_all_runs1, split=(split_point, 1), y_pred_all_runs=y_pred_runs1)
+    save_xy_data(dynamic_deg=dynamic_deg, w1_avg=w1_avg2, w2_avg=w2_avg2, w1_all_runs=w1_all_runs2, split=(split_point, 2), y_pred_all_runs=y_pred_runs2)
 
 # Save daily infected and daily recovered counts to file
 # Will be used in comparing ideal vs actual quarantine dynamics
