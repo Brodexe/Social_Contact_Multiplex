@@ -29,7 +29,7 @@ FIGURE_SIZE_BAR = (14, 8)
 
 n = 200
 T = 100
-NUM_SEEDS = 10
+NUM_SEEDS = 20
 
 beta = 0.15 # Infection rate
 gamma = 0.07 # Recovery rate
@@ -160,8 +160,7 @@ def const_quarantines(plot_data=False):
 
     return (x, mean_q, std_q), (x, mean_noq, std_noq)
 
-def normal_dist_quarantines(plot_data=False):
-    num_trials = 25
+def normal_dist_quarantines(plot_data=False, num_trials=25):
 
     T_runs = []
     Y_runs_normal = []
@@ -521,8 +520,7 @@ def r_quarantine(plot_data=False):
 
     return (x, mean_rq, std_rq), (x, mean_noq, std_noq)
 
-def permanent_quarantine(plot_data=False):
-    num_trials = 25
+def permanent_quarantine(plot_data=False, num_trials=25):
 
     T_runs = []
     Y_runs_quarantine = []
@@ -532,7 +530,7 @@ def permanent_quarantine(plot_data=False):
         data1 = SIR.Simulate_SIR(
             contact_network=deepcopy(contact_network),
             social_network=deepcopy(social_network),
-            T=T, num_seeds=NUM_SEEDS,
+            T=T, seeds=NUM_SEEDS,
             beta=beta, gamma=gamma, mu=mu, init=init,
              q=T, adherence=1.0
         )[2]
@@ -574,10 +572,33 @@ def permanent_quarantine(plot_data=False):
 
     return (x, mean_q, std_q), (x, mean_noq, std_noq)
 
-def plot_all_quarantine():
+def fj_quarantine(num_trials=25):
+
+    T_runs = []
+    Y_runs_fj = []
+
+    for _ in range(num_trials):
+        data = SIR.Simulate_SIR(
+            contact_network=deepcopy(contact_network),
+            social_network=deepcopy(social_network),
+            T=T, seeds=NUM_SEEDS,
+            beta=beta, gamma=gamma, mu=mu, init=init,
+            q_mech=("FJ", 1.25), q=True, adherence=1.0
+        )[2]
+        T_runs.append(data[0])
+        Y_runs_fj.append(data[1])
+
+    x = T_runs[0]
+    mean_fj = np.mean(np.array(Y_runs_fj), axis=0)
+    std_fj = np.std(np.array(Y_runs_fj), axis=0)
+
+    return (x, mean_fj, std_fj)
+
+def plot_all_quarantine(num_trials=25):
     # --- Load data ---
-    data_perm, data_noq = permanent_quarantine()
-    data_gauss, _ = normal_dist_quarantines()
+    data_perm, data_noq = permanent_quarantine(num_trials=num_trials)
+    data_gauss, _ = normal_dist_quarantines(num_trials=num_trials)
+    data_fj = fj_quarantine(num_trials=num_trials)
 
     # Convert x to numpy array (all x are the same)
     x = np.array(data_noq[0])
@@ -587,9 +608,10 @@ def plot_all_quarantine():
         "No Quarantine": (np.array(data_noq[1]), np.array(data_noq[2])),
         "Permanent Quarantine": (np.array(data_perm[1]), np.array(data_perm[2])),
         "Gaussian Quarantine": (np.array(data_gauss[1]), np.array(data_gauss[2])),
+        "FJ Quarantine": (np.array(data_fj[1]), np.array(data_fj[2])),
     }
 
-    colors = ['blue', 'green', 'purple']
+    colors = ['blue', 'green', 'purple', 'orange']
 
     fig, ax = plt.subplots(figsize=FIGURE_SIZE_LINE)
 
@@ -732,6 +754,45 @@ def plot_newly_infected():
     plt.show()
     plt.close()
 
+def plot_information_dynamics(plot_data=False):
+    split_point = 30
+    num_trials = 25
+
+    informed_runs = []
+
+    for _ in range(num_trials):
+        result = SIR.Simulate_SIR(
+            contact_network=deepcopy(contact_network),
+            social_network=deepcopy(social_network),
+            T=T, beta=beta, gamma=gamma, mu=mu, init=init,
+            q="r", adherence=1.0, begin_q=split_point,
+            seeds=NUM_SEEDS
+        )
+        informed = result[8]
+        informed_runs.append([len(informed[t]) for t in range(T)])
+
+    informed_array = np.array(informed_runs)
+    informed_mean = np.mean(informed_array, axis=0)
+    informed_std = np.std(informed_array, axis=0)
+    x = np.arange(T)
+
+    if plot_data:
+        fig, ax = plt.subplots(figsize=FIGURE_SIZE_LINE)
+        ax.plot(x, informed_mean, color='blue', label='Mean Informed')
+        ax.fill_between(x, informed_mean - informed_std, informed_mean + informed_std,
+                        color='blue', alpha=0.3)
+        ax.axvline(split_point, color='gray', linestyle='dashed', label='Quarantine Begins')
+        ax.set_xlabel("Time (days)")
+        ax.set_ylabel("# of Informed")
+        ax.set_title("Information Dynamics")
+        ax.legend()
+        ax.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.savefig('result_figures/proportion_informed.pdf', bbox_inches='tight')
+        plt.close(fig)
+
+    return x, informed_mean, informed_std
+
 def run_simulations():
     data0 = informed_vs_noninformed()
     data1 = const_quarantines()
@@ -771,10 +832,13 @@ if __name__ == "__main__":
     # r_quarantine(plot_data=True)
     # plot_all_quarantine()
     # random_vs_nonrandom_seeds(4, plot_data=True)
-    r_quarantine(plot_data=True)
+    # r_quarantine(plot_data=True)
+    # FJ()
     # const_quarantines(plot_data=True)
     # permanent_quarantine(plot_data=True)
     # random_vs_nonrandom_seeds(3, plot_data=True)
     # jaccard_similarity(plot_data=True)
     # rc()
     # plot_newly_infected()
+    # compare_FJ_IC(plot_data=True)
+    plot_all_quarantine(num_trials=5)

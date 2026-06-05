@@ -7,6 +7,8 @@ import find_seeds
 import correlated_graphs
 import IM
 from copy import deepcopy
+import pickle as pkl
+
 
 # NOTE: undirected dynamics; node-wise
 def sirs_step(G, state, L, beta, gamma, mu):
@@ -101,23 +103,32 @@ def restore_edges(g_init, g, node, already_quarantining):
 # q: Set to True if you want quarantine with fixed/variable periods and edge restoration after quarantine ends
 #    Set to False to disable quarantine entirely
 #    Set to "r" if you want quarantine (edges removed on infection) but restore edges immediately upon recovery (no fixed period)
-# quarantine_mech: Tuple controlling the information-spread / opinion model:
+#    Note: the FJ mechanism supports q="r", q=False, or q=True. FJ always uses partial per-edge
+#          belief-based removal; q only changes how cut edges are restored.
+# q_mech: Tuple controlling the information-spread / opinion model:
 #   ("ic", p)         — Independent Cascade; p is a diffusion probability (float) or weighted adjacency matrix
 #   ("lt", threshold) — Linear Threshold; threshold is an int/float
-#   ("FJ", None)      — Friedkin-Johnsen opinion dynamics; beliefs evolve per
+#   ("FJ", kappa)     — Friedkin-Johnsen opinion dynamics; kappa > 1 shapes the adoption hazard. Beliefs evolve per
 #                       x_i(t+1) = (s_i + sum_j x_j) / (1 + deg_i), with s_i = 1 for seeds and 0 otherwise.
-#                       Edges are removed each step with probability e^{-(x_i + x_j)}.
+#                       Each step, an uninformed node becomes informed (absorbing) with probability x_i^kappa,
+#                       so larger kappa slows adoption and lets low-conviction nodes trickle in over time.
+#                       Edge removal is PARTIAL and per-edge for both q="r" and q=True: each live edge (i,j) is
+#                       cut independently with probability 1 - e^{-(x_i + x_j)}, so higher shared conviction
+#                       raises the chance of severing that tie (a node may lose some ties and keep others).
+#                       With q="r", a belief-removed edge is restored when one of its endpoints recovers.
+#                       With q=True, it is restored after a fixed quarantine period (a sampled Normal(14,2)
+#                       delay, or the integer period if q was passed as an int).
 # adherence: Set to a float value between 0 and 1. Ratio of individuals that will adhere to quarantine measures.
 #            Can also be a list of nodes that adhere to quarantine
 # seeds: a list of seed nodes for information spread. If None, seeds are chosen randomly.
 # initial_state_dict: Optional dictionary mapping node -> state (0=S, 1=I, 2=R). If provided, uses this instead of random initial infections.
 def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
-                 q=False, quarantine_mech=("ic", 0.02), adherence=None, begin_q=0, seeds=None, initial_state_dict=None):
+                 q=False, q_mech=("ic", 0.02), adherence=None, begin_q=0, seeds=None, initial_state_dict=None):
 
     if begin_q is None:
         begin_q = 0
 
-    mech_type, mech_val = quarantine_mech
+    mech_type, mech_val = q_mech
 
     if social_network is None:
         social_network = correlated_graphs.create_social_graph(contact_network)[0]
@@ -181,9 +192,14 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
     PList = [P]
     Inf = [len([u for u in state.keys() if state[u] == 1])]
 
+    # FJ edge-restoration period (q=True). None => sample per edge from Normal(14,2);
+    # an int => fixed period for every belief-removed edge.
+    fj_fixed_period = None
+
     # If an int is passed as q, we assume it is the quarantine period for all individuals
     if isinstance(q, int) and q > 1:  # > 1 excludes the boolean cases
         d = [q for _ in range(n)]
+        fj_fixed_period = q
         q = True  # Force to True so restoration happens after fixed period
 
     elif q == "r":
@@ -226,6 +242,8 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
     # FJ opinion-dynamics state (only used when mech_type == "FJ")
     fj_x = {node: 0.0 for node in contact_network.nodes()} if mech_type == "FJ" else None
     fj_s = None  # Prior beliefs; populated at begin_q once seeds are known
+    fj_removed_edges = set()       # q="r": belief-removed edges, restored on endpoint recovery
+    fj_edge_restore_at = {}        # q=True: belief-removed edge -> timestep to restore
 
     # NOTE
     avg_avg_just = []
@@ -273,6 +291,9 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
                 # s_i = 1 for seeds, 0 for everyone else
                 fj_s = {node: (1.0 if node in informed else 0.0)
                         for node in social_network.nodes()}
+                # Seeds are stubborn: pin their beliefs at 1.0 from the start
+                for node in social_network.nodes():
+                    fj_x[node] = fj_s[node]
 
         #  Influence spreads
         elif (t > begin_q) or (T_param == 1):
@@ -289,14 +310,25 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
                     prob_matrix = lt_results[0]
                     new_informed_list = lt_results[1]
                 elif mech_type == "FJ":
+                    # Linear FJ belief update; seeds stay pinned at 1.0
                     new_fj_x = {}
                     for node in social_network.nodes():
-                        neighbor_belief_sum = sum(fj_x[nb] for nb in social_network.neighbors(node))
-                        deg = social_network.degree(node)
-                        new_fj_x[node] = (fj_s[node] + neighbor_belief_sum) / (1 + deg)
+                        if fj_s[node] == 1.0:  # stubborn seed: belief stays pinned
+                            new_fj_x[node] = 1.0
+                        else:
+                            neighbor_belief_sum = sum(fj_x[nb] for nb in social_network.neighbors(node))
+                            deg = social_network.degree(node)
+                            new_fj_x[node] = (fj_s[node] + neighbor_belief_sum) / (1 + deg)
                     fj_x = new_fj_x
+
+                    # Absorbing per-step adoption: an uninformed node becomes informed
+                    # this step with probability x_i^kappa (mech_val is kappa, kappa > 1).
+                    # Larger kappa suppresses low-conviction nodes, stretching adoption
+                    # over time even after the belief field has equilibrated.
+                    kappa = mech_val
                     new_informed_list = [node for node in social_network.nodes()
-                                         if fj_x[node] > 0 and node not in informed]
+                                         if node not in informed
+                                         and random.random() < fj_x[node] ** kappa]
 
                 assert len(informed) > 0, "Informed set is empty!"
 
@@ -333,13 +365,32 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
         currently_infected = set([u for u in range(n) if state[u] == 1])
         trigger_nodes = currently_infected | set([u for u in new_informed if state[u] == 1])
 
+        # FJ + q=True: restore edges whose fixed quarantine period has elapsed (before re-cutting)
+        if mech_type == "FJ" and q is True and fj_x is not None:
+            for (a, b) in [e for e, rt in fj_edge_restore_at.items() if t >= rt]:
+                contact_network.add_edge(a, b)
+                del fj_edge_restore_at[(a, b)]
+
         # 1. Cut valid ties first (quarantine on the pre-step graph)
         if q is not False:
-            if mech_type == "FJ" and t > begin_q and fj_x is not None:
-                # Remove each contact edge (i,j) independently with probability e^{-(x_i + x_j)}
-                for (u, v) in list(contact_network.edges()):
-                    if random.random() < math.exp(-(fj_x[u] + fj_x[v])):
-                        contact_network.remove_edge(u, v)
+            if mech_type == "FJ":
+                # Partial, per-edge belief-based removal for ALL quarantine modes (q="r" and q=True).
+                # Each live edge (i,j) is cut independently with probability 1 - e^{-(x_i + x_j)};
+                # higher shared conviction raises the chance of severing the tie, and a node can
+                # lose some ties while keeping others.
+                if t > begin_q and fj_x is not None:
+                    for (u, v) in list(contact_network.edges()):
+                        if random.random() < 1.0 - math.exp(-(fj_x[u] + fj_x[v])):
+                            contact_network.remove_edge(u, v)
+                            e = (min(u, v), max(u, v))
+                            if q == "r":
+                                # restored when an endpoint recovers
+                                fj_removed_edges.add(e)
+                            elif q is True:
+                                # restored after a fixed/sampled quarantine period
+                                period = fj_fixed_period if fj_fixed_period is not None \
+                                    else abs(round(np.random.normal(loc=14, scale=2)))
+                                fj_edge_restore_at[e] = t + period
             else:
                 for u in trigger_nodes:
                     quarantine_statuses = quarantine_edge_removal(contact_network, u, state, quarantine_statuses, already_quarantining)
@@ -356,8 +407,8 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
             # Boolean value; Checks if "Informed" is an attribute of the node under consideration
             is_informed = contact_network.nodes[u].get('Informed?') == 'Informed'
 
-            # Record who is currently informed
-            if is_informed == True:
+            # Record who is currently informed (absorbing set, tracked via node attribute)
+            if is_informed:
                     infm_current.append(u)
 
                     # Record who is currently infected and informed
@@ -370,8 +421,9 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
                 # Record in state changes the time at which said change occurred
                 state_changes[u] = (u, state[u], t)
 
-            # Handle restoration and quarantine duration tracking only when q is True (fixed/variable period)
-            if q is True:
+            # Handle restoration and quarantine duration tracking only when q is True (fixed/variable period).
+            # FJ uses edge-based restoration (handled above), so skip the node-based path for it.
+            if q is True and mech_type != "FJ":
                 if is_informed and (1 <= quarantine_statuses[u] <= d[u]):
                     quarantine_statuses[u] += 1
                     # If the quarantine time has been reached, end quarantine and restore edges
@@ -382,7 +434,13 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
             # Immediate restoration on recovery when q == "r"
             if q == "r" and state[u] == 2 and copy_state[u] != 2:  # Just recovered this step
                 quarantine_statuses[u] = 0
-                restore_edges(G_initial, contact_network, u, already_quarantining=already_quarantining)
+                if mech_type == "FJ":
+                    # Re-add only the belief-removed edges incident to u
+                    for (a, b) in [e for e in fj_removed_edges if u in e]:
+                        contact_network.add_edge(a, b)
+                        fj_removed_edges.discard((a, b))
+                else:
+                    restore_edges(G_initial, contact_network, u, already_quarantining=already_quarantining)
 
         informed_infected_series.append(i_prime_current)
         informed_series.append(infm_current)

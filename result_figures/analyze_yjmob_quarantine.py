@@ -4,7 +4,6 @@ import numpy as np
 from scipy.optimize import minimize
 import random
 import pickle 
-import matplotlib.lines as mlines
 
 # Global matplotlib settings
 plt.rcParams.update({
@@ -165,7 +164,7 @@ def plot_mfa_estimated_degree():
                      label_true=None)
 
     # Quarantine line
-    ax.axvline(split_point, color="gray", linestyle="--", linewidth=2, label="Quarantine begins")
+    ax.axvline(split_point, color="gray", linestyle="--", linewidth=2)
 
     # Labels, title, grid
     ax.set_xlabel("Time (days)")
@@ -174,11 +173,7 @@ def plot_mfa_estimated_degree():
     ax.set_xlim(0, cumulative_time)
     ax.grid(True, alpha=0.3)
 
-    # Legend with proxy for solid line
-    handles, labels = ax.get_legend_handles_labels()
-    solid_proxy = mlines.Line2D([], [], color='gray', linestyle='-', linewidth=3, label='Solid line = Ground truth')
-    handles += [solid_proxy]
-    ax.legend(handles=handles, loc='upper center', bbox_to_anchor=(0.5, -0.30), ncol=2)
+    ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.30), ncol=2)
 
     plt.tight_layout()
     plt.savefig("result_figures/YJMOB_k_est.pdf", format="pdf", bbox_inches="tight")

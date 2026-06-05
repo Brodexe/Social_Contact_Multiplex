@@ -1,11 +1,14 @@
 # Use this file to run the mean field approximation several times
 import subprocess
 import sys
+import argparse
 import find_seeds
 import networkx as nx
 import correlated_graphs
 
-repeat = 25  # Number of times to run the MFA
+YJMOB_VALID_SIZES = {200, 500, 1000}
+
+repeat = 1  # Number of times to run the MFA
 
 # Run mean field approximation with varying adherence levels
 def adherence_mode():
@@ -27,20 +30,23 @@ def simple_repeat():
     for _ in range(repeat):
         subprocess.run([sys.executable, "mean_field_approx.py"])
 
-def yjmob_mode():
+def yjmob_mode(size):
+    if size not in YJMOB_VALID_SIZES:
+        raise ValueError(f"Invalid YJMOB network size {size}. Must be one of {sorted(YJMOB_VALID_SIZES)}.")
+
     files_to_clear = ["experiment_data/yjmob0_runs.txt", "experiment_data/yjmob1_runs.txt",
                       "experiment_data/yjmob2_runs.txt", "experiment_data/yjmob3_runs.txt",
                       "experiment_data/yjmob4_runs.txt", "experiment_data/yjmob5_runs.txt"
                       ]
-    
+
     for file in files_to_clear:
         open(file, "w").close()
 
     for _ in range(repeat):
         # File index: correspond to different time intervals in YJMob dataset
         for file_index in range(6):
-            subprocess.run([sys.executable, "mean_field_approx.py", 
-                            str(file_index), "yjmob mode"])
+            subprocess.run([sys.executable, "mean_field_approx.py",
+                            str(file_index), str(size), "yjmob mode"])
             
 # Quantities under consideration for sensitivity analysis:
 # number of seeds, initial infected proportion, density of the network
@@ -121,7 +127,12 @@ def sensitivity_analysis():
 # sensitivity_analysis: Run MFA for sensitivity analysis on parameters
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--yjmob-size", type=int, choices=sorted(YJMOB_VALID_SIZES), default=200,
+                        help="Network size for YJMOB mode (200, 500, or 1000).")
+    args = parser.parse_args()
+
     # adherence_mode()
-    yjmob_mode()
+    yjmob_mode(size=1000)
     # sensitivity_analysis()
     # simple_repeat()

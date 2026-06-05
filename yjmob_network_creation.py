@@ -3,13 +3,13 @@ import py4cytoscape as p4c
 import numpy as np
 import random
 
-ping_cytoscape = True
+ping_cytoscape = False
 
 # Sampled from YJMob100k dataset #2
 file_path = "experiment_data/yjmob_1000_sample.csv"
 
 # Enum of sample sizes — change SAMPLE_SIZE_IDX to select a different size
-SAMPLE_SIZES = (100, 250, 500, 1000)
+SAMPLE_SIZES = (200, 500, 750, 1000)
 SAMPLE_SIZE_IDX = 3  # 0 → 100, 1 → 250, 2 → 500, 3 → 1000
 sample_size = SAMPLE_SIZES[SAMPLE_SIZE_IDX]
 

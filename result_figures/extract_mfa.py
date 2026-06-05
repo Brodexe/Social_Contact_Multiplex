@@ -63,7 +63,9 @@ def parse_sample_data(filename):
             if line.startswith(("SIR Infections", "Dynamic degree", "w1 True", "w1 Estimated",
                                 "w1 all runs", "w2 True", "w2 Estimated",
                                 "Informed and Infected", "Given Newly Infected Ratio", "Informed",
-                                "y_true values", "y_pred all runs")):
+                                "y_true values", "y_model values", "y_pred all runs",
+                                "Newly Recovered", "k Identifiability Estimated",
+                                "n_i Predicted (Identifiability)", "n_r Predicted (Identifiability)")):
                 if current_dataset and x_data:
                     current_sample[current_dataset] = {'x': x_data, 'y': y_data}
                     x_data, y_data = [], []
