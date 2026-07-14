@@ -295,8 +295,10 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
                 for node in social_network.nodes():
                     fj_x[node] = fj_s[node]
 
-        #  Influence spreads
-        elif (t > begin_q) or (T_param == 1):
+        #  Influence spreads. Note this is a standalone `if`, not an `elif` off the seeding
+        #  branch above: when T_param == 1 (a single-tick call with spread requested), both
+        #  the initial seeding AND one round of spread must happen within that same tick.
+        if (t > begin_q) or (t == begin_q and T_param == 1):
             # Can only spread if there are some seed nodes
             if initial_informed_lst != []:
                 if mech_type == "ic":
