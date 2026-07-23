@@ -329,8 +329,6 @@ def global_cost_function(newly_infected, live_edges, seed_set_size, t_cur):
 
     newly_infected_sum = np.sum(newly_infected[window_start:t_cur + 1])
 
-    cost_elements = (newly_infected_sum, total_edge_removal_cost, seed_set_size)
-
     # Adjust penalty weights so that each term contributes equally to cost function.
     # Both are counterfactual-simulation bounds now, not one dynamic (infections) and
     # one static worst-case (edges): g comes from the no-quarantine baseline, h from
@@ -341,6 +339,12 @@ def global_cost_function(newly_infected, live_edges, seed_set_size, t_cur):
     alpha_w = 1 / g if g > 0 else 1.0
     beta_w = 1 / h if h > 0 else 1.0
     gamma_w = 1 / (n)
+
+    # cost_elements carries alpha_w/beta_w alongside the raw sums so downstream
+    # plotting (cost_curve_store.plot_joint_cost_elements) can show each term
+    # weighted the same way it contributes to the returned cost, rather than as
+    # raw, differently-scaled counts.
+    cost_elements = (newly_infected_sum, total_edge_removal_cost, seed_set_size, alpha_w, beta_w)
 
     # Print cost components
     # print(f"Cost components at time {t_cur}:")
@@ -367,6 +371,8 @@ def hill2():
     all_cost_curves = []
     all_infection_term_curves = []
     all_edge_term_curves = []
+    all_alpha_w_curves = []
+    all_beta_w_curves = []
     all_edge_curves = []
     all_newly_infected_counts = []
     all_newly_infected_frac = []
@@ -396,6 +402,8 @@ def hill2():
         cost_lst = []
         infection_term_lst = []
         edge_term_lst = []
+        alpha_w_lst = []
+        beta_w_lst = []
         states_at_time = None
         prev_state_dict = make_initial_state(contact_network)
         static_beta = global_betas[i]
@@ -460,6 +468,8 @@ def hill2():
                 cost_lst.append(cost)
                 infection_term_lst.append(cost_elements[0])
                 edge_term_lst.append(cost_elements[1])
+                alpha_w_lst.append(cost_elements[3])
+                beta_w_lst.append(cost_elements[4])
                 # NOTE: Hamming should be here?
                 delta = (last_batch_cost - cost) if last_batch_cost is not None else 0.0
 
@@ -519,6 +529,8 @@ def hill2():
         all_cost_curves.append(cost_lst)
         all_infection_term_curves.append(infection_term_lst)
         all_edge_term_curves.append(edge_term_lst)
+        all_alpha_w_curves.append(alpha_w_lst)
+        all_beta_w_curves.append(beta_w_lst)
         all_edge_curves.append(edge_counts)
         all_newly_infected_counts.append(newly_infected_at_time)
         all_newly_infected_frac.append(newly_infected_frac_per_sim)
@@ -531,7 +543,7 @@ def hill2():
     tagged = build_tagged_network(global_betas[0])
     return (most_common_seed_set, all_cost_curves, all_infection_term_curves, all_edge_term_curves,
             all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_state_vectors,
-            tagged, all_batch_seed_sets)
+            tagged, all_batch_seed_sets, all_alpha_w_curves, all_beta_w_curves)
 
 # Degree based selection: at each time step, select top K nodes by degree in the CURRENT contact network as seeds
 # Allows re-selection
@@ -539,6 +551,8 @@ def degree_based_selection():
     all_cost_curves = []
     all_infection_term_curves = []
     all_edge_term_curves = []
+    all_alpha_w_curves = []
+    all_beta_w_curves = []
     winner_sets = []
     all_edge_curves = []
     all_newly_infected_counts = []
@@ -563,6 +577,8 @@ def degree_based_selection():
         cost_lst = []
         infection_term_lst = []
         edge_term_lst = []
+        alpha_w_lst = []
+        beta_w_lst = []
         full_dynamics = None
         prev_state_dict = make_initial_state(contact_network)
         static_beta = global_betas[i]
@@ -641,11 +657,15 @@ def degree_based_selection():
                 cost_lst.append(cost)
                 infection_term_lst.append(cost_elements[0])
                 edge_term_lst.append(cost_elements[1])
+                alpha_w_lst.append(cost_elements[3])
+                beta_w_lst.append(cost_elements[4])
 
         winner_sets.append(seed_set)
         all_cost_curves.append(cost_lst)
         all_infection_term_curves.append(infection_term_lst)
         all_edge_term_curves.append(edge_term_lst)
+        all_alpha_w_curves.append(alpha_w_lst)
+        all_beta_w_curves.append(beta_w_lst)
         all_edge_curves.append(edge_counts)
         all_newly_infected_counts.append(newly_infected_per_sim)
         all_newly_infected_frac.append(newly_infected_frac_per_sim)
@@ -653,12 +673,15 @@ def degree_based_selection():
 
     tagged = build_tagged_network(global_betas[0])
     return (winner_sets[0], all_cost_curves, all_infection_term_curves, all_edge_term_curves,
-            all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_full_dynamics, tagged)
+            all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_full_dynamics, tagged,
+            all_alpha_w_curves, all_beta_w_curves)
 
 def random_seed_selection():
     all_cost_curves = []
     all_infection_term_curves = []
     all_edge_term_curves = []
+    all_alpha_w_curves = []
+    all_beta_w_curves = []
     winner_sets = []
     all_edge_curves = []
     all_newly_infected_counts = []
@@ -682,6 +705,8 @@ def random_seed_selection():
         cost_lst = []
         infection_term_lst = []
         edge_term_lst = []
+        alpha_w_lst = []
+        beta_w_lst = []
         full_dynamics = None
         prev_state_dict = make_initial_state(contact_network)
         static_beta = global_betas[i]
@@ -748,11 +773,15 @@ def random_seed_selection():
                 cost_lst.append(cost)
                 infection_term_lst.append(cost_elements[0])
                 edge_term_lst.append(cost_elements[1])
+                alpha_w_lst.append(cost_elements[3])
+                beta_w_lst.append(cost_elements[4])
 
         winner_sets.append(seed_set)
         all_cost_curves.append(cost_lst)
         all_infection_term_curves.append(infection_term_lst)
         all_edge_term_curves.append(edge_term_lst)
+        all_alpha_w_curves.append(alpha_w_lst)
+        all_beta_w_curves.append(beta_w_lst)
         all_edge_curves.append(edge_counts)
         all_newly_infected_counts.append(newly_infected_per_sim)
         all_newly_infected_frac.append(newly_infected_frac_per_sim)
@@ -760,7 +789,8 @@ def random_seed_selection():
 
     tagged = build_tagged_network(global_betas[0])
     return (winner_sets[0], all_cost_curves, all_infection_term_curves, all_edge_term_curves,
-            all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_full_dynamics, tagged)
+            all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_full_dynamics, tagged,
+            all_alpha_w_curves, all_beta_w_curves)
 
 
 def no_quarantine_baseline_runs():
@@ -934,7 +964,7 @@ if __name__ == "__main__":
     # Run hill2 (single-swap per batch, accept first improvement) -- the "adaptive" approach
     (_, hill_cost_curves, hill_infection_curves, hill_edge_term_curves, hill_edge_curves,
      hill_newly_counts, hill_newly_frac, hill_dynamics_list, tagged_contact_hill,
-     hill_batch_seed_sets) = hill2()
+     hill_batch_seed_sets, hill_alpha_w_curves, hill_beta_w_curves) = hill2()
 
     # Save every seed set of every batch of every run of the adaptive approach, along with
     # the social network it was selected against, for visualize_adaptive.py.
@@ -946,11 +976,13 @@ if __name__ == "__main__":
 
     # Run degree baseline
     (_, degree_cost_curves, degree_infection_curves, degree_edge_term_curves, degree_edge_curves,
-     degree_newly_counts, degree_newly_frac, degree_dynamics_list, tagged_contact_degree) = degree_based_selection()
+     degree_newly_counts, degree_newly_frac, degree_dynamics_list, tagged_contact_degree,
+     degree_alpha_w_curves, degree_beta_w_curves) = degree_based_selection()
 
     # Run random seed selection baseline
     (_, rand_cost_curves, rand_infection_curves, rand_edge_term_curves, rand_edge_curves,
-     rand_newly_counts, rand_newly_frac, rand_dynamics_list, tagged_contact_rand) = random_seed_selection()
+     rand_newly_counts, rand_newly_frac, rand_dynamics_list, tagged_contact_rand,
+     rand_alpha_w_curves, rand_beta_w_curves) = random_seed_selection()
 
     # Cytoscape visualization (uses tagged network from first solver)
     send_to_cytoscape(tagged_contact_hill, title="Contact Network (Hill Climb)")
@@ -958,13 +990,17 @@ if __name__ == "__main__":
     # Beta distribution histogram
     # plot_beta_histogram(tagged_contact_hill)
 
-    # Push this run's cost curves (plus raw infection/edge cost-element curves) into
-    # the store shared with milp.py. Once milp.py has also been run, call
+    # Push this run's cost curves -- plus raw infection/edge cost-element curves and the
+    # alpha_w/beta_w that weight them into the returned cost -- into the store shared
+    # with milp.py. Once milp.py has also been run, call
     # cost_curve_store.plot_joint_cost_comparison() / plot_joint_cost_elements() (e.g.
     # `python cost_curve_store.py`) to render the combined figures.
     cost_curve_store.push_curve("Degree-Based", degree_cost_curves,
-                                 infection_curves=degree_infection_curves, edge_curves=degree_edge_term_curves)
+                                 infection_curves=degree_infection_curves, edge_curves=degree_edge_term_curves,
+                                 alpha_curves=degree_alpha_w_curves, beta_curves=degree_beta_w_curves)
     cost_curve_store.push_curve("Random Seeds", rand_cost_curves,
-                                 infection_curves=rand_infection_curves, edge_curves=rand_edge_term_curves)
+                                 infection_curves=rand_infection_curves, edge_curves=rand_edge_term_curves,
+                                 alpha_curves=rand_alpha_w_curves, beta_curves=rand_beta_w_curves)
     cost_curve_store.push_curve("Adaptive", hill_cost_curves,
-                                 infection_curves=hill_infection_curves, edge_curves=hill_edge_term_curves)
+                                 infection_curves=hill_infection_curves, edge_curves=hill_edge_term_curves,
+                                 alpha_curves=hill_alpha_w_curves, beta_curves=hill_beta_w_curves)

@@ -49,7 +49,7 @@ T = 100
 
 gamma = 0.07 # Recovery rate
 mu = 0.05 # Immunity loss rate
-init = 0.05
+init = 0.2
 num_simulations = 10
 
 batch_interval = 2  # MILP is re-solved and cost updated once every batch_interval steps
@@ -200,8 +200,6 @@ def global_cost_function(newly_infected, live_edges, t_cur):
 
     newly_infected_sum = np.sum(newly_infected[window_start:t_cur + 1])
 
-    cost_elements = (newly_infected_sum, total_edge_removal_cost)
-
     # Adjust penalty weights so that each term contributes equally to cost function.
     # Both are counterfactual-simulation bounds now, not one dynamic (infections) and
     # one static worst-case (edges): g comes from the no-quarantine baseline, h from
@@ -213,6 +211,12 @@ def global_cost_function(newly_infected, live_edges, t_cur):
 
     alpha_w = 1 / g if g > 0 else 1.0
     beta_w = 1 / h if h > 0 else 1.0
+
+    # cost_elements carries alpha_w/beta_w alongside the raw sums so downstream
+    # plotting (cost_curve_store.plot_joint_cost_elements) can show each term
+    # weighted the same way it contributes to the returned cost, rather than as
+    # raw, differently-scaled counts.
+    cost_elements = (newly_infected_sum, total_edge_removal_cost, alpha_w, beta_w)
 
     # Print cost components
     print(f"Cost components at time {t_cur}:")
@@ -286,6 +290,8 @@ def milp_seed_selection_stepwise():
     all_cost_curves           = []
     all_infection_term_curves = []
     all_edge_term_curves      = []
+    all_alpha_w_curves        = []
+    all_beta_w_curves         = []
     winner_sets               = []   # list[sim] of list[step] of seed lists
     all_edge_curves           = []
     all_newly_infected_counts = []
@@ -301,6 +307,8 @@ def milp_seed_selection_stepwise():
         cost_lst                    = []
         infection_term_lst          = []
         edge_term_lst               = []
+        alpha_w_lst                 = []
+        beta_w_lst                  = []
         full_dynamics               = None
         prev_state_dict             = None
         full_live_edges             = None
@@ -405,18 +413,23 @@ def milp_seed_selection_stepwise():
                 cost_lst.append(cost)
                 infection_term_lst.append(cost_elements[0])
                 edge_term_lst.append(cost_elements[1])
+                alpha_w_lst.append(cost_elements[2])
+                beta_w_lst.append(cost_elements[3])
 
         winner_sets.append(seeds_per_step)
         all_cost_curves.append(cost_lst)
         all_infection_term_curves.append(infection_term_lst)
         all_edge_term_curves.append(edge_term_lst)
+        all_alpha_w_curves.append(alpha_w_lst)
+        all_beta_w_curves.append(beta_w_lst)
         all_edge_curves.append(edge_counts)
         all_newly_infected_counts.append(newly_infected_per_sim)
         all_newly_infected_frac.append(newly_infected_frac_per_sim)
         all_full_dynamics.append(full_dynamics)
 
     return (winner_sets, all_cost_curves, all_infection_term_curves, all_edge_term_curves, all_edge_curves,
-            all_newly_infected_counts, all_newly_infected_frac, all_full_dynamics)
+            all_newly_infected_counts, all_newly_infected_frac, all_full_dynamics,
+            all_alpha_w_curves, all_beta_w_curves)
 
 
 def no_quarantine_baseline_runs():
@@ -494,7 +507,9 @@ if __name__ == "__main__":
      milp_edge_curves,
      milp_newly_counts,
      milp_newly_frac,
-     milp_dynamics_list) = milp_seed_selection_stepwise()
+     milp_dynamics_list,
+     milp_alpha_w_curves,
+     milp_beta_w_curves) = milp_seed_selection_stepwise()
 
     avg_seeds = np.mean([[len(s) for s in sim] for sim in winner_sets])
     print(f"\nStep-wise MILP: avg seeds/step across all sims = {avg_seeds:.1f}")
@@ -505,10 +520,11 @@ if __name__ == "__main__":
     print(f"Mean final cost (across {num_simulations} sims): {mean_cost:.6f}")
     print(f"Mean total new infections                      : {mean_infec:.1f}")
 
-    # Push this run's cost curve (plus raw infection/edge cost-element curves) into the
-    # store shared with adaptive_seed_selection.py. Once adaptive_seed_selection.py has
-    # also been run, call cost_curve_store.plot_joint_cost_comparison() /
-    # plot_joint_cost_elements() (e.g. `python cost_curve_store.py`) to render the
-    # combined figures.
+    # Push this run's cost curve -- plus raw infection/edge cost-element curves and the
+    # alpha_w/beta_w that weight them into the returned cost -- into the store shared
+    # with adaptive_seed_selection.py. Once adaptive_seed_selection.py has also been
+    # run, call cost_curve_store.plot_joint_cost_comparison() / plot_joint_cost_elements()
+    # (e.g. `python cost_curve_store.py`) to render the combined figures.
     cost_curve_store.push_curve("MILP", milp_cost_curves,
-                                 infection_curves=milp_infection_curves, edge_curves=milp_edge_term_curves)
+                                 infection_curves=milp_infection_curves, edge_curves=milp_edge_term_curves,
+                                 alpha_curves=milp_alpha_w_curves, beta_curves=milp_beta_w_curves)
