@@ -1,6 +1,7 @@
 import pickle
 from collections import Counter
 
+import numpy as np
 import matplotlib.pyplot as plt
 import networkx as nx
 
@@ -18,6 +19,7 @@ FIGURE_SIZE = (10, 6)
 
 DATA_PATH = "adaptive_seed_data.pkl"
 OUT_PATH = "capstone_result_figures/adaptive_freq_vs_degree_coreness.pdf"
+BINNED_OUT_PATH = "capstone_result_figures/adaptive_freq_vs_degree_coreness_binned.pdf"
 
 
 def load_data(path=DATA_PATH):
@@ -74,5 +76,74 @@ def plot_frequency_vs_degree_coreness(path=DATA_PATH, out_path=OUT_PATH):
     plt.show()
 
 
+def plot_frequency_vs_degree_coreness_binned(path=DATA_PATH, out_path=BINNED_OUT_PATH, num_bins=10):
+    """Binned-barplot alternative to plot_frequency_vs_degree_coreness(): same three
+    quantities (selection frequency, degree, coreness), but nodes are grouped into
+    equal-width selection-frequency bins, and each bin shows the mean degree / mean
+    coreness of the nodes that fall in it as a pair of side-by-side bars (instead of
+    one scatter point per node). Keeps the scatter's twin-axis split since degree and
+    coreness live on different scales."""
+    data = load_data(path)
+    social_network = data["social_network"]
+    batch_seed_sets = data["batch_seed_sets"]
+
+    freq = selection_frequency(batch_seed_sets)
+
+    # Degree and coreness are undirected notions; the social network is stored as a DiGraph.
+    undirected = social_network.to_undirected()
+    degree = dict(undirected.degree())
+    coreness = nx.core_number(undirected)
+
+    nodes = list(social_network.nodes())
+    frequencies = np.array([freq.get(node, 0) for node in nodes])
+    degrees = np.array([degree[node] for node in nodes])
+    corenesses = np.array([coreness[node] for node in nodes])
+
+    # Equal-width bins over the observed frequency range; digitize against the
+    # interior edges so both endpoints land in the first/last bin.
+    bin_edges = np.linspace(frequencies.min(), frequencies.max(), num_bins + 1)
+    bin_idx = np.clip(np.digitize(frequencies, bin_edges[1:-1]), 0, num_bins - 1)
+
+    bin_mean_degree = np.full(num_bins, np.nan)
+    bin_mean_coreness = np.full(num_bins, np.nan)
+    for b in range(num_bins):
+        mask = bin_idx == b
+        if mask.any():
+            bin_mean_degree[b] = degrees[mask].mean()
+            bin_mean_coreness[b] = corenesses[mask].mean()
+
+    bin_centers = np.arange(num_bins)
+    bar_width = 0.35
+
+    fig, ax_deg = plt.subplots(figsize=FIGURE_SIZE)
+    ax_core = ax_deg.twinx()
+
+    ax_deg.bar(bin_centers - bar_width / 2, bin_mean_degree, width=bar_width,
+               color="steelblue", alpha=0.8, label="Degree")
+    ax_core.bar(bin_centers + bar_width / 2, bin_mean_coreness, width=bar_width,
+                color="firebrick", alpha=0.8, label="Coreness")
+
+    ax_deg.set_xticks(bin_centers)
+    ax_deg.set_xticklabels([f"{bin_edges[b]:.0f}-{bin_edges[b + 1]:.0f}" for b in range(num_bins)],
+                            rotation=45, ha="right")
+
+    ax_deg.set_xlabel("Selection Frequency (Adaptive Approach), binned")
+    ax_deg.set_ylabel("Mean Degree", color="steelblue")
+    ax_core.set_ylabel("Mean Coreness", color="firebrick")
+    ax_deg.tick_params(axis="y", labelcolor="steelblue")
+    ax_core.tick_params(axis="y", labelcolor="firebrick")
+
+    handles = ax_deg.get_legend_handles_labels()[0] + ax_core.get_legend_handles_labels()[0]
+    labels = ax_deg.get_legend_handles_labels()[1] + ax_core.get_legend_handles_labels()[1]
+    ax_deg.legend(handles, labels, loc="upper left")
+
+    ax_deg.set_title("Mean Degree and Coreness by Selection-Frequency Bin")
+    ax_deg.grid(True, linewidth=0.4, axis="y")
+    fig.tight_layout()
+    fig.savefig(out_path, format="pdf", bbox_inches="tight")
+    plt.show()
+
+
 if __name__ == "__main__":
     plot_frequency_vs_degree_coreness()
+    plot_frequency_vs_degree_coreness_binned()
