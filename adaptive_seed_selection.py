@@ -62,7 +62,6 @@ injection_times   = None
 _num_to_infect    = None
 infection_candidates = None
 baseline_runs     = None
-edge_baseline_runs = None  # Full-quarantine counterfactual edge-removal-cost runs (see baseline_edge_removals)
 global_betas      = None  # List of beta maps (one per simulation), computed once in initialize()
 
 def make_initial_state(graph):
@@ -158,57 +157,6 @@ def baseline_infections(sim_index=0):
     baseline_newly_frac = [count / n for count in baseline_newly_counts]
     return baseline_newly_counts, baseline_newly_frac
 
-# Edge-cost analogue of baseline_infections(): every node is informed from t=0 with
-# full adherence, so any infected node quarantines (and its edges get cut) as soon as
-# possible under the module's actual q="r" restoration policy. This is the realistic
-# worst case for edge loss -- "what a maximal-but-real quarantine policy costs" --
-# rather than the static, dynamics-free "every edge in the graph is gone" bound.
-def baseline_edge_removals(sim_index=0):
-    contact_network = deepcopy(initial_contact)
-    social_network = deepcopy(initial_social)
-
-    all_edges = initial_contact.edges()
-    edge_cost_dict = {(u, v): data.get('weight', 1) for u, v, data in initial_contact.edges(data=True)}
-    all_nodes = list(contact_network.nodes())
-
-    prev_state_dict = make_initial_state(contact_network)
-    static_beta = global_betas[sim_index]
-    baseline_edge_costs = []
-
-    for t_cur in range(T):
-        if t_cur % introduced_infections[1] == 0 and t_cur > 0:
-            new_infections = infection_candidates[sim_index][injection_times.index(t_cur)]
-            for node in new_infections:
-                if prev_state_dict[node] == 2:
-                    prev_state_dict[node] = 1
-
-        simulation_results = SIR.Simulate_SIR(
-            contact_network=contact_network,
-            social_network=social_network,
-            T=1,
-            q=q,
-            q_mech=("lt", 1),  # every node is already seeded; avoid IC's 1000-trial Monte Carlo per tick
-            beta=static_beta,
-            gamma=gamma,
-            mu=mu,
-            init=init,
-            adherence=1.0,
-            seeds=all_nodes,
-            initial_state_dict=prev_state_dict,
-        )
-
-        contact_network = deepcopy(initial_contact)
-        sirs_dynamics = simulation_results[4]
-        prev_state_dict = sirs_dynamics[-1]
-
-        graph_vec = simulation_results[10]
-        live_edges_t = list(graph_vec[-1])
-        removed_edges = set(all_edges) - set(live_edges_t)
-        edge_removal_cost = sum(edge_cost_dict[edge] for edge in removed_edges)
-        baseline_edge_costs.append(edge_removal_cost)
-
-    return baseline_edge_costs
-
 # network: None to use the synthetic network shared with milp.py (see
 #   network_setup.py) -- both approaches then compare against an identical
 #   contact network, social network, and set of per-simulation heterogeneous
@@ -216,13 +164,20 @@ def baseline_edge_removals(sim_index=0):
 #   a specific network instead (e.g. drive_seed_selection.py's per-bin runs);
 #   in that case the beta maps are generated locally for that network only,
 #   independent of the shared cache.
-def initialize(network=None):
+# social: None to synthesize a social network from the contact network via
+#   correlated_graphs.create_social_graph (used whenever `network` is also a
+#   custom graph/path). Pass an nx.Graph or a string path to a GML file to use
+#   a real social network instead -- e.g. rc_social_network.gml. GML node
+#   identity comes from the "label" field (nx.read_gml's default), which for
+#   the rc_* dataset is the real participant ID and lines up across the
+#   contact/social pair, so nodes are intersected on that label and remapped
+#   to a shared set of integer ids before use. Ignored when `network` is None.
+def initialize(network=None, social=None):
     """Load a contact network and run baseline simulations.  Must be called
     once before any simulation function (hill2, degree_based_selection, etc.)."""
     global contact_network, initial_contact, initial_edge_count, n
     global social_network, initial_social, K
     global injection_times, _num_to_infect, infection_candidates, baseline_runs
-    global edge_baseline_runs
     global global_betas
 
     if network is None:
@@ -235,13 +190,30 @@ def initialize(network=None):
         isolated_nodes = [node for node in contact_network.nodes()
                           if contact_network.degree(node) == 0]
         contact_network.remove_nodes_from(isolated_nodes)
-        contact_network = nx.convert_node_labels_to_integers(contact_network, first_label=0)
 
-        # Social network needs real edge structure: information diffusion (IC/LT/FJ) in
-        # SIR.Simulate_SIR spreads over social_network's edges, so an edgeless graph means
-        # the informed set can never grow past the initial seeds.
-        social_network, _ = correlated_graphs.create_social_graph(
-            contact_network, 2 * contact_network.number_of_edges())
+        if social is None:
+            contact_network = nx.convert_node_labels_to_integers(contact_network, first_label=0)
+
+            # Social network needs real edge structure: information diffusion (IC/LT/FJ) in
+            # SIR.Simulate_SIR spreads over social_network's edges, so an edgeless graph means
+            # the informed set can never grow past the initial seeds.
+            social_network, _ = correlated_graphs.create_social_graph(
+                contact_network, 2 * contact_network.number_of_edges())
+        else:
+            social_network = nx.read_gml(social) if isinstance(social, str) else social
+
+            # Contact and social GML files aren't guaranteed to cover identical node
+            # sets, so intersect them on label first, then remap that shared set onto
+            # integers 0..n-1 with ONE mapping applied to both graphs -- code elsewhere
+            # (e.g. hill2's seed_vec) indexes nodes as plain array positions, so contact
+            # and social node ids must agree exactly.
+            common_nodes = [node for node in contact_network.nodes() if social_network.has_node(node)]
+            contact_network = contact_network.subgraph(common_nodes).copy()
+            social_network  = social_network.subgraph(common_nodes).copy()
+            mapping = {node: i for i, node in enumerate(contact_network.nodes())}
+            contact_network = nx.relabel_nodes(contact_network, mapping)
+            social_network  = nx.relabel_nodes(social_network, mapping)
+
         global_betas = [compute_node_beta(None, contact_network) for _ in range(num_simulations)]
 
     initial_contact    = deepcopy(contact_network)
@@ -266,7 +238,6 @@ def initialize(network=None):
 
     if n == 0:
         baseline_runs = []
-        edge_baseline_runs = []
         global_betas = []
         return
 
@@ -275,11 +246,6 @@ def initialize(network=None):
     for i in range(num_simulations):
         baseline_newly_counts, _ = baseline_infections(i)
         baseline_runs.append(baseline_newly_counts)
-
-    # Collect per-timestep edge-removal costs from baseline (full-quarantine) runs
-    edge_baseline_runs = []
-    for i in range(num_simulations):
-        edge_baseline_runs.append(baseline_edge_removals(i))
 
 
 def build_tagged_network(beta_map):
@@ -309,6 +275,7 @@ def global_cost_function(newly_infected, live_edges, seed_set_size, t_cur):
     all_edges = initial_contact.edges()
 
     edge_cost_dict = {(u, v): data.get('weight', 1) for u, v, data in initial_contact.edges(data=True)}
+    edge_cost_bound = sum(edge_cost_dict.values())  # cost of losing every edge in one step
 
     # Only accumulate cost since the most recent batch selection. When seeds are
     # reselected every single step (batch_interval == 1) there is no distinct batch
@@ -330,11 +297,17 @@ def global_cost_function(newly_infected, live_edges, seed_set_size, t_cur):
     newly_infected_sum = np.sum(newly_infected[window_start:t_cur + 1])
 
     # Adjust penalty weights so that each term contributes equally to cost function.
-    # Both are counterfactual-simulation bounds now, not one dynamic (infections) and
-    # one static worst-case (edges): g comes from the no-quarantine baseline, h from
-    # the full-quarantine baseline (see baseline_infections / baseline_edge_removals).
+    # g: no-quarantine counterfactual bound (see baseline_infections) -- more
+    # quarantine can only ever reduce infections, so this is a true upper bound.
+    # h: static worst case instead -- N steps into the batch, the most edge cost
+    # you could possibly have incurred is N * (sum of every edge's removal cost),
+    # i.e. every edge in the graph gone at every step. A full-quarantine simulated
+    # "counterfactual" bound doesn't actually bound this: aggressive quarantine
+    # suppresses spread so effectively that it can rack up LESS cumulative edge
+    # cost than a realistic, imperfect policy that lets the epidemic reach more
+    # nodes over the window -- letting the real numerator exceed that "bound".
     g = sum(max(run[t] for run in baseline_runs) for t in range(window_start, t_cur + 1))
-    h = sum(max(run[t] for run in edge_baseline_runs) for t in range(window_start, t_cur + 1))
+    h = window_len * edge_cost_bound
 
     alpha_w = 1 / g if g > 0 else 1.0
     beta_w = 1 / h if h > 0 else 1.0
@@ -355,7 +328,10 @@ def global_cost_function(newly_infected, live_edges, seed_set_size, t_cur):
 
     # return beta_w * total_edge_removal_cost, cost_elements
     # return alpha_w * np.sum(newly_infected) + beta_w * total_edge_removal_cost + gamma_w * seed_set_size, cost_elements
-    return alpha_w * newly_infected_sum + beta_w * total_edge_removal_cost, cost_elements
+    # Cap each term at 1 so the maximum possible total cost per step is 2.
+    infection_term = min(alpha_w * newly_infected_sum, 1.0)
+    edge_term = min(beta_w * total_edge_removal_cost, 1.0)
+    return infection_term + edge_term, cost_elements
     # return alpha_w * newly_infected_sum, cost_elements
 
 # Stochastic hill-climber that considers exactly one seed swap per batch step.
@@ -465,6 +441,7 @@ def hill2():
             # Perform swapping operation only at batch boundaries
             if (t_cur + 1) % batch_interval == 0 or t_cur == T - 1:
                 cost, cost_elements = global_cost_function(newly_infected_at_time, live_edge_at_time, len(new_seed_set), t_cur)
+                print(f"Hill-Climb, {t_cur}, {cost}")
                 cost_lst.append(cost)
                 infection_term_lst.append(cost_elements[0])
                 edge_term_lst.append(cost_elements[1])
@@ -654,6 +631,7 @@ def degree_based_selection():
                     len(seed_set),
                     t_cur
                 )
+                print(f"Degree-based, {t_cur}, {cost}")
                 cost_lst.append(cost)
                 infection_term_lst.append(cost_elements[0])
                 edge_term_lst.append(cost_elements[1])
@@ -770,6 +748,7 @@ def random_seed_selection():
                     len(seed_set),
                     t_cur
                 )
+                print(f"Random Seed, {t_cur}, {cost}")
                 cost_lst.append(cost)
                 infection_term_lst.append(cost_elements[0])
                 edge_term_lst.append(cost_elements[1])
@@ -861,6 +840,7 @@ def no_quarantine_baseline_runs():
                 g = sum(max(run[t] for run in baseline_runs) for t in range(window_start, t_cur + 1))
                 alpha_w = 1 / g if g > 0 else 1.0
                 cost = alpha_w * np.sum(newly_infected_per_sim[window_start:t_cur + 1])
+                print(f"No-Quarantine, {t_cur}, {cost}")
                 cost_lst.append(cost)
 
         all_cost_curves.append(cost_lst)
@@ -959,7 +939,18 @@ def plot_prevalence_and_new_infections(
     plt.show()
 
 if __name__ == "__main__":
-    initialize()
+    # ── CHOOSE NETWORK FILES HERE ───────────────────────────────────────────
+    # Swap these two paths to run against a different contact/social pair (or set
+    # both to None to fall back to the synthetic network shared with milp.py).
+    # CONTACT_NETWORK_PATH = "capstone_proj_data/rc_weighted_contact_bin14.gml"
+    # SOCIAL_NETWORK_PATH  = "capstone_proj_data/rc_social_network.gml"
+
+    CONTACT_NETWORK_PATH = None
+    SOCIAL_NETWORK_PATH = None
+
+    # ─────────────────────────────────────────────────────────────────────────
+
+    initialize(CONTACT_NETWORK_PATH, SOCIAL_NETWORK_PATH)
 
     # Run hill2 (single-swap per batch, accept first improvement) -- the "adaptive" approach
     (_, hill_cost_curves, hill_infection_curves, hill_edge_term_curves, hill_edge_curves,
@@ -997,10 +988,13 @@ if __name__ == "__main__":
     # `python cost_curve_store.py`) to render the combined figures.
     cost_curve_store.push_curve("Degree-Based", degree_cost_curves,
                                  infection_curves=degree_infection_curves, edge_curves=degree_edge_term_curves,
-                                 alpha_curves=degree_alpha_w_curves, beta_curves=degree_beta_w_curves)
+                                 alpha_curves=degree_alpha_w_curves, beta_curves=degree_beta_w_curves,
+                                 batch_interval=batch_interval, T=T)
     cost_curve_store.push_curve("Random Seeds", rand_cost_curves,
                                  infection_curves=rand_infection_curves, edge_curves=rand_edge_term_curves,
-                                 alpha_curves=rand_alpha_w_curves, beta_curves=rand_beta_w_curves)
+                                 alpha_curves=rand_alpha_w_curves, beta_curves=rand_beta_w_curves,
+                                 batch_interval=batch_interval, T=T)
     cost_curve_store.push_curve("Adaptive", hill_cost_curves,
                                  infection_curves=hill_infection_curves, edge_curves=hill_edge_term_curves,
-                                 alpha_curves=hill_alpha_w_curves, beta_curves=hill_beta_w_curves)
+                                 alpha_curves=hill_alpha_w_curves, beta_curves=hill_beta_w_curves,
+                                 batch_interval=batch_interval, T=T)

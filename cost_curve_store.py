@@ -62,6 +62,24 @@ def _lighten(color, amount):
     return (r + (1 - r) * amount, g + (1 - g) * amount, b + (1 - b) * amount)
 
 
+def _expand_to_ticks(curves, batch_interval, T):
+    """Expand each per-simulation curve from one value per batch to one value per tick,
+    repeating each batch's value across the ticks it covers. Batches are
+    [i*batch_interval, min((i+1)*batch_interval, T)) -- segments of length
+    batch_interval, except a possibly shorter final segment when T isn't a multiple of
+    batch_interval -- matching how adaptive_seed_selection.py / milp.py / milp_local.py
+    only append a cost value at batch boundaries (and at t_cur == T-1)."""
+    expanded = []
+    for sim in curves:
+        row = []
+        for i, value in enumerate(sim):
+            start = i * batch_interval
+            end = min(start + batch_interval, T)
+            row.extend([value] * (end - start))
+        expanded.append(row)
+    return expanded
+
+
 def _normalize_entry(value):
     """Normalize a stored value to {'cost': arr, 'infection': arr|None, 'edge': arr|None,
     'alpha': arr|None, 'beta': arr|None}. Older store entries are a bare cost-curve array,
@@ -86,7 +104,7 @@ def load_all(path=STORE_PATH):
 
 
 def push_curve(label, cost_curves, infection_curves=None, edge_curves=None,
-               alpha_curves=None, beta_curves=None, path=STORE_PATH):
+               alpha_curves=None, beta_curves=None, batch_interval=1, T=None, path=STORE_PATH):
     """Merge this method's cost curve -- and, optionally, its raw infection-term /
     edge-term cost-element curves, plus the alpha_w/beta_w curves that weight them
     into the returned cost (each a list of per-simulation lists, same shape as
@@ -95,9 +113,31 @@ def push_curve(label, cost_curves, infection_curves=None, edge_curves=None,
     alpha_curves/beta_curves let plot_joint_cost_elements() show
     alpha_w * infection and beta_w * edge -- the actual weighted contributions,
     on the same [0, ~1]-ish scale as the total cost -- instead of raw counts.
+
+    If the caller only computed one value per batch (cost updated once every
+    batch_interval ticks, per adaptive_seed_selection.py / milp.py / milp_local.py),
+    pass batch_interval and T so each value is expanded (repeated) to fill the
+    T-tick segment it covers -- giving every method a full T-tick curve even when
+    they use different batch intervals, so they still overlay on a shared time axis
+    in the joint plots. Leave batch_interval=1 if the curves already have one value
+    per tick.
     """
     if label not in METHOD_STYLE:
         raise ValueError(f"Unknown method label {label!r}; expected one of {list(METHOD_STYLE)}")
+
+    if batch_interval > 1:
+        if T is None:
+            raise ValueError("T must be given when batch_interval > 1, to know how many "
+                              "ticks to expand each batch's value across.")
+        cost_curves = _expand_to_ticks(cost_curves, batch_interval, T)
+        if infection_curves is not None:
+            infection_curves = _expand_to_ticks(infection_curves, batch_interval, T)
+        if edge_curves is not None:
+            edge_curves = _expand_to_ticks(edge_curves, batch_interval, T)
+        if alpha_curves is not None:
+            alpha_curves = _expand_to_ticks(alpha_curves, batch_interval, T)
+        if beta_curves is not None:
+            beta_curves = _expand_to_ticks(beta_curves, batch_interval, T)
 
     data = load_all(path)
     entry = {"cost": np.asarray(cost_curves)}
@@ -153,13 +193,14 @@ def plot_joint_cost_comparison(path=STORE_PATH,
 
 def plot_joint_cost_elements(path=STORE_PATH,
                               save_path="capstone_result_figures/joint_cost_elements_comparison.pdf"):
-    """Plot mean alpha_w * infection-term and beta_w * edge-term curves -- i.e. each
-    cost_elements term from global_cost_function weighted exactly the way it
-    contributes to the returned cost (alpha_w * newly_infected_sum + beta_w *
-    total_edge_removal_cost) -- for whichever methods have pushed both the raw
-    element curves and the alpha/beta weight curves. A separate figure from
-    plot_joint_cost_comparison, but on the same normalized scale: the two terms
-    plotted here sum (per time step) to that figure's total cost.
+    """Plot mean alpha_w * infection-term and beta_w * edge-term curves, each capped
+    at 1 per step -- i.e. each cost_elements term from global_cost_function weighted
+    and capped exactly the way it contributes to the returned cost
+    (min(alpha_w * newly_infected_sum, 1) + min(beta_w * total_edge_removal_cost, 1))
+    -- for whichever methods have pushed both the raw element curves and the
+    alpha/beta weight curves. A separate figure from plot_joint_cost_comparison, but
+    on the same normalized scale: the two terms plotted here sum (per time step) to
+    that figure's total cost.
 
     Since both terms are now normalized the same way, they share a single axis.
     Each method keeps its METHOD_STYLE color; the weighted infection term uses a
@@ -189,14 +230,15 @@ def plot_joint_cost_elements(path=STORE_PATH,
         entry = entries[label]
         base_color = METHOD_STYLE[label]
 
-        weighted_infection_mean = (entry["alpha"] * entry["infection"]).mean(axis=0)
+        # Cap each term at 1 per step, matching global_cost_function's capped terms.
+        weighted_infection_mean = np.minimum(entry["alpha"] * entry["infection"], 1.0).mean(axis=0)
         time = np.arange(len(weighted_infection_mean))
         line, = ax.plot(time, weighted_infection_mean, label=f"{label} (infection, weighted)",
                  color=_lighten(base_color, 0.15), marker="^", markersize=6,
                  markevery=max(1, len(time) // 25), linewidth=2.2, zorder=3)
         lines.append(line)
 
-        weighted_edge_mean = (entry["beta"] * entry["edge"]).mean(axis=0)
+        weighted_edge_mean = np.minimum(entry["beta"] * entry["edge"], 1.0).mean(axis=0)
         line, = ax.plot(time, weighted_edge_mean, label=f"{label} (edge, weighted)",
                  color=_lighten(base_color, 0.55), marker="o", markersize=6,
                  markevery=max(1, len(time) // 25), linewidth=2.2, zorder=3)
