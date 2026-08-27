@@ -97,8 +97,15 @@ init = 0.2 # Initial infected portion
 q = "r"  # Quarantine type: indiviuals restore edges when recovered
 split_point = 30  # Set to None if you want to optimize over the full SIR simulation, or a specific time point to split the optimization
 density_social = None  # Set to None for default density, or an integer number of edges in the social graph
-noisy_data = True  # If True, add Gaussian noise to newly infected/recovered measurements
-k_noise = 0.33    # Noise scale: std of added noise = k_noise * sqrt(p(1-p)/n) (used only when noisy_data is True)
+noisy_data = True  # If True, add measurement noise to newly infected/recovered measurements
+noise_type = "gaussian"  # "gaussian" or "poisson" (used only when noisy_data is True)
+k_noise = 0.33    # Gaussian noise scale: std of added noise = k_noise * sqrt(p(1-p)/n) (used only when noise_type == "gaussian")
+poisson_noise_scale = 1.0  # Poisson noise scale: variance of added noise = poisson_noise_scale * (true count) (used only when noise_type == "poisson")
+
+# Route default (non-CLI-specified) writes for Poisson runs to their own file so they
+# don't mix with Gaussian-noise samples in the same xy-data file.
+if noise_type == "poisson" and mode is None:
+    write_file = "experiment_data/mfa_xy_data_poisson.txt"
 
 # YJMOB mode: First, run optimization for each time interval separately
 #             Next, run optimization over the entire time period with split at the QUARANTINE boundary
@@ -296,8 +303,14 @@ for _t in range(T):
         _r = sum(1 for node in contact_graph.nodes() if true_dynamics[0][node] == 2) / n
         _i = sum(1 for node in contact_graph.nodes() if true_dynamics[0][node] == 1) / n
     if noisy_data:
-        _r += np.random.normal(0, k_noise * np.sqrt(_r * (1 - _r) / n))
-        _i += np.random.normal(0, k_noise * np.sqrt(_i * (1 - _i) / n))
+        if noise_type == "poisson":
+            lam_r = max(_r * n / poisson_noise_scale, 0)
+            lam_i = max(_i * n / poisson_noise_scale, 0)
+            _r = poisson_noise_scale * np.random.poisson(lam_r) / n
+            _i = poisson_noise_scale * np.random.poisson(lam_i) / n
+        else:
+            _r += np.random.normal(0, k_noise * np.sqrt(_r * (1 - _r) / n))
+            _i += np.random.normal(0, k_noise * np.sqrt(_i * (1 - _i) / n))
     _raw_new_r.append(_r)
     _raw_new_i.append(_i)
 

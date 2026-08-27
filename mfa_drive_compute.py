@@ -12,9 +12,8 @@ repeat = 1  # Number of times to run the MFA
 
 # Run mean field approximation with varying adherence levels
 def adherence_mode():
-    write_to = ("experiment_data/a_0.2", "experiment_data/a_0.4", "experiment_data/a_0.6", 
-                "experiment_data/a_0.8", "experiment_data/a_0.9", "experiment_data/a_1.0")
-    adherence_level = (0.2, 0.4, 0.6, 0.8, 0.9, 1.0)
+    write_to = ("experiment_data/a_0.2", "experiment_data/a_0.4", "experiment_data/a_0.6")
+    adherence_level = (0.2, 0.4, 0.6)
 
     # Clear previous data files
     for file in write_to:

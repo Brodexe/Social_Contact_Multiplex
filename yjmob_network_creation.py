@@ -1,7 +1,7 @@
 import networkx as nx
 import py4cytoscape as p4c
-import numpy as np
 import random
+import correlated_graphs
 
 ping_cytoscape = False
 
@@ -72,7 +72,6 @@ for interval_key, interval in day_data_initial.items():
 #   A collision is defined as two users being in the same (x_coord, y_coord) within a 2 time unit window
 # Collisions stored as {(user1, user2): count}
 contact_networks = []
-all_collisions = {}
 
 for interval_key, interval_data in day_data_final.items():
     collision_data = {}
@@ -113,11 +112,6 @@ for interval_key, interval_data in day_data_final.items():
                             collision_data[edge] = 1
                         else:
                             collision_data[edge] += 1
-                        # Record collision in global collision data
-                        if edge not in all_collisions:
-                            all_collisions[edge] = 1
-                        else:
-                            all_collisions[edge] += 1
 
     #---------------
     # Contact network creation
@@ -131,20 +125,12 @@ for interval_key, interval_data in day_data_final.items():
     contact_networks.append(contact_network)
 
 #---------------
-# Social network creation based on global collision frequency
+# Social network creation via Jaccard similarity of ego networks (the default
+# method used in SIR.py when no social network is given), applied to the first
+# contact network snapshot
 #---------------
 
-# Compute the 75th percentile of the collision count distribution
-collision_counts = np.array(list(all_collisions.values()))
-percentile_75 = np.percentile(collision_counts, 75)
-
-social_network = nx.Graph()
-for edge, count in all_collisions.items():
-    if count >= percentile_75:
-        social_network.add_edge(edge[0], edge[1])
-
-# Make the social network directed
-social_network = social_network.to_directed()
+social_network = correlated_graphs.create_social_graph(contact_networks[0])[0]
 
 #---------------
 # Ensure all networks have the same nodes

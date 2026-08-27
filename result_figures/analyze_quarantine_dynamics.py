@@ -4,7 +4,6 @@ import extract_mfa
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import minimize
-import random
 
 # ---------------------------
 #  Settings & output filename
@@ -114,23 +113,51 @@ k_q_true_mean = np.mean(k_q_runs, axis=0)  # shape: (T,)
 k_q_true_std = np.std(k_q_runs, axis=0)
 
 # -------------
-# Joint optimization (S, adherence) per-run
+#
+#  Two-stage (f, adherence) estimation per run
+#
+#  Jointly fitting f and adherence is not identifiable: only their product enters
+#  the k_q model, so many (f, adherence) pairs reproduce the same trajectory. Instead:
+#    Stage 1: on days where informed-and-infected is low, treat that as a proxy for
+#             low infection overall, plug in a fixed f, and solve for adherence alone.
+#    Stage 2: with adherence fixed at its Stage 1 value, solve for f alone using the
+#             remaining days.
+#
 # -------------
-def mse_loss(params, i_prime_cur):
-    S, adherence_val = params
-    k_q_est = np.array([k_0 * (1 - S * adherence_val * i_prime_cur[t]) for t in range(len(i_prime))])
-    mse = np.mean((k_q_true_mean - k_q_est) ** 2)
-    return mse
-
-#---------------
-#
-#  Joint optimization to find best (S, adherence)
-#
-#---------------
 
 # Parameter bounds
 S_RANGE = (1.0, 2.0)
 ADHERENCE_RANGE = (0.0, 1.0)
+
+# Proportion of informed-and-infected below which a day counts as "low infected" (tweakable)
+LOW_INFECTED_THRESHOLD = 0.05
+# Value plugged in for f while solving for adherence on low-infected days
+FIXED_F_LOW = 2.0
+
+def two_stage_estimate(i_prime_series, k_q_series, low_threshold=LOW_INFECTED_THRESHOLD,
+                        fixed_f_low=FIXED_F_LOW, f_range=S_RANGE, adherence_range=ADHERENCE_RANGE):
+    i_prime_series = np.asarray(i_prime_series)
+    k_q_series = np.asarray(k_q_series)
+
+    low_mask = i_prime_series <= low_threshold
+    stage1_mask = low_mask if np.any(low_mask) else np.ones_like(low_mask)
+
+    res_a = minimize(
+        lambda params: float(np.mean((k_q_series[stage1_mask]
+                                       - k_0 * (1 - fixed_f_low * params[0] * i_prime_series[stage1_mask])) ** 2)),
+        x0=[0.5], bounds=[adherence_range], method='L-BFGS-B'
+    )
+    adherence_est = float(res_a.x[0])
+
+    stage2_mask = ~low_mask if np.any(~low_mask) else np.ones_like(low_mask)
+    res_f = minimize(
+        lambda params: float(np.mean((k_q_series[stage2_mask]
+                                       - k_0 * (1 - params[0] * adherence_est * i_prime_series[stage2_mask])) ** 2)),
+        x0=[1.5], bounds=[f_range], method='L-BFGS-B'
+    )
+    f_est = float(res_f.x[0])
+
+    return adherence_est, f_est
 
 # List of optimal parameters per run
 best_S_lst = []
@@ -138,15 +165,9 @@ best_adh_lst = []
 
 # Iterate over runs in samples
 for r in range(num_simulations):
-    # Optimize for a given run
-    res = minimize(lambda params: mse_loss(params, inf_inf_runs[r]),
-                   x0=[1.5, 0.5],
-                   bounds=[S_RANGE, ADHERENCE_RANGE],
-                   method='L-BFGS-B',
-                   options={'gtol': 1e-6})
-    best_S, best_adherence = res.x
-    best_S_lst.append(best_S)
-    best_adh_lst.append(best_adherence)
+    adherence_est, f_est = two_stage_estimate(inf_inf_runs[r], k_q_runs[r])
+    best_S_lst.append(f_est)
+    best_adh_lst.append(adherence_est)
 
 best_S = float(np.mean(best_S_lst))
 best_adherence = float(np.mean(best_adh_lst))
@@ -242,23 +263,11 @@ for r in range(num_simulations):
     k_q_run = k_q_runs[r]  # length T
 
     #--------------
-    # Optimize adherence estimate, scale factor for each t
+    # Two-stage adherence/f estimate for each cumulative window
     #--------------
     for t in range(1, T + 1):     # use first t points (t from 1..T)
-        # Define cumulative slices of the time-series
-        i_prime_subset = np.array(i_prime_run[:t])
-        k_q_true_subset = np.array(k_q_run[:t])
-
-        # Objective function for this slice: MSE between true k_q and estimated k_q for the respective run
-        def mse_slice(params):
-            # Parameters to optimize: S, adherence
-            S_val, adh_val = params
-            k_q_est_slice = k_0 * (1 - S_val * adh_val * i_prime_subset)
-            return float(np.mean((k_q_true_subset - k_q_est_slice) ** 2))
-
-        res = minimize(mse_slice, x0=[random.uniform(1,2), random.uniform(0,1)], bounds=[S_RANGE, ADHERENCE_RANGE], method='L-BFGS-B')
-        # store adherence estimate
-        cumulative_adh[r, t-1] = float(res.x[1])
+        adh_est, _ = two_stage_estimate(i_prime_run[:t], k_q_run[:t])
+        cumulative_adh[r, t-1] = adh_est
 
 # Compute mean and std across runs for each t
 adh_mean = np.mean(cumulative_adh, axis=0)

@@ -173,12 +173,17 @@ def plot_selected_seed_counts_for_real_world_bins(path=REAL_WORLD_DATA_PATH,
     selected-seed-counts figure as plot_selected_seed_counts_by_metric_bin, once per
     network bin, saving each to disk without displaying it."""
     data = load_data(path)
-    for bin_index, bin_data in data["results"].items():
+    # Display numbering starts at 1 regardless of the underlying dict keys (which
+    # trace back to the specific rc_weighted_contact_bin{i}.gml file) -- only the
+    # title shown in the plot is renumbered; out_path still uses the real bin_index
+    # so filenames stay traceable to their source network file.
+    for display_index, bin_index in enumerate(sorted(data["results"].keys()), start=1):
+        bin_data = data["results"][bin_index]
         out_path = out_template.format(i=bin_index)
         print(f"Plotting real-world bin {bin_index} -> {out_path}")
         _plot_selected_seed_counts(bin_data["social_network"], bin_data["batch_seed_sets"], out_path,
                                     num_bins=num_bins, show=False,
-                                    title_suffix=f" (Network Bin {bin_index})")
+                                    title_suffix=f" (Network Bin {display_index})")
 
 
 def plot_selected_seed_metric_heatmaps(path=REAL_WORLD_DATA_PATH, out_path=REAL_WORLD_HEATMAP_OUT_PATH,
@@ -236,7 +241,7 @@ def plot_selected_seed_metric_heatmaps(path=REAL_WORLD_DATA_PATH, out_path=REAL_
 
         im = ax.imshow(grid, aspect="auto", origin="lower", cmap=cmap, vmin=0)
         ax.set_xticks(np.arange(len(bin_indices)))
-        ax.set_xticklabels(bin_indices)
+        ax.set_xticklabels(np.arange(1, len(bin_indices) + 1))
         ax.set_yticks(np.arange(num_bins))
         # Scientific notation (not "{:.4f}") for Betweenness -- its raw values are
         # small enough that 4 decimal places either collide/truncate or all render
