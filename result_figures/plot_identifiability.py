@@ -103,15 +103,6 @@ def plot_model(samples, even_or_odd=2):
                 label=label
             )
 
-        # --- Plot y_model (model eval with true params) ---
-        label = 'y_model (True Params)' if 'y_model' not in legend_added else '_nolegend_'
-        legend_added.add('y_model')
-        plt.plot(
-            t_vals, y_model_arr,
-            color=CURVE_COLORS['y_model'], linestyle='--',
-            label=label
-        )
-
         # --- Plot y_pred (estimator mean ± std) ---
         label = 'y_pred (Estimator Mean)' if 'y_pred' not in legend_added else '_nolegend_'
         legend_added.add('y_pred')
@@ -145,7 +136,7 @@ def plot_model(samples, even_or_odd=2):
     elif even_or_odd == 1:
         plt.title(r'Identifiability Test (Post-Quarantine)')
     else:
-        plt.title(r'Identifiability Test: Estimator vs Model Eval with True Params')
+        plt.title(r'Identifiability Test: Estimator vs True')
     plt.legend()
     plt.grid(True)
 

@@ -1,3 +1,23 @@
+# ---------------------------------------------------------------------------
+# Data generation order — ALL 6 runs below write to the SAME
+# experiment_data/mfa_xy_data.txt, in this exact order (each run appends a
+# pre-/post-quarantine sample pair, i.e. 2 entries). The plotting logic below
+# assumes samples[0:6] are the 3 Gaussian levels and samples[6:12] are the
+# 3 Poisson levels, in the order listed here.
+#
+# clear=True truncates write_file AND regenerates a new random network, so use
+# it ONLY on run 1; use clear=False on runs 2-6 so they append to the same file
+# and reuse the same network as run 1 (otherwise the "True <k>" curve won't be
+# comparable across noise levels).
+#
+#   1. clear=True,  noise_type="gaussian", gaussian_noise_scale=0.33   (sigma)
+#   2. clear=False, noise_type="gaussian", gaussian_noise_scale=0.165  (1/2 sigma)
+#   3. clear=False, noise_type="gaussian", gaussian_noise_scale=0.11   (1/3 sigma)
+#   4. clear=False, noise_type="poisson", poisson_noise_scale=1/9
+#   5. clear=False, noise_type="poisson", poisson_noise_scale=1/4
+#   6. clear=False, noise_type="poisson", poisson_noise_scale=1
+# ---------------------------------------------------------------------------
+
 import extract_mfa
 import matplotlib.pyplot as plt
 import numpy as np
@@ -74,10 +94,13 @@ def plot_k_est(noise_groups, title, out_path):
     plt.close(fig)
 
 
+# All 12 samples (6 Gaussian, then 6 Poisson) live in one file, in that order.
+samples = extract_mfa.parse_sample_data("experiment_data/mfa_xy_data.txt")
+
 # ---------------------------
 # Gaussian noise plot
 # ---------------------------
-gaussian_samples = extract_mfa.parse_sample_data("experiment_data/mfa_xy_data.txt")
+gaussian_samples = samples[0:6]
 
 # samples[0,1]: sigma=1, samples[2,3]: sigma=1/2, samples[4,5]: sigma=1/3
 gaussian_groups = [
@@ -92,13 +115,13 @@ plot_k_est(gaussian_groups, "⟨k⟩ Estimation Under Gaussian Measurement Noise
 # ---------------------------
 # Poisson noise plot
 # ---------------------------
-poisson_samples = extract_mfa.parse_sample_data("experiment_data/mfa_xy_data_poisson.txt")
+poisson_samples = samples[6:12]
 
 # samples[0,1]: scale=1/9, samples[2,3]: scale=1/4, samples[4,5]: scale=1
 poisson_groups = [
-    ("s=1/9", poisson_samples[0], poisson_samples[1], "#1f77b4"),
-    ("s=1/4", poisson_samples[2], poisson_samples[3], "#ff7f0e"),
-    ("s=1", poisson_samples[4], poisson_samples[5], "#d62728"),
+    (r"$s=1/\sqrt{3}$", poisson_samples[0], poisson_samples[1], "#1f77b4"),
+    (r"$s=1/\sqrt{2}$", poisson_samples[2], poisson_samples[3], "#ff7f0e"),
+    (r"$s=1$", poisson_samples[4], poisson_samples[5], "#d62728"),
 ]
 
 plot_k_est(poisson_groups, "⟨k⟩ Estimation Under Poisson Measurement Noise",

@@ -9,8 +9,8 @@ ping_cytoscape = False
 file_path = "experiment_data/yjmob_1000_sample.csv"
 
 # Enum of sample sizes — change SAMPLE_SIZE_IDX to select a different size
-SAMPLE_SIZES = (200, 500, 750, 1000)
-SAMPLE_SIZE_IDX = 3  # 0 → 100, 1 → 250, 2 → 500, 3 → 1000
+SAMPLE_SIZES = (100, 250, 500, 1000)
+SAMPLE_SIZE_IDX = 1  # 0 → 100, 1 → 250, 2 → 500, 3 → 1000
 sample_size = SAMPLE_SIZES[SAMPLE_SIZE_IDX]
 
 lines = []

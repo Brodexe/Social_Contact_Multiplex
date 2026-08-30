@@ -6,9 +6,9 @@ import find_seeds
 import networkx as nx
 import correlated_graphs
 
-YJMOB_VALID_SIZES = {200, 500, 1000}
+YJMOB_VALID_SIZES = {100, 250, 500, 1000}
 
-repeat = 1  # Number of times to run the MFA
+repeat = 10  # Number of times to run the MFA
 
 # Run mean field approximation with varying adherence levels
 def adherence_mode():
@@ -126,12 +126,12 @@ def sensitivity_analysis():
 # sensitivity_analysis: Run MFA for sensitivity analysis on parameters
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--yjmob-size", type=int, choices=sorted(YJMOB_VALID_SIZES), default=200,
-                        help="Network size for YJMOB mode (200, 500, or 1000).")
-    args = parser.parse_args()
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument("--yjmob-size", type=int, choices=sorted(YJMOB_VALID_SIZES), default=250,
+                        # help="Network size for YJMOB mode (100, 250, 500, or 1000).")
+    # args = parser.parse_args()
 
-    # adherence_mode()
-    yjmob_mode(size=1000)
+    adherence_mode()
+    # yjmob_mode(size=250)
     # sensitivity_analysis()
     # simple_repeat()

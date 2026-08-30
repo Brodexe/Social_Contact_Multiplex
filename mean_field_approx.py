@@ -27,7 +27,8 @@ contact_graph = None
 n = 200  # number of nodes
 p = 0.05  # probability of edge
 
-load_initial = False  # Set to True if you want to existing epidemic states from pickle file
+load_initial = False
+  # Set to True if you want to existing epidemic states from pickle file
 clear = False  # Set clear to True if you want to use a new network or clear data files. False if you want to keep the existing one.
 verbose = True  # Set verbose to True if you want to see detailed output during optimization
 mode = None  # None (standard) or "adherence" or "YJMOB" or "sensitivity analysis"
@@ -39,7 +40,7 @@ elif sys.argv[-1] == "sensitivity analysis mode":
     mode = "sensitivity analysis"
 
 file_index = None   # Used for reading from network files, choosing write file names
-yjmob_size = None  # Network size for YJMOB dataset (200, 500, or 1000)
+yjmob_size = None  # Network size for YJMOB dataset (100, 250, 500, or 1000)
 # Form: python mean_field_approx.py <file index> <size>
 # Used with YJMOB dataset
 if mode == "YJMOB":
@@ -93,19 +94,14 @@ T = 100
 beta = 0.15  # Infection rate
 gamma = 0.07  # Recovery rate
 mu = 0.05  # Immunity loss rate
-init = 0.2 # Initial infected portion
+init = 0.1 # Initial infected portion
 q = "r"  # Quarantine type: indiviuals restore edges when recovered
 split_point = 30  # Set to None if you want to optimize over the full SIR simulation, or a specific time point to split the optimization
 density_social = None  # Set to None for default density, or an integer number of edges in the social graph
-noisy_data = True  # If True, add measurement noise to newly infected/recovered measurements
-noise_type = "gaussian"  # "gaussian" or "poisson" (used only when noisy_data is True)
-k_noise = 0.33    # Gaussian noise scale: std of added noise = k_noise * sqrt(p(1-p)/n) (used only when noise_type == "gaussian")
-poisson_noise_scale = 1.0  # Poisson noise scale: variance of added noise = poisson_noise_scale * (true count) (used only when noise_type == "poisson")
-
-# Route default (non-CLI-specified) writes for Poisson runs to their own file so they
-# don't mix with Gaussian-noise samples in the same xy-data file.
-if noise_type == "poisson" and mode is None:
-    write_file = "experiment_data/mfa_xy_data_poisson.txt"
+noisy_data = False  # If True, add measurement noise to newly infected/recovered measurements
+noise_type = "poisson"  # "gaussian" or "poisson" (used only when noisy_data is True)
+gaussian_noise_scale = 0    # Gaussian noise scale: std of added noise = gaussian_noise_scale * sqrt(p(1-p)/n) (used only when noise_type == "gaussian")
+poisson_noise_scale = 0  # Poisson noise scale: variance of added noise = poisson_noise_scale * (true count) (used only when noise_type == "poisson")
 
 # YJMOB mode: First, run optimization for each time interval separately
 #             Next, run optimization over the entire time period with split at the QUARANTINE boundary
@@ -309,8 +305,8 @@ for _t in range(T):
             _r = poisson_noise_scale * np.random.poisson(lam_r) / n
             _i = poisson_noise_scale * np.random.poisson(lam_i) / n
         else:
-            _r += np.random.normal(0, k_noise * np.sqrt(_r * (1 - _r) / n))
-            _i += np.random.normal(0, k_noise * np.sqrt(_i * (1 - _i) / n))
+            _r += np.random.normal(0, gaussian_noise_scale * np.sqrt(_r * (1 - _r) / n))
+            _i += np.random.normal(0, gaussian_noise_scale * np.sqrt(_i * (1 - _i) / n))
     _raw_new_r.append(_r)
     _raw_new_i.append(_i)
 
