@@ -98,10 +98,10 @@ init = 0.1 # Initial infected portion
 q = "r"  # Quarantine type: indiviuals restore edges when recovered
 split_point = 30  # Set to None if you want to optimize over the full SIR simulation, or a specific time point to split the optimization
 density_social = None  # Set to None for default density, or an integer number of edges in the social graph
-noisy_data = False  # If True, add measurement noise to newly infected/recovered measurements
+noisy_data = True  # If True, add measurement noise to newly infected/recovered measurements
 noise_type = "poisson"  # "gaussian" or "poisson" (used only when noisy_data is True)
 gaussian_noise_scale = 0    # Gaussian noise scale: std of added noise = gaussian_noise_scale * sqrt(p(1-p)/n) (used only when noise_type == "gaussian")
-poisson_noise_scale = 0  # Poisson noise scale: variance of added noise = poisson_noise_scale * (true count) (used only when noise_type == "poisson")
+poisson_noise_scale = (1)  # Poisson noise scale: variance of added noise = poisson_noise_scale * (true count) (used only when noise_type == "poisson")
 
 # YJMOB mode: First, run optimization for each time interval separately
 #             Next, run optimization over the entire time period with split at the QUARANTINE boundary

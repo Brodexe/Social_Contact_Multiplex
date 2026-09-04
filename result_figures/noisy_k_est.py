@@ -104,9 +104,9 @@ gaussian_samples = samples[0:6]
 
 # samples[0,1]: sigma=1, samples[2,3]: sigma=1/2, samples[4,5]: sigma=1/3
 gaussian_groups = [
-    ("data + σ", gaussian_samples[0], gaussian_samples[1], "#1f77b4"),
-    ("data + ½σ", gaussian_samples[2], gaussian_samples[3], "#ff7f0e"),
-    ("data + ⅓σ", gaussian_samples[4], gaussian_samples[5], "#d62728"),
+    (r"data = μ ± σ", gaussian_samples[0], gaussian_samples[1], "#1f77b4"),
+    (r"data = μ ± (1/2)σ", gaussian_samples[2], gaussian_samples[3], "#ff7f0e"),
+    (r"data = μ ± (1/3)σ", gaussian_samples[4], gaussian_samples[5], "#d62728"),
 ]
 
 plot_k_est(gaussian_groups, "⟨k⟩ Estimation Under Gaussian Measurement Noise",
@@ -119,9 +119,9 @@ poisson_samples = samples[6:12]
 
 # samples[0,1]: scale=1/9, samples[2,3]: scale=1/4, samples[4,5]: scale=1
 poisson_groups = [
-    (r"$s=1/\sqrt{3}$", poisson_samples[0], poisson_samples[1], "#1f77b4"),
-    (r"$s=1/\sqrt{2}$", poisson_samples[2], poisson_samples[3], "#ff7f0e"),
-    (r"$s=1$", poisson_samples[4], poisson_samples[5], "#d62728"),
+    (r"data = λ ± (1/3)√λ", poisson_samples[0], poisson_samples[1], "#1f77b4"),
+    (r"data = λ ± (1/2)√λ", poisson_samples[2], poisson_samples[3], "#ff7f0e"),
+    (r"data = λ ± √λ", poisson_samples[4], poisson_samples[5], "#d62728"),
 ]
 
 plot_k_est(poisson_groups, "⟨k⟩ Estimation Under Poisson Measurement Noise",

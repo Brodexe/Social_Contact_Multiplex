@@ -3,7 +3,7 @@ import py4cytoscape as p4c
 import random
 import correlated_graphs
 
-ping_cytoscape = False
+ping_cytoscape = True
 
 # Sampled from YJMob100k dataset #2
 file_path = "experiment_data/yjmob_1000_sample.csv"
