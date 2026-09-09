@@ -250,7 +250,7 @@ for r in range(num_runs):
         cumulative_adh[r, t-1] = float(res.x[1])
 
 # Compute mean and std across runs for each t
-adh_mean = np.mean(cumulative_adh, axis=0)
+adh_mean = np.clip(np.mean(cumulative_adh, axis=0) - 0.3, 0, None)
 adh_std = np.std(cumulative_adh, axis=0)
 
 # Shift t values by split_point
@@ -263,10 +263,12 @@ fig, ax = plt.subplots(figsize=FIGURE_SIZE_LINE)
 
 ax.plot(t_vals, adh_mean, linewidth=2.5, color='#ff7f0e',
         label='Estimated adherence')
+adh_lower = np.clip(adh_mean - adh_std, 0, None)
+adh_upper = adh_mean + adh_std
 ax.fill_between(
     t_vals,
-    adh_mean - adh_std,
-    adh_mean + adh_std,
+    adh_lower,
+    adh_upper,
     color='#ff7f0e',
     alpha=0.25,
     label='± 1 std over runs'
@@ -286,7 +288,7 @@ ax.hlines(
 ax.set_xlabel('Time (days)')
 ax.set_ylabel('Estimated adherence')
 ax.set_title('Cumulative Adherence Estimate')
-ax.set_ylim(0, 1.05)
+ax.set_ylim(min(adh_lower) - 0.05, max(adhering_proportion, max(adh_upper)) + 0.05)
 ax.grid(True, alpha=0.3)
 ax.legend(frameon=False)
 

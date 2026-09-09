@@ -104,9 +104,9 @@ gaussian_samples = samples[0:6]
 
 # samples[0,1]: sigma=1, samples[2,3]: sigma=1/2, samples[4,5]: sigma=1/3
 gaussian_groups = [
-    (r"data = μ ± σ", gaussian_samples[0], gaussian_samples[1], "#1f77b4"),
-    (r"data = μ ± (1/2)σ", gaussian_samples[2], gaussian_samples[3], "#ff7f0e"),
-    (r"data = μ ± (1/3)σ", gaussian_samples[4], gaussian_samples[5], "#d62728"),
+    (r"data = $\mu \pm \mathcal{N}(0,\sigma^2)$", gaussian_samples[0], gaussian_samples[1], "#1f77b4"),
+    (r"data = $\mu \pm (1/2)\mathcal{N}(0,\sigma^2)$", gaussian_samples[2], gaussian_samples[3], "#ff7f0e"),
+    (r"data = $\mu \pm (1/3)\mathcal{N}(0,\sigma^2)$", gaussian_samples[4], gaussian_samples[5], "#d62728"),
 ]
 
 plot_k_est(gaussian_groups, "⟨k⟩ Estimation Under Gaussian Measurement Noise",
@@ -119,10 +119,47 @@ poisson_samples = samples[6:12]
 
 # samples[0,1]: scale=1/9, samples[2,3]: scale=1/4, samples[4,5]: scale=1
 poisson_groups = [
-    (r"data = λ ± (1/3)√λ", poisson_samples[0], poisson_samples[1], "#1f77b4"),
-    (r"data = λ ± (1/2)√λ", poisson_samples[2], poisson_samples[3], "#ff7f0e"),
-    (r"data = λ ± √λ", poisson_samples[4], poisson_samples[5], "#d62728"),
+    (r"data = $\mu \pm (1/3)\mathcal{N}(0,\sigma^2)$", poisson_samples[0], poisson_samples[1], "#1f77b4"),
+    (r"data = $\mu \pm (1/2)\mathcal{N}(0,\sigma^2)$", poisson_samples[2], poisson_samples[3], "#ff7f0e"),
+    (r"data = $\mu \pm \mathcal{N}(0,\sigma^2)$", poisson_samples[4], poisson_samples[5], "#d62728"),
 ]
 
 plot_k_est(poisson_groups, "⟨k⟩ Estimation Under Poisson Measurement Noise",
            "result_figures/noisy_k_est_poisson.pdf")
+
+
+def temp_plot():
+    labels = [
+        r"data = $\mu \pm (1/3)\mathcal{N}(0,\sigma^2)$",
+        r"data = $\mu \pm (1/2)\mathcal{N}(0,\sigma^2)$",
+        r"data = $\mu \pm \mathcal{N}(0,\sigma^2)$",
+    ]
+    k0_vals = [0.52, 0.93, 1.02]
+    kq_vals = [1.49, 1.59, 1.76]
+
+    x = np.arange(len(labels))
+    width = 0.35
+
+    fig, ax = plt.subplots(figsize=FIGURE_SIZE_LINE)
+
+    bars_k0 = ax.bar(x - width / 2, k0_vals, width, color="darkblue", label=r"$\langle k_0 \rangle$")
+    bars_kq = ax.bar(x + width / 2, kq_vals, width, color="lightblue", label=r"$\langle k_q \rangle$")
+    ax.bar_label(bars_k0, fmt="%.2f")
+    ax.bar_label(bars_kq, fmt="%.2f")
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels)
+    ax.set_ylabel(r"Mean Absolute Error in $\langle k \rangle$")
+    ax.set_yticks(np.arange(0.0, 2.01, 0.5))
+    ax.set_title(r"$\langle k \rangle$ Estimation Error vs. Noise Level")
+
+    ax.legend(frameon=False)
+    ax.grid(True, axis="y", alpha=0.3)
+
+    plt.tight_layout()
+    plt.savefig("result_figures/temp_plot.pdf", format="pdf", bbox_inches="tight")
+    plt.show()
+    plt.close(fig)
+
+
+temp_plot()

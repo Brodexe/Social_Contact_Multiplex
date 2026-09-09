@@ -126,12 +126,12 @@ def sensitivity_analysis():
 # sensitivity_analysis: Run MFA for sensitivity analysis on parameters
 
 if __name__ == "__main__":
-    # parser = argparse.ArgumentParser()
-    # parser.add_argument("--yjmob-size", type=int, choices=sorted(YJMOB_VALID_SIZES), default=250,
-                        # help="Network size for YJMOB mode (100, 250, 500, or 1000).")
-    # args = parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--yjmob-size", type=int, choices=sorted(YJMOB_VALID_SIZES), default=250,
+                        help="Network size for YJMOB mode (100, 250, 500, or 1000).")
+    args = parser.parse_args()
 
-    adherence_mode()
-    # yjmob_mode(size=250)
+    # adherence_mode()
+    yjmob_mode(size=250)
     # sensitivity_analysis()
     # simple_repeat()

@@ -64,7 +64,7 @@ elif mode == "YJMOB":
 elif mode == "sensitivity analysis":
     write_file = sys.argv[3]
 
-adherence = 1.0 # Proportion of individuals who sever contact edges upon infection
+adherence = 0.6 # Proportion of individuals who sever contact edges upon infection
 # Overwrite adherence if provided as command line argument
 if mode == "adherence":
     adherence = float(sys.argv[2])
@@ -98,10 +98,10 @@ init = 0.1 # Initial infected portion
 q = "r"  # Quarantine type: indiviuals restore edges when recovered
 split_point = 30  # Set to None if you want to optimize over the full SIR simulation, or a specific time point to split the optimization
 density_social = None  # Set to None for default density, or an integer number of edges in the social graph
-noisy_data = True  # If True, add measurement noise to newly infected/recovered measurements
-noise_type = "poisson"  # "gaussian" or "poisson" (used only when noisy_data is True)
+noisy_data = False  # If True, add measurement noise to newly infected/recovered measurements
+noise_type = "gaussian"  # "gaussian" or "poisson" (used only when noisy_data is True)
 gaussian_noise_scale = 0    # Gaussian noise scale: std of added noise = gaussian_noise_scale * sqrt(p(1-p)/n) (used only when noise_type == "gaussian")
-poisson_noise_scale = (1)  # Poisson noise scale: variance of added noise = poisson_noise_scale * (true count) (used only when noise_type == "poisson")
+poisson_noise_scale = 0  # Poisson noise scale: variance of added noise = poisson_noise_scale * (true count) (used only when noise_type == "poisson")
 
 # YJMOB mode: First, run optimization for each time interval separately
 #             Next, run optimization over the entire time period with split at the QUARANTINE boundary
@@ -116,7 +116,7 @@ if mode == "YJMOB":
     # file_index 2 and 5: Simple adherence parameter cases, 
     #   not based on some previous adhering list
     elif file_index == 2 or file_index == 5:
-        adherence = 1.0  # Proceed with partial adherence
+        adherence = 0.6  # Proceed with partial adherence
     # Overwrite with static adhering list past this point,
     #  as they've been determined in file_index 2 run
     elif file_index >= 3:
