@@ -1,503 +1,198 @@
-This README covers usage and functionality of result figure generating .py files.
-
-analyze_quarantine_dynamics.py:
-Analyzes post-quarantine network simulation data to estimate adherence and fit model parameters. It performs the following tasks:
-
-Load Simulation Data:
-Parses MFA simulation outputs and extracts relevant post-quarantine time series, including node degrees and informed/infected proportions.
-
-Naive Adherence Estimation:
-Computes a quick adherence estimate based on deviations in mean node degree.
-
-Parameter Optimization:
-Jointly optimizes a scale factor and adherence per run to best match the observed post-quarantine mean degree across simulations.
-
-Dynamic Adherence Tracking:
-Computes cumulative adherence estimates over time for each simulation run, capturing how estimates improve as more data becomes available.
-
-Visualization:
-Generates publication-quality plots:
-
-True vs estimated mean post-quarantine node degree <k_q>
-
-Cumulative adherence estimates with mean and standard deviation bands
-
-Results Storage:
-Saves all processed data, optimized parameters, and estimated time series to a pickle file for downstream analysis.
-
-Output:
-PDF plots of <k_q> comparison and cumulative adherence
-
-Pickle file containing processed metrics, parameter estimates, and time series
-
-Dependencies:
-numpy, scipy, matplotlib, pickle, extract_mfa
-
-Purpose:
-Facilitates quantitative evaluation of quarantine effects and network adherence dynamics in simulation studies.
-
-
-
-
-
-analyze_yjmob_quarantine.py:
-Processes YJMob100k network simulations to estimate quarantine adherence based on Mean-Field Approximation (MFA) degree dynamics and the proportion of informed & infected individuals.
-
-Overview:
-Data Loading:
-Loads five consecutive network samples (yjmob0_runs.txt to yjmob4_runs.txt) using extract_mfa.parse_sample_data.
-
-Post-quarantine samples are identified (samples 2–4).
-
-Time-Series Aggregation:
-Combines infected & informed proportions and dynamic degree (⟨k_q⟩) across post-quarantine samples.
-
-Computes mean and standard deviation across simulation runs.
-
-Visualization:
-Plots ⟨k_q⟩ and infected & informed fraction with mean ± 1 standard deviation bands.
-
-Provides an MFA-based visualization of estimated vs true mean node degrees across pre- and post-quarantine intervals.
-
-Quarantine Adherence Estimation:
-Estimates adherence from MFA degrees using cumulative optimization over time.
-
-Fits the scale factor S and adherence fraction per run to minimize MSE between estimated and true ⟨k_q⟩.
-
-Computes per-time adherence estimates, mean, and standard deviation across runs.
-
-Compares cumulative adherence to the true known adherence.
-
-Output:
-Saves results to a pickle file (cumulative_adherence_results.pkl) containing:
-
-Pre-quarantine mean degree (k_0)
-
-Split point for quarantine
-
-Population size and number of simulations
-
-Time series: i_prime_mean, inf_inf_runs, k_q_true_mean, k_q_true_runs
-
-Cumulative adherence: cumulative_adh_runs, cumulative_adh_mean, cumulative_adh_std
-
-Time indices (t_vals)
-
-Key Features:
-Supports multiple post-quarantine samples for robust estimation.
-
-Generates publication-quality plots with mean and standard deviation bands.
-
-Implements a cumulative MSE-based optimization for time-resolved adherence estimation.
-
-
-
+This README covers usage and functionality of result-figure-generating .py
+files in this folder. All of these scripts parse text/pickle output produced
+by mean_field_approx.py (via extract_mfa.py) or by the analyze_* scripts in
+this same folder, and save PDF figures (plus, for most, a companion .pkl of
+the processed data) for downstream reporting.
 
 
 extract_mfa.py:
-Provides tools to parse output from mean_field_approx.py simulations into structured, analyzable Python objects. It converts text-based simulation results into a list of samples, each represented as a dictionary of datasets.
-
-Overview:
-Parses MFA simulation output files and returns a structured collection of samples.
-
-Supported Dataset Keys:
-SIR Infections
-
-Dynamic degree
-
-w1 True, w1 Estimated, w1 all runs
-
-w2 True, w2 Estimated
-
-Informed and Infected
-
-Given Newly Infected Ratio
-
-Informed
-
-Data Structure:
-Each sample contains:
-
-Number of nodes
-
-Adhering proportion
-
-Time-series datasets with x (time points) and y (observables) values
-
-Special Handling:
-Converts np.float64 wrapped numbers into standard numeric values.
-
-Handles nested lists for datasets like w1 all runs and Informed.
-
-Maintains alignment of x-values and corresponding y-values.
-
-File Format Requirements:
-Each sample begins with a line ==New Sample==.
-
-Datasets are identified by their names.
-
-Time-series data lines start with x: and y: prefixes.
-
-Error Handling:
-Continues parsing even if some lines fail to convert.
-
-Provides warnings for parsing issues without halting execution.
-
-Use Cases:
-Compute averages and standard deviations over simulation runs.
-
-Analyze MFA degree estimates and infection dynamics.
-
-Estimate quarantine adherence and other behavioral parameters from simulations.
-
-
-
-
-
-plot_infected_informed.py:
-Visualizes the infection and information spread dynamics in simulated populations under different quarantine adherence levels. It processes simulation outputs parsed via extract_mfa.py and produces publication-ready figures.
-
-Purpose:
-Display time evolution of Infected, Informed, and Informed & Infected fractions of a population.
-
-Compare dynamics across different adherence levels to quarantine measures.
-
-Support analysis of both grouped adherence levels and individual adherence scenarios.
-
-Data Input:
-Simulation outputs from MFA experiments, organized by adherence levels (e.g., 0.2, 0.4, …, 1.0).
-
-Parsed using the extract_mfa parser.
-
-Primary Functionality:
-Grouped Adherence Plots:
-Compares multiple adherence levels in a single figure.
-
-Shows mean and variability (standard deviation) across simulation runs.
-
-Uses distinct colors per adherence level and line styles per category (Infected, Informed, Informed & Infected).
-
-Saves results to PDF and a serialized file for later analysis.
-
-Single Adherence Plots:
-Focuses on a single adherence scenario.
-
-Displays mean dynamics with variability bands.
-
-Produces clean figures suitable for presentations or publications.
-
-Plotting Features:
-Time-series alignment: Adjusts the x-axis based on simulation start times.
-
-Error bands: Visualizes standard deviation across simulation runs.
-
-Custom styling: Uses consistent colors, line styles, and figure sizes for publication-quality output.
-
-Export: Figures saved as PDFs, and data optionally serialized for reproducibility.
-
-Intended Use Cases:
-Study how different levels of quarantine adherence influence epidemic progression.
-
-Compare infection, awareness, and combined dynamics over time.
-
-Generate visualizations for reports, papers, or presentations.
-
-Dependencies:
-matplotlib for plotting.
-
-numpy for numerical operations.
-
-pickle for saving structured output.
-
-extract_mfa for parsing MFA simulation outputs.
-
-Output Files:
-
-Grouped adherence figure PDF.
-
-Single adherence scenario figure PDF.
-
-Optional serialized data file (.pkl) containing computed means and metadata for further analysis.
-
-
-
-
-
-plot_informed.py:
-Visualizes the time evolution of the informed fraction in a population during a simulation of epidemic and information spread. It produces publication-quality figures and saves processed data for further analysis.
-
-Purpose:
-Track how the fraction of informed individuals evolves over time.
-
-Highlight the period before and after a key intervention or split point (e.g., quarantine start).
-
-Provide both visual outputs and serialized data for reproducibility or downstream analysis.
-
-Data Input:
-Simulation outputs generated by MFA experiments, parsed using extract_mfa.
-
-Focuses specifically on the Informed category from the dataset.
-
-Primary Functionality:
-Compute Statistics:
-Aggregates all simulation runs for the informed population.
-
-Calculates mean and standard deviation across runs.
-
-Aligns time series so that the pre-intervention period is represented by zeros.
-
-Visualization:
-Plots the mean informed fraction over time with error bands representing variability across runs.
-
-Clearly marks the split point (intervention start) to distinguish pre- and post-intervention dynamics.
-
-Generates publication-ready figures in PDF format.
-
-Data Serialization:
-Saves the computed mean, standard deviation, and raw simulation runs to a .pkl file.
-
-Includes metadata such as split point, total time points, and number of runs.
-
-Enables later use without reprocessing raw simulation data.
-
-Plotting Features:
-Consistent figure styling (fonts, line widths, and figure size).
-
-Shaded error bands to indicate variability across simulations.
-
-Gridlines and labels for readability.
-
-Intended Use Cases:
-Analyze how quickly and extensively information spreads through the population.
-
-Compare informed population dynamics across different scenarios or interventions.
-
-Dependencies:
-matplotlib for plotting.
-
-numpy for numerical operations.
-
-pickle for saving structured output.
-
-extract_mfa for parsing MFA simulation outputs.
-
-Output Files:
-
-PDF figure showing the proportion of informed individuals over time.
-
-Serialized results file (.pkl) containing full statistics and raw simulation data.
-
-
-
+Parses the text files written by mean_field_approx.py's `save_xy_data` into
+a list of samples, each a dict of named datasets. `parse_sample_data(filename)`
+splits the file on "==New Sample==" markers; within each sample it reads
+"Number of nodes" and "Adhering proportion" scalars, and any of the following
+dataset blocks (each a `x:`/`y:` pair of lines): SIR Infections, Dynamic
+degree, w1 True (Mean Node Degree), w1 Estimated, w1 all runs, w2 True, w2
+Estimated, Informed and Infected, Given Newly Infected Ratio, Informed,
+y_true values, y_model values, y_pred all runs, Newly Recovered, k
+Identifiability Estimated, n_i Predicted (Identifiability), n_r Predicted
+(Identifiability). `w1 all runs`/`y_pred all runs` y-lines (nested lists,
+possibly containing `np.float64(...)` wrapper text) and `Informed` y-lines
+(nested lists) get special parsing via `ast.literal_eval` after stripping the
+numpy wrapper; everything else parses as a flat float list, or as a nested
+list if the line starts with `[`. Parsing failures are logged and degrade to
+an empty list rather than aborting the whole file. Used by every other
+script in this folder.
+
+
+analyze_yjmob_quarantine.py:
+Estimates quarantine adherence on the YJMob100k dataset from MFA-estimated
+degree dynamics and the informed-and-infected fraction, and produces the two
+headline YJMob figures.
+
+Loads five consecutive interval samples (yjmob0_runs.txt through
+yjmob4_runs.txt via extract_mfa) plus a sixth, yjmob5_runs.txt, which holds
+the full-period (pre+post-quarantine combined) optimization produced by
+mean_field_approx.py's yjmob-mode file_index==5 path. Samples 2-4 are treated
+as post-quarantine; their "Informed and Infected" (normalized by population)
+and "Dynamic degree" series are concatenated across samples, run-by-run, into
+one continuous per-run time series (`inf_inf_runs`, `k_q_runs`), and their
+mean/std across runs are computed.
+
+`plot_mfa_estimated_degree()` builds YJMOB_k_est.pdf: it plots the true
+piecewise mean degree and the MFA-estimated mean degree (with +/-1 std band)
+for each of the 5 individual intervals, laid out on one shared time axis by
+accumulating each interval's duration (pre-quarantine intervals in orange,
+post-quarantine in red), then overlays the yjmob5_runs.txt full-period fit
+(pre in green, post in purple) for comparison against the interval-by-interval
+approach.
+
+Adherence estimation: `k_0` is the average of the last pre-quarantine mean
+degree from the first two interval samples. For each run, a cumulative
+optimization (`mse_slice`, L-BFGS-B) fits scale factor S and adherence
+jointly against `k_q_est = k_0 * (1 - S * adherence * i_prime)` using only
+the data available up to time t, for every t from 1 to 45 days
+post-quarantine — this produces a time-resolved adherence estimate per run,
+averaged across runs into `adh_mean`/`adh_std`. `plot_mfa_estimated_degree()`
+runs first and is followed by the cumulative-adherence plot
+(YJMOB_adherence.pdf), which shows the estimated adherence curve with a
++/-1 std band against a horizontal line for the true adhering proportion
+(pulled from the dataset's "Adhering proportion" field).
+
+Saves result_figures/cumulative_adherence_results.pkl with k_0, split_point,
+adhering_proportion, population, num_simulations, and time_after_q; the full
+time-series fields (i_prime_mean, k_q_true_mean/runs, cumulative_adh_*,
+t_vals) are present in the code as commented-out dict entries and are not
+currently written to the pickle.
+
+
+analyze_quarantine_dynamics.py:
+Runs the same style of two-stage adherence/scale-factor fit as
+analyze_yjmob_quarantine.py, but on synthetic data across three true
+adherence levels (experiment_data/a_0.2, a_0.4, a_0.6) instead of the YJMob
+dataset, and adds a degeneracy-aware two-stage estimator plus a
+runs-truncation step to keep only the well-behaved part of each trajectory.
+
+Every sample is first truncated to its first 70 timesteps ("for faster
+testing", per an in-file comment). For each adherence level, `k_0`/`k_q` come
+from the pre-/post-quarantine samples' true mean degree, and
+"Informed and Infected"/"Dynamic degree" series across all post-quarantine
+(odd-indexed) samples become per-run i_prime/k_q series, same as in
+analyze_yjmob_quarantine.py.
+
+`two_stage_estimate(i_prime_series, k_q_series, k_0)` addresses the fact
+that jointly fitting scale factor f and adherence a is not identifiable
+(only their product f*a enters the k_q model): stage 1 fits adherence alone
+on days where informed-and-infected is low (a fixed f=2.0 plugged in as a
+proxy for "low infection overall"); stage 2 then fits f alone, with
+adherence fixed at its stage-1 value, on the remaining days. This is used
+for the per-level "true vs. estimated <k_q>" comparison figures
+(kq_true_vs_estimated_a{level}.pdf) and the cumulative-adherence-over-time
+comparison (adherence_comparison.pdf).
+
+`estimate_a_then_f(i_prime_run, k_q_run, k_0, anchor_idx=1)` is a different,
+non-iterative estimator used only for the summary bar chart: near the very
+start of quarantining, f is known exactly (=2, an initial-condition
+property), so anchoring there lets p = f*a be solved as a single variable
+and divided by the known f to recover adherence directly, without needing
+the low-infection-day heuristic. `truncate_at_new_infection_cutoff` keeps
+only the window from quarantine start through the first day the newly-
+infected ratio drops below 0.01 (after which the k_q signal is dominated by
+noise); `compute_adherence_bar_estimate` drops any run whose surviving
+window is shorter than 5 timesteps, and truncates survivors to exactly 5 so
+they can be averaged consistently. `plot_adherence_bar_combined` renders
+these per-level mean estimates as a grouped bar chart (target vs. observed
+adherence) into f_degeneration_combined.pdf.
+
+Outputs per adherence level: result_figures/kq_true_vs_estimated_a{level}.pdf
+and result_figures/analyze_quarantine_dynamics_data_a{level}.pkl. Combined
+outputs: result_figures/f_degeneration_combined.pdf and
+result_figures/adherence_comparison.pdf.
+
+
+noisy_k_est.py:
+Compares MFA-estimated mean degree against ground truth under three levels
+each of Gaussian and Poisson measurement noise, using a fixed 6-run-per-noise
+-type data generation protocol documented at the top of the file (each run
+appends a pre-/post-quarantine sample pair to experiment_data/mfa_xy_data.txt,
+with `clear=True` only on the very first run so all runs share the same
+underlying network).
+
+Loads all 12 samples from experiment_data/mfa_xy_data.txt via extract_mfa;
+samples 0-5 are the 3 Gaussian noise levels (sigma, sigma/2, sigma/3, as
+pre/post-quarantine pairs), samples 6-11 the 3 Poisson levels (scale 1/9,
+1/4, 1). `plot_k_est(noise_groups, title, out_path)` plots the shared true
+<k> curve once (all noise levels share the same underlying network) plus
+each noise level's estimated <k> (with +/-1 std band) in a distinct color,
+split at the quarantine boundary. Produces
+result_figures/noisy_k_est.pdf (Gaussian) and
+result_figures/noisy_k_est_poisson.pdf (Poisson).
 
 
 plot_optimizer.py:
-Visualizes the estimates of mean node degrees obtained from optimization routines in MFA simulations, comparing them with ground truth values. It produces publication-quality figures and saves processed data for downstream analysis.
-
-Purpose:
-Evaluate how well the optimizer recovers mean node degrees from simulation data.
-
-Compare estimates for pre-quarantine (⟨k₀⟩) and post-quarantine (⟨k_q⟩) periods.
-
-Provide both visual outputs and serialized results for reproducibility.
-
-Data Input:
-MFA simulation outputs, parsed using extract_mfa.
-
-Focuses on the w1 all runs dataset containing optimizer results and w1 True (Mean Node Degree) for ground truth.
-
-Primary Functionality:
-Select Samples:
-Can plot pre-quarantine, post-quarantine, or all samples.
-
-Handles multiple runs per sample, ensuring consistent time series lengths.
-
-Compute Statistics:
-Calculates mean and standard deviation of optimizer estimates across runs.
-
-Aligns time series to facilitate comparison with ground truth.
-
-Visualization:
-Plots mean estimates over time with shaded error bands indicating variability.
-
-Ground truth values are plotted as horizontal dashed lines.
-
-Supports labeling by simulation parameter (e.g., varying infection rate β).
-
-Generates publication-ready PDF figures.
-
-Data Serialization:
-Saves detailed results for each sample, including mean, standard deviation, and ground truth, in a .pkl file.
-
-Enables later use without reprocessing raw simulation data.
-
-Plotting Features:
-Consistent figure styling (fonts, line widths, colors).
-
-Gridlines, legends, and labels for clarity.
-
-Distinguishes pre- and post-quarantine estimates visually.
-
-Intended Use Cases:
-Assess optimizer performance in recovering network structure from MFA simulations.
-
-Compare estimates under different simulation parameters (e.g., varying infection rates).
-
-Produce reproducible figures for reports, publications, or presentations.
-
-Dependencies:
-matplotlib for plotting.
-
-numpy for numerical operations.
-
-pickle for saving structured results.
-
-extract_mfa for parsing MFA simulation outputs.
-
-Output Files:
-PDF figure showing optimizer estimates with variability bands.
-
-Serialized results file (.pkl) containing full statistics and raw run data.
-
-
-
+`plot_optimizer_results(samples, even_or_odd)` visualizes the raw
+optimizer-run estimates (`w1 all runs`) from mean_field_approx.py, rather
+than a pre-computed mean: for each sample matching the `even_or_odd` filter
+(0 = pre-quarantine/even-indexed samples only, 1 = post-quarantine/odd-indexed
+only, 2 = all), it pads all runs in that sample to a common length, plots the
+mean +/-1 std across runs, and — only for the third sample (i == 2) — overlays
+the true mean degree as a horizontal reference line, labeling each sample's
+curve by an inferred beta value (`0.15 - 0.015 * i`, i.e. assuming the
+samples correspond to a beta sweep). Saves
+result_figures/optimizer_results.pdf and
+result_figures/plot_optimizer_data.pkl. Run directly (`__main__`), it loads
+experiment_data/mfa_xy_data.txt and calls `plot_optimizer_results(samples,
+even_or_odd=2)`.
 
 
 plot_split_optimization.py:
-Visualizes the estimated mean node degree (⟨k⟩) from MFA simulations, comparing the optimizer’s estimates with the ground truth for pre- and post-quarantine periods. It also saves the processed data for further analysis.
-
-Purpose:
-Show how the mean field approximation (MFA) estimates the average node degree over time.
-
-Highlight the effect of quarantine on network connectivity.
-
-Include variability across multiple optimizer runs using standard deviation bands.
-
-Data Input:
-MFA simulation outputs parsed using extract_mfa.parse_sample_data.
-
-Requires w1 Estimated, w1 True (Mean Node Degree), and w1 all runs datasets for pre- and post-quarantine samples.
-
-Primary Steps:
-Align Ground Truth to Estimated Values:
-
-Only consider true values corresponding to time points where estimates exist.
-
-Compute Mean and Standard Deviation:
-
-For all optimizer runs (w1 all runs), calculate mean and standard deviation to visualize uncertainty.
-
-Plotting:
-Pre- and post-quarantine estimates are plotted in distinct colors with dashed lines.
-
-Ground truth values are plotted as solid black lines.
-
-Standard deviation bands are shaded for visual clarity.
-
-Quarantine onset is indicated with a vertical dashed line.
-
-Data Serialization:
-Saves processed data, including aligned true values, estimates, mean/std bands, and all run data, in a .pkl file.
-
-Enables reproducibility and further analysis without reprocessing raw MFA outputs.
-
-Plot Features:
-Publication-quality figure with large fonts, gridlines, and labeled axes.
-
-Clearly distinguishes pre-quarantine vs post-quarantine dynamics.
-
-Highlights variability across optimizer runs.
-
-Dependencies:
-matplotlib for plotting.
-
-numpy for numerical operations.
-
-pickle for data serialization.
-
-extract_mfa for parsing MFA simulation outputs.
-
-Output Files:
-result_figures/mfa_degree_estimates.pdf — Figure showing estimated vs true mean node degree.
-
-result_figures/mfa_degree_estimates_data.pkl — Pickled dictionary containing all processed data and statistics.
-
-
-
+Compares MFA-estimated vs. true mean degree for one pre-quarantine sample and
+one post-quarantine sample (samples[0] and samples[1] of
+experiment_data/mfa_xy_data.txt), aligning the true series to the estimated
+series' timestamps via `np.isin`. Plots both true curves (solid black) and
+both estimated curves (dashed, distinct colors) with +/-1 std bands from
+`w1 all runs`, with a vertical line marking the quarantine boundary. Saves
+result_figures/mfa_degree_estimates.pdf and
+result_figures/mfa_degree_estimates_data.pkl (the raw per-run data is present
+in the code as commented-out dict entries and not currently written).
 
 
 sensitivity_analysis.py:
-Generates plots from sensitivity analysis experiments conducted using the MFA (Mean Field Approximation) framework. It visualizes how estimates of the initial mean node degree (⟨k₀⟩) respond to changes in key simulation parameters.
+`plot_sensitivity_results(file_path, parameter_name, value_range)` plots, for
+each sample in a sensitivity-sweep data file, the mean +/-1 std of the
+`w1 all runs` estimator trajectories against a horizontal true-<k_0> reference
+line, one curve per sample labeled by its corresponding value in
+`value_range`. Called three times against the sweep files produced by
+mfa_drive_compute.py's `sensitivity_analysis()`:
+experiment_data/sensitivity_num_seeds.txt (seed counts [5, 10, 15]),
+sensitivity_init.txt (initial-infected proportions [0.025, 0.05, 0.10]), and
+sensitivity_density.txt (network densities [0.03, 0.04, 0.05]). Saves
+result_figures/sensitivity_{parameter_name}.pdf per sweep.
 
-Purpose:
-Explore the effect of varying parameters on the optimizer’s estimates of the mean node degree.
 
-Compare estimated ⟨k₀⟩ with the true network mean degree.
+plot_identifiability.py:
+Visualizes the identifiability analysis mean_field_approx.py runs alongside
+its main MFA fit (see mean_field_approx.py's identifiability mode in
+README_main.txt). Two independent plotting functions, both parameterized by
+`even_or_odd` (0 = pre-quarantine/even samples, 1 = post-quarantine/odd
+samples, 2 = all, with a vertical line marking the boundary between the two
+halves when applicable):
 
-Include standard deviation bands across multiple optimizer runs for uncertainty quantification.
+`plot_model(samples, even_or_odd=2)` compares the true newly-infected ratio
+("Given Newly Infected Ratio") against the estimator's predicted newly
+-infected ratio (mean +/-1 std of "y_pred all runs", padded to a common
+length across runs). Saves result_figures/identifiability_results.pdf and
+result_figures/plot_identifiability_data.pkl.
 
-Parameters Analyzed:
-Number of Seeds — initial informed individuals in the simulation.
+`plot_identifiability_results(samples, even_or_odd=2)` compares true vs.
+predicted n_i (newly infected ratio, from "Given Newly Infected Ratio" vs.
+"n_i Predicted (Identifiability)") and true vs. predicted n_r (newly
+recovered ratio — true value is "Newly Recovered" raw counts divided by
+node count, since that dataset stores counts rather than a ratio; predicted
+value is "n_r Predicted (Identifiability)" directly). Node count is pulled
+from the first sample's "Number of nodes" field, falling back to 200 if
+missing. Saves result_figures/identifiability_n_i_n_r.pdf and
+result_figures/plot_identifiability_n_i_n_r_data.pkl.
 
-Init - proportion of initially infected individuals
-
-Social Network Density — fraction of possible edges present in the network.
-
-Data Input:
-MFA output files parsed using extract_mfa.parse_sample_data.
-
-Requires w1 all runs and w1 True (Mean Node Degree) datasets.
-
-Processing Steps:
-Normalize Run Lengths:
-All optimizer runs are padded to the maximum run length to allow proper averaging.
-
-Compute Mean and Standard Deviation:
-For each parameter value, calculate mean and std across runs.
-
-Plotting:
-Plot mean estimate over time with shaded std bands.
-
-Horizontal line for the true mean node degree.
-
-Label each curve with the corresponding parameter value.
-
-Save Plot:
-Exported as a publication-ready PDF with consistent figure size for Overleaf.
-
-Plot Features:
-Time series of estimated ⟨k₀⟩ for multiple parameter values.
-
-Shaded bands representing variability across optimizer runs.
-
-True reference line for direct comparison.
-
-Gridlines, legends, and axis labels optimized for clarity.
-
-Dependencies:
-matplotlib for plotting.
-
-numpy for numerical operations.
-
-extract_mfa for parsing MFA simulation outputs.
-
-Output Files:
-result_figures/sensitivity_<parameter>.pdf — PDF plots for each parameter analyzed, e.g.:
-
-sensitivity_Number of Seeds.pdf
-
-sensitivity_Init.pdf
-
-sensitivity_Social Network Density.pdf
-
-Usage Example:
-
-The script automatically generates plots for:
-
-Number of seeds: [5, 10, 15]
-
-Initial infected proportions: [0.05, 0.10, 0.15]
-
-Network densities computed from edge counts [1000, 1500, 2000]
-
-Each curve represents the mean estimate of ⟨k₀⟩ for a given parameter value, with standard deviation bands showing uncertainty.
+Run directly (`__main__`), it loads experiment_data/mfa_xy_data.txt and
+calls `plot_identifiability_results(samples, even_or_odd=2)` only —
+`plot_model` is defined but not invoked from `__main__`.

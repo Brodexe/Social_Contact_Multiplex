@@ -250,7 +250,7 @@ for r in range(num_runs):
         cumulative_adh[r, t-1] = float(res.x[1])
 
 # Compute mean and std across runs for each t
-adh_mean = np.clip(np.mean(cumulative_adh, axis=0) - 0.3, 0, None)
+adh_mean = np.mean(cumulative_adh, axis=0)
 adh_std = np.std(cumulative_adh, axis=0)
 
 # Shift t values by split_point

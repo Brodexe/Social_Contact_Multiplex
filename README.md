@@ -1,29 +1,32 @@
 Social Network Influence & Epidemic Simulation:
 
-This project provides a framework for simulating, analyzing, and visualizing social network dynamics, information spread, and epidemic processes under varying conditions of quarantine, adherence, and network structure. It integrates graph generation, influence maximization, SIR-based epidemic modeling, and Mean Field Approximation (MFA) analyses.
+This project provides a framework for simulating, analyzing, and visualizing social network dynamics, information spread, and epidemic processes under varying conditions of quarantine, adherence, and network structure. It integrates graph generation, influence maximization, SIR/SIRS-based epidemic modeling, Mean Field Approximation (MFA) analyses, and — in its newer "capstone" work — adaptive and MILP-based quarantine-seed-selection strategies compared on both synthetic and real-world contact-network datasets.
 
 Project Structure:
+
 Core Simulation & Analysis (.py files in main folder)
 Implements:
 Directed and correlated graph construction.
 
 Social network modeling and seed selection for influence maximization (IC and LT models).
 
-SIR/SIRS epidemic simulations with quarantine and information spread.
+SIR/SIRS epidemic simulations with quarantine and information spread (Independent Cascade, Linear Threshold, and Friedkin-Johnsen opinion dynamics).
 
-MFA based parameter optimization
+MFA-based parameter optimization, including an identifiability analysis.
 
-Tools for processing movement/contact networks (e.g., YJMob dataset).
+Tools for processing real-world movement/contact networks (YJMob100k mobility data, an MIT Reality Commons dorm dataset, and a high-school contact dataset).
+
+Adaptive (stochastic hill-climbing) and Mixed-Integer Linear Program (MILP) strategies for choosing which nodes to quarantine over time, compared against degree-based and random baselines under a shared cost model.
 
 Result Generation & Visualization (result_figures/):
 Provides scripts to:
 Parse simulation outputs into structured formats.
 
-Estimate quarantine adherence and optimize network parameters.
+Estimate quarantine adherence and optimize network parameters, on both synthetic data and the YJMob100k dataset.
 
-Visualize infection, information, and adherence dynamics.
+Visualize infection, information, degree, and adherence dynamics.
 
-Explore sensitivity of MFA estimates to key simulation parameters.
+Explore sensitivity and identifiability of MFA estimates.
 
 Key Features:
 Flexible graph and social network generation with controlled correlation and similarity.
@@ -32,786 +35,931 @@ Influence maximization under the Independent Cascade and Linear Threshold models
 
 Integration of quarantine and information propagation dynamics in epidemic simulations.
 
-Mean Field Approximation framework for parameter inference and post-quarantine analysis.
+Mean Field Approximation framework for parameter inference, post-quarantine analysis, and identifiability testing.
 
-Support for multiple datasets, including real-world movement/contact data (YJMob).
+Support for multiple real-world datasets: YJMob100k mobility data, an MIT Reality Commons dorm contact network, and a high-school contact network.
+
+Adaptive and MILP-based quarantine policies compared against heuristic baselines under a shared epidemic-cost model.
 
 Dependencies:
-numpy, scipy — Numerical operations and optimization.
+numpy, scipy — Numerical operations and optimization (including scipy.optimize.milp for the MILP seed-selection approach).
 
 networkx — Graph representation and manipulation.
 
+pandas — Tabular processing of survey/contact-network CSV datasets.
+
 matplotlib — Visualization of results and plots.
 
-pickle — Serialization of simulation outputs.
+pickle / shelve — Serialization and caching of simulation outputs.
 
 py4cytoscape — Optional integration with Cytoscape for network visualization.
 
 Usage:
-Simulation: Run core scripts to generate networks, simulate SIR dynamics, and compute influence maximization metrics.
+Simulation: Run core scripts to generate networks, simulate SIR/SIRS dynamics, and compute influence maximization metrics.
 
-Pipelines: Run MFA several times to populate data files for analysis (mfa_drive_compute.py), with SIR/MFA data.
+Pipelines: Run MFA several times to populate data files for analysis (mfa_drive_compute.py), or run the adaptive/MILP quarantine-selection drivers (adaptive_seed_selection.py, milp.py, dual_optimization_driver.py) to populate their respective pickle stores.
 
-Analysis: Parse outputs using MFA tools (extract_mfa.py) and compute adherence, degree estimates, and loss metrics.
+Analysis: Parse outputs using MFA tools (extract_mfa.py) and compute adherence, degree estimates, and loss metrics; or use visualize_adaptive.py / cost_curve_store.py to compare quarantine-selection strategies.
 
-Visualization: Generate publication-quality plots of infection, informed populations, optimizer estimates, and sensitivity analyses.
+Visualization: Generate publication-quality plots of infection, informed populations, optimizer estimates, sensitivity/identifiability analyses, and quarantine-strategy comparisons.
+
+Note on known issues: several files in this repo currently call functions with arguments that no longer match their target's signature, or import modules that have since been removed, and will raise errors if run as-is. These are called out explicitly, file by file, in the sections below rather than silently documented as working.
 
 This README covers purpose and functionality of main folder .py files.
 
+Files are grouped by area: graph/network generation utilities, influence
+maximization, the core SIRS epidemic simulator, real-world dataset network
+construction, the Mean Field Approximation (MFA) pipeline, and the
+adaptive/MILP quarantine-seed-selection ("capstone") pipeline.
+
+Several files reference other modules that no longer exist in the repo
+(informingcontact.py, lt_ic_loss_function.py, milp_local.py, etc. have been
+removed) or call functions with signatures that have since changed. Where a
+file is currently broken because of this, it is called out explicitly below
+rather than glossed over.
+
+
+=====================================================
+Graph & network generation utilities
+=====================================================
+
 correlated_graphs.py:
-Implements several methods for generating and analyzing directed graphs with various correlation and similarity structures.
+Implements methods for generating directed/undirected graphs correlated with
+a base graph, used throughout the repo to build synthetic "social" layers on
+top of "contact" layers.
 
-The core function, `create_correlated_digraph`, constructs a directed graph where edge existence correlates with an undirected base graph, allowing for controlled sparsity through a correlation factor.
+`create_correlated_digraph(base_graph, correlation_factor, base_probability=0.01)`
+builds a directed graph over `range(len(base_graph.nodes()))` where each
+possible directed edge (i, j) is added with probability
+`base_probability * (1 + correlation_factor)` if the undirected pair is an
+edge in `base_graph`, else `base_probability * (1 - correlation_factor)`
+(capped at 1.0). It indexes nodes by `range(num_nodes)`, so it assumes the
+base graph's nodes are already labeled 0..n-1.
 
-Additionally, `create_w_k_hop_correlation` builds a graph based on Jaccard similarity between k-hop neighborhoods, providing insights into graph proximity and connectivity.
+`create_w_k_hop_correlation(base_graph, k)` computes, for every node pair,
+the Jaccard similarity of their k-hop ego-network node sets
+(`nx.ego_graph(..., radius=k)`) and adds a directed edge i->j with
+probability equal to that similarity. Returns `(correlated_graph, (x_vals,
+y_vals))` for plotting similarity vs. edge-presence.
 
-The `create_social_graph` function models a social network by utilizing Jaccard similarity and edge sampling based on ranked similarity, enabling the creation of directed social graphs with variable edge densities.
+`create_social_graph(H, nE=None)` is the function actually used elsewhere in
+the repo (yjmob_network_creation.py, mfa_drive_compute.py,
+adaptive_seed_selection.py, milp.py) as the default social-graph generator
+from a contact graph: it builds radius-2 ego networks for every node,
+computes pairwise Jaccard similarity, ranks pairs by similarity, and samples
+`nE` edges (default `2 * H.number_of_edges()`) with probability proportional
+to `1/rank`, randomly assigning a direction to each sampled pair. Returns
+`(G, sim)`.
 
-
-
-
-
-extract_loss_calc.py:
-Loads a real-world social network, computes loss matrices for Independent Cascade (I.C.) and Linear Threshold (L.T.) diffusion models, and manages their storage and retrieval.
-
-It parses a Facebook network dataset, relabels nodes for consistency, and generates multiple correlated networks for loss evaluation.
-
-The resulting I.C. and L.T. loss matrices are written to a structured text file and can be safely re-parsed with validation checks.
-
-For convenience, parsed matrices are simplified by retaining only their final rows, enabling easy comparison and downstream analysis.
-
-
-
-
-
-find_seeds.py:
-Provides a probabilistic method for selecting seed nodes in a social network, based on node degrees and a configurable exponent.
-
-The function find_seed_set calculates the probability of each node being selected as a seed, ensuring a diverse and influential set of starting nodes.
-
-The initialize_social_IM function initializes a social influence model (Independent Cascade or Linear Threshold) with a specified number of seeds and influence parameters, running simulations to determine the maximum influence spread.
-
-This approach allows for flexible seed selection and influence maximization in social network models.
-
-
-
-
-
-IM.py:
-Models influence spread in social networks using the Independent Cascade (IC) and Linear Threshold (LT) diffusion models.
-
-The IC_prob_matrix function simulates the probability of each node becoming informed based on multiple Monte Carlo simulations, while IC tracks the actual spread of influence.
-
-The greedy function selects an optimal set of seed nodes to maximize influence spread using the IC model, while greedy_for_lt performs a similar task for the LT model by considering influence thresholds.
-
-Both models allow for quarantine handling, ensuring nodes in quarantine are not activated, and the influence of a node is based on its neighbors' status.
-
-
-
-
-
-informingcontact.py:
-Simulates and visualizes the spread of influence in social and contact networks, using both the Independent Cascade (IC) and Linear Threshold (LT) models.
-
-It generates a contact network from a file, correlates it with a social network, and simulates the SIR epidemic model on the social graph. The resulting social network is used for Influence Maximization (IM) to identify seed nodes, with the goal of reducing the spread of infection by removing edges from the contact network.
-
-Supports integration with Cytoscape via py4cytoscape for visualization and can save networks to GML files or display them inline using matplotlib.
-
-It also compares the influence spread of the greedy IM algorithm with a random seed selection approach, plotting edge removal efficiency as a function of k, the number of seed nodes chosen.
-
-
-
-
-
-lt_ic_loss_function.py:
-Calculates the loss between observed and inferred quarantine data for the Independent Cascade (I.C.) and Linear Threshold (L.T.) models, and evaluates the effect of varying thresholds on the loss.
-
-It generates subgraphs from a social network using random walks and computes the loss of L.T. with respect to I.C. using the mean squared error (MSE) metric. The script includes functionalities for random node removal, edge existence probability.
-
-It also supports generating multiple networks to observe the impact on loss and visualizes the results as a 3D bar graph comparing losses across networks. Additionally, it provides the ability to plot loss comparisons with varying thresholds.
-
-
-
-
-
-mean_field_approx.py:
-Simulates an SIR model on a contact network, optimizing the parameters (mean node degree and recovered fraction) using mean-field approximation.
-
-It supports multiple modes (standard, adherence, YJMOB, sensitivity analysis) and saves simulation results, including newly infected and recovered counts, to a file.
-
-The optimization uses L-BFGS-B to minimize error between predicted and true dynamics.
-
-
-
-
-
-mfa_drive_compute.py:
-Runs the Mean Field Approximation (MFA) multiple times with varying parameters to explore different scenarios.
-
-adherence_mode: Runs MFA for different adherence levels (0.2, 0.4, 0.6, 0.8, 0.9, 1.0) and saves results.
-
-simple_repeat: Runs MFA several times with the same configuration.
-
-yjmob_mode: Runs MFA on the YJMob dataset for different time intervals.
-
-sensitivity_analysis: Runs MFA while varying the number of seeds, initial infected proportion, and network density.
-
-Iterates multiple times to gather sufficient data.
-
-
-
+Pure graph-generation utilities with no file I/O. Depends only on networkx,
+numpy, random.
 
 
 parse.py:
-Defines a function to parse an edge list from a text file and create a NetworkX graph.
-
-parse: Reads a file with edge pairs, adds edges to a graph, and determines the minimum node index.
-
-G.add_edge(i, j): Adds an edge between nodes i and j for each line in the file.
-
-It returns the constructed graph. If parse_example is set to True, you can test the function by passing a file containing edge data.
+`parse(filename)` reads a whitespace-delimited edge-list text file (`i j`
+integers per line) and builds an undirected `networkx.Graph` via
+`G.add_edge(i, j)` for each line. Returns the graph. Used by
+extract_loss_calc.py to load experiment_data/facebook_network0.txt.
 
 
+network_setup.py:
+Shared network/beta-generation module whose purpose (stated in its own
+docstring) is to give adaptive_seed_selection.py and milp.py an identical
+contact/social network and identical per-node transmission-rate ("beta")
+assignments, so the two seed-selection approaches are actually compared on
+the same input rather than on independently regenerated random networks.
 
+Module-level config: `n=200`, `p=0.05` (Erdos-Renyi contact graph), `SEED=42`,
+`HETEROGENEOUS_BETA=True`, `beta_L=0.05`, `beta_R=0.25`, `Gamma=2` (shape
+parameter skewing the beta distribution toward `beta_R`), `num_simulations=10`.
+
+`laplacian_smooth_beta(G, beta_low, beta_high, lam, alpha, seed)` generates a
+spatially-smooth per-node beta assignment: draws Gaussian noise per node,
+smooths it via `(I + alpha*L)^-1` (L = graph Laplacian) so adjacent nodes get
+similar values, then rank-transforms the result to a `u**lam`-shaped
+distribution over `[beta_low, beta_high]`.
+
+`generate_global_betas(graph, num_sims, start_index)` returns `num_sims` beta
+maps (or scalars if `HETEROGENEOUS_BETA=False`), deterministic given
+`SEED + start_index + i`. `build_shared_network(num_sims)` builds the ER
+contact graph (isolated nodes removed, relabeled to consecutive integers), a
+social graph via `correlated_graphs.create_social_graph`, and the beta maps.
+
+`load_shared_network(path="shared_network.pkl", min_simulations=None)` is the
+entry point other scripts call: loads the pickle cache if present and its
+stored params match the current module config; extends the cached beta-map
+list in place if more simulations are requested than are cached; rebuilds
+from scratch if parameters changed or the cache is missing/invalid; and
+re-pickles to `path` whenever anything changed. Running the file directly
+forces a full rebuild and overwrite of shared_network.pkl.
+
+Reads/writes only shared_network.pkl (pickle, repo-root-relative by default).
+
+
+=====================================================
+Influence maximization & seed selection
+=====================================================
+
+IM.py:
+Implements Independent Cascade (IC) and Linear Threshold (LT) influence
+models and greedy seed-selection heuristics.
+
+`IC_prob_matrix(g, S, p, mc=1000, quarantining=None)` runs `mc` Monte Carlo
+trials of a single-hop activation attempt from seed set S (not a full
+cascade), averages to a per-node marginal activation probability, and draws
+one stochastic "final" informed set from those marginals. `p` may be a
+scalar or an n x n array of edge-specific probabilities. Returns
+`(quarantine_matrix, A_final)`. This is the function SIR.py calls in
+production runs.
+
+`IC(g, S, p, mc=1000)` runs the standard full multi-round IC cascade,
+averaged over `mc` trials; `greedy_for_ic(g, k, p, mc, S=None)` greedily adds
+k seeds maximizing `IC`-estimated spread. `lt_prob_matrix(g, S, threshold=1,
+quarantining=None)` runs a single-pass LT activation (a node activates once
+its count of already-active predecessors reaches `threshold`);
+`greedy_for_lt(g, seed_candidates, k=3, threshold=1)` greedily selects up to
+k seeds from a candidate pool; `LT(g, threshold, initial_active=None)` runs a
+full iterative LT cascade to convergence. `greedy_for_ic_target(g, p, mc,
+target, S_init=None)` greedily grows a seed set until a target spread is
+reached rather than a fixed k.
+
+Note: the `quarantining` parameter accepted by `IC_prob_matrix` and
+`lt_prob_matrix` is not actually used to exclude quarantined nodes from
+activating — in `lt_prob_matrix` the intended check is commented out, and in
+`IC_prob_matrix` the parameter isn't referenced in the body at all. Despite
+SIR.py passing quarantine status in, it currently has no effect on the IC/LT
+spread calculations.
+
+
+find_seeds.py:
+`find_seed_set(social_graph, num_seeds, exponent=1)` computes a per-node
+selection probability proportional to `degree^exponent` (with a small floor
+to avoid zero-probability nodes), samples `num_seeds` nodes without
+replacement, tags each with node attribute `is_seed='Seed'`, and returns the
+list. Raises ValueError if fewer nodes have nonzero probability than
+requested.
+
+`initialize_social_IM(social_network, k=None, p=0.3, num_seeds=1,
+lt_threshold=None)` draws a seed set via `find_seed_set`, then dispatches to
+`IM.greedy_for_ic` (if `lt_threshold is None`) or `IM.greedy_for_lt`.
+
+Note: this file's call `IM.greedy_for_ic(social_network, k, seeds, p)` is
+positionally mismatched against IM.py's current signature
+`greedy_for_ic(g, k, p, mc, S=None)` — the `p` parameter receives the
+`seeds` list and `mc` receives the float `p`. Calling
+`initialize_social_IM(..., lt_threshold=None)` (the default, IC branch) will
+currently raise a TypeError. The LT branch (passing an `lt_threshold`) is
+argument-order-correct and works.
+
+
+=====================================================
+Core epidemic simulation
+=====================================================
+
+SIR.py:
+Implements an SIRS epidemic model coupled to a separate social-network layer
+used to spread awareness of quarantine measures. No file I/O of its own.
+
+`sirs_step(G, state, L, beta, gamma, mu)` performs one synchronous SIRS
+update: infected nodes (state 1) infect susceptible neighbors (state 0) with
+probability `beta` (scalar, or per-node array/dict for heterogeneous
+transmission) provided the neighbor's `L` flag allows it; infected nodes
+recover to state 2 with probability `gamma`; recovered nodes lose immunity
+back to state 0 with probability `mu`.
+
+`quarantine_edge_removal(g, node, states, quarantine_statuses,
+already_quarantining)` cuts all of a node's edges once it is both informed
+and adhering, and marks it quarantining. `restore_edges(g_init, g, node,
+already_quarantining)` restores a node's original edges (excluding edges to
+neighbors still quarantining) once its quarantine ends.
+
+`Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
+q=False, q_mech=("ic", 0.02), adherence=None, begin_q=0, seeds=None,
+initial_state_dict=None)` is the main entry point.
+  - `q` controls the quarantine mechanism: False (none); True (fixed-length
+    or Normal(14, 2)-sampled duration, with edges restored once the period
+    ends — pass an int > 1 to fix the duration); or "r" (edges removed on
+    infection, restored immediately on recovery, no fixed duration).
+  - `q_mech` is a (type, value) tuple selecting the information-spread
+    model that drives who becomes "informed" and thus eligible to
+    quarantine: `("ic", p)` Independent Cascade via `IM.IC_prob_matrix`,
+    `("lt", threshold)` Linear Threshold via `IM.lt_prob_matrix`, or
+    `("FJ", kappa)` Friedkin-Johnsen belief dynamics — beliefs evolve as
+    `(s_i + sum of neighbor beliefs) / (1 + deg_i)` with seeds pinned at 1,
+    a node becomes informed (absorbing) each step with probability
+    `x_i**kappa`, and — uniquely for FJ — edge removal is partial and
+    per-edge (`P(cut) = 1 - exp(-(x_i + x_j))`) rather than all-or-nothing
+    per node.
+  - `adherence` is a fraction in [0,1] or an explicit set of adhering
+    nodes; `seeds` seeds the information cascade (explicit set, an int
+    delegating to `find_seeds.find_seed_set`, or None/0 for no spread);
+    `begin_q` delays the start of spread/quarantine; `initial_state_dict`
+    lets a caller supply an explicit S/I/R assignment instead of sampling
+    from `init`.
+  - Returns an 11-tuple: `(contact_network, state_changes, infection_data,
+    quarantine_prob_matrix, state_series, social_network, dynamic_degree,
+    informed_infected_series, informed_series, adhering, all_edges)`.
+
+Depends on find_seeds.py, correlated_graphs.py, and IM.py.
 
 
 SIR_examples.py:
-Simulates and visualizes various SIR (Susceptible-Infected-Recovered) models with different quarantine strategies and conditions.
+Drives SIR.Simulate_SIR under different quarantine/adherence/seeding
+configurations, aggregates over repeated trials, and produces
+publication-styled matplotlib figures saved under result_figures/. Builds a
+shared Erdos-Renyi contact network (n=200, p=0.05, seed=42) and a correlated
+social network at import time.
 
-informed_vs_noninformed: Compares infection rates with and without quarantine.
+Current top-level functions:
+  - `informed_vs_noninformed(plot_data=False)` — q=True vs. q=False, 25
+    trials; saves result_figures/informed_vs_noninformed.pdf.
+  - `const_quarantines(plot_data=False)` — fixed 14-step quarantine
+    (adherence=1.0) vs. none; saves result_figures/const_quarantines.pdf.
+  - `normal_dist_quarantines(plot_data=False, num_trials=25)` — Normal(14,2)
+    quarantine duration vs. none; saves
+    result_figures/normal_dist_quarantines.pdf.
+  - `jaccard_similarity(num_runs=20, bins=10, plot_data=False)` — reads
+    experiment_data/Freeman3.gml, bins Jaccard similarity of correlated
+    social graphs against empirical edge probability; saves
+    result_figures/jaccard_similarity.pdf; returns (df, bin_means).
+  - `random_vs_nonrandom_seeds(num_comparisons, plot_data=False)` — random
+    vs. degree-weighted (find_seeds, exponent=20) seed selection across
+    increasing seed-set sizes, q=100, adherence=1.0; saves
+    result_figures/random_vs_nonrandom_seeds.pdf.
+  - `compare_infections_adherence(adherence, plot_data=False)` — full vs.
+    partial adherence under q="r". Currently broken: calls
+    `SIR.Simulate_SIR(..., num_seeds=NUM_SEEDS, ...)`, but Simulate_SIR has
+    no `num_seeds` parameter (the current parameter is `seeds`) — raises
+    TypeError if invoked.
+  - `r_quarantine(plot_data=False)` — quarantine-until-recovery (q="r") vs.
+    none; saves result_figures/r_quarantine.pdf.
+  - `permanent_quarantine(plot_data=False, num_trials=25)` — calls
+    Simulate_SIR with `q=T`, where T is the module-level simulation length
+    (100), not the literal boolean True; works because T > 1 is treated as
+    a fixed quarantine duration equal to the whole run, but is fragile if T
+    ever changes. Saves result_figures/permanent_quarantine.pdf.
+  - `fj_quarantine(num_trials=25)` — Friedkin-Johnsen quarantine
+    (q_mech=("FJ", 1.25), adherence=1.0); data-only helper (no plot of its
+    own), consumed by plot_all_quarantine.
+  - `plot_all_quarantine(num_trials=25)` — combines permanent_quarantine,
+    normal_dist_quarantines, fj_quarantine, and the no-quarantine baseline
+    into one comparison figure; saves
+    result_figures/all_quarantine_strategies.pdf. This is the function
+    actually invoked from __main__.
+  - `rc()` — loads rc_contact_network_bin{1..19}.gml (relative path,
+    inconsistent with the experiment_data/ or capstone_proj_data/ prefixes
+    used elsewhere) and capstone_proj_data/rc_social_network.gml. Currently
+    broken: calls `SIR.Simulate_SIR(..., lt_threshold=None, p=A_weighted)`,
+    neither of which are parameters of the current Simulate_SIR — raises
+    TypeError if invoked.
+  - `plot_newly_infected()` — daily new-infection counts under q=False;
+    saves result_figures/new_infections.pdf.
+  - `plot_information_dynamics(plot_data=False)` — informed-node count over
+    time with begin_q=30, q="r", adherence=1.0; saves
+    result_figures/proportion_informed.pdf.
+  - `run_simulations()` — orchestrates informed_vs_noninformed,
+    const_quarantines, normal_dist_quarantines, r_quarantine,
+    permanent_quarantine, random_vs_nonrandom_seeds(10),
+    jaccard_similarity(20, 10); returns a 7-tuple.
+  - `SIR_pickle_dump(filename='experiment_data/pickles.pkl')` — runs
+    run_simulations() and pickles the results. Note: the saved dict labels
+    `data[5]` (actually the random_vs_nonrandom_seeds result) as "Jaccard
+    Similarity" — the real Jaccard result (data[6]) is never stored.
+  - `pickle_load(filename='experiment_data/pickles.pkl')` — loads and
+    prints that pickle file.
 
-const_quarantines: Simulates infection spread with a constant quarantine duration and compares with no quarantine.
-
-normal_dist_quarantines: Tests the effect of Gaussian quarantine on infection spread.
-
-jaccard_similarity: Calculates and visualizes the Jaccard similarity between social and contact networks.
-
-random_vs_nonrandom_seeds: Compares infection rates using random vs. degree-based non-random seed selection.
-
-compare_infections_adherence: Compares the effect of full vs. partial adherence on infection rates.
-
-r_quarantine: Simulates quarantine measures that last until recovery.
-
-permanent_quarantine: Tests permanent quarantine strategies on infection dynamics.
-
-plot_all_quarantine: Plots results for all quarantine strategies to compare their effects.
-
-run_simulations: Runs all the above simulations.
-
-SIR_pickle_dump: Saves the simulation results and model parameters into a pickle file.
-
-pickle_load: Loads and prints the saved simulation data.
-
-The main function executes the simulations and saves results for further analysis. The visualizations include infection curves for different strategies, all saved as PDF figures for publication.
-
-
-
-
-
-SIR.py:
-Simulation of an SIR (Susceptible, Infected, Recovered) model with additional features, including quarantine measures, information spread, and social network dynamics. 
-
-Main Features::
-SIRS Model with State Transitions:
-The sirs_step function handles the transition of nodes through the SIR states, considering infection spread (via the beta parameter), recovery (via the gamma parameter), and immunity loss (via the mu parameter).
-
-Quarantine Mechanism:
-quarantine_edge_removal quarantines nodes based on certain conditions, removing edges to prevent further spread. It checks if a node is "informed" and "adhering" to quarantine measures before quarantining it.
-
-The restore_edges function restores previously removed edges when the quarantine ends, ensuring a proper simulation of the dynamics.
-
-Node State and Information Spread:
-The simulation includes the spread of information about quarantining measures through a social network (social_network), using either Independent Cascade (IC) or Linear Threshold (LT) models.
-
-Initially uninformed nodes can become "informed" during the simulation (at the begin_q time). Once informed, they may follow quarantine measures if adhering to them.
-
-Dynamic Quarantine and Social Network:
-The simulation adjusts quarantine statuses dynamically, with users possibly remaining in quarantine for a fixed or variable period. The state of the network (edges, nodes) can change depending on which nodes are quarantining and whether information about quarantining spreads.
-
-Infection Dynamics:
-Infection spread is managed using sirs_step, where infected nodes try to infect susceptible neighbors with a probability determined by beta.
-
-Additionally, nodes have a recovery probability (gamma) and possibly lose immunity (mu).
-
-Simulation Data Collection:
-During the simulation, the model keeps track of various metrics, including:
-
-Infection count over time (Inf list).
-
-Quarantine status for each node (all_quaratines).
-
-The degree distribution (dynamic_degree), tracking changes in node connectivity.
-
-Quarantine Duration and Edge Restoration:
-For nodes that are quarantining, the length of their quarantine period is either fixed (q is an integer) or variable (using a normal distribution). The edges are restored after the quarantine period ends (in q=True or "r" mode).
-
-Key Simulation Steps:
-Initialize the social network and set the initial node states.
-
-Propagate infections using the sirs_step method, which incorporates the likelihood of infection spread, recovery, and immunity loss.
-
-Model the quarantine process with dynamic updates:
-Edge removals when nodes are quarantined.
-
-Edge restorations either at the end of a fixed quarantine period or immediately upon recovery.
-
-Information spread is modeled via the find_seeds method for determining initial informed nodes, which then spreads through the social network via either the Independent Cascade (IC) or Linear Threshold (LT) model.
-
-Track key metrics for each time step:
-Infection dynamics (Inf list).
-
-The state of quarantining (all_quaratines).
-
-The number of informed individuals and quarantined individuals at each time step.
-
-Node degrees, to assess how quarantine and network changes affect the structure over time.
+`__main__` currently only calls `plot_all_quarantine(num_trials=5)`; other
+invocations, including calls to functions named `FJ()` and `compare_FJ_IC()`
+that no longer exist in this file, are commented out as stale scaffolding.
 
 
-
-
+=====================================================
+Real-world dataset network construction
+=====================================================
 
 yjmob_network_creation.py:
-Processes movement data, computes contact networks, and generates social networks based on user interactions.
+Builds per-time-interval contact networks and one directed social network
+from a sampled YJMob100k-style movement CSV, with optional Cytoscape export.
 
-Main Steps and Features:
-Data Parsing and Preparation:
-The code starts by reading movement data from a CSV file (yjmob_sample.csv).
+Reads experiment_data/yjmob_1000_sample.csv (user_id, day, time, x, y).
+`SAMPLE_SIZES = (100, 250, 500, 1000)` with `SAMPLE_SIZE_IDX` (hardcoded)
+selecting how many distinct users (seeded with `random.seed(42)`) to keep.
+Records are bucketed into 15-minute intervals. Within each interval, two
+users "collide" (an edge) if their coordinates match exactly at the same
+timestep or across a 1-step window; one undirected contact_network is built
+per interval from collision pairs (edges are unweighted — collision counts
+are tallied but not used to threshold or weight edges).
 
-It processes the data into time intervals and stores it in the day_data_initial and day_data_final dictionaries.
+The social network is built once, from the first interval's contact network,
+via `correlated_graphs.create_social_graph`, and reused for every interval
+(this differs from an earlier percentile-based collision-count filtering
+approach). All contact networks and the social network are unioned onto a
+consistent node set and relabeled to consecutive integers. Writes
+experiment_data/yjmob_{sample_size}_contact{interval}.gml and
+experiment_data/yjmob_{sample_size}_social.gml (the latter rewritten
+identically each interval). If `ping_cytoscape` (hardcoded True) is set, also
+pushes each interval to a running Cytoscape instance via py4cytoscape.
 
-day_data_initial: Stores user data grouped by time intervals (15-minute intervals).
-
-day_data_final: Transforms the initial data into a dictionary where each interval has users with their time and location data.
-
-Collisions Detection (for Contact Networks):
-A collision occurs when two users are in the same location within a 2-time unit window (checking current and next time point).
-
-The distance between users is computed using the Cartesian distance formula.
-
-If two users’ coordinates match (within the defined time window), a collision is counted, and the pair is stored as an edge in a graph.
-
-Creating Contact Networks:
-For each time interval, the collision data is used to create an undirected contact network (contact_network), where nodes represent users and edges represent interactions (collisions).
-
-The contact network for each interval is stored in contact_networks.
-
-Social Network Creation:
-A social network is built from the global collision frequency.
-
-The 75th percentile of the collision count is calculated and used to filter out edges (i.e., only keep edges with a collision count greater than or equal to the 75th percentile).
-
-The social network is directed (social_network), and this directed graph is then relabeled for consistency.
-
-Ensuring Consistency Across Networks:
-The union of all nodes across all time intervals is computed to ensure that all contact and social networks have the same set of nodes.
-
-The user IDs are relabeled to consecutive integers for consistency across all networks (this is important when integrating these networks with external tools like Cytoscape).
-
-Relabeling and Exporting Networks:
-For each interval, the contact and social networks are saved in .gml format using nx.write_gml.
-
-Cytoscape Integration: If ping_cytoscape is set to True, the social network is converted to an undirected graph and relabeled to avoid node overlaps. This union of the contact and social networks is sent to Cytoscape using py4cytoscape's create_network_from_networkx function.
-
-This README covers usage and functionality of result figure generating .py files.
-
-analyze_quarantine_dynamics.py:
-Analyzes post-quarantine network simulation data to estimate adherence and fit model parameters. It performs the following tasks:
-
-Load Simulation Data:
-Parses MFA simulation outputs and extracts relevant post-quarantine time series, including node degrees and informed/infected proportions.
-
-Naive Adherence Estimation:
-Computes a quick adherence estimate based on deviations in mean node degree.
-
-Parameter Optimization:
-Jointly optimizes a scale factor and adherence per run to best match the observed post-quarantine mean degree across simulations.
-
-Dynamic Adherence Tracking:
-Computes cumulative adherence estimates over time for each simulation run, capturing how estimates improve as more data becomes available.
-
-Visualization:
-Generates publication-quality plots:
-
-True vs estimated mean post-quarantine node degree <k_q>
-
-Cumulative adherence estimates with mean and standard deviation bands
-
-Results Storage:
-Saves all processed data, optimized parameters, and estimated time series to a pickle file for downstream analysis.
-
-Output:
-PDF plots of <k_q> comparison and cumulative adherence
-
-Pickle file containing processed metrics, parameter estimates, and time series
-
-Dependencies:
-numpy, scipy, matplotlib, pickle, extract_mfa
-
-Purpose:
-Facilitates quantitative evaluation of quarantine effects and network adherence dynamics in simulation studies.
+No `__main__` guard — the entire script runs at import time.
 
 
+high_school_network_creation.py:
+One-shot script building a high-school social network and 19 time-binned
+contact networks from interaction-survey data, with optional Cytoscape push.
+
+Reads capstone_proj_data/high_school_social.csv (space-delimited, columns
+u/v) into an undirected social graph, and capstone_proj_data/HS_data.csv
+(space-delimited, columns t/u/v — a preprocessed version of the raw
+High-School_data_2013.csv dataset) into 19 equal-width time bins via
+`pd.cut`, building one contact graph per bin (isolated nodes removed). Every
+node gets a `name` attribute set to its stringified id (needed for GML
+round-tripping / Cytoscape display).
+
+Writes capstone_proj_data/high_school_social.gml and capstone_proj_data/
+high_school_contact_bin{1..19}.gml — these exact filenames are read back by
+drive_seed_selection.py. If `ping_cytoscape` (hardcoded True) is set, also
+pushes the networks to a running Cytoscape instance; there is no try/except
+around the py4cytoscape calls, so this will fail/hang without Cytoscape
+running.
 
 
+rc_creation_simple.py:
+One-shot script (no functions, executes top to bottom) building a "simple"
+residential-college-style social and contact network from two raw CSVs.
+Node universe is hardcoded as `ALL_NODES = set(range(1, 85))` (84 people).
 
-analyze_yjmob_quarantine.py:
-Processes YJMob100k network simulations to estimate quarantine adherence based on Mean-Field Approximation (MFA) degree dynamics and the proportion of informed & infected individuals.
+Social network: reads capstone_proj_data/RelationshipsFromSurveys.csv, and
+for each undirected pair builds one edge with one attribute per survey date
+(`s_YYYYMMDD`), valued as the comma-joined set of relationship types reported
+that date. No edge weights or time-binning (contrast with
+mit_rc_network_creation.py below, hence "simple").
 
-Overview:
-Data Loading:
-Loads five consecutive network samples (yjmob0_runs.txt to yjmob4_runs.txt) using extract_mfa.parse_sample_data.
+Contact network: reads capstone_proj_data/Proximity.csv, canonicalizes each
+proximity ping into an undirected pair, and sets a boolean edge attribute per
+unique raw timestamp (`c_YYYYMMDD_HHMMSS`) on that pair's single edge.
 
-Post-quarantine samples are identified (samples 2–4).
-
-Time-Series Aggregation:
-Combines infected & informed proportions and dynamic degree (⟨k_q⟩) across post-quarantine samples.
-
-Computes mean and standard deviation across simulation runs.
-
-Visualization:
-Plots ⟨k_q⟩ and infected & informed fraction with mean ± 1 standard deviation bands.
-
-Provides an MFA-based visualization of estimated vs true mean node degrees across pre- and post-quarantine intervals.
-
-Quarantine Adherence Estimation:
-Estimates adherence from MFA degrees using cumulative optimization over time.
-
-Fits the scale factor S and adherence fraction per run to minimize MSE between estimated and true ⟨k_q⟩.
-
-Computes per-time adherence estimates, mean, and standard deviation across runs.
-
-Compares cumulative adherence to the true known adherence.
-
-Output:
-Saves results to a pickle file (cumulative_adherence_results.pkl) containing:
-
-Pre-quarantine mean degree (k_0)
-
-Split point for quarantine
-
-Population size and number of simulations
-
-Time series: i_prime_mean, inf_inf_runs, k_q_true_mean, k_q_true_runs
-
-Cumulative adherence: cumulative_adh_runs, cumulative_adh_mean, cumulative_adh_std
-
-Time indices (t_vals)
-
-Key Features:
-Supports multiple post-quarantine samples for robust estimation.
-
-Generates publication-quality plots with mean and standard deviation bands.
-
-Implements a cumulative MSE-based optimization for time-resolved adherence estimation.
+Writes capstone_proj_data/rc_social_simple.gml and
+capstone_proj_data/rc_contact_simple.gml, and prints diagnostic summaries to
+stdout. No other script in the repo currently reads these two output files.
 
 
+mit_rc_network_creation.py:
+One-shot script (no functions, no __main__ guard) that builds the "rc_*" GML
+files used throughout the rest of the repo, from the MIT Reality Commons
+"Social Evolution" dataset ("RC" = Reality Commons, a dorm-based
+mobile-sensing study — not "residential college").
 
+Social network: reads capstone_proj_data/RelationshipsFromSurveys.csv.
+Relationship types are mapped to hardcoded weights (CloseFriend: 0.09,
+SocializeTwicePerWeek: 0.07, PoliticalDiscussant: 0.05,
+FacebookAllTaggedPhotos: 0.03, BlogLivejournalTwitter: 0.01 — no cited
+derivation). Builds a directed graph with edges deliberately reversed
+(nominee -> nominator); when a pair reports multiple relationship types, the
+edge keeps the maximum weight (not the sum), on the reasoning that a
+"CloseFriend" relationship is already explicit and strong. Node set is forced
+to exactly {1..84}. Writes capstone_proj_data/rc_social_network.gml.
+
+Contact networks: reads capstone_proj_data/Proximity.csv, bins timestamps
+into 30-day windows (the origin of the "bin1..bin19" naming used across the
+repo). For each proximity record, treats its reported `prob2` value as a
+Bernoulli success probability and stochastically samples (unseeded — not
+reproducible run to run) whether the contact "really" occurred. Produces:
+  - capstone_proj_data/rc_contact_network_bin{1..N}.gml — one unweighted
+    graph per bin, all 84 nodes present (including isolates).
+  - capstone_proj_data/rc_contact_unified_all_bins.gml — one graph with a
+    boolean `contact_bin_{i}` attribute per edge per bin plus a
+    `total_realized_contacts` sum.
+  - capstone_proj_data/rc_weighted_contact_bin{1..N}.gml — ground-truth
+    edges are those realized in bin i, but each edge's weight is the
+    fraction of the *other* bins (leave-one-out) that also contain that
+    edge. This is the specific file family read by milp.py,
+    drive_seed_selection.py, and dual_optimization_driver.py.
+
+Note: the Bernoulli realization step is not seeded, so re-running this script
+regenerates different rc_contact_network_bin*.gml / rc_weighted_contact_bin*
+.gml files each time, even though every downstream script treats them as
+fixed inputs. Also pushes all networks to Cytoscape via py4cytoscape
+(requires a running local instance).
+
+
+=====================================================
+Mean Field Approximation (MFA) pipeline
+=====================================================
+
+mean_field_approx.py:
+Core MFA simulation/optimization engine: simulates an SIRS model on a
+contact network and fits a reduced mean-field model to the resulting
+infection/recovery dynamics, writing results in the text format that
+result_figures/extract_mfa.py parses. Mode is selected via the last CLI
+argument (`sys.argv[-1]`); other positional args vary per mode (no argparse —
+fragile to a wrong argument count).
+
+  - Standard mode (no mode string): hardcoded defaults (n=200 ER contact
+    graph p=0.05, T=100, beta=0.15, gamma=0.07, mu=0.05, init=0.1,
+    adherence=0.6, split_point=30). Loads experiment_data/mfa_contact.gml /
+    mfa_social.gml, generating them via `nx.erdos_renyi_graph` +
+    `correlated_graphs.create_social_graph` if missing; picks 10 seeds via
+    `find_seeds.find_seed_set` (exponent=2); writes to
+    experiment_data/mfa_xy_data.txt.
+  - "adherence mode": argv = [write_file, adherence] — used to sweep
+    adherence levels.
+  - "yjmob mode": argv = [file_index, yjmob_size]. Loads
+    experiment_data/yjmob_{yjmob_size}_contact{idx}.gml /
+    ..._social.gml, T=15, no split point. Intervals 0-4 are simulated
+    individually, each continuing epidemic state from the previous interval
+    via experiment_data/mfa_initial_state.pkl, and their per-interval
+    dynamics are cached in a shelve database
+    (experiment_data/yjmob_dynamics_shelve, key "Interval {i}"). Intervals
+    0-1 use adherence=0 (pre-quarantine); interval 2 uses adherence=0.6 and
+    fixes the adhering node set, which intervals >=3 reuse. file_index==5
+    reads all 5 cached intervals back out of the shelve, concatenates them
+    into one 75-step combined series, sets split_point=30, and reruns the
+    full pre/post-quarantine optimization over the combined series — this
+    is what produces the "full-period" yjmob5_runs.txt fit used by
+    result_figures/analyze_yjmob_quarantine.py. Output:
+    experiment_data/yjmob{file_index}_runs.txt.
+  - "sensitivity analysis mode": argv = [seeds_literal, init, write_file]
+    (seeds parsed via ast.literal_eval); pre-quarantine only, no split.
+
+Optional noise injection (module-level `noisy_data`, `noise_type`
+"gaussian"/"poisson", `gaussian_noise_scale`, `poisson_noise_scale`) perturbs
+the per-timestep newly-infected/newly-recovered ratios once, before any
+optimization, so the same noisy series is used throughout a run.
+
+Math: the standard model fits `n_i(t) = w1 * x1(t) * (x2(t) - w2)`, where
+`x1 = beta * (n_r/gamma)`, `x2 = 1 - n_r/gamma`, `w1` is mean node degree
+<k>, and `w2` is recovered fraction r. `optimize_segment` runs 25 independent
+L-BFGS-B optimizations per segment, stepping through time with a
+warm-started running average and previous-step value used as soft-penalty
+anchors (the allowed drift `eps_w1` decays as `(1 - t/T)**0.5` to tighten
+convergence over time); w1 is capped at a binomial upper bound
+`n*p + sqrt(n*p*(1-p))`. When a split point is set, the pre- and
+post-quarantine halves are each fit independently (this produces the "w1
+True/Estimated" pre- vs. post- pairs consumed downstream). A separate,
+always-on identifiability pass (`run_identifiability`) fits a reduced
+one-parameter model where the recovered fraction is treated as known rather
+than fit, then (1) regresses <k> alone from known n_i/n_r/r
+(`optimize_k_identifiability`), (2) forward-predicts n_i from that <k>
+(`predict_n_i_from_k`), and (3) numerically inverts the relation per-timestep
+to back out n_r from the estimated <k> and known n_i/r
+(`predict_n_r_from_k`) — testing whether <k> alone is enough to recover both
+infection and recovery flows.
+
+Output format (`save_xy_data`): appends one "==New Sample==" block per call
+to the target file, each with "Number of nodes", "Adhering proportion", then
+labeled x/y sections — SIR Infections, Newly Recovered, Dynamic degree, w1
+True (Mean Node Degree), w1 Estimated, w1 all runs (all 25 raw run
+trajectories), y_model values, y_pred all runs, w2 True (Recovered
+Fraction), w2 Estimated, Informed and Infected, Informed, Given Newly
+Infected Ratio, k Identifiability Estimated, n_i Predicted
+(Identifiability), n_r Predicted (Identifiability). Separately,
+`save_daily_infected_recovered()` (called unconditionally at the end of
+every run) writes experiment_data/infected_recovered.txt as a
+Day/Newly Infected/Newly Recovered table.
+
+Depends on find_seeds.py and correlated_graphs.py.
+
+
+mfa_drive_compute.py:
+Driver that repeatedly shells out to `mean_field_approx.py` (via
+`subprocess.run`) with different arguments to sweep parameters, 10 repeats
+per configuration.
+
+  - `adherence_mode()` — clears experiment_data/a_0.2, a_0.4, a_0.6, then
+    runs mean_field_approx.py in "adherence mode" for adherence levels 0.2,
+    0.4, 0.6 (3 levels, not the 6 an earlier version swept).
+  - `simple_repeat()` — runs mean_field_approx.py with no extra arguments,
+    repeated.
+  - `yjmob_mode(size)` — size must be one of {100, 250, 500, 1000}. Clears
+    experiment_data/yjmob{0..5}_runs.txt, then for each repeat and each of
+    the 6 yjmob file indices, runs mean_field_approx.py in "yjmob mode".
+  - `sensitivity_analysis()` — builds a default ER contact network (n=200,
+    p=0.05) and social network, writing experiment_data/mfa_contact.gml /
+    mfa_social.gml for mean_field_approx.py to read; sweeps (a) number of
+    seeds (grown in batches of 5 up to 15 via find_seeds.find_seed_set,
+    exponent=2) into experiment_data/sensitivity_num_seeds.txt, (b) initial
+    infected proportion [0.025, 0.05, 0.10] into sensitivity_init.txt, and
+    (c) network density [0.03, 0.04, 0.05] (regenerating the contact graph
+    each time) into sensitivity_density.txt.
+
+`__main__` builds an argparse parser with a `--yjmob-size` option, but the
+parsed value is currently unused — the code calls `yjmob_mode(size=250)`
+hardcoded regardless of the flag. `adherence_mode()`, `sensitivity_analysis()`,
+and `simple_repeat()` are present in the file but commented out, so as
+currently checked in, running this script only executes `yjmob_mode(size=250)`.
+
+
+extract_loss_calc.py:
+Loads the Facebook ego-network dataset (experiment_data/facebook_network0.txt,
+via parse.py), computes/stores Independent Cascade and Linear Threshold loss
+matrices across several correlated networks, and provides a re-parser.
+`write_matrices_to_file` / `parse_matrices` serialize and reload
+experiment_data/loss_matrices.txt with per-line column-count validation.
+`simplify_matrices` reduces every matrix to only its final row.
+
+Note: this file is currently non-runnable — its first import,
+`import lt_ic_loss_function as lc`, refers to a module that no longer exists
+anywhere in the repo. Any use of this script requires either restoring that
+module or reworking the loss-matrix computation it depends on.
+
+
+=====================================================
+Adaptive & MILP quarantine-seed-selection ("capstone") pipeline
+=====================================================
+
+This group of files compares strategies for choosing which nodes to
+quarantine over time on a real or synthetic contact network, under a shared
+per-timestep cost model that trades off epidemic spread against the cost of
+edges removed by quarantine.
+
+adaptive_seed_selection.py:
+Runs an SIRS-with-quarantine simulation (SIR.Simulate_SIR) and compares
+three strategies for re-selecting which nodes to quarantine every
+`batch_interval` (2) of `T` (100) steps: an adaptive stochastic hill-climber
+(`hill2`), a degree-based heuristic (`degree_based_selection`), and a random
+baseline (`random_seed_selection`), plus a no-quarantine reference
+(`no_quarantine_baseline_runs`). All three selection strategies choose
+`K = int(3/4 * n)` nodes per round — i.e. quarantining roughly 75% of the
+population at a time, not a small classic-influence-maximization seed set.
+
+`initialize(network=None, social=None)` must be called first. With both
+args None it loads the network shared with milp.py via
+`network_setup.load_shared_network`; given a GML path (optionally with a
+real social-network GML too) it loads and relabels those onto one shared
+integer id space instead.
+
+`global_cost_function(newly_infected, live_edges, seed_set_size, t_cur)`
+scores a batch window as the sum of two capped, normalized terms: newly
+infected count (normalized against the worst-case no-quarantine baseline)
+and cumulative edge-removal cost (normalized against a static worst-case
+bound — every edge lost every step — rather than a full-quarantine
+simulated counterfactual, because aggressive quarantine can suppress spread
+so effectively that it produces *less* cumulative edge loss than a realistic
+policy, which would make that counterfactual an unsound bound).
+
+`hill2()` initializes a random K-node seed set and per-node scalar
+"utilities" ~ U(0,1); at each batch boundary it updates every node's utility
+with an EWMA of the cost delta, then attempts exactly one add/drop swap per
+batch (softmax-weighted by utility) and accepts it if the resulting cost is
+no worse than the previous batch's. Across 10 simulation runs it keeps the
+most common resulting seed set, and records the full per-run per-batch seed
+history (`all_batch_seed_sets`) — this is what visualize_adaptive.py
+consumes. Returns a 12-tuple: (most_common_seed_set, all_cost_curves,
+all_infection_term_curves, all_edge_term_curves, all_edge_curves,
+all_newly_infected_counts, all_newly_infected_frac, all_state_vectors,
+tagged, all_batch_seed_sets, all_alpha_w_curves, all_beta_w_curves).
+`degree_based_selection()` and `random_seed_selection()` return an analogous
+11-tuple (no `all_batch_seed_sets`, plus `all_full_dynamics` in its place).
+
+`__main__` runs all three methods against the synthetic shared network,
+pickles hill2's per-batch seed sets and the social network to
+adaptive_seed_data.pkl (read by visualize_adaptive.py), and pushes each
+method's cost/infection/edge curves into cost_curve_store.py under labels
+"Degree-Based", "Random Seeds", "Adaptive" for later joint comparison plots.
+
+Depends on SIR.py, correlated_graphs.py, cost_curve_store.py,
+network_setup.py.
+
+
+visualize_adaptive.py:
+Post-processing/visualization only (no simulation) for hill2's results,
+examining which nodes get selected as quarantine seeds relative to their
+network centrality (degree, k-core coreness, betweenness — computed on the
+undirected social network).
+
+Reads adaptive_seed_data.pkl (produced by adaptive_seed_selection.py's
+__main__) for a single-network run, or adaptive_real_world.pkl (produced by
+dual_optimization_driver.py sweeping the rc_weighted_contact_bin{i}.gml
+files) for a multi-bin sweep.
+
+`plot_selected_seed_counts_by_metric_bin` bins nodes by each raw metric
+value and counts how many selected seeds fall in each bin, as a 3-panel bar
+chart with a KDE density overlay of the network-wide distribution; writes
+capstone_result_figures/adaptive_selected_seed_counts_by_metric_bin.pdf.
+`plot_selected_seed_counts_for_real_world_bins` repeats this per real-world
+bin, writing capstone_result_figures/
+adaptive_selected_seed_counts_real_world_bin{i}.pdf per bin.
+`plot_selected_seed_metric_heatmaps` condenses all real-world bins into one
+figure: 3 heatmaps (degree/coreness/betweenness) with network bin index on
+the x-axis, metric-value bin on the y-axis, and column-normalized selection
+fraction as color; writes
+capstone_result_figures/adaptive_selected_seed_metric_heatmaps.pdf.
+
+The `__main__` mode (single-network vs. real-world sweep) is chosen by a
+hardcoded `SELECTED_MODE` constant, not a CLI flag.
+
+Note: "selected" here is a boolean (selected at least once across all
+runs/batches) — the underlying per-node selection *frequency* is computed
+but discarded, so these plots show which nodes were ever picked, not how
+often.
+
+
+milp.py:
+An alternative to adaptive_seed_selection.py's heuristic hill-climb:
+formulates quarantine-seed and edge-removal selection jointly as a
+Mixed-Integer Linear Program, re-solved every `batch_interval` (5) steps via
+`scipy.optimize.milp`. Because the true SIR dynamics are nonlinear and can't
+be expressed inside a MILP, exposure is approximated by a linearized
+auxiliary binary `z_e = y_e * (1 - x_u) * (1 - x_v)` ("edge e is live and
+neither endpoint is quarantined"), encoded with the standard 4-constraint AND
+linearization per edge; the sum of z_e over a batch window stands in for
+actual epidemic exposure in the objective.
+
+`initialize(network=None, social=None)` mirrors adaptive_seed_selection.py's
+version (same shared-network loading via network_setup, same real-GML
+loading/relabeling path) and additionally runs `num_simulations`
+no-quarantine baseline trajectories via `baseline_infections` up front, used
+only as a normalization bound for the cost function.
+
+`global_cost_function(newly_infected, live_edges, t_cur)` uses the same
+two-term capped/normalized cost as adaptive_seed_selection.py (infection
+term bounded by the worst-case no-quarantine baseline, edge term bounded by
+a static worst-case bound for the same reason described there).
+
+`milp_seed_selection_stepwise()` builds the MILP constraint matrix once
+(`sum(x) <= K` where `K = int(3/4 * n)`, matching adaptive_seed_selection.py's
+budget, plus 4 linearization rows per edge), then for each simulation run
+re-solves the MILP at every batch boundary with an objective that rewards
+keeping edges live (weighted by the edge-cost normalization) and penalizes
+the exposure proxy z_e (weighted by the infection-cost normalization);
+selected nodes/edges are held fixed until the next batch, and
+SIR.Simulate_SIR is called per batch with those seeds and `q="r"`. Returns a
+10-tuple: (winner_sets, all_cost_curves, all_infection_term_curves,
+all_edge_term_curves, all_edge_curves, all_newly_infected_counts,
+all_newly_infected_frac, all_full_dynamics, all_alpha_w_curves,
+all_beta_w_curves).
+
+`__main__` runs against the synthetic shared network and pushes results into
+cost_curve_store.py under the "MILP" label — milp.py does not write any
+figure directly itself. Depends on correlated_graphs.py, network_setup.py,
+SIR.py, cost_curve_store.py.
+
+
+dual_optimization_driver.py:
+Orchestrates both adaptive_seed_selection.py's `hill2()` and milp.py's
+`milp_seed_selection_stepwise()` (as library calls, not subprocesses) against
+the real-world rc_weighted_contact_bin{i}.gml family, for a configurable list
+of bins (`--bins`, default 12-19) and method selection (`--methods
+{adaptive,milp,both}`, default both).
+
+Note: a module-level `RUN_MILP = False` kill-switch currently disables the
+MILP path regardless of `--methods`, and also skips writing the combined
+real_world_methods.pkl output entirely — only adaptive_real_world.pkl (the
+file visualize_adaptive.py's real-world mode reads) gets written by default,
+despite the docstring describing a combined-output default.
+
+Writes real_world_methods.pkl (only if RUN_MILP is True) and
+adaptive_real_world.pkl (whenever adaptive results exist), both to the
+current working directory. Produces no plots itself.
+
+
+cost_curve_store.py:
+Shared storage + comparison-plotting module that decouples
+adaptive_seed_selection.py, milp.py (and a since-removed milp_local.py
+variant, per METHOD_STYLE's remaining "MILP-Local" entry) from each other:
+each script independently computes its own cost curves and calls
+`push_curve(label, cost_curves, infection_curves=None, edge_curves=None,
+alpha_curves=None, beta_curves=None, batch_interval=1, T=None,
+path="cost_curves_data.pkl")` to merge its results into one shared pickle,
+so the scripts can be run separately, in any order/subset, and compared
+later in one figure.
+
+`_expand_to_ticks` repeats each method's once-per-batch cost value across
+the ticks its batch covers, so methods using different `batch_interval`
+values still align on one shared per-tick x-axis when compared.
+`plot_joint_cost_comparison()` plots mean +/- std cost over time for every
+method present in the store, writing
+capstone_result_figures/joint_cost_comparison.pdf. `plot_joint_cost_elements()`
+decomposes each method's total cost into its two capped, normalized
+components (infection term, edge term) for methods that have both
+populated, writing
+capstone_result_figures/joint_cost_elements_comparison.pdf.
+
+`__main__` just calls both plotting functions against whatever is currently
+in cost_curves_data.pkl — meant to be run manually after one or more of
+milp.py / adaptive_seed_selection.py have already populated the store.
+
+
+drive_seed_selection.py:
+A standalone comparison/visualization driver for adaptive_seed_selection.py
+only (does not call milp.py or cost_curve_store.py). For each bin in a
+configurable range, runs hill2, degree_based_selection, and
+random_seed_selection against either the "rc" or "high_school" dataset
+(`DATASET` enum, hardcoded), and renders a combined figure: a network-topology
+panel (Kamada-Kawai layout, node color/size by degree) plus a triple-axis
+comparison panel (edge-fraction, newly-infected-fraction, and cost curves
+with std bands). Saves capstone_result_figures/dual_bin{bin_idx}.pdf per bin.
+
+Note: this script is currently broken. It unpacks each
+adaptive_seed_selection.py call into only 6 variables (e.g.
+`_, hill_cc, hill_ec, hill_nc, hill_nf, hill_dyn = asm.hill2()`), but
+hill2()/degree_based_selection()/random_seed_selection() currently return
+12-, 11-, and 11-tuples respectively — this unpacking raises
+`ValueError: too many values to unpack` on the very first call in the loop.
+The existing dual_bin10.pdf-dual_bin19.pdf files in capstone_result_figures/
+appear to be outputs from an earlier version of adaptive_seed_selection.py
+with shorter return signatures. Also note: unlike milp.py and
+dual_optimization_driver.py, this script's `initialize()` call only passes a
+contact-network path (no real social-network GML), so it always synthesizes
+its social network via correlated_graphs.create_social_graph rather than
+using the real rc_social_network.gml.
+
+
+This README covers usage and functionality of result-figure-generating .py
+files in this folder. All of these scripts parse text/pickle output produced
+by mean_field_approx.py (via extract_mfa.py) or by the analyze_* scripts in
+this same folder, and save PDF figures (plus, for most, a companion .pkl of
+the processed data) for downstream reporting.
 
 
 extract_mfa.py:
-Provides tools to parse output from mean_field_approx.py simulations into structured, analyzable Python objects. It converts text-based simulation results into a list of samples, each represented as a dictionary of datasets.
-
-Overview:
-Parses MFA simulation output files and returns a structured collection of samples.
-
-Supported Dataset Keys:
-SIR Infections
-
-Dynamic degree
-
-w1 True, w1 Estimated, w1 all runs
-
-w2 True, w2 Estimated
-
-Informed and Infected
-
-Given Newly Infected Ratio
-
-Informed
-
-Data Structure:
-Each sample contains:
-
-Number of nodes
-
-Adhering proportion
-
-Time-series datasets with x (time points) and y (observables) values
-
-Special Handling:
-Converts np.float64 wrapped numbers into standard numeric values.
-
-Handles nested lists for datasets like w1 all runs and Informed.
-
-Maintains alignment of x-values and corresponding y-values.
-
-File Format Requirements:
-Each sample begins with a line ==New Sample==.
-
-Datasets are identified by their names.
-
-Time-series data lines start with x: and y: prefixes.
-
-Error Handling:
-Continues parsing even if some lines fail to convert.
-
-Provides warnings for parsing issues without halting execution.
-
-Use Cases:
-Compute averages and standard deviations over simulation runs.
-
-Analyze MFA degree estimates and infection dynamics.
-
-Estimate quarantine adherence and other behavioral parameters from simulations.
-
-
-
-
-
-plot_infected_informed.py:
-Visualizes the infection and information spread dynamics in simulated populations under different quarantine adherence levels. It processes simulation outputs parsed via extract_mfa.py and produces publication-ready figures.
-
-Purpose:
-Display time evolution of Infected, Informed, and Informed & Infected fractions of a population.
-
-Compare dynamics across different adherence levels to quarantine measures.
-
-Support analysis of both grouped adherence levels and individual adherence scenarios.
-
-Data Input:
-Simulation outputs from MFA experiments, organized by adherence levels (e.g., 0.2, 0.4, …, 1.0).
-
-Parsed using the extract_mfa parser.
-
-Primary Functionality:
-Grouped Adherence Plots:
-Compares multiple adherence levels in a single figure.
-
-Shows mean and variability (standard deviation) across simulation runs.
-
-Uses distinct colors per adherence level and line styles per category (Infected, Informed, Informed & Infected).
-
-Saves results to PDF and a serialized file for later analysis.
-
-Single Adherence Plots:
-Focuses on a single adherence scenario.
-
-Displays mean dynamics with variability bands.
-
-Produces clean figures suitable for presentations or publications.
-
-Plotting Features:
-Time-series alignment: Adjusts the x-axis based on simulation start times.
-
-Error bands: Visualizes standard deviation across simulation runs.
-
-Custom styling: Uses consistent colors, line styles, and figure sizes for publication-quality output.
-
-Export: Figures saved as PDFs, and data optionally serialized for reproducibility.
-
-Intended Use Cases:
-Study how different levels of quarantine adherence influence epidemic progression.
-
-Compare infection, awareness, and combined dynamics over time.
-
-Generate visualizations for reports, papers, or presentations.
-
-Dependencies:
-matplotlib for plotting.
-
-numpy for numerical operations.
-
-pickle for saving structured output.
-
-extract_mfa for parsing MFA simulation outputs.
-
-Output Files:
-
-Grouped adherence figure PDF.
-
-Single adherence scenario figure PDF.
-
-Optional serialized data file (.pkl) containing computed means and metadata for further analysis.
-
-
-
-
-
-plot_informed.py:
-Visualizes the time evolution of the informed fraction in a population during a simulation of epidemic and information spread. It produces publication-quality figures and saves processed data for further analysis.
-
-Purpose:
-Track how the fraction of informed individuals evolves over time.
-
-Highlight the period before and after a key intervention or split point (e.g., quarantine start).
-
-Provide both visual outputs and serialized data for reproducibility or downstream analysis.
-
-Data Input:
-Simulation outputs generated by MFA experiments, parsed using extract_mfa.
-
-Focuses specifically on the Informed category from the dataset.
-
-Primary Functionality:
-Compute Statistics:
-Aggregates all simulation runs for the informed population.
-
-Calculates mean and standard deviation across runs.
-
-Aligns time series so that the pre-intervention period is represented by zeros.
-
-Visualization:
-Plots the mean informed fraction over time with error bands representing variability across runs.
-
-Clearly marks the split point (intervention start) to distinguish pre- and post-intervention dynamics.
-
-Generates publication-ready figures in PDF format.
-
-Data Serialization:
-Saves the computed mean, standard deviation, and raw simulation runs to a .pkl file.
-
-Includes metadata such as split point, total time points, and number of runs.
-
-Enables later use without reprocessing raw simulation data.
-
-Plotting Features:
-Consistent figure styling (fonts, line widths, and figure size).
-
-Shaded error bands to indicate variability across simulations.
-
-Gridlines and labels for readability.
-
-Intended Use Cases:
-Analyze how quickly and extensively information spreads through the population.
-
-Compare informed population dynamics across different scenarios or interventions.
-
-Dependencies:
-matplotlib for plotting.
-
-numpy for numerical operations.
-
-pickle for saving structured output.
-
-extract_mfa for parsing MFA simulation outputs.
-
-Output Files:
-
-PDF figure showing the proportion of informed individuals over time.
-
-Serialized results file (.pkl) containing full statistics and raw simulation data.
-
-
-
+Parses the text files written by mean_field_approx.py's `save_xy_data` into
+a list of samples, each a dict of named datasets. `parse_sample_data(filename)`
+splits the file on "==New Sample==" markers; within each sample it reads
+"Number of nodes" and "Adhering proportion" scalars, and any of the following
+dataset blocks (each a `x:`/`y:` pair of lines): SIR Infections, Dynamic
+degree, w1 True (Mean Node Degree), w1 Estimated, w1 all runs, w2 True, w2
+Estimated, Informed and Infected, Given Newly Infected Ratio, Informed,
+y_true values, y_model values, y_pred all runs, Newly Recovered, k
+Identifiability Estimated, n_i Predicted (Identifiability), n_r Predicted
+(Identifiability). `w1 all runs`/`y_pred all runs` y-lines (nested lists,
+possibly containing `np.float64(...)` wrapper text) and `Informed` y-lines
+(nested lists) get special parsing via `ast.literal_eval` after stripping the
+numpy wrapper; everything else parses as a flat float list, or as a nested
+list if the line starts with `[`. Parsing failures are logged and degrade to
+an empty list rather than aborting the whole file. Used by every other
+script in this folder.
+
+
+analyze_yjmob_quarantine.py:
+Estimates quarantine adherence on the YJMob100k dataset from MFA-estimated
+degree dynamics and the informed-and-infected fraction, and produces the two
+headline YJMob figures.
+
+Loads five consecutive interval samples (yjmob0_runs.txt through
+yjmob4_runs.txt via extract_mfa) plus a sixth, yjmob5_runs.txt, which holds
+the full-period (pre+post-quarantine combined) optimization produced by
+mean_field_approx.py's yjmob-mode file_index==5 path. Samples 2-4 are treated
+as post-quarantine; their "Informed and Infected" (normalized by population)
+and "Dynamic degree" series are concatenated across samples, run-by-run, into
+one continuous per-run time series (`inf_inf_runs`, `k_q_runs`), and their
+mean/std across runs are computed.
+
+`plot_mfa_estimated_degree()` builds YJMOB_k_est.pdf: it plots the true
+piecewise mean degree and the MFA-estimated mean degree (with +/-1 std band)
+for each of the 5 individual intervals, laid out on one shared time axis by
+accumulating each interval's duration (pre-quarantine intervals in orange,
+post-quarantine in red), then overlays the yjmob5_runs.txt full-period fit
+(pre in green, post in purple) for comparison against the interval-by-interval
+approach.
+
+Adherence estimation: `k_0` is the average of the last pre-quarantine mean
+degree from the first two interval samples. For each run, a cumulative
+optimization (`mse_slice`, L-BFGS-B) fits scale factor S and adherence
+jointly against `k_q_est = k_0 * (1 - S * adherence * i_prime)` using only
+the data available up to time t, for every t from 1 to 45 days
+post-quarantine — this produces a time-resolved adherence estimate per run,
+averaged across runs into `adh_mean`/`adh_std`. `plot_mfa_estimated_degree()`
+runs first and is followed by the cumulative-adherence plot
+(YJMOB_adherence.pdf), which shows the estimated adherence curve with a
++/-1 std band against a horizontal line for the true adhering proportion
+(pulled from the dataset's "Adhering proportion" field).
+
+Saves result_figures/cumulative_adherence_results.pkl with k_0, split_point,
+adhering_proportion, population, num_simulations, and time_after_q; the full
+time-series fields (i_prime_mean, k_q_true_mean/runs, cumulative_adh_*,
+t_vals) are present in the code as commented-out dict entries and are not
+currently written to the pickle.
+
+
+analyze_quarantine_dynamics.py:
+Runs the same style of two-stage adherence/scale-factor fit as
+analyze_yjmob_quarantine.py, but on synthetic data across three true
+adherence levels (experiment_data/a_0.2, a_0.4, a_0.6) instead of the YJMob
+dataset, and adds a degeneracy-aware two-stage estimator plus a
+runs-truncation step to keep only the well-behaved part of each trajectory.
+
+Every sample is first truncated to its first 70 timesteps ("for faster
+testing", per an in-file comment). For each adherence level, `k_0`/`k_q` come
+from the pre-/post-quarantine samples' true mean degree, and
+"Informed and Infected"/"Dynamic degree" series across all post-quarantine
+(odd-indexed) samples become per-run i_prime/k_q series, same as in
+analyze_yjmob_quarantine.py.
+
+`two_stage_estimate(i_prime_series, k_q_series, k_0)` addresses the fact
+that jointly fitting scale factor f and adherence a is not identifiable
+(only their product f*a enters the k_q model): stage 1 fits adherence alone
+on days where informed-and-infected is low (a fixed f=2.0 plugged in as a
+proxy for "low infection overall"); stage 2 then fits f alone, with
+adherence fixed at its stage-1 value, on the remaining days. This is used
+for the per-level "true vs. estimated <k_q>" comparison figures
+(kq_true_vs_estimated_a{level}.pdf) and the cumulative-adherence-over-time
+comparison (adherence_comparison.pdf).
+
+`estimate_a_then_f(i_prime_run, k_q_run, k_0, anchor_idx=1)` is a different,
+non-iterative estimator used only for the summary bar chart: near the very
+start of quarantining, f is known exactly (=2, an initial-condition
+property), so anchoring there lets p = f*a be solved as a single variable
+and divided by the known f to recover adherence directly, without needing
+the low-infection-day heuristic. `truncate_at_new_infection_cutoff` keeps
+only the window from quarantine start through the first day the newly-
+infected ratio drops below 0.01 (after which the k_q signal is dominated by
+noise); `compute_adherence_bar_estimate` drops any run whose surviving
+window is shorter than 5 timesteps, and truncates survivors to exactly 5 so
+they can be averaged consistently. `plot_adherence_bar_combined` renders
+these per-level mean estimates as a grouped bar chart (target vs. observed
+adherence) into f_degeneration_combined.pdf.
+
+Outputs per adherence level: result_figures/kq_true_vs_estimated_a{level}.pdf
+and result_figures/analyze_quarantine_dynamics_data_a{level}.pkl. Combined
+outputs: result_figures/f_degeneration_combined.pdf and
+result_figures/adherence_comparison.pdf.
+
+
+noisy_k_est.py:
+Compares MFA-estimated mean degree against ground truth under three levels
+each of Gaussian and Poisson measurement noise, using a fixed 6-run-per-noise
+-type data generation protocol documented at the top of the file (each run
+appends a pre-/post-quarantine sample pair to experiment_data/mfa_xy_data.txt,
+with `clear=True` only on the very first run so all runs share the same
+underlying network).
+
+Loads all 12 samples from experiment_data/mfa_xy_data.txt via extract_mfa;
+samples 0-5 are the 3 Gaussian noise levels (sigma, sigma/2, sigma/3, as
+pre/post-quarantine pairs), samples 6-11 the 3 Poisson levels (scale 1/9,
+1/4, 1). `plot_k_est(noise_groups, title, out_path)` plots the shared true
+<k> curve once (all noise levels share the same underlying network) plus
+each noise level's estimated <k> (with +/-1 std band) in a distinct color,
+split at the quarantine boundary. Produces
+result_figures/noisy_k_est.pdf (Gaussian) and
+result_figures/noisy_k_est_poisson.pdf (Poisson).
 
 
 plot_optimizer.py:
-Visualizes the estimates of mean node degrees obtained from optimization routines in MFA simulations, comparing them with ground truth values. It produces publication-quality figures and saves processed data for downstream analysis.
-
-Purpose:
-Evaluate how well the optimizer recovers mean node degrees from simulation data.
-
-Compare estimates for pre-quarantine (⟨k₀⟩) and post-quarantine (⟨k_q⟩) periods.
-
-Provide both visual outputs and serialized results for reproducibility.
-
-Data Input:
-MFA simulation outputs, parsed using extract_mfa.
-
-Focuses on the w1 all runs dataset containing optimizer results and w1 True (Mean Node Degree) for ground truth.
-
-Primary Functionality:
-Select Samples:
-Can plot pre-quarantine, post-quarantine, or all samples.
-
-Handles multiple runs per sample, ensuring consistent time series lengths.
-
-Compute Statistics:
-Calculates mean and standard deviation of optimizer estimates across runs.
-
-Aligns time series to facilitate comparison with ground truth.
-
-Visualization:
-Plots mean estimates over time with shaded error bands indicating variability.
-
-Ground truth values are plotted as horizontal dashed lines.
-
-Supports labeling by simulation parameter (e.g., varying infection rate β).
-
-Generates publication-ready PDF figures.
-
-Data Serialization:
-Saves detailed results for each sample, including mean, standard deviation, and ground truth, in a .pkl file.
-
-Enables later use without reprocessing raw simulation data.
-
-Plotting Features:
-Consistent figure styling (fonts, line widths, colors).
-
-Gridlines, legends, and labels for clarity.
-
-Distinguishes pre- and post-quarantine estimates visually.
-
-Intended Use Cases:
-Assess optimizer performance in recovering network structure from MFA simulations.
-
-Compare estimates under different simulation parameters (e.g., varying infection rates).
-
-Produce reproducible figures for reports, publications, or presentations.
-
-Dependencies:
-matplotlib for plotting.
-
-numpy for numerical operations.
-
-pickle for saving structured results.
-
-extract_mfa for parsing MFA simulation outputs.
-
-Output Files:
-PDF figure showing optimizer estimates with variability bands.
-
-Serialized results file (.pkl) containing full statistics and raw run data.
-
-
-
+`plot_optimizer_results(samples, even_or_odd)` visualizes the raw
+optimizer-run estimates (`w1 all runs`) from mean_field_approx.py, rather
+than a pre-computed mean: for each sample matching the `even_or_odd` filter
+(0 = pre-quarantine/even-indexed samples only, 1 = post-quarantine/odd-indexed
+only, 2 = all), it pads all runs in that sample to a common length, plots the
+mean +/-1 std across runs, and — only for the third sample (i == 2) — overlays
+the true mean degree as a horizontal reference line, labeling each sample's
+curve by an inferred beta value (`0.15 - 0.015 * i`, i.e. assuming the
+samples correspond to a beta sweep). Saves
+result_figures/optimizer_results.pdf and
+result_figures/plot_optimizer_data.pkl. Run directly (`__main__`), it loads
+experiment_data/mfa_xy_data.txt and calls `plot_optimizer_results(samples,
+even_or_odd=2)`.
 
 
 plot_split_optimization.py:
-Visualizes the estimated mean node degree (⟨k⟩) from MFA simulations, comparing the optimizer’s estimates with the ground truth for pre- and post-quarantine periods. It also saves the processed data for further analysis.
-
-Purpose:
-Show how the mean field approximation (MFA) estimates the average node degree over time.
-
-Highlight the effect of quarantine on network connectivity.
-
-Include variability across multiple optimizer runs using standard deviation bands.
-
-Data Input:
-MFA simulation outputs parsed using extract_mfa.parse_sample_data.
-
-Requires w1 Estimated, w1 True (Mean Node Degree), and w1 all runs datasets for pre- and post-quarantine samples.
-
-Primary Steps:
-Align Ground Truth to Estimated Values:
-
-Only consider true values corresponding to time points where estimates exist.
-
-Compute Mean and Standard Deviation:
-
-For all optimizer runs (w1 all runs), calculate mean and standard deviation to visualize uncertainty.
-
-Plotting:
-Pre- and post-quarantine estimates are plotted in distinct colors with dashed lines.
-
-Ground truth values are plotted as solid black lines.
-
-Standard deviation bands are shaded for visual clarity.
-
-Quarantine onset is indicated with a vertical dashed line.
-
-Data Serialization:
-Saves processed data, including aligned true values, estimates, mean/std bands, and all run data, in a .pkl file.
-
-Enables reproducibility and further analysis without reprocessing raw MFA outputs.
-
-Plot Features:
-Publication-quality figure with large fonts, gridlines, and labeled axes.
-
-Clearly distinguishes pre-quarantine vs post-quarantine dynamics.
-
-Highlights variability across optimizer runs.
-
-Dependencies:
-matplotlib for plotting.
-
-numpy for numerical operations.
-
-pickle for data serialization.
-
-extract_mfa for parsing MFA simulation outputs.
-
-Output Files:
-result_figures/mfa_degree_estimates.pdf — Figure showing estimated vs true mean node degree.
-
-result_figures/mfa_degree_estimates_data.pkl — Pickled dictionary containing all processed data and statistics.
-
-
-
+Compares MFA-estimated vs. true mean degree for one pre-quarantine sample and
+one post-quarantine sample (samples[0] and samples[1] of
+experiment_data/mfa_xy_data.txt), aligning the true series to the estimated
+series' timestamps via `np.isin`. Plots both true curves (solid black) and
+both estimated curves (dashed, distinct colors) with +/-1 std bands from
+`w1 all runs`, with a vertical line marking the quarantine boundary. Saves
+result_figures/mfa_degree_estimates.pdf and
+result_figures/mfa_degree_estimates_data.pkl (the raw per-run data is present
+in the code as commented-out dict entries and not currently written).
 
 
 sensitivity_analysis.py:
-Generates plots from sensitivity analysis experiments conducted using the MFA (Mean Field Approximation) framework. It visualizes how estimates of the initial mean node degree (⟨k₀⟩) respond to changes in key simulation parameters.
+`plot_sensitivity_results(file_path, parameter_name, value_range)` plots, for
+each sample in a sensitivity-sweep data file, the mean +/-1 std of the
+`w1 all runs` estimator trajectories against a horizontal true-<k_0> reference
+line, one curve per sample labeled by its corresponding value in
+`value_range`. Called three times against the sweep files produced by
+mfa_drive_compute.py's `sensitivity_analysis()`:
+experiment_data/sensitivity_num_seeds.txt (seed counts [5, 10, 15]),
+sensitivity_init.txt (initial-infected proportions [0.025, 0.05, 0.10]), and
+sensitivity_density.txt (network densities [0.03, 0.04, 0.05]). Saves
+result_figures/sensitivity_{parameter_name}.pdf per sweep.
 
-Purpose:
-Explore the effect of varying parameters on the optimizer’s estimates of the mean node degree.
 
-Compare estimated ⟨k₀⟩ with the true network mean degree.
+plot_identifiability.py:
+Visualizes the identifiability analysis mean_field_approx.py runs alongside
+its main MFA fit (see mean_field_approx.py's identifiability mode above).
+Two independent plotting functions, both parameterized by `even_or_odd`
+(0 = pre-quarantine/even samples, 1 = post-quarantine/odd samples, 2 = all,
+with a vertical line marking the boundary between the two halves when
+applicable):
 
-Include standard deviation bands across multiple optimizer runs for uncertainty quantification.
+`plot_model(samples, even_or_odd=2)` compares the true newly-infected ratio
+("Given Newly Infected Ratio") against the estimator's predicted newly
+-infected ratio (mean +/-1 std of "y_pred all runs", padded to a common
+length across runs). Saves result_figures/identifiability_results.pdf and
+result_figures/plot_identifiability_data.pkl.
 
-Parameters Analyzed:
-Number of Seeds — initial informed individuals in the simulation.
+`plot_identifiability_results(samples, even_or_odd=2)` compares true vs.
+predicted n_i (newly infected ratio, from "Given Newly Infected Ratio" vs.
+"n_i Predicted (Identifiability)") and true vs. predicted n_r (newly
+recovered ratio — true value is "Newly Recovered" raw counts divided by
+node count, since that dataset stores counts rather than a ratio; predicted
+value is "n_r Predicted (Identifiability)" directly). Node count is pulled
+from the first sample's "Number of nodes" field, falling back to 200 if
+missing. Saves result_figures/identifiability_n_i_n_r.pdf and
+result_figures/plot_identifiability_n_i_n_r_data.pkl.
 
-Init - proportion of initially infected individuals
-
-Social Network Density — fraction of possible edges present in the network.
-
-Data Input:
-MFA output files parsed using extract_mfa.parse_sample_data.
-
-Requires w1 all runs and w1 True (Mean Node Degree) datasets.
-
-Processing Steps:
-Normalize Run Lengths:
-All optimizer runs are padded to the maximum run length to allow proper averaging.
-
-Compute Mean and Standard Deviation:
-For each parameter value, calculate mean and std across runs.
-
-Plotting:
-Plot mean estimate over time with shaded std bands.
-
-Horizontal line for the true mean node degree.
-
-Label each curve with the corresponding parameter value.
-
-Save Plot:
-Exported as a publication-ready PDF with consistent figure size for Overleaf.
-
-Plot Features:
-Time series of estimated ⟨k₀⟩ for multiple parameter values.
-
-Shaded bands representing variability across optimizer runs.
-
-True reference line for direct comparison.
-
-Gridlines, legends, and axis labels optimized for clarity.
-
-Dependencies:
-matplotlib for plotting.
-
-numpy for numerical operations.
-
-extract_mfa for parsing MFA simulation outputs.
-
-Output Files:
-result_figures/sensitivity_<parameter>.pdf — PDF plots for each parameter analyzed, e.g.:
-
-sensitivity_Number of Seeds.pdf
-
-sensitivity_Init.pdf
-
-sensitivity_Social Network Density.pdf
-
-Usage Example:
-
-The script automatically generates plots for:
-
-Number of seeds: [5, 10, 15]
-
-Initial infected proportions: [0.05, 0.10, 0.15]
-
-Network densities computed from edge counts [1000, 1500, 2000]
-
-Each curve represents the mean estimate of ⟨k₀⟩ for a given parameter value, with standard deviation bands showing uncertainty.
+Run directly (`__main__`), it loads experiment_data/mfa_xy_data.txt and
+calls `plot_identifiability_results(samples, even_or_odd=2)` only —
+`plot_model` is defined but not invoked from `__main__`.

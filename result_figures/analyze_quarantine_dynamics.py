@@ -169,12 +169,9 @@ def plot_adherence_bar_combined(results, colors=RUN_COLORS, f_anchor=FIXED_F_LOW
             continue
         a_est_mean, _, _ = estimate
 
-        # FIXME: remove this shift
-        shift = -0.1 if np.isclose(res['adhering_proportion'], 0.4) or np.isclose(res['adhering_proportion'], 0.6) else 0.0
-
         true_a_lst.append(res['adhering_proportion'])
         target_lst.append(res['adhering_proportion'])
-        observed_lst.append(a_est_mean + shift)
+        observed_lst.append(a_est_mean)
         bar_colors.append(color)
 
     x = np.arange(len(true_a_lst))
@@ -392,10 +389,7 @@ fig, ax = plt.subplots(figsize=FIGURE_SIZE_LINE)
 
 for res, color in zip(results, RUN_COLORS):
     label = res["adhering_proportion"]
-
-    # FIXME: remove this shift
-    shift = -0.1 if np.isclose(label, 0.4) or np.isclose(label, 0.6) else 0.0
-    adh_mean_plot = res["adh_mean"] + shift
+    adh_mean_plot = res["adh_mean"]
 
     ax.plot(
         res["t_vals"], adh_mean_plot, color=color, linestyle='--',
