@@ -119,9 +119,9 @@ poisson_samples = samples[6:12]
 
 # samples[0,1]: scale=1/9, samples[2,3]: scale=1/4, samples[4,5]: scale=1
 poisson_groups = [
-    (r"data = $\mu \pm (1/3)\mathcal{N}(0,\sigma^2)$", poisson_samples[0], poisson_samples[1], "#1f77b4"),
-    (r"data = $\mu \pm (1/2)\mathcal{N}(0,\sigma^2)$", poisson_samples[2], poisson_samples[3], "#ff7f0e"),
-    (r"data = $\mu \pm \mathcal{N}(0,\sigma^2)$", poisson_samples[4], poisson_samples[5], "#d62728"),
+    (r"data = $\mu \pm \mathrm{Pois}(\lambda=\sigma^2)$", poisson_samples[0], poisson_samples[1], "#1f77b4"),
+    (r"data = $\mu \pm (1/2) \mathrm{Pois}(\lambda=\sigma^2)$", poisson_samples[2], poisson_samples[3], "#ff7f0e"),
+    (r"data = $\mu \pm (1/3) \mathrm{Pois}(\lambda=\sigma^2)$", poisson_samples[4], poisson_samples[5], "#d62728"),
 ]
 
 plot_k_est(poisson_groups, "⟨k⟩ Estimation Under Poisson Measurement Noise",
