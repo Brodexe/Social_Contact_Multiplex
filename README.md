@@ -1,6 +1,6 @@
 Social Network Influence & Epidemic Simulation:
 
-This project provides a framework for simulating, analyzing, and visualizing social network dynamics, information spread, and epidemic processes under varying conditions of quarantine, adherence, and network structure. It integrates graph generation, influence maximization, SIR/SIRS-based epidemic modeling, Mean Field Approximation (MFA) analyses, and — in its newer "capstone" work — adaptive and MILP-based quarantine-seed-selection strategies compared on both synthetic and real-world contact-network datasets.
+This project provides a framework for simulating, analyzing, and visualizing social network dynamics, information spread, and epidemic processes under varying conditions of quarantine, adherence, and network structure. It integrates graph generation, influence maximization, SIR/SIRS-based epidemic modeling, Mean Field Approximation (MFA) analyses, and in its newer Capstone work, adaptive and MILP-based quarantine-seed-selection strategies compared on both synthetic and real-world contact-network datasets.
 
 Project Structure:
 
