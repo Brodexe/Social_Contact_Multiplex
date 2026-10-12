@@ -196,7 +196,7 @@ for bin_idx in bins_to_run:
             "counts": hill_nc, "frac": hill_nf, "dynamics_list": hill_dyn,
         },
         {
-            "label": "Degree-Based", "color": "C1",
+            "label": "DegrBased", "color": "C1",
             "cost_curves": deg_cc, "edge_curves": deg_ec,
             "counts": deg_nc, "frac": deg_nf, "dynamics_list": deg_dyn,
         },
@@ -246,3 +246,4 @@ for bin_idx in bins_to_run:
         plt.close(fig)
 
 print("[done] All bins processed.")
+ee-

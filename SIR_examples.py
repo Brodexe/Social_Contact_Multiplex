@@ -793,6 +793,72 @@ def plot_information_dynamics(plot_data=False):
 
     return x, informed_mean, informed_std
 
+def plot_informed_infected_overlap(plot_data=False, num_trials=25, begin_q=30):
+    informed_runs = []
+    infected_runs = []
+    overlap_runs = []
+
+    for _ in range(num_trials):
+        result = SIR.Simulate_SIR(
+            contact_network=deepcopy(contact_network),
+            social_network=deepcopy(social_network),
+            T=T, beta=beta, gamma=gamma, mu=mu, init=init,
+            q="r", adherence=1.0, begin_q=begin_q,
+            seeds=NUM_SEEDS
+        )
+        informed = result[8]
+        informed_infected = result[7]
+        infected = result[2][1]
+
+        informed_runs.append([len(informed[t]) for t in range(T)])
+        overlap_runs.append([len(informed_infected[t]) for t in range(T)])
+        # Skip the pre-simulation count so infected aligns with the per-step informed/overlap series
+        infected_runs.append(infected[1:T + 1])
+
+    x = np.arange(T)
+
+    informed_array = np.array(informed_runs)
+    infected_array = np.array(infected_runs)
+    overlap_array = np.array(overlap_runs)
+
+    informed_mean = np.mean(informed_array, axis=0)
+    informed_std = np.std(informed_array, axis=0)
+
+    infected_mean = np.mean(infected_array, axis=0)
+    infected_std = np.std(infected_array, axis=0)
+
+    overlap_mean = np.mean(overlap_array, axis=0)
+    overlap_std = np.std(overlap_array, axis=0)
+
+    if plot_data:
+        fig, ax = plt.subplots(figsize=FIGURE_SIZE_LINE)
+
+        ax.plot(x, informed_mean, label='Informed', color='blue')
+        ax.fill_between(x, informed_mean - informed_std, informed_mean + informed_std,
+                        color='blue', alpha=0.3)
+
+        ax.plot(x, infected_mean, label='Infected', color='red')
+        ax.fill_between(x, infected_mean - infected_std, infected_mean + infected_std,
+                        color='red', alpha=0.3)
+
+        ax.plot(x, overlap_mean, label='Informed and Infected', color='green')
+        ax.fill_between(x, overlap_mean - overlap_std, overlap_mean + overlap_std,
+                        color='green', alpha=0.3)
+
+        ax.axvline(begin_q, color='gray', linestyle='dotted', label='Quarantine Start')
+
+        ax.set_xlabel('Time (days)')
+        ax.set_ylabel('# of Individuals')
+        ax.set_title('Information and Infection Dynamics')
+        ax.legend()
+        ax.grid(True, alpha=0.3)
+
+        plt.tight_layout()
+        plt.savefig('result_figures/informed_infected_overlap.pdf', bbox_inches='tight')
+        plt.close(fig)
+
+    return (x, informed_mean, informed_std), (x, infected_mean, infected_std), (x, overlap_mean, overlap_std)
+
 def run_simulations():
     data0 = informed_vs_noninformed()
     data1 = const_quarantines()
@@ -841,4 +907,5 @@ if __name__ == "__main__":
     # rc()
     # plot_newly_infected()
     # compare_FJ_IC(plot_data=True)
-    plot_all_quarantine(num_trials=5)
+    # plot_all_quarantine(num_trials=5)
+    plot_informed_infected_overlap(plot_data=True, num_trials=10, begin_q=30)

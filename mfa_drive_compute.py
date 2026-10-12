@@ -132,6 +132,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # adherence_mode()
-    yjmob_mode(size=250)
+    yjmob_mode(size=1000)
     # sensitivity_analysis()
     # simple_repeat()

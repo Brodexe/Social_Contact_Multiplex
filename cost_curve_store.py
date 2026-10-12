@@ -49,6 +49,7 @@ STORE_PATH = "cost_curves_data.pkl"
 # Canonical label -> color, and the fixed legend/plot order.
 METHOD_STYLE = {
     "Degree-Based": "C1",
+    "Core over Btw": "C5",
     "Random Seeds": "C3",
     "Adaptive":     "C0",
     "MILP":         "C2",

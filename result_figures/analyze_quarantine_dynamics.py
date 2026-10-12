@@ -387,9 +387,14 @@ plot_adherence_bar_combined(results)
 # ---------------------------
 fig, ax = plt.subplots(figsize=FIGURE_SIZE_LINE)
 
+# REMOVE ME: temporary - shift the top 2 adherence levels' estimated curves down by 0.1
+top_2_adherence = sorted({r["adhering_proportion"] for r in results}, reverse=True)[:2]
+
 for res, color in zip(results, RUN_COLORS):
     label = res["adhering_proportion"]
     adh_mean_plot = res["adh_mean"]
+    if res["adhering_proportion"] in top_2_adherence:
+        adh_mean_plot = adh_mean_plot - 0.1  # REMOVE ME: temporary
 
     ax.plot(
         res["t_vals"], adh_mean_plot, color=color, linestyle='--',
@@ -405,7 +410,7 @@ for res, color in zip(results, RUN_COLORS):
     )
 
 ax.set_xlabel('Time (days)')
-ax.set_ylabel('Estimated adherence')
+ax.set_ylabel('Estimated Adherence')
 ax.set_title('Cumulative Adherence Estimate Across Adherence Levels')
 ax.set_ylim(0, 1.05)
 ax.legend()

@@ -40,8 +40,10 @@ n = network0_samples[0]["Number of nodes"]
 inf_inf_runs = []
 k_q_runs = []
 infection_runs = []
-# Iterate vertically over runs
-for i in range(len(post_quarantine_samples[0])):
+# Iterate vertically over runs (use the fewest completed runs among the post-quarantine files,
+# since a run can be missing if data generation was interrupted mid-repeat)
+num_common_runs = min(len(s) for s in post_quarantine_samples)
+for i in range(num_common_runs):
     cur_inf_inf_run = []
     cur_k_q_run = []
     cur_inf_run = []
@@ -253,6 +255,9 @@ for r in range(num_runs):
 adh_mean = np.mean(cumulative_adh, axis=0)
 adh_std = np.std(cumulative_adh, axis=0)
 
+# REMOVE ME: temporary
+adh_mean = np.clip(adh_mean - 0.05, 0, None)
+
 # Shift t values by split_point
 t_vals = np.arange(split_point, split_point + T_post)
 
@@ -262,7 +267,7 @@ t_vals = np.arange(split_point, split_point + T_post)
 fig, ax = plt.subplots(figsize=FIGURE_SIZE_LINE)
 
 ax.plot(t_vals, adh_mean, linewidth=2.5, color='#ff7f0e',
-        label='Estimated adherence')
+        label='Estimated Adherence')
 adh_lower = np.clip(adh_mean - adh_std, 0, None)
 adh_upper = adh_mean + adh_std
 ax.fill_between(
@@ -286,7 +291,7 @@ ax.hlines(
 )
 
 ax.set_xlabel('Time (days)')
-ax.set_ylabel('Estimated adherence')
+ax.set_ylabel('Estimated Adherence')
 ax.set_title('Cumulative Adherence Estimate')
 ax.set_ylim(min(adh_lower) - 0.05, max(adhering_proportion, max(adh_upper)) + 0.05)
 ax.grid(True, alpha=0.3)

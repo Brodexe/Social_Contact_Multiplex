@@ -41,7 +41,7 @@ beta_R = 0.25   # Upper bound for heterogeneous beta
 Gamma  = 2      # Shape parameter: higher values skew beta toward beta_R
 
 adherence = 1.0
-num_simulations = 10
+num_simulations = 25
 
 batch_interval = 2  # Seeds and cost updated once every batch_interval steps
 information_spread = True
@@ -654,6 +654,151 @@ def degree_based_selection():
             all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_full_dynamics, tagged,
             all_alpha_w_curves, all_beta_w_curves)
 
+# Coreness-over-betweenness selection: at each batch, score nodes in the CURRENT contact network
+# by normalized coreness / normalized betweenness, and take the top K.
+# Allows re-selection
+COB_EPS = 1e-9
+def core_over_btw():
+    all_cost_curves = []
+    all_infection_term_curves = []
+    all_edge_term_curves = []
+    all_alpha_w_curves = []
+    all_beta_w_curves = []
+    winner_sets = []
+    all_edge_curves = []
+    all_newly_infected_counts = []
+    all_newly_infected_frac = []
+    all_full_dynamics = []
+
+    # t_batch=0: no information spread at all (seeds are quarantined if infected, but info
+    #   never reaches non-seed nodes) -- one T=1 call every tick.
+    # t_batch=batch_interval: one call per batch, run only at batch boundaries, letting info
+    #   spread across the whole batch_interval window before the next seed refinement.
+    t_batch = 0
+    if information_spread:
+        t_batch = batch_interval
+
+    for i in range(num_simulations):
+        print("Core-over-Betweenness Simulation:", i)
+
+        # Fresh networks for each simulation
+        contact_network = deepcopy(initial_contact)
+        social_network = deepcopy(initial_social)
+
+        cost_lst = []
+        infection_term_lst = []
+        edge_term_lst = []
+        alpha_w_lst = []
+        beta_w_lst = []
+        full_dynamics = None
+        prev_state_dict = make_initial_state(contact_network)
+        static_beta = global_betas[i]
+        full_live_edges = None
+        edge_counts = []
+        seed_set = None
+        newly_infected_per_sim = []
+        newly_infected_frac_per_sim = []
+
+        for t_cur in range(T):
+            # At batch boundary: select new seeds from the most recently known graph
+            if t_cur % batch_interval == 0:
+                current_graph = nx.Graph()
+                current_graph.add_nodes_from(contact_network.nodes())
+                if full_live_edges:
+                    live_edge_set = set(tuple(sorted(e)) for e in full_live_edges[-1])
+                    for u, v, data in initial_contact.edges(data=True):
+                        if tuple(sorted((u, v))) in live_edge_set:
+                            current_graph.add_edge(u, v, **data)
+                else:
+                    current_graph.add_edges_from(initial_contact.edges(data=True))
+                # core_number does not accept self-loops
+                current_graph.remove_edges_from(list(nx.selfloop_edges(current_graph)))
+
+                # score(u) = c'(u) / b'(u), with c' and b' normalized by their network-wide max.
+                # COB_EPS keeps zero-betweenness nodes finite; they still rank first, ordered by c'.
+                core_dict = nx.core_number(current_graph)
+                btw_dict = nx.betweenness_centrality(current_graph)
+                max_core = max(core_dict.values()) or 1
+                max_btw = max(btw_dict.values()) or 1
+                score = {
+                    node: (core_dict[node] / max_core) / (btw_dict[node] / max_btw + COB_EPS)
+                    for node in current_graph.nodes()
+                }
+                seed_set = sorted(score, key=lambda node: score[node], reverse=True)[:K]
+
+            # Introduce random new infections
+            if t_cur % introduced_infections[1] == 0 and t_cur > 0:
+                new_infections = infection_candidates[i][injection_times.index(t_cur)]
+                for node in new_infections:
+                    if prev_state_dict[node] == 2:  # Only infect if node is currently susceptible
+                        prev_state_dict[node] = 1
+
+            # With information diffusion enabled, only re-simulate at batch boundaries -- one
+            # call covers the whole batch_interval window. Without it, advance one real step
+            # every tick.
+            call_now = (t_cur % batch_interval == 0) if information_spread else True
+            if call_now:
+                simulation_results = SIR.Simulate_SIR(
+                    contact_network=contact_network,
+                    social_network=social_network,
+                    T=t_batch,
+                    beta=static_beta,
+                    gamma=gamma,
+                    mu=mu,
+                    init=init,
+                    q=q,
+                    adherence=adherence,
+                    begin_q=0,
+                    seeds=seed_set,
+                    initial_state_dict=prev_state_dict
+                )
+
+                contact_network = deepcopy(initial_contact)
+
+                sirs_dynamics = simulation_results[4]
+                prev_state_dict = sirs_dynamics[-1]
+                full_dynamics = sirs_dynamics if full_dynamics is None else full_dynamics + sirs_dynamics
+
+                graph_vec = simulation_results[10]
+                live_edges = [list(network) for network in graph_vec]
+                full_live_edges = live_edges if full_live_edges is None else full_live_edges + live_edges
+
+            current_new_i = given_at_time(t_cur, full_dynamics, contact_network)
+            newly_infected_per_sim.append(current_new_i)
+            newly_infected_frac_per_sim.append(current_new_i / n)
+            edge_counts.append(len(full_live_edges[t_cur]))
+
+            # At batch boundary: compute cost
+            if (t_cur + 1) % batch_interval == 0 or t_cur == T - 1:
+                cost, cost_elements = global_cost_function(
+                    newly_infected_per_sim,
+                    full_live_edges,
+                    len(seed_set),
+                    t_cur
+                )
+                print(f"Core-over-Betweenness, {t_cur}, {cost}")
+                cost_lst.append(cost)
+                infection_term_lst.append(cost_elements[0])
+                edge_term_lst.append(cost_elements[1])
+                alpha_w_lst.append(cost_elements[3])
+                beta_w_lst.append(cost_elements[4])
+
+        winner_sets.append(seed_set)
+        all_cost_curves.append(cost_lst)
+        all_infection_term_curves.append(infection_term_lst)
+        all_edge_term_curves.append(edge_term_lst)
+        all_alpha_w_curves.append(alpha_w_lst)
+        all_beta_w_curves.append(beta_w_lst)
+        all_edge_curves.append(edge_counts)
+        all_newly_infected_counts.append(newly_infected_per_sim)
+        all_newly_infected_frac.append(newly_infected_frac_per_sim)
+        all_full_dynamics.append(full_dynamics)
+
+    tagged = build_tagged_network(global_betas[0])
+    return (winner_sets[0], all_cost_curves, all_infection_term_curves, all_edge_term_curves,
+            all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_full_dynamics, tagged,
+            all_alpha_w_curves, all_beta_w_curves)
+
 def random_seed_selection():
     all_cost_curves = []
     all_infection_term_curves = []
@@ -970,6 +1115,11 @@ if __name__ == "__main__":
      degree_newly_counts, degree_newly_frac, degree_dynamics_list, tagged_contact_degree,
      degree_alpha_w_curves, degree_beta_w_curves) = degree_based_selection()
 
+    # Run coreness-over-betweenness baseline
+    (_, cob_cost_curves, cob_infection_curves, cob_edge_term_curves, cob_edge_curves,
+     cob_newly_counts, cob_newly_frac, cob_dynamics_list, tagged_contact_cob,
+     cob_alpha_w_curves, cob_beta_w_curves) = core_over_btw()
+
     # Run random seed selection baseline
     (_, rand_cost_curves, rand_infection_curves, rand_edge_term_curves, rand_edge_curves,
      rand_newly_counts, rand_newly_frac, rand_dynamics_list, tagged_contact_rand,
@@ -989,6 +1139,10 @@ if __name__ == "__main__":
     cost_curve_store.push_curve("Degree-Based", degree_cost_curves,
                                  infection_curves=degree_infection_curves, edge_curves=degree_edge_term_curves,
                                  alpha_curves=degree_alpha_w_curves, beta_curves=degree_beta_w_curves,
+                                 batch_interval=batch_interval, T=T)
+    cost_curve_store.push_curve("Core over Btw", cob_cost_curves,
+                                 infection_curves=cob_infection_curves, edge_curves=cob_edge_term_curves,
+                                 alpha_curves=cob_alpha_w_curves, beta_curves=cob_beta_w_curves,
                                  batch_interval=batch_interval, T=T)
     cost_curve_store.push_curve("Random Seeds", rand_cost_curves,
                                  infection_curves=rand_infection_curves, edge_curves=rand_edge_term_curves,
