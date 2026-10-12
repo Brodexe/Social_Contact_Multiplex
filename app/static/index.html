@@ -52,6 +52,7 @@
         <div>
           <h1>Multiplex SIRS</h1>
           <div id="network-name" class="muted">—</div>
+          <div id="network-stats" class="muted small"></div>
         </div>
         <div class="tick"><span class="muted">t =</span> <span id="t-value">0</span></div>
       </header>
@@ -109,12 +110,45 @@
         <label class="toggle"><input type="checkbox" id="show-cut" checked> Show cut contacts</label>
       </section>
 
-      <details class="scenario" id="scenario">
+      <details class="scenario" id="scenario" open>
         <summary>Scenario</summary>
         <form id="scenario-form">
-          <label>Network
-            <select name="network"></select>
+          <div class="layer-title"><b>Contact network</b> · disease</div>
+          <label>Model
+            <select name="contact_model">
+              <option value="er">Random (Erdős–Rényi)</option>
+              <option value="clustered">Clustered random</option>
+              <option value="hs_bin">High school contact data</option>
+            </select>
           </label>
+          <div class="row3" data-when="contact_model=er,clustered">
+            <label>Nodes <input name="contact_n" type="number" step="1" min="10"></label>
+            <label>Edge prob. p <input name="contact_p" type="number" step="any" min="0" max="1"></label>
+            <label data-when="contact_model=clustered">Clustering <input name="clustering" type="number" step="any" min="0" max="1"></label>
+          </div>
+          <label data-when="contact_model=hs_bin">Time bin
+            <select name="hs_bin"></select>
+          </label>
+          <div class="hint" id="contact-hint"></div>
+
+          <div class="layer-title"><b>Social network</b> · information</div>
+          <label>Model
+            <select name="social_model">
+              <option value="khop">k-hop similarity</option>
+              <option value="correlated">Correlated with contact</option>
+              <option value="hs_survey">High school friendship survey</option>
+            </select>
+          </label>
+          <div class="row3" data-when="social_model=khop,correlated">
+            <label>Nodes <input name="social_n" type="number" step="1" min="10"></label>
+            <label data-when="social_model=khop">k hops <input name="khop_k" type="number" step="1" min="1" max="6"></label>
+            <label data-when="social_model=khop">Density <input name="social_density" type="number" step="any" min="0" max="1"></label>
+            <label data-when="social_model=correlated">Correlation c <input name="correlation" type="number" step="any" min="-1" max="1"></label>
+          </div>
+          <div class="hint" id="social-hint"></div>
+          <label class="inline">Network seed <input name="net_seed" type="number" step="1"></label>
+
+          <div class="layer-title"><b>Dynamics</b></div>
           <div class="row2">
             <label>Info spread
               <select name="mechanism">
@@ -156,6 +190,7 @@
             <label>RNG seed <input name="rng_seed" type="number" step="1" placeholder="random"></label>
           </div>
           <label>IC Monte-Carlo runs <input name="mc" type="number" step="1" min="1"></label>
+          <div id="form-error" class="form-error" role="alert" hidden></div>
           <button type="submit" class="primary wide">Apply &amp; restart</button>
         </form>
       </details>

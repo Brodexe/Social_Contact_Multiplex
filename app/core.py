@@ -16,18 +16,31 @@ import networkx as nx
 import numpy as np
 from pydantic import BaseModel, Field
 
-import network_setup
+from app import networks
 from app.engine import MultiplexSIRS
 
-NETWORKS = {
-    "synthetic": "Synthetic ER (shared_network.pkl, n≈200)",
-    "high_school": "High school (contact bin 1 + survey social)",
-}
+# Fields that determine the two networks (everything else is dynamics); the built
+# networks and their layouts/metrics are cached on these.
+NETWORK_FIELDS = ("contact_model", "contact_n", "contact_p", "clustering", "hs_bin",
+                  "social_model", "social_n", "khop_k", "social_density", "correlation",
+                  "net_seed")
+MAX_NODES = 400
 
 
 # Bounds keep a public deployment from being asked for arbitrarily expensive runs.
+# Network fields are described in app/networks.py.
 class ScenarioConfig(BaseModel):
-    network: Literal["synthetic", "high_school"] = "synthetic"
+    contact_model: Literal["er", "clustered", "hs_bin"] = "er"
+    contact_n: int = Field(200, ge=10, le=MAX_NODES)
+    contact_p: float = Field(0.05, ge=0, le=1)
+    clustering: float = Field(0.5, ge=0, le=1)      # only for contact_model == "clustered"
+    hs_bin: int = Field(1, ge=1, le=19)             # only for contact_model == "hs_bin"
+    social_model: Literal["khop", "correlated", "hs_survey"] = "khop"
+    social_n: int = Field(200, ge=10, le=MAX_NODES)  # khop / correlated; must match the contact network
+    khop_k: int = Field(2, ge=1, le=6)
+    social_density: float = Field(0.1, ge=0, le=1)  # khop: share of all pairs that are ties
+    correlation: float = Field(0.5, ge=-1, le=1)    # correlated: c
+    net_seed: int = 42
     mechanism: Literal["ic", "lt", "FJ"] = "ic"
     mech_val: float = Field(0.02, ge=0, le=1000)    # IC p, LT threshold, or FJ kappa
     q_mode: Literal["r", "period", "fixed", "off"] = "r"
@@ -46,43 +59,18 @@ class ScenarioConfig(BaseModel):
 
 # ---------------------------------------------------------------- networks ---
 
-def _load_network(name):
-    """Return (contact Graph, social DiGraph, node display names, heterogeneous beta map)."""
-    if name == "synthetic":
-        shared = network_setup.load_shared_network()
-        contact = shared["contact_network"]
-        social = shared["social_network"]
-        names = [str(u) for u in contact.nodes()]
-        return contact, social, names, shared["global_betas"][0]
-
-    if name == "high_school":
-        contact = nx.read_gml("capstone_proj_data/high_school_contact_bin1.gml")
-        social = nx.read_gml("capstone_proj_data/high_school_social.gml")
-        contact.remove_nodes_from([u for u in list(contact.nodes()) if contact.degree(u) == 0])
-        # Same alignment as adaptive_seed_selection.initialize: intersect on label, then
-        # map both graphs onto 0..n-1 with one shared mapping.
-        common = [u for u in contact.nodes() if social.has_node(u)]
-        contact = contact.subgraph(common).copy()
-        social = social.subgraph(common).copy()
-        mapping = {u: i for i, u in enumerate(contact.nodes())}
-        names = [f"Student {u}" for u in contact.nodes()]
-        contact = nx.relabel_nodes(contact, mapping)
-        social = nx.relabel_nodes(social, mapping)
-        # The survey graph is undirected, but IM's diffusion walks successors(); treat
-        # each friendship as a tie in both directions.
-        if not social.is_directed():
-            social = social.to_directed()
-        betas = network_setup.laplacian_smooth_beta(
-            contact, network_setup.beta_L, network_setup.beta_R, lam=network_setup.Gamma,
-            seed=network_setup.SEED)
-        return contact, social, names, betas
-
-    raise ValueError(f"unknown network {name!r}")
+def _betweenness(G):
+    # Exact betweenness is O(nm); sample sources on dense graphs (e.g. strongly
+    # anti-correlated social layers) so building stays interactive.
+    if G.number_of_edges() > 6000:
+        return nx.betweenness_centrality(G, k=min(64, G.number_of_nodes()), seed=0)
+    return nx.betweenness_centrality(G)
 
 
 def _normalized_layout(G, seed):
     """Force-directed layout scaled into (roughly) the unit disk."""
-    pos = nx.spring_layout(G, seed=seed, iterations=300)
+    # Each iteration is O(n^2); larger graphs settle well enough in fewer
+    pos = nx.spring_layout(G, seed=seed, iterations=300 if G.number_of_nodes() <= 200 else 100)
     xy = np.array([pos[u] for u in G.nodes()])
     xy -= xy.mean(axis=0)
     r = np.linalg.norm(xy, axis=1)
@@ -94,17 +82,24 @@ def _normalized_layout(G, seed):
     return {u: [round(float(x), 4), round(float(y), 4)] for u, (x, y) in zip(G.nodes(), xy)}
 
 
-@lru_cache(maxsize=4)
-def _static_payload(name):
-    contact, social, names, betas = _load_network(name)
+def _network_key(cfg):
+    return tuple(getattr(cfg, f) for f in NETWORK_FIELDS)
+
+
+@lru_cache(maxsize=6)
+def _static_payload(key):
+    cfg = ScenarioConfig(**dict(zip(NETWORK_FIELDS, key)))
+    contact, social, names, betas = networks.build(cfg)
     nodes = sorted(contact.nodes())
     n = len(nodes)
     social_u = social.to_undirected()
 
     contact_core = nx.core_number(nx.Graph(contact))
     social_core = nx.core_number(social_u)
-    contact_btw = nx.betweenness_centrality(contact)
-    social_btw = nx.betweenness_centrality(social)
+    contact_btw = _betweenness(contact)
+    social_btw = _betweenness(social)
+    # Overlap: share of social ties (undirected) that are also contacts
+    shared = sum(1 for a, b in social_u.edges() if contact.has_edge(a, b))
 
     contact_pos = _normalized_layout(contact, seed=7)
     social_pos = _normalized_layout(social_u, seed=11)
@@ -113,7 +108,14 @@ def _static_payload(name):
     social_edges = [[int(a), int(b)] for a, b in social.edges()]
 
     payload = {
-        "network": name,
+        "label": networks.describe(cfg),
+        "summary": {
+            "contact_edges": contact.number_of_edges(),
+            "social_ties": social_u.number_of_edges(),
+            "contact_clustering": round(nx.average_clustering(contact), 3),
+            "social_clustering": round(nx.average_clustering(social_u), 3),
+            "overlap": round(shared / max(1, social_u.number_of_edges()), 3),
+        },
         "n": n,
         "names": names,
         "contact_edges": contact_edges,
@@ -146,11 +148,12 @@ class Session:
         self.beta_values = None
 
     def reset(self, cfg: ScenarioConfig):
-        static, contact, social, het_betas = _static_payload(cfg.network)
+        static, contact, social, het_betas = _static_payload(_network_key(cfg))
 
-        if cfg.rng_seed is not None:
-            random.seed(cfg.rng_seed)
-            np.random.seed(cfg.rng_seed)
+        # Network construction seeds the global RNGs from net_seed; reseed so the
+        # dynamics are either reproducible (rng_seed) or fresh, never tied to net_seed.
+        random.seed(cfg.rng_seed)
+        np.random.seed(cfg.rng_seed if cfg.rng_seed is not None else None)
 
         beta = het_betas if cfg.heterogeneous_beta else float(cfg.beta)
         q = {"r": "r", "period": True, "off": False}.get(cfg.q_mode)
@@ -216,4 +219,5 @@ class Session:
 
 
 def options():
-    return {"networks": NETWORKS, "defaults": ScenarioConfig().model_dump()}
+    return {"high_school": networks.hs_info(), "max_nodes": MAX_NODES,
+            "defaults": ScenarioConfig().model_dump()}

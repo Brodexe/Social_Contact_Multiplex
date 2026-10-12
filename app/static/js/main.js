@@ -171,6 +171,7 @@ function setSelection(ids, anchor = null) {
 async function restart(config) {
   setPlaying(false);
   $('#loading').hidden = false;
+  $('#form-error').hidden = true;
   try {
     const res = await call('POST', '/api/reset', config);
     app.config = res.config;
@@ -180,12 +181,19 @@ async function restart(config) {
     app.history = [compact(res.snapshot)];
     scene.load(app.stat);
     scene.applySnapshot(app.snap, { animate: false });
-    $('#network-name').textContent = `${NETWORK_NAMES[app.config.network] ?? app.config.network} · ${app.stat.n} people`;
+    const sm = app.stat.summary;
+    $('#network-name').textContent = `${app.stat.label} · ${app.stat.n} people`;
+    $('#network-stats').textContent = `Contact: ${sm.contact_edges} edges, clustering ${sm.contact_clustering}`
+      + ` · Social: ${sm.social_ties} ties, clustering ${sm.social_clustering}, ${Math.round(100 * sm.overlap)}% also contacts`;
     setSelection([]);
     refreshPanel();
   } catch (err) {
     console.error(err);
-    toast(`Could not start scenario: ${err.message}`, { error: true, ms: 6000 });
+    // Strip the Python exception name; the message is written for the user
+    const msg = err.message.replace(/^\w+Error: /, '');
+    $('#form-error').textContent = msg;
+    $('#form-error').hidden = false;
+    toast(`Could not start scenario: ${msg}`, { error: true, ms: 6000 });
   } finally {
     $('#loading').hidden = true;
   }
@@ -376,7 +384,7 @@ $('#show-cut').addEventListener('change', (e) => scene.setShowCut(e.target.check
 // ---------------------------------------------------------------- scenario ---
 
 const form = $('#scenario-form');
-let NETWORK_NAMES = {};
+let HS = { bins: [], survey_n: 0 };  // high-school bin sizes, from /api/options
 
 function fillForm(cfg) {
   for (const [k, v] of Object.entries(cfg)) {
@@ -389,18 +397,56 @@ function fillForm(cfg) {
 }
 
 function syncFormState() {
-  const mech = MECH[form.elements.mechanism.value];
+  const f = form.elements;
+  const mech = MECH[f.mechanism.value];
   $('#mech-label').textContent = mech.label;
-  form.elements.mech_val.step = mech.step;
-  form.elements.q_period.disabled = form.elements.q_mode.value !== 'fixed';
-  form.elements.beta.disabled = form.elements.heterogeneous_beta.checked;
+  f.mech_val.step = mech.step;
+  f.q_period.disabled = f.q_mode.value !== 'fixed';
+  f.beta.disabled = f.heterogeneous_beta.checked;
+
+  // Show only the fields the chosen contact / social models use
+  for (const el of form.querySelectorAll('[data-when]')) {
+    const [name, values] = el.dataset.when.split('=');
+    el.hidden = !values.split(',').includes(f[name].value);
+  }
+
+  // Node counts the two layers must agree on, spelled out as the user edits
+  const bin = HS.bins.find(b => b.bin === Number(f.hs_bin.value));
+  const contact = f.contact_model.value, social = f.social_model.value;
+  const contactN = contact === 'hs_bin' ? bin?.n : Number(f.contact_n.value);
+  $('#contact-hint').innerHTML = contact === 'hs_bin' && bin
+    ? `Bin ${bin.bin}: <b>${bin.n}</b> students, ${bin.edges} contacts (${bin.n_with_survey} also in the survey).`
+    : contact === 'clustered'
+      ? 'Same density as random; clustering is the share of edges that close a triangle (0 = random).'
+      : '';
+  let socialHint;
+  if (social === 'hs_survey') {
+    socialHint = contact === 'hs_bin'
+      ? `Survey of ${HS.survey_n} students, aligned with the bin on the <b>${bin?.n_with_survey}</b> students in both.`
+      : `Survey of <b>${HS.survey_n}</b> students, so the contact network needs ${HS.survey_n} nodes.`;
+  } else {
+    socialHint = `Nodes must match the contact network (<b>${contactN ?? '?'}</b>).` + (social === 'khop'
+      ? ' Ties are sampled by how much people\'s k-hop contact neighbourhoods overlap; density is the share of all pairs that are ties.'
+      : ' c = 1 copies the contact edges, c = −1 takes every pair that isn\'t a contact, c = 0 is independent.');
+  }
+  $('#social-hint').innerHTML = socialHint;
 }
 
 function readForm() {
   const f = form.elements;
   const num = (name) => Number(f[name].value);
   return {
-    network: f.network.value,
+    contact_model: f.contact_model.value,
+    contact_n: num('contact_n'),
+    contact_p: num('contact_p'),
+    clustering: num('clustering'),
+    hs_bin: num('hs_bin'),
+    social_model: f.social_model.value,
+    social_n: num('social_n'),
+    khop_k: num('khop_k'),
+    social_density: num('social_density'),
+    correlation: num('correlation'),
+    net_seed: num('net_seed'),
     mechanism: f.mechanism.value,
     mech_val: num('mech_val'),
     q_mode: f.q_mode.value,
@@ -423,6 +469,7 @@ form.elements.mechanism.addEventListener('change', () => {
   syncFormState();
 });
 form.addEventListener('change', syncFormState);
+form.addEventListener('input', syncFormState);
 form.addEventListener('submit', (e) => {
   e.preventDefault();
   restart(readForm());
@@ -441,9 +488,10 @@ form.addEventListener('submit', (e) => {
       startWorker((text) => { label.textContent = text; });
       opts = await call('GET', '/api/options');
     }
-    NETWORK_NAMES = opts.networks;
-    form.elements.network.innerHTML = Object.entries(opts.networks)
-      .map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
+    HS = opts.high_school;
+    form.elements.hs_bin.innerHTML = HS.bins
+      .map(b => `<option value="${b.bin}">Bin ${b.bin} · ${b.n} students</option>`).join('');
+    for (const name of ['contact_n', 'social_n']) form.elements[name].max = opts.max_nodes;
     fillForm(opts.defaults);
     await restart(opts.defaults);
   } catch (err) {

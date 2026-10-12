@@ -65,7 +65,7 @@ Analysis: Parse outputs using MFA tools (extract_mfa.py) and compute adherence, 
 
 Visualization: Generate publication-quality plots of infection, informed populations, optimizer estimates, sensitivity/identifiability analyses, and quarantine-strategy comparisons.
 
-Interactive app: `python -m app.server` from the repo root, then open http://127.0.0.1:8000. It shows the social and contact layers as two rotatable 3D planes while the dual process runs, with play/pause/step, click or shift-drag selection, per-node and sub-population statistics, and a scenario panel (network, IC/LT/FJ, quarantine mode, adherence, seeds, rates). The simulation is app/engine.py's MultiplexSIRS, a step-at-a-time version of SIR.Simulate_SIR built from SIR.py's own helpers; tests/test_engine_equivalence.py checks it reproduces Simulate_SIR exactly under identical RNG seeds, so update both together if the Simulate_SIR loop changes.
+Interactive app: `python -m app.server` from the repo root, then open http://127.0.0.1:8000. It shows the social and contact layers as two rotatable 3D planes while the dual process runs, with play/pause/step, click or shift-drag selection, per-node and sub-population statistics, and a scenario panel. The panel builds both layers from parameters (app/networks.py): the contact layer as Erdős–Rényi G(n, p), a clustered random graph (same density, with a clustering share of edges placed by triadic closure), or any non-empty high-school time bin; the social layer as k-hop similarity (correlated_graphs.create_social_graph with chosen k and density), an edge-level correlation c in [-1, 1] with the contact layer (c = 1 copies its edges, c = -1 takes its complement, c = 0 is independent), or the high-school friendship survey. Node counts must match across layers and the app reports an error otherwise; the one exception is a high-school bin paired with the survey, which are aligned on the students present in both. The panel also sets the dynamics (IC/LT/FJ, quarantine mode, adherence, seeds, rates). The simulation is app/engine.py's MultiplexSIRS, a step-at-a-time version of SIR.Simulate_SIR built from SIR.py's own helpers; tests/test_engine_equivalence.py checks it reproduces Simulate_SIR exactly under identical RNG seeds, so update both together if the Simulate_SIR loop changes.
 
 Hosted app: https://tarlok04-multiplex-sirs.static.hf.space (Hugging Face Space: https://huggingface.co/spaces/tarlok04/multiplex-sirs). It is a static build in which the same simulation code runs in the visitor's browser under Pyodide (app/static/js/pyodide-worker.js loads app/browser_api.py, which wraps app/core.py exactly as app/server.py does over HTTP), so no server is needed. The front end uses app/server.py when /api/ is reachable and falls back to Pyodide otherwise. To republish after changes: `hf auth login` once, then `python deploy/push_to_hf.py` from the repo root (it runs deploy/build_static.py, which writes deploy/site/; preview that locally with `python -m http.server -d deploy/site 8001`).
 
@@ -108,10 +108,11 @@ the Jaccard similarity of their k-hop ego-network node sets
 probability equal to that similarity. Returns `(correlated_graph, (x_vals,
 y_vals))` for plotting similarity vs. edge-presence.
 
-`create_social_graph(H, nE=None)` is the function actually used elsewhere in
+`create_social_graph(H, nE=None, K=2)` is the function actually used elsewhere in
 the repo (yjmob_network_creation.py, mfa_drive_compute.py,
-adaptive_seed_selection.py, milp.py) as the default social-graph generator
-from a contact graph: it builds radius-2 ego networks for every node,
+adaptive_seed_selection.py, milp.py, and the interactive app's k-hop social
+model) as the default social-graph generator
+from a contact graph: it builds radius-K ego networks for every node,
 computes pairwise Jaccard similarity, ranks pairs by similarity, and samples
 `nE` edges (default `2 * H.number_of_edges()`) with probability proportional
 to `1/rank`, randomly assigning a direction to each sampled pair. Returns

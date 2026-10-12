@@ -90,14 +90,14 @@ def jaccard_similarity(set1, set2):
     union = len(set1 | set2)
     return intersection / union if union > 0 else 0
 
-def create_social_graph(H, nE=None):
+def create_social_graph(H, nE=None, K=2):
     if nE == None:
         nE = H.number_of_edges() * 2  # Default to twice the number of edges in H
 
-    # Ego networks and Jaccard similarity
-    K = 2
+    # Ego networks (radius K hops) and Jaccard similarity
     N = sorted(H.nodes())
-    Ego = {u: list(nx.ego_graph(H, u, radius=K).nodes()) for u in N}
+    # Same node sets as nx.ego_graph(H, u, radius=K).nodes(), without copying each subgraph
+    Ego = {u: list(nx.single_source_shortest_path_length(H, u, cutoff=K)) for u in N}
 
     # Compute Jaccard similarity for each pair
     sim = {(N[i], N[j]): jaccard_similarity(Ego[N[i]], Ego[N[j]])
@@ -110,7 +110,8 @@ def create_social_graph(H, nE=None):
     # Build edge list and sampling probabilities
     A = list(ranks.keys())
     prob = [1 / ranks[pair] for pair in A]
-    prob = [p / sum(prob) for p in prob]
+    total = sum(prob)  # once: summing inside the comprehension made this O(pairs^2)
+    prob = [p / total for p in prob]
 
     # Sample edges based on rank-weighted probability
     sampled_indices = np.random.choice(len(A), size=nE, replace=False, p=prob)
