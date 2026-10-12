@@ -54,6 +54,8 @@ pickle / shelve — Serialization and caching of simulation outputs.
 
 py4cytoscape — Optional integration with Cytoscape for network visualization.
 
+fastapi, uvicorn — Backend for the interactive app (app/). The app's 3D front end uses three.js r170, vendored under app/static/vendor/ so it runs offline.
+
 Usage:
 Simulation: Run core scripts to generate networks, simulate SIR/SIRS dynamics, and compute influence maximization metrics.
 
@@ -62,6 +64,10 @@ Pipelines: Run MFA several times to populate data files for analysis (mfa_drive_
 Analysis: Parse outputs using MFA tools (extract_mfa.py) and compute adherence, degree estimates, and loss metrics; or use visualize_adaptive.py / cost_curve_store.py to compare quarantine-selection strategies.
 
 Visualization: Generate publication-quality plots of infection, informed populations, optimizer estimates, sensitivity/identifiability analyses, and quarantine-strategy comparisons.
+
+Interactive app: `python -m app.server` from the repo root, then open http://127.0.0.1:8000. It shows the social and contact layers as two rotatable 3D planes while the dual process runs, with play/pause/step, click or shift-drag selection, per-node and sub-population statistics, and a scenario panel (network, IC/LT/FJ, quarantine mode, adherence, seeds, rates). The simulation is app/engine.py's MultiplexSIRS, a step-at-a-time version of SIR.Simulate_SIR built from SIR.py's own helpers; tests/test_engine_equivalence.py checks it reproduces Simulate_SIR exactly under identical RNG seeds, so update both together if the Simulate_SIR loop changes.
+
+Hosted app: https://tarlok04-multiplex-sirs.static.hf.space (Hugging Face Space: https://huggingface.co/spaces/tarlok04/multiplex-sirs). It is a static build in which the same simulation code runs in the visitor's browser under Pyodide (app/static/js/pyodide-worker.js loads app/browser_api.py, which wraps app/core.py exactly as app/server.py does over HTTP), so no server is needed. The front end uses app/server.py when /api/ is reachable and falls back to Pyodide otherwise. To republish after changes: `hf auth login` once, then `python deploy/push_to_hf.py` from the repo root (it runs deploy/build_static.py, which writes deploy/site/; preview that locally with `python -m http.server -d deploy/site 8001`).
 
 Note on known issues: several files in this repo currently call functions with arguments that no longer match their target's signature, or import modules that have since been removed, and will raise errors if run as-is. These are called out explicitly, file by file, in the sections below rather than silently documented as working.
 

@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Multiplex SIRS</title>
+  <link rel="stylesheet" href="static/styles.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./static/vendor/three/three.module.js",
+        "three/addons/": "./static/vendor/three/addons/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div id="app">
+    <main id="stage">
+      <div id="canvas-host"></div>
+      <div id="marquee" hidden></div>
+      <div id="hover-tip" hidden></div>
+      <div id="node-card" class="card floating" hidden></div>
+      <div id="group-card" class="card" hidden></div>
+      <div id="toast" hidden></div>
+      <div id="loading"><div class="spinner"></div><span>Building networks…</span></div>
+
+      <div id="view-bar">
+        <div class="seg" role="group" aria-label="Layer arrangement">
+          <button data-arrange="stacked" class="on">Stacked</button>
+          <button data-arrange="side">Side by side</button>
+        </div>
+        <div class="seg" role="group" aria-label="Layout">
+          <button data-layout="independent" class="on" title="Each layer laid out by its own structure">Own layouts</button>
+          <button data-layout="aligned" title="Social layer reuses contact positions">Aligned</button>
+        </div>
+        <button id="btn-camera" class="ghost" title="Reset camera">Reset view</button>
+      </div>
+
+      <div id="help">
+        <span><kbd>Drag</kbd> rotate</span>
+        <span><kbd>Right-drag</kbd> pan</span>
+        <span><kbd>Scroll</kbd> zoom</span>
+        <span><kbd>Click</kbd> select (paused)</span>
+        <span><kbd>Shift</kbd>+click / drag multi-select</span>
+        <span><kbd>Space</kbd> play · <kbd>→</kbd> step · <kbd>Esc</kbd> clear</span>
+      </div>
+    </main>
+
+    <aside id="panel">
+      <header class="panel-head">
+        <div>
+          <h1>Multiplex SIRS</h1>
+          <div id="network-name" class="muted">—</div>
+        </div>
+        <div class="tick"><span class="muted">t =</span> <span id="t-value">0</span></div>
+      </header>
+
+      <section class="transport">
+        <button id="btn-reset" class="icon" title="Restart scenario (new random draw)" aria-label="Restart">
+          <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.6-5.9M4 4v4.5h4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button id="btn-play" class="primary" aria-label="Play">
+          <svg class="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg>
+          <svg class="i-pause" viewBox="0 0 24 24"><path d="M7.5 5.5h3v13h-3zM13.5 5.5h3v13h-3z" fill="currentColor"/></svg>
+          <span id="play-label">Play</span>
+        </button>
+        <button id="btn-step" class="icon" title="Step forward one tick (→)" aria-label="Step">
+          <svg viewBox="0 0 24 24"><path d="M6 5.5v13l9-6.5zM16.5 5.5h2.5v13h-2.5z" fill="currentColor"/></svg>
+        </button>
+        <label class="speed">
+          <span class="muted">Speed</span>
+          <input id="speed" type="range" min="1" max="8" step="1" value="3">
+          <span id="speed-value">3/s</span>
+        </label>
+      </section>
+
+      <section class="tiles" id="tiles"></section>
+
+      <section class="chart-wrap">
+        <div class="section-title">Population over time <span class="muted">· % of nodes</span></div>
+        <div id="chart"></div>
+      </section>
+
+      <section class="legend">
+        <div class="section-title">Reading the networks</div>
+        <div class="layer-title"><b>Contact</b> · disease</div>
+        <ul>
+          <li><span class="k-dot" style="--c: var(--s)"></span> Susceptible</li>
+          <li><span class="k-dot" style="--c: var(--i)"></span> Infected</li>
+          <li><span class="k-dot" style="--c: var(--r)"></span> Recovered</li>
+          <li><span class="k-dot hollow" style="--c: var(--i)"></span> Hollow = quarantining</li>
+          <li><span class="k-line" style="--c: var(--i)"></span> Contact at risk (I–S)</li>
+          <li><span class="k-line dashed" style="--c: var(--muted)"></span> Cut by quarantine</li>
+        </ul>
+        <div class="layer-title"><b>Social</b> · information</div>
+        <ul>
+          <li><span class="k-dot" style="--c: var(--inf)"></span> Informed</li>
+          <li><span class="k-dot" style="--c: var(--uninf)"></span> Not informed</li>
+          <li><span class="k-dot slashed" style="--c: var(--uninf)"></span> Slash = won't adhere</li>
+          <li><span class="k-line" style="--c: var(--inf)"></span> Info frontier (informed → not)</li>
+        </ul>
+        <div class="layer-title">Both</div>
+        <ul>
+          <li><span class="k-dot selected" style="--c: var(--uninf)"></span> White ring = selected</li>
+          <li><span class="k-line link"></span> Same person, social ↔ contact</li>
+        </ul>
+        <div class="muted small">Hover a node for that layer's state; click one (paused) for the person's disease and information profile together. Node size ∝ degree in that layer. Social edges fade from source to target.</div>
+        <label class="toggle"><input type="checkbox" id="show-cut" checked> Show cut contacts</label>
+      </section>
+
+      <details class="scenario" id="scenario">
+        <summary>Scenario</summary>
+        <form id="scenario-form">
+          <label>Network
+            <select name="network"></select>
+          </label>
+          <div class="row2">
+            <label>Info spread
+              <select name="mechanism">
+                <option value="ic">Independent cascade</option>
+                <option value="lt">Linear threshold</option>
+                <option value="FJ">Friedkin–Johnsen</option>
+              </select>
+            </label>
+            <label><span id="mech-label">p</span>
+              <input name="mech_val" type="number" step="any" min="0">
+            </label>
+          </div>
+          <div class="row2">
+            <label>Quarantine
+              <select name="q_mode">
+                <option value="r">Until recovery</option>
+                <option value="period">~N(14, 2) days</option>
+                <option value="fixed">Fixed period</option>
+                <option value="off">Off</option>
+              </select>
+            </label>
+            <label>Period (days)
+              <input name="q_period" type="number" min="2" step="1">
+            </label>
+          </div>
+          <div class="row3">
+            <label>Adherence <input name="adherence" type="number" step="any" min="0" max="1"></label>
+            <label>Seeds <input name="seeds" type="number" step="1" min="0"></label>
+            <label>Begin q <input name="begin_q" type="number" step="1" min="0"></label>
+          </div>
+          <div class="row3">
+            <label>Init infected <input name="init" type="number" step="any" min="0" max="1"></label>
+            <label>γ recover <input name="gamma" type="number" step="any" min="0" max="1"></label>
+            <label>μ wane <input name="mu" type="number" step="any" min="0" max="1"></label>
+          </div>
+          <div class="row3">
+            <label class="check"><input name="heterogeneous_beta" type="checkbox"> Node-wise β</label>
+            <label>β <input name="beta" type="number" step="any" min="0" max="1"></label>
+            <label>RNG seed <input name="rng_seed" type="number" step="1" placeholder="random"></label>
+          </div>
+          <label>IC Monte-Carlo runs <input name="mc" type="number" step="1" min="1"></label>
+          <button type="submit" class="primary wide">Apply &amp; restart</button>
+        </form>
+      </details>
+    </aside>
+  </div>
+
+  <script type="module" src="static/js/main.js"></script>
+</body>
+</html>
