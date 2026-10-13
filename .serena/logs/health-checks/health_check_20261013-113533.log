@@ -1,0 +1,88 @@
+INFO  2026-10-13 11:35:33,974 serena.cli:health_check:1055 - Starting health check for project: C:\Users\cates\Social_Contact_Multiplex
+INFO  2026-10-13 11:35:33,974 serena.cli:health_check:1059 - Creating SerenaAgent with disabled dashboard...
+INFO  2026-10-13 11:35:33,975 serena.util.file_system:_load_gitignore_files:306 - Processing .gitignore file: C:\Users\cates\Social_Contact_Multiplex\deploy\.gitignore
+INFO  2026-10-13 11:35:33,978 serena.util.file_system:stop:336 - Loading of .gitignore files completed in 0.005 seconds
+INFO  2026-10-13 11:35:33,978 serena.project:stop:336 - Gathering ignore spec for project Social_Contact_Multiplex completed in 0.006 seconds
+INFO  2026-10-13 11:35:34,051 serena.agent:__init__:647 - Will record tool usage statistics with token count estimator: CHAR_COUNT.
+INFO  2026-10-13 11:35:34,080 serena.agent:__init__:651 - Starting Serena server (version=2.0.0, process id=9932, parent process id=3080; language backend=LSP); Python version=3.13.16, platform=Windows-11-10.0.26300-SP0
+INFO  2026-10-13 11:35:34,080 serena.agent:__init__:655 - Configuration file: C:\Users\cates\.serena\serena_config.yml
+INFO  2026-10-13 11:35:34,080 serena.agent:__init__:656 - Available projects: Social_Contact_Multiplex
+INFO  2026-10-13 11:35:34,081 serena.agent:__init__:657 - Loaded tools (53): create_text_file, replace_content, replace_in_files, delete_lines, replace_lines, insert_at_line, replace_symbol_body, insert_after_symbol, insert_before_symbol, read_file, list_dir, find_file, search_for_pattern, restart_language_server, get_symbols_overview, find_symbol, find_referencing_symbols, find_implementations, find_declaration, get_diagnostics_for_file, get_diagnostics_for_symbol, rename_symbol, safe_delete_symbol, write_memory, read_memory, list_memories, delete_memory, rename_memory, edit_memory, execute_shell_command, open_dashboard, activate_project, remove_project, get_current_config, onboarding, initial_instructions, serena_info, jet_brains_find_symbol, jet_brains_move, jet_brains_safe_delete, jet_brains_inline_symbol, jet_brains_find_referencing_symbols, jet_brains_get_symbols_overview, jet_brains_type_hierarchy, jet_brains_find_declaration, jet_brains_find_implementations, jet_brains_rename, jet_brains_debug, jet_brains_run_inspections, jet_brains_list_inspections, list_queryable_projects, query_project, serena_repl
+INFO  2026-10-13 11:35:34,081 serena.config.serena_config:determine_language_backend:1575 - Using language backend from global configuration: LSP
+INFO  2026-10-13 11:35:34,081 serena.config.serena_config:determine_agent_interface:1564 - Using agent interface 'REPL' (global configuration)
+INFO  2026-10-13 11:35:34,096 serena.config.serena_config:start:329 - Loading project instance for RegisteredProject[project_root=C:\Users\cates\Social_Contact_Multiplex, project_config=ProjectConfig[project_name=Social_Contact_Multiplex]] starting ...
+INFO  2026-10-13 11:35:34,097 serena.project:__init__:54 - Serena project data folder: C:\Users\cates\Social_Contact_Multiplex\.serena
+INFO  2026-10-13 11:35:34,097 serena.project:start:329 - Gathering ignore spec for project Social_Contact_Multiplex starting ...
+INFO  2026-10-13 11:35:34,097 serena.config.serena_config:stop:336 - Loading project instance for RegisteredProject[project_root=C:\Users\cates\Social_Contact_Multiplex, project_config=ProjectConfig[project_name=Social_Contact_Multiplex]] completed in 0.001 seconds
+INFO  2026-10-13 11:35:34,098 serena.project:_gather_ignorespec:102 - Using 1 ignored paths from the global configuration.
+INFO  2026-10-13 11:35:34,098 serena.agent:activate_project_from_path_or_name:1535 - Found registered project 'Social_Contact_Multiplex' at path C:\Users\cates\Social_Contact_Multiplex
+INFO  2026-10-13 11:35:34,098 serena.project:_gather_ignorespec:105 - Using 8 ignored paths from the project configuration.
+INFO  2026-10-13 11:35:34,098 serena.agent:_activate_project:1423 - Activating Social_Contact_Multiplex at C:\Users\cates\Social_Contact_Multiplex
+INFO  2026-10-13 11:35:34,098 serena.util.file_system:start:329 - Loading of .gitignore files starting ...
+INFO  2026-10-13 11:35:34,098 serena.task_executor:issue_task:219 - Scheduling Task-1:init_project_services
+INFO  2026-10-13 11:35:34,098 serena.agent:_update_active_modes:1287 - Active modes (2): editing, interactive
+INFO  2026-10-13 11:35:34,098 serena.agent:__init__:708 - Number of exposed tools: 3. Exposed tools: ['activate_project', 'initial_instructions', 'serena_repl']
+INFO  2026-10-13 11:35:34,099 serena.agent:_update_active_tools:1310 - Active tools (3): activate_project, initial_instructions, serena_repl
+INFO  2026-10-13 11:35:34,099 serena.cli:health_check:1062 - SerenaAgent created successfully
+INFO  2026-10-13 11:35:34,099 serena.cli:health_check:1065 - Searching for analyzable files...
+INFO  2026-10-13 11:35:34,100 serena.util.file_system:_load_gitignore_files:306 - Processing .gitignore file: C:\Users\cates\Social_Contact_Multiplex\.serena\.gitignore
+INFO  2026-10-13 11:35:34,103 serena.util.file_system:_load_gitignore_files:306 - Processing .gitignore file: C:\Users\cates\Social_Contact_Multiplex\deploy\.gitignore
+INFO  2026-10-13 11:35:34,106 serena.cli:health_check:1074 - Found analyzable file: adaptive_seed_selection.py
+INFO  2026-10-13 11:35:34,106 serena.cli:health_check:1085 - Testing get_symbols_overview on file: adaptive_seed_selection.py
+INFO  2026-10-13 11:35:34,106 serena.task_executor:issue_task:219 - Scheduling Task-2:<lambda>
+INFO  2026-10-13 11:35:34,108 serena.util.file_system:stop:336 - Loading of .gitignore files completed in 0.010 seconds
+INFO  2026-10-13 11:35:34,108 serena.project:stop:336 - Gathering ignore spec for project Social_Contact_Multiplex completed in 0.010 seconds
+INFO  2026-10-13 11:35:34,181 serena.task_executor:_process_task_queue:141 - Starting execution of Task-1:init_project_services
+INFO  2026-10-13 11:35:34,182 serena.task_executor:start:329 - Task-1:init_project_services starting ...
+INFO  2026-10-13 11:35:34,182 serena.lsp.lsp_backend:start:329 - Language server initialization starting ...
+INFO  2026-10-13 11:35:34,182 serena.project:create_language_server_manager:667 - Creating language server manager for C:\Users\cates\Social_Contact_Multiplex
+INFO  2026-10-13 11:35:34,183 sensai.util.logging:start:329 - Language server startup (ls_id=python) starting ...
+INFO  2026-10-13 11:35:34,183 serena.ls_manager:create_language_server:60 - Creating language server instance for C:\Users\cates\Social_Contact_Multiplex, language=python.
+INFO  2026-10-13 11:35:34,186 solidlsp.ls:_load_raw_document_symbols_cache:3078 - Loading document symbols cache from C:\Users\cates\Social_Contact_Multiplex\.serena\cache\python\raw_document_symbols.pkl
+INFO  2026-10-13 11:35:34,191 solidlsp.ls:_load_raw_document_symbols_cache:3083 - Loaded 38 entries from raw document symbols cache.
+INFO  2026-10-13 11:35:34,191 solidlsp.ls:_load_document_symbols_cache:3113 - Loading document symbols cache from C:\Users\cates\Social_Contact_Multiplex\.serena\cache\python\document_symbols.pkl
+INFO  2026-10-13 11:35:34,200 solidlsp.ls:_load_document_symbols_cache:3118 - Loaded 38 entries from document symbols cache.
+INFO  2026-10-13 11:35:34,204 solidlsp.ls:start:3209 - Starting language server python for C:\Users\cates\Social_Contact_Multiplex
+INFO  2026-10-13 11:35:34,204 solidlsp.language_servers.pyright_server:_start_server:217 - Starting pyright-langserver server process
+INFO  2026-10-13 11:35:34,204 solidlsp.ls_process:_start:528 - Starting language server process via command: ['C:\\Users\\cates\\AppData\\Local\\Microsoft\\WinGet\\Packages\\astral-sh.uv_Microsoft.Winget.Source_8wekyb3d8bbwe\\uvx.EXE', '-p', '3.13', '--from', 'pyright==1.1.403', 'pyright-langserver', '--stdio']
+INFO  2026-10-13 11:35:34,215 solidlsp.initialize_params:_apply_updates:76 - Workspace folders: ['C:\\Users\\cates\\Social_Contact_Multiplex']
+INFO  2026-10-13 11:35:34,215 solidlsp.language_servers.pyright_server:_start_server:223 - Sending initialize request from LSP client to pyright server and awaiting response
+INFO  2026-10-13 11:35:34,703 solidlsp.language_servers.pyright_server:window_log_message:139 - LSP: window/logMessage: Pyright language server 1.1.403 starting
+INFO  2026-10-13 11:35:34,704 solidlsp.language_servers.pyright_server:window_log_message:139 - LSP: window/logMessage: Server root directory: file:///c%3A/Users/cates/AppData/Local/uv/cache/archive-v0/f-xDsT9oVQBvnFJy/Lib/site-packages/pyright/dist/dist
+INFO  2026-10-13 11:35:34,708 solidlsp.language_servers.pyright_server:window_log_message:139 - LSP: window/logMessage: Starting service instance "Social_Contact_Multiplex"
+INFO  2026-10-13 11:35:34,709 solidlsp.language_servers.pyright_server:_start_server:225 - Received initialize response from pyright server: {'capabilities': {'textDocumentSync': 2, 'definitionProvider': {'workDoneProgress': True}, 'declarationProvider': {'workDoneProgress': True}, 'typeDefinitionProvider': {'workDoneProgress': True}, 'referencesProvider': {'workDoneProgress': True}, 'documentSymbolProvider': {'workDoneProgress': True}, 'workspaceSymbolProvider': {'workDoneProgress': True}, 'hoverProvider': {'workDoneProgress': True}, 'documentHighlightProvider': {'workDoneProgress': True}, 'renameProvider': {'prepareProvider': True, 'workDoneProgress': True}, 'completionProvider': {'triggerCharacters': ['.', '[', '"', "'"], 'resolveProvider': True, 'workDoneProgress': True, 'completionItem': {'labelDetailsSupport': True}}, 'signatureHelpProvider': {'triggerCharacters': ['(', ',', ')'], 'workDoneProgress': True}, 'codeActionProvider': {'codeActionKinds': ['quickfix', 'source.organizeImports'], 'workDoneProgress': True}, 'executeCommandProvider': {'commands': [], 'workDoneProgress': True}, 'callHierarchyProvider': True, 'workspace': {'workspaceFolders': {'supported': True, 'changeNotifications': True}}}}
+INFO  2026-10-13 11:35:34,709 solidlsp.language_servers.pyright_server:_start_server:237 - Waiting up to 60.0s for Pyright to complete initial workspace analysis...
+INFO  2026-10-13 11:35:34,927 solidlsp.language_servers.pyright_server:window_log_message:139 - LSP: window/logMessage: Loading pyproject.toml file at c:\Users\cates\Social_Contact_Multiplex\pyproject.toml
+INFO  2026-10-13 11:35:34,927 solidlsp.language_servers.pyright_server:window_log_message:139 - LSP: window/logMessage: No include entries specified; assuming c:\Users\cates\Social_Contact_Multiplex
+INFO  2026-10-13 11:35:34,927 solidlsp.language_servers.pyright_server:window_log_message:139 - LSP: window/logMessage: Auto-excluding **/node_modules
+INFO  2026-10-13 11:35:34,927 solidlsp.language_servers.pyright_server:window_log_message:139 - LSP: window/logMessage: Auto-excluding **/__pycache__
+INFO  2026-10-13 11:35:34,927 solidlsp.language_servers.pyright_server:window_log_message:139 - LSP: window/logMessage: Auto-excluding **/.*
+INFO  2026-10-13 11:35:34,927 solidlsp.language_servers.pyright_server:window_log_message:139 - LSP: window/logMessage: Assuming Python version 3.13.16.final.0
+INFO  2026-10-13 11:35:34,927 solidlsp.language_servers.pyright_server:window_log_message:139 - LSP: window/logMessage: Found 39 source files
+INFO  2026-10-13 11:35:34,927 solidlsp.language_servers.pyright_server:window_log_message:144 - Pyright workspace scanning complete
+INFO  2026-10-13 11:35:34,928 solidlsp.language_servers.pyright_server:_start_server:239 - Pyright initial analysis complete, server ready
+INFO  2026-10-13 11:35:34,928 sensai.util.logging:stop:336 - Language server startup (ls_id=python) completed in 0.745 seconds
+INFO  2026-10-13 11:35:34,928 sensai.util.logging:start:329 - Initialising file change notifier (polling for baseline) starting ...
+INFO  2026-10-13 11:35:34,931 sensai.util.logging:stop:336 - Initialising file change notifier (polling for baseline) completed in 0.003 seconds
+INFO  2026-10-13 11:35:34,932 serena.lsp.lsp_backend:stop:336 - Language server initialization completed in 0.749 seconds
+INFO  2026-10-13 11:35:34,932 serena.task_executor:stop:336 - Task-1:init_project_services completed in 0.749 seconds
+INFO  2026-10-13 11:35:34,932 serena.task_executor:_process_task_queue:141 - Starting execution of Task-2:<lambda>
+INFO  2026-10-13 11:35:34,932 serena.task_executor:start:329 - Task-2:<lambda> starting ...
+INFO  2026-10-13 11:35:34,933 serena.task_executor:stop:336 - Task-2:<lambda> completed in 0.001 seconds
+INFO  2026-10-13 11:35:34,934 serena.cli:health_check:1087 - get_symbols_overview returned: {"Constant": ["FIGURE_SIZE_LINE", "FIGURE_SIZE_BAR", "T", "HETEROGENEOUS_BETA", "K", "COB_EPS", "CONTACT_NETWORK_PATH", "SOCIAL_NETWORK_PATH"], "Variable": ["ping_cytoscape", "beta", "gamma", "mu", "init", "beta_L", "beta_R", "Gamma", "adherence", "num_simulations", "batch_interval", "information_spread", "q", "introduced_infections", "contact_network", "initial_contact", "initial_edge_count", "n", "social_network", "initial_social", "injection_times", "_num_to_infect", "infection_candidates", "baseline_runs", "global_betas", "hill_cost_curves", "hill_infection_curves", "hill_edge_term_curves", "hill_edge_curves", "hill_newly_counts", "hill_newly_frac", "hill_dynamics_list", "tagged_contact_hill", "hill_batch_seed_sets", "hill_alpha_w_curves", "hill_beta_w_curves", "f", "degree_cost_curves", "degree_infection_curves", "degree_edge_term_curves", "degree_edge_curves", "degree_newly_counts", "degree_newly_frac", "degree_dynamics_list", "tagged_contact_degree", "degree_alpha_w_curves", "degree_beta_w_curves", "cob_cost_curves", "cob_infection_curves", "cob_edge_term_curves", "cob_edge_curves", "cob_newly_counts", "cob_newly_frac", "cob_dynamics_list", "tagged_contact_cob", "cob_alpha_w_curves", "cob_beta_w_curves", "rand_cost_curves", "rand_infection_curves", "rand_edge_term_curves", "rand_edge_curves", "rand_newly_counts", "rand_newly_frac", "rand_dynamics_list", "tagged_contact_rand", "rand_alpha_w_curves", "rand_beta_w_curves"], "Function": ["make_initial_state", "compute_node_beta", "compute_beta_clustering", "given_at_time", "baseline_infections", "initialize", "build_tagged_network", "send_to_cytoscape", "global_cost_function", "hill2", "degree_based_selection", "core_over_btw", "random_seed_selection", "no_quarantine_baseline_runs", "plot_beta_histogram", "plot_prevalence_and_new_infections"]}
+INFO  2026-10-13 11:35:34,934 serena.cli:health_check:1102 - Using symbol for testing: make_initial_state (kind: Function)
+INFO  2026-10-13 11:35:34,934 serena.cli:health_check:1105 - Testing find_symbol for symbol: make_initial_state
+INFO  2026-10-13 11:35:34,934 serena.task_executor:issue_task:219 - Scheduling Task-3:<lambda>
+INFO  2026-10-13 11:35:35,034 serena.task_executor:_process_task_queue:141 - Starting execution of Task-3:<lambda>
+INFO  2026-10-13 11:35:35,035 serena.task_executor:start:329 - Task-3:<lambda> starting ...
+INFO  2026-10-13 11:35:35,037 serena.task_executor:stop:336 - Task-3:<lambda> completed in 0.002 seconds
+INFO  2026-10-13 11:35:35,037 serena.cli:health_check:1111 - find_symbol found 1 matches for symbol make_initial_state
+INFO  2026-10-13 11:35:35,037 serena.cli:health_check:1116 - Testing find_referencing_symbols for symbol: make_initial_state
+INFO  2026-10-13 11:35:35,037 serena.task_executor:issue_task:219 - Scheduling Task-4:<lambda>
+INFO  2026-10-13 11:35:35,137 serena.task_executor:_process_task_queue:141 - Starting execution of Task-4:<lambda>
+INFO  2026-10-13 11:35:35,138 serena.task_executor:start:329 - Task-4:<lambda> starting ...
+INFO  2026-10-13 11:35:35,138 serena.ls_manager:sync_file_system_changes:281 - Polling file system for changes to source files ...
+INFO  2026-10-13 11:35:35,142 serena.ls_manager:sync_file_system_changes:283 - File system polling complete; 0 change events sent to language servers.
+INFO  2026-10-13 11:35:37,204 serena.task_executor:stop:336 - Task-4:<lambda> completed in 2.066 seconds
+INFO  2026-10-13 11:35:37,204 serena.cli:health_check:1123 - find_referencing_symbols found 6 references for symbol make_initial_state
+INFO  2026-10-13 11:35:37,204 serena.cli:health_check:1132 - Health check completed successfully
