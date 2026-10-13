@@ -3,7 +3,7 @@ In-browser counterpart of app/server.py for the static (Pyodide) build.
 
 app/static/js/pyodide-worker.js unpacks the repo's runtime files into Pyodide's
 filesystem, imports this module, and forwards each API call the front end makes
-to handle(), which mirrors server.py's routes for a single local session and
+to handle(), which mirrors server.py's routes for a single local workspace and
 returns the response as a JSON string: {"ok": true, "data": ...} or
 {"ok": false, "detail": "..."}.
 """
@@ -11,6 +11,7 @@ returns the response as a JSON string: {"ok": true, "data": ...} or
 import json
 import sys
 import types
+from urllib.parse import parse_qs, urlsplit
 
 try:
     import matplotlib.pyplot  # noqa: F401
@@ -27,7 +28,7 @@ from pydantic import ValidationError  # noqa: E402
 
 from app import core  # noqa: E402
 
-_session = core.Session()
+_workspace = core.Workspace()
 
 
 def _json_default(obj):
@@ -42,6 +43,9 @@ def _error(detail):
 
 def handle(method, path, body_json=None):
     try:
+        url = urlsplit(path)
+        path = url.path
+        slot = int(parse_qs(url.query).get("slot", ["0"])[0])
         if method == "GET" and path == "/api/options":
             data = core.options()
         elif method == "POST" and path == "/api/reset":
@@ -50,13 +54,11 @@ def handle(method, path, body_json=None):
             except ValidationError as exc:
                 return _error("; ".join(f"{'.'.join(map(str, e['loc']))}: {e['msg']}"
                                         for e in exc.errors()))
-            _session.reset(cfg)
-            data = _session.reset_payload()
+            data = _workspace.reset(slot, cfg)
+        elif method == "POST" and path == "/api/remove":
+            data = _workspace.remove(slot)
         elif method == "POST" and path == "/api/step":
-            if _session.sim is None:
-                return _error("No simulation; call /api/reset first")
-            _session.sim.step()
-            data = _session.snapshot()
+            data = _workspace.step()
         else:
             return _error(f"Unknown route {method} {path}")
     except Exception as exc:

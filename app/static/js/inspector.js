@@ -23,6 +23,16 @@ export class NetworkIndex {
       this.sorted[key] = [...m[key]].sort((a, b) => a - b);
     }
     this.sorted.social_deg = [...this.socialDeg].sort((a, b) => a - b);
+    // Social edge indices into / out of each node (for the tie-weight table)
+    this.socialIn = Array.from({ length: n }, () => []);
+    this.socialOut = Array.from({ length: n }, () => []);
+    stat.social_edges.forEach(([a, b], k) => { this.socialOut[a].push(k); this.socialIn[b].push(k); });
+    // Louvain community sizes per layer
+    this.commSize = {};
+    for (const layer of ['contact', 'social']) {
+      const size = this.commSize[layer] = [];
+      for (const c of stat.communities[layer]) size[c] = (size[c] ?? 0) + 1;
+    }
   }
 
   // Share of nodes with a strictly larger value, as "top X%"
@@ -45,6 +55,38 @@ function quarantineText(snap, i, config) {
   const planned = snap.quarantine_planned ? snap.quarantine_planned[i] : null;
   const q = config.q_mode === 'r' ? ' · until recovery' : planned ? ` of ${planned}` : '';
   return `day ${days}${q}`;
+}
+
+// Hill-climb utility of seed i, and its rank among this batch's seeds (1 = highest).
+// HillClimb._propose drops a seed with probability softmax(-utility), so the
+// lowest-ranked seeds are the likeliest to be swapped out next.
+function utilityText(snap, i) {
+  const u = snap.policy?.utilities;
+  if (!u) return null;
+  const rank = 1 + snap.seeds.filter(j => u[j] > u[i]).length;
+  return `${u[i].toFixed(3)}<span class="pct">rank ${rank} of ${snap.seeds.length} seeds</span>`;
+}
+
+// Reality Commons survey ties into and out of person i, by relationship type, with
+// the weight each type carries and why (networks.RC_TIE_TYPES / RC_TIE_NOTE)
+function tieTable(stat, idx, i, config) {
+  if (!stat.social_weights) return '';
+  const use = config.mechanism === 'ic' && config.ic_tie_weights
+    ? 'This run spreads information with each tie\u2019s weight as its cascade probability.'
+    : config.mechanism === 'ic'
+      ? `This run uses one cascade probability, p = ${config.mech_val}, on every tie; turn on per-tie probabilities under Dynamics to use these weights.`
+      : 'This run spreads information by a threshold / opinion model, which does not use these weights.';
+  const w = stat.social_weights;
+  const rows = stat.tie_types.map(tt => {
+    const match = (k) => Math.abs(w[k] - tt.weight) < 1e-6;
+    return { ...tt, in: idx.socialIn[i].filter(match).length, out: idx.socialOut[i].filter(match).length };
+  });
+  return `
+    <table class="metrics ties">
+      <tr><th>Relationship</th><th>Weight</th><th title="Ties into this person: people whose news reaches them (they named these people)">In</th><th title="Ties out of this person: people they reach (these people named them)">Out</th></tr>
+      ${rows.map(r => `<tr class="${r.in || r.out ? '' : 'none'}"><td>${esc(r.label)}</td><td>${r.weight.toFixed(2)}</td><td>${r.in}</td><td>${r.out}</td></tr>`).join('')}
+    </table>
+    <div class="note">${esc(stat.tie_note)} <b>${use}</b></div>`;
 }
 
 export function renderNodeCard(card, ctx) {
@@ -79,28 +121,40 @@ export function renderNodeCard(card, ctx) {
     ['Transmissibility β', stat.beta[i].toFixed(3)],
   ];
 
-  // Social layer: the information process
+  // Social layer: the information process (and misinformation, if on: then adherence
+  // is simply "not misinformed")
+  const mis = snap.misinformed;
+  const adheres = mis ? !mis[i] : stat.adheres[i];
   const infoChips = [
-    snap.informed[i]
-      ? `<span class="chip"><span class="dot" style="--c:${COLORS.informed}"></span>Informed <span class="muted">since t=${snap.informed_at[i]}</span></span>`
-      : `<span class="chip off"><span class="dot" style="--c:${COLORS.uninformed}"></span>Not informed</span>`,
-    stat.adheres[i]
+    mis?.[i]
+      ? `<span class="chip"><span class="dot slashed" style="--c:${COLORS.misinformed}"></span>Misinformed <span class="muted">since t=${snap.misinformed_at[i]}</span></span>`
+      : snap.informed[i]
+        ? `<span class="chip"><span class="dot" style="--c:${COLORS.informed}"></span>Informed <span class="muted">since t=${snap.informed_at[i]}</span></span>`
+        : `<span class="chip off"><span class="dot" style="--c:${COLORS.uninformed}"></span>${mis ? 'Neither informed nor misinformed' : 'Not informed'}</span>`,
+    adheres
       ? `<span class="chip">Adheres</span>`
-      : `<span class="chip off"><span class="dot slashed" style="--c:${COLORS.uninformed}"></span>Won't adhere</span>`,
+      : `<span class="chip off"><span class="dot slashed" style="--c:${mis ? COLORS.misinformed : COLORS.uninformed}"></span>Won't adhere${mis ? ' <span class="muted">misinformed</span>' : ''}</span>`,
   ];
   // Seeds are informed directly (diamonds in the scene), not by spread
   if (snap.seeds.includes(i)) {
     const when = policy ? (batches ? 'this batch' : 'first batch') : `chosen at t=${config.begin_q}`;
     infoChips.push(`<span class="chip"><span class="dot diamond" style="--c:${COLORS.informed}"></span>Seed <span class="muted">${when}</span></span>`);
   }
+  if (snap.misinfo_seeds?.includes(i)) {
+    const why = stat.adheres[i] ? 'drawn' : 'non-adherer';
+    infoChips.push(`<span class="chip"><span class="dot diamond" style="--c:${COLORS.misinformed}"></span>Misinformation seed <span class="muted">${why}</span></span>`);
+  }
   const infoKv = [];
   if (policy) infoKv.push([`Seed under ${esc(policy.label)}`, `${seedCounts[i]} of ${batches} batch${batches === 1 ? '' : 'es'}`]);
+  const util = snap.seeds.includes(i) ? utilityText(snap, i) : null;
+  if (util) infoKv.push(['Hill-climb utility', util]);
   if (snap.belief) infoKv.push(['FJ belief x', snap.belief[i].toFixed(3)]);
+  if (snap.misbelief) infoKv.push(['FJ misinformation belief', snap.misbelief[i].toFixed(3)]);
   const kvList = (rows) => rows.length ? `<dl class="kv">${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>` : '';
 
   // Per-step state history (last 120 steps), informed marked underneath
   const H = history.slice(-120);
-  const strip = H.map(h => `<i class="${h.informed[i] ? 'inf' : ''}" style="background:${STATE_COLORS[h.state[i]]}"></i>`).join('');
+  const strip = H.map(h => `<i class="${h.misinformed?.[i] ? 'mis' : h.informed[i] ? 'inf' : ''}" style="background:${STATE_COLORS[h.state[i]]}"></i>`).join('');
 
   card.innerHTML = `
     <div class="card-head">
@@ -113,6 +167,8 @@ export function renderNodeCard(card, ctx) {
     <div class="layer-title"><b>Social</b> · information</div>
     <div class="chips">${infoChips.join('')}</div>
     ${kvList(infoKv)}
+    ${util ? '<div class="note">Utility is the EWMA of batch-cost improvement. When a swap adds a seed, the one dropped is drawn with probability ∝ e<sup>−utility</sup>, so low-utility seeds go first.</div>' : ''}
+    ${tieTable(stat, idx, i, config)}
     <table class="metrics">
       <tr><th></th><th>Contact</th><th>Social <span style="font-weight:400">(in/out)</span></th></tr>
       <tr><td>Degree</td>
@@ -124,10 +180,13 @@ export function renderNodeCard(card, ctx) {
       <tr><td>Betweenness</td>
           <td>${metricCell(idx, 'contact_btw', m.contact_btw[i], m.contact_btw[i].toFixed(3))}</td>
           <td>${metricCell(idx, 'social_btw', m.social_btw[i], m.social_btw[i].toFixed(3))}</td></tr>
+      <tr><td title="Louvain community (the Cluster layout's islands)">Cluster</td>
+          <td>#${stat.communities.contact[i] + 1}<span class="pct">${idx.commSize.contact[stat.communities.contact[i]]} people</span></td>
+          <td>#${stat.communities.social[i] + 1}<span class="pct">${idx.commSize.social[stat.communities.social[i]]} people</span></td></tr>
     </table>
     <div class="sub-title">State history</div>
     <div class="strip-wrap"><div class="strip">${strip}</div></div>
-    <div class="strip-axis"><span>t=${H.length ? H[0].t : 0}</span><span>gold underline = informed</span><span>t=${snap.t}</span></div>
+    <div class="strip-axis"><span>t=${H.length ? H[0].t : 0}</span><span>gold underline = informed${mis ? ', magenta = misinformed' : ''}</span><span>t=${snap.t}</span></div>
   `;
 }
 
@@ -139,12 +198,14 @@ export function renderGroupCard(card, ctx) {
   ids.forEach(i => { inSel[i] = 1; });
 
   const cnt = [0, 0, 0];
-  let informed = 0, quar = 0, adh = 0, liveDeg = 0, origDeg = 0;
+  const mis = snap.misinformed;
+  let informed = 0, misinformed = 0, quar = 0, adh = 0, liveDeg = 0, origDeg = 0;
   for (const i of ids) {
     cnt[snap.state[i]]++;
     informed += snap.informed[i];
+    misinformed += mis ? mis[i] : 0;
     quar += snap.quarantine_days[i] >= 0 ? 1 : 0;
-    adh += stat.adheres[i];
+    adh += mis ? 1 - mis[i] : stat.adheres[i];
     liveDeg += snap.live_degree[i];
     origDeg += m.contact_degree[i];
   }
@@ -182,6 +243,7 @@ export function renderGroupCard(card, ctx) {
     </div>
     <div class="stat-grid">
       <div><b>${fmtPct(informed / k)}</b><span>informed</span></div>
+      ${mis ? `<div><b>${fmtPct(misinformed / k)}</b><span>misinformed</span></div>` : ''}
       <div><b>${fmtPct(quar / k)}</b><span>quarantining</span></div>
       <div><b>${fmtPct(adh / k)}</b><span>adhere</span></div>
       <div><b>${origDeg ? fmtPct(1 - liveDeg / origDeg) : '–'}</b><span>contacts cut</span></div>
@@ -194,6 +256,7 @@ export function renderGroupCard(card, ctx) {
       <span><span class="sw" style="--c:${COLORS.I}"></span>Selection infected</span>
       <span><span class="sw" style="--c:${COLORS.muted}"></span>Everyone infected</span>
       <span><span class="sw" style="--c:${COLORS.informed}"></span>Selection informed</span>
+      ${mis ? `<span><span class="sw" style="--c:${COLORS.misinformed}"></span>Selection misinformed</span>` : ''}
     </div>
     <table class="metrics" style="margin-top:10px">
       <tr><th>Mean</th><th>Selection</th><th>Everyone</th></tr>
@@ -206,10 +269,11 @@ export function renderGroupCard(card, ctx) {
     { key: 'gi', label: 'Selection infected', color: COLORS.I },
     { key: 'pi', label: 'Everyone infected', color: COLORS.muted, dashed: true },
     { key: 'gf', label: 'Selection informed', color: COLORS.informed },
+    ...(mis ? [{ key: 'gm', label: 'Selection misinformed', color: COLORS.misinformed, dash: '7 2 1.5 2' }] : []),
   ], { height: 96, compact: true });
   chart.setRows(history.map(h => {
-    let gi = 0, gf = 0;
-    for (const i of ids) { gi += h.state[i] === 1; gf += h.informed[i]; }
-    return { t: h.t, values: { gi: gi / k, gf: gf / k, pi: h.counts.I / stat.n } };
+    let gi = 0, gf = 0, gm = 0;
+    for (const i of ids) { gi += h.state[i] === 1; gf += h.informed[i]; gm += h.misinformed?.[i] ?? 0; }
+    return { t: h.t, values: { gi: gi / k, gf: gf / k, gm: gm / k, pi: h.counts.I / stat.n } };
   }));
 }

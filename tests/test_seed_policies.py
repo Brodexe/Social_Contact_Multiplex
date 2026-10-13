@@ -174,6 +174,7 @@ def test_milp_seed_term_shrinks_seed_set():
                                     init=INIT, adherence=set(adhering), algorithm="milp", k=k,
                                     cost_terms=terms, initial_state_dict=init_state,
                                     baseline_runs=3, baseline_seed=0)
+        run.finish_baselines()  # the first batch is chosen once the baselines are in
         sizes[len(terms)] = len(run.seeds)
         assert len(run.seeds) <= k
     assert sizes[3] < sizes[2], sizes

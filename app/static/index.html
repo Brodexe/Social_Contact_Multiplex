@@ -23,6 +23,7 @@
       <div id="node-card" class="card floating" hidden></div>
       <div id="group-card" class="card" hidden></div>
       <div id="toast" hidden></div>
+      <div id="phase-banner" role="status" aria-live="polite" hidden></div>
       <div id="loading"><div class="spinner"></div><span>Building networks…</span></div>
 
       <div id="view-bar">
@@ -30,9 +31,17 @@
           <button data-arrange="stacked" class="on">Stacked</button>
           <button data-arrange="side">Side by side</button>
         </div>
-        <div class="seg" role="group" aria-label="Layout">
-          <button data-layout="independent" class="on" title="Each layer laid out by its own structure">Own layouts</button>
-          <button data-layout="aligned" title="Social layer reuses contact positions">Aligned</button>
+        <div class="seg" role="group" aria-label="Layout mode">
+          <button data-layoutmode="own" class="on" title="Each layer laid out by its own structure">Own layouts</button>
+          <button data-layoutmode="aligned" title="Social layer reuses the contact layer's positions">Aligned</button>
+        </div>
+        <div class="seg" role="group" aria-label="Layout style">
+          <button data-layoutstyle="force" class="on" title="Force-directed">Force</button>
+          <button data-layoutstyle="cluster" title="Louvain communities as separate islands, largest at the centre">Cluster</button>
+          <button data-layoutstyle="grid" title="A grid, row by row, grouped by community and ordered by degree">Grid</button>
+        </div>
+        <div class="seg" role="group" aria-label="Layer labels">
+          <button id="btn-labels" class="on" aria-pressed="true" title="Show or hide the multiplex letter and layer name over each network">Labels</button>
         </div>
         <button id="btn-camera" class="ghost" title="Reset camera">Reset view</button>
       </div>
@@ -41,7 +50,7 @@
         <span><kbd>Drag</kbd> rotate</span>
         <span><kbd>Right-drag</kbd> pan</span>
         <span><kbd>Scroll</kbd> zoom</span>
-        <span><kbd>Click</kbd> select (paused)</span>
+        <span><kbd>Click</kbd> select (paused) · frame color + letter = multiplex</span>
         <span><kbd>Shift</kbd>+click / drag multi-select</span>
         <span><kbd>Space</kbd> play · <kbd>→</kbd> step · <kbd>Esc</kbd> clear</span>
       </div>
@@ -54,14 +63,16 @@
           <div id="network-name" class="muted">—</div>
           <div id="network-stats" class="muted small"></div>
         </div>
-        <div class="tick"><span class="muted">t =</span> <span id="t-value">0</span></div>
+        <div class="tick"><span id="active-badge"></span> <span class="muted">t =</span> <span id="t-value">0</span></div>
       </header>
 
+      <nav id="slot-tabs" class="slot-tabs" role="tablist" aria-label="Multiplexes"></nav>
+
       <section class="transport">
-        <button id="btn-reset" class="icon" title="Restart scenario (new random draw)" aria-label="Restart">
+        <button id="btn-reset" class="icon" title="Restart every multiplex (new random draw)" aria-label="Restart">
           <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.6-5.9M4 4v4.5h4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <button id="btn-play" class="primary" aria-label="Play">
+        <button id="btn-play" class="primary" aria-label="Play" title="Play / pause every multiplex together (Space)">
           <svg class="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg>
           <svg class="i-pause" viewBox="0 0 24 24"><path d="M7.5 5.5h3v13h-3zM13.5 5.5h3v13h-3z" fill="currentColor"/></svg>
           <span id="play-label">Play</span>
@@ -85,6 +96,15 @@
 
       <section class="policy" id="policy-panel" hidden>
         <div class="section-title">Seed selection <span class="muted" id="policy-label"></span></div>
+        <div id="baseline-wrap">
+          <div class="sub-title">Preliminary · no-quarantine baselines</div>
+          <div class="hint" id="baseline-status"></div>
+          <div class="progress" id="baseline-progress" hidden><span></span></div>
+          <div id="baseline-chart"></div>
+          <div class="chart-legend" id="baseline-legend"></div>
+          <div class="muted small">Newly infected per tick with no quarantine: the worst case over the runs (what g sums) and their mean.</div>
+        </div>
+        <div id="experiment-wrap">
         <div class="stat-grid" id="policy-stats"></div>
         <div id="cost-wrap">
           <div class="sub-title">Cost per batch <span class="muted" id="cost-sub"></span></div>
@@ -95,7 +115,7 @@
           <div class="sub-title-row">
             <div class="sub-title">Seeds by node metric</div>
             <div class="seg small" role="group" aria-label="Which seeds">
-              <button type="button" data-seedset="ever" class="on" title="Nodes chosen as a seed in at least one batch so far">Ever chosen</button>
+              <button type="button" data-seedset="ever" class="on" title="Every seed pick so far: a node picked in several batches counts once per pick">All batches</button>
               <button type="button" data-seedset="batch" title="This batch's seeds">This batch</button>
             </div>
             <div class="seg small" role="group" aria-label="Metric layer">
@@ -105,9 +125,11 @@
           </div>
           <div id="seed-chart"></div>
           <div class="chart-legend">
-            <span><span class="sw bar" style="--c:var(--text-2)"></span>Seeds (bar color = metric)</span>
-            <span><span class="sw bar" style="--c:rgba(240,239,236,0.25)"></span>All nodes in that range</span>
+            <span><span class="sw bar" style="--c:var(--text-2)"></span>% of seed picks in that range (bar color = metric)</span>
+            <span><span class="sw bar" style="--c:rgba(240,239,236,0.25)"></span>% of all nodes in that range</span>
           </div>
+          <div class="muted small">Each series sums to 100% across a panel's bins. A colored bar above its gray bar: the strategy picks that range more often than chance would.</div>
+        </div>
         </div>
       </section>
 
@@ -128,36 +150,48 @@
           <li><span class="k-dot" style="--c: var(--uninf)"></span> Not informed</li>
           <li><span class="k-dot slashed" style="--c: var(--uninf)"></span> Slash = won't adhere</li>
           <li><span class="k-line" style="--c: var(--inf)"></span> Info frontier (informed → not)</li>
+          <li data-misinfo hidden><span class="k-dot slashed" style="--c: var(--misinf)"></span> Misinformed (never adheres)</li>
+          <li data-misinfo hidden><span class="k-line" style="--c: var(--misinf)"></span> Misinfo frontier</li>
         </ul>
         <div class="layer-title">Both</div>
         <ul>
           <li><span class="k-dot diamond" style="--c: var(--inf)"></span> Diamond = seed (informed directly)</li>
+          <li data-misinfo hidden><span class="k-dot diamond" style="--c: var(--misinf)"></span> Magenta diamond (social) = misinformation seed</li>
           <li><span class="k-dot" style="--c: var(--inf)"></span> Disc = informed by spread</li>
           <li><span class="k-dot selected" style="--c: var(--uninf)"></span> White ring = selected</li>
           <li><span class="k-line link"></span> Same person, social ↔ contact</li>
+          <li><span class="slot-badge" style="--slot:var(--slot-1)">B</span> Frame color + letter = which multiplex</li>
         </ul>
         <div class="muted small">Hover a node for that layer's state; click one (paused) for the person's disease and information profile together. Node size ∝ degree in that layer. Social edges fade from source to target.</div>
         <label class="toggle"><input type="checkbox" id="show-cut" checked> Show cut contacts</label>
       </section>
 
       <details class="scenario" id="scenario" open>
-        <summary>Scenario</summary>
+        <summary>Scenario <span class="muted" style="font-weight:400">· of the multiplex selected above</span></summary>
         <form id="scenario-form">
           <div class="layer-title"><b>Contact network</b> · disease</div>
           <label>Model
             <select name="contact_model">
               <option value="er">Random (Erdős–Rényi)</option>
-              <option value="clustered">Clustered random</option>
+              <option value="sbm">Stochastic block model (clusters)</option>
               <option value="hs_bin">High school contact data</option>
+              <option value="rc_bin">Reality Commons contact data</option>
             </select>
           </label>
-          <div class="row3" data-when="contact_model=er,clustered">
+          <div class="row2" data-when="contact_model=er,sbm">
             <label>Nodes <input name="contact_n" type="number" step="1" min="10"></label>
             <label>Edge prob. p <input name="contact_p" type="number" step="any" min="0" max="1"></label>
-            <label data-when="contact_model=clustered">Clustering <input name="clustering" type="number" step="any" min="0" max="1"></label>
+          </div>
+          <div class="row3" data-when="contact_model=sbm">
+            <label title="Number of communities">Clusters <input name="sbm_blocks" type="number" step="1" min="1" max="20"></label>
+            <label title="Share of block-model edges that run between clusters">Between-cluster share <input name="sbm_mixing" type="number" step="any" min="0" max="1"></label>
+            <label title="Share of edges placed by closing a triangle: raises the clustering coefficient at fixed density">Closure <input name="clustering" type="number" step="any" min="0" max="1"></label>
           </div>
           <label data-when="contact_model=hs_bin">Time bin
             <select name="hs_bin"></select>
+          </label>
+          <label data-when="contact_model=rc_bin">Time bin (30 days each)
+            <select name="rc_bin"></select>
           </label>
           <div class="hint" id="contact-hint"></div>
 
@@ -167,6 +201,7 @@
               <option value="khop">k-hop similarity</option>
               <option value="correlated">Correlated with contact</option>
               <option value="hs_survey">High school friendship survey</option>
+              <option value="rc_survey">Reality Commons relationship survey</option>
             </select>
           </label>
           <div class="row3" data-when="social_model=khop,correlated">
@@ -191,6 +226,8 @@
               <input name="mech_val" type="number" step="any" min="0">
             </label>
           </div>
+          <label class="check" id="tie-weights-row" title="Each survey tie passes information with its own probability (its relationship weight) instead of the single p">
+            <input name="ic_tie_weights" type="checkbox"> Per-tie cascade probabilities (relationship weights)</label>
           <div class="row2">
             <label>Quarantine
               <select name="q_mode">
@@ -221,6 +258,22 @@
           </div>
           <label>IC Monte-Carlo runs <input name="mc" type="number" step="1" min="1"></label>
 
+          <div class="layer-title"><b>Misinformation</b> · optional competing cascade</div>
+          <label class="check"><input name="misinfo" type="checkbox"> Misinformation spreads too</label>
+          <div id="misinfo-fields">
+            <div class="row3">
+              <label title="Misinformation seeds beyond the non-adherers, drawn with probability ∝ social degree², like the information seeds">Extra seeds <input name="misinfo_seeds" type="number" step="1" min="0"></label>
+              <label><span id="misinfo-val-label">p</span> <input name="misinfo_val" type="number" step="any" min="0" placeholder="same as info"></label>
+              <label>When they meet
+                <select name="misinfo_mode">
+                  <option value="takeover">Takeover</option>
+                  <option value="collide">Collide</option>
+                </select>
+              </label>
+            </div>
+            <div class="hint" id="misinfo-hint"></div>
+          </div>
+
           <div class="layer-title"><b>Seed selection</b> · who is informed directly</div>
           <label>Algorithm
             <select name="seed_algo">
@@ -239,6 +292,7 @@
               <label>Batch (ticks) <input name="batch_interval" type="number" step="1" min="1"></label>
               <label title="No-quarantine runs whose per-tick worst case normalizes the infection term">Baseline runs <input name="cost_baselines" type="number" step="1" min="1" max="50"></label>
             </div>
+            <label class="inline" title="Ticks each baseline run covers before the experiment starts (the research scripts' T); runs are extended if the experiment goes past it">Baseline T (ticks per run) <input name="baseline_horizon" type="number" step="1" min="1" max="1000"></label>
             <label class="check"><input name="info_spread" type="checkbox"> Information spreads within each batch</label>
             <div class="sub-label">Cost terms</div>
             <div class="checks">
@@ -254,7 +308,7 @@
             </div>
           </div>
           <div id="form-error" class="form-error" role="alert" hidden></div>
-          <button type="submit" class="primary wide">Apply &amp; restart</button>
+          <button type="submit" class="primary wide">Apply &amp; restart this multiplex</button>
         </form>
       </details>
     </aside>

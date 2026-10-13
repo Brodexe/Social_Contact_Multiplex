@@ -47,7 +47,7 @@ self.onmessage = async ({ data }) => {
   try {
     await ready;
     // The MILP strategy needs scipy (~10 MB); fetch it the first time it's asked for
-    if (path === '/api/reset' && body?.seed_algo === 'milp') {
+    if (path.startsWith('/api/reset') && body?.seed_algo === 'milp') {
       if (!scipyLoaded) {
         postMessage({ type: 'status', text: 'Loading scipy for the MILP…' });
         scipyLoaded = pyodide.loadPackage('scipy').catch((err) => { scipyLoaded = null; throw err; });

@@ -1,9 +1,11 @@
 // Selected seeds by degree, coreness and betweenness: the figure from
 // visualize_adaptive.py (_plot_selected_seed_counts), updated live. Each metric gets
-// its own panel and its own equal-width value bins; the colored bar counts selected
-// seeds in a bin. Behind it, a gray bar counts every node in that bin: the network's
-// own distribution (the Python figure overlays a KDE on a hidden second axis), here
-// on the same count axis so "chosen out of available" reads directly.
+// its own panel and its own equal-width value bins. Both bar series are probability
+// distributions over those bins, each summing to 100%: the colored bar is the share
+// of all seed picks that fall in a bin (a node picked in several batches counts once
+// per pick), and the gray bar behind it is the share of all nodes in that bin, the
+// network's own distribution (the Python figure overlays a KDE on a hidden second
+// axis). Where a colored bar rises above its gray bar, the strategy favors that range.
 const NS = 'http://www.w3.org/2000/svg';
 
 export const METRICS = [
@@ -26,8 +28,9 @@ function barPath(x, y, w, h) {
   return `M${x},${y + h}V${y + r}Q${x},${y} ${x + r},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h}Z`;
 }
 
-// np.linspace edges + np.digitize(values, edges[1:-1]) clipped to [0, bins-1], as in the Python
-export function binCounts(values, mask, bins) {
+// np.linspace edges + np.digitize(values, edges[1:-1]) clipped to [0, bins-1], as in the Python.
+// all: nodes per bin; sel: summed per-node weights (seed picks) per bin.
+export function binCounts(values, weights, bins) {
   let lo = Infinity, hi = -Infinity;
   for (const v of values) { lo = Math.min(lo, v); hi = Math.max(hi, v); }
   const edges = Array.from({ length: bins + 1 }, (_, i) => lo + (hi - lo) * i / bins);
@@ -36,7 +39,7 @@ export function binCounts(values, mask, bins) {
     let b = 0;
     for (let j = 1; j < bins; j++) if (v >= edges[j]) b = j;
     all[b]++;
-    if (mask[i]) sel[b]++;
+    sel[b] += weights[i];
   });
   return { edges, all, sel };
 }
@@ -59,9 +62,10 @@ export class SeedMetricChart {
     this.resizeObserver.observe(host);
   }
 
-  // metrics: {degree: [...], coreness: [...], betweenness: [...]} per node; mask: per-node 0/1
-  setData(metrics, mask, what) {
-    this.data = { metrics, mask, what };
+  // metrics: {degree: [...], coreness: [...], betweenness: [...]} per node;
+  // weights: per node, how many times it was picked as a seed (0 = never)
+  setData(metrics, weights, what) {
+    this.data = { metrics, weights, what };
     this.render();
   }
 
@@ -79,8 +83,11 @@ export class SeedMetricChart {
     const plotH = H - m.t - m.b;
     METRICS.forEach((metric, p) => {
       const x0 = p * (pw + gap);
-      const { edges, all, sel } = binCounts(this.data.metrics[metric.key], this.data.mask, this.bins);
-      const yMax = Math.max(1, ...all);
+      const { edges, all, sel } = binCounts(this.data.metrics[metric.key], this.data.weights, this.bins);
+      const picks = sel.reduce((a, b) => a + b, 0), nodes = all.reduce((a, b) => a + b, 0);
+      const selP = sel.map(v => (picks ? v / picks : 0)), allP = all.map(v => (nodes ? v / nodes : 0));
+      // Round the axis top up to the next 10% so panels stay comparable at a glance
+      const yMax = Math.min(1, Math.ceil(10 * Math.max(0.1, ...selP, ...allP) - 1e-9) / 10);
       const y = v => m.t + plotH * (1 - v / yMax);
       const px0 = x0 + m.l, pwIn = pw - m.l;
       const slot = pwIn / this.bins;
@@ -90,7 +97,7 @@ export class SeedMetricChart {
       el('line', { x1: px0, x2: x0 + pw, y1: y(0), y2: y(0), stroke: '#383835' }, this.svg);
       for (const v of [0, yMax]) {
         const lab = el('text', { x: px0 - 5, y: y(v) + 3.5, 'text-anchor': 'end', fill: '#898781', 'font-size': 10 }, this.svg);
-        lab.textContent = v;
+        lab.textContent = `${Math.round(100 * v)}%`;
       }
       for (const [v, anchor, xx] of [[edges[0], 'start', px0], [edges[this.bins], 'end', x0 + pw]]) {
         const lab = el('text', { x: xx, y: H - 4, 'text-anchor': anchor, fill: '#898781', 'font-size': 10 }, this.svg);
@@ -99,11 +106,14 @@ export class SeedMetricChart {
 
       for (let b = 0; b < this.bins; b++) {
         const bx = px0 + b * slot + 1, bw = Math.max(1, slot - 2);  // 2px surface gap between bars
-        const ghost = el('path', { d: barPath(bx, y(all[b]), bw, y(0) - y(all[b])), fill: 'rgba(240,239,236,0.13)' }, this.svg);
-        const bar = el('path', { d: barPath(bx, y(sel[b]), bw, y(0) - y(sel[b])), fill: metric.color }, this.svg);
+        const ghost = el('path', { d: barPath(bx, y(allP[b]), bw, y(0) - y(allP[b])), fill: 'rgba(240,239,236,0.13)' }, this.svg);
+        // Narrower than the ground-truth bar behind it, so both stay readable where they overlap
+        const inset = Math.min(bw * 0.18, 3);
+        const bar = el('path', { d: barPath(bx + inset, y(selP[b]), bw - 2 * inset, y(0) - y(selP[b])), fill: metric.color }, this.svg);
         // Hit target: the whole column, taller and wider than the bar
         const hit = el('rect', { x: px0 + b * slot, y: m.t, width: slot, height: plotH, fill: 'transparent' }, this.svg);
-        const info = { metric, lo: edges[b], hi: edges[b + 1], sel: sel[b], all: all[b], ghost, bar, cx: px0 + (b + 0.5) * slot };
+        const info = { metric, lo: edges[b], hi: edges[b + 1], sel: sel[b], all: all[b], picks, nodes,
+                       selP: selP[b], allP: allP[b], ghost, bar, cx: px0 + (b + 0.5) * slot };
         this.bars.push(info);
         hit.addEventListener('pointerenter', () => this._show(info));
       }
@@ -116,11 +126,11 @@ export class SeedMetricChart {
 
   _show(info) {
     this._highlight(info);
-    const { metric, lo, hi, sel, all } = info;
-    const pct = all ? ` (${Math.round(100 * sel / all)}%)` : '';
+    const { metric, lo, hi, sel, all, picks, nodes, selP, allP } = info;
+    const pct = (p) => `${(100 * p).toFixed(p > 0 && p < 0.1 ? 1 : 0)}%`;
     this.tip.innerHTML = `<div class="muted" style="margin-bottom:3px">${metric.label} ${metric.fmt(lo)}–${metric.fmt(hi)}</div>`
-      + `<div class="row"><span style="display:flex;align-items:center;gap:6px"><span class="sw" style="--c:${metric.color}"></span>${this.data.what}</span><b>${sel}${pct}</b></div>`
-      + `<div class="row"><span style="display:flex;align-items:center;gap:6px"><span class="sw" style="--c:rgba(240,239,236,0.35)"></span>All nodes</span><b>${all}</b></div>`;
+      + `<div class="row"><span style="display:flex;align-items:center;gap:6px"><span class="sw" style="--c:${metric.color}"></span>${this.data.what}</span><b>${pct(selP)} <span class="muted">· ${sel} of ${picks}</span></b></div>`
+      + `<div class="row"><span style="display:flex;align-items:center;gap:6px"><span class="sw" style="--c:rgba(240,239,236,0.35)"></span>All nodes</span><b>${pct(allP)} <span class="muted">· ${all} of ${nodes}</span></b></div>`;
     this.tip.hidden = false;
     const W = this.host.clientWidth, tw = this.tip.offsetWidth;
     this.tip.style.left = `${Math.max(0, Math.min(W - tw, info.cx - tw / 2))}px`;
