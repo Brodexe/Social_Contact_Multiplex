@@ -71,21 +71,12 @@ The scenario panel's Seed selection section runs the capstone seed-selection str
 
 Hosted app: https://tarlok04-multiplex-sirs.static.hf.space (Hugging Face Space: https://huggingface.co/spaces/tarlok04/multiplex-sirs). It is a static build in which the same simulation code runs in the visitor's browser under Pyodide (app/static/js/pyodide-worker.js loads app/browser_api.py, which wraps app/core.py exactly as app/server.py does over HTTP), so no server is needed. The front end uses app/server.py when /api/ is reachable and falls back to Pyodide otherwise. To republish after changes: `hf auth login` once, then `python deploy/push_to_hf.py` from the repo root (it runs deploy/build_static.py, which writes deploy/site/; preview that locally with `python -m http.server -d deploy/site 8001`).
 
-Note on known issues: several files in this repo currently call functions with arguments that no longer match their target's signature, or import modules that have since been removed, and will raise errors if run as-is. These are called out explicitly, file by file, in the sections below rather than silently documented as working.
-
 This README covers purpose and functionality of main folder .py files.
 
 Files are grouped by area: graph/network generation utilities, influence
 maximization, the core SIRS epidemic simulator, real-world dataset network
 construction, the Mean Field Approximation (MFA) pipeline, and the
 adaptive/MILP quarantine-seed-selection ("capstone") pipeline.
-
-Several files reference other modules that no longer exist in the repo
-(informingcontact.py, lt_ic_loss_function.py, milp_local.py, etc. have been
-removed) or call functions with signatures that have since changed. Where a
-file is currently broken because of this, it is called out explicitly below
-rather than glossed over.
-
 
 =====================================================
 Graph & network generation utilities
@@ -337,9 +328,6 @@ Current top-level functions:
   - `pickle_load(filename='experiment_data/pickles.pkl')` — loads and
     prints that pickle file.
 
-`__main__` currently only calls `plot_all_quarantine(num_trials=5)`; other
-invocations, including calls to functions named `FJ()` and `compare_FJ_IC()`
-that no longer exist in this file, are commented out as stale scaffolding.
 
 
 =====================================================
@@ -565,11 +553,6 @@ matrices across several correlated networks, and provides a re-parser.
 `write_matrices_to_file` / `parse_matrices` serialize and reload
 experiment_data/loss_matrices.txt with per-line column-count validation.
 `simplify_matrices` reduces every matrix to only its final row.
-
-Note: this file is currently non-runnable — its first import,
-`import lt_ic_loss_function as lc`, refers to a module that no longer exists
-anywhere in the repo. Any use of this script requires either restoring that
-module or reworking the loss-matrix computation it depends on.
 
 
 =====================================================
