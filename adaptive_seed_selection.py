@@ -41,7 +41,7 @@ beta_R = 0.25   # Upper bound for heterogeneous beta
 Gamma  = 2      # Shape parameter: higher values skew beta toward beta_R
 
 adherence = 1.0
-num_simulations = 25
+num_simulations = 10
 
 batch_interval = 2  # Seeds and cost updated once every batch_interval steps
 information_spread = True

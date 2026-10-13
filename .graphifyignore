@@ -1,0 +1,13 @@
+# Generated outputs and raw data -- not useful in the knowledge graph
+result_figures/
+capstone_result_figures/
+capstone_proj_data/
+experiment_data/
+logs/
+my-repo-backup.git/
+.venv/
+__pycache__/
+*.pkl
+# Third-party vendored libs and the deploy build copy of app/static
+**/vendor/
+deploy/site/
