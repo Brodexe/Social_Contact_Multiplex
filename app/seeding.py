@@ -30,6 +30,11 @@ Cost of a batch window (global_cost_function in both scripts), each term capped 
   seeds       seed-set size / n
 The user picks which terms count. Hill-climb accepts swaps and the MILP weights
 its objective using exactly those terms; the other strategies only report cost.
+
+g needs the baseline runs, so as in the research scripts (initialize() runs them all
+over T before any strategy) they are collected first: SeedPolicyRun starts in a
+baseline phase (baseline_step, one run per call, so the app can show progress) and
+chooses its first batch only once every run is in.
 """
 
 import random
@@ -94,32 +99,62 @@ class BaselineRuns:
     """No-quarantine reference runs (adaptive_seed_selection.baseline_infections), whose
     per-tick max newly infected normalizes the infection term. Each tick there is a
     one-step Simulate_SIR(q=False) call, i.e. a fresh N/P process and one sirs_step,
-    done here directly since nothing else in that call touches the dynamics. The app
-    has no fixed horizon, so runs are extended on demand."""
+    done here directly since nothing else in that call touches the dynamics.
 
-    def __init__(self, contact, beta, gamma, mu, init, runs, seed):
-        self.G, self.beta, self.gamma, self.mu = contact, beta, gamma, mu
+    As in the research scripts, whose initialize() runs every baseline over the full
+    horizon T before any strategy starts, the runs are collected up front, one whole
+    run per run_next() call so the app can show progress. The app has no fixed end,
+    so past the horizon all runs are extended together on demand."""
+
+    def __init__(self, contact, beta, gamma, mu, init, runs, seed, horizon=100):
+        self.G, self.beta, self.gamma, self.mu, self.init = contact, beta, gamma, mu, init
         self.n = contact.number_of_nodes()
+        self.runs, self.horizon = runs, horizon
         self.rng = _RngStream(seed)
+        self.counts = []   # per collected run: newly infected per tick
+        self.states = []   # per collected run: state after its last tick
+        self.max_new = []  # tick -> max over runs of newly infected (once all runs are in)
+
+    @property
+    def done(self):
+        return len(self.counts) >= self.runs
+
+    def _tick(self, prev, t):
+        n = self.n
+        L = [0] * (n - 1) + [1]
+        P_prime, _, _ = SIR.update_N_P(1, n - 1, n)
+        L = SIR.transition(L, P_prime)
+        state = SIR.sirs_step(self.G, prev, L, self.beta, self.gamma, self.mu)
+        return state, sum(1 for u in state if state[u] == 1 and (t == 0 or prev[u] != 1))
+
+    def run_next(self):
+        """Collect one more run over the horizon."""
+        if self.done:
+            return
         with self.rng.active():
-            # make_initial_state
-            self.states = [{u: (1 if random.random() < init else 0) for u in contact.nodes()}
-                           for _ in range(runs)]
-        self.max_new = []  # tick -> max over runs of newly infected
+            state = {u: (1 if random.random() < self.init else 0) for u in self.G.nodes()}  # make_initial_state
+            counts = []
+            for t in range(self.horizon):
+                state, new = self._tick(state, t)
+                counts.append(new)
+        self.counts.append(counts)
+        self.states.append(state)
+        if self.done:
+            self.max_new = [max(c[t] for c in self.counts) for t in range(self.horizon)]
+
+    def finish(self):
+        while not self.done:
+            self.run_next()
 
     def _extend(self, t_max):
-        n = self.n
+        self.finish()
         with self.rng.active():
             while len(self.max_new) <= t_max:
                 t = len(self.max_new)
                 best = 0
                 for r, prev in enumerate(self.states):
-                    L = [0] * (n - 1) + [1]
-                    P_prime, _, _ = SIR.update_N_P(1, n - 1, n)
-                    L = SIR.transition(L, P_prime)
-                    state = SIR.sirs_step(self.G, prev, L, self.beta, self.gamma, self.mu)
-                    self.states[r] = state
-                    new = sum(1 for u in state if state[u] == 1 and (t == 0 or prev[u] != 1))
+                    self.states[r], new = self._tick(prev, t)
+                    self.counts[r].append(new)
                     best = max(best, new)
                 self.max_new.append(best)
 
@@ -167,6 +202,7 @@ class CostModel:
             "cost": sum(terms[k] for k in self.terms),
             "terms": terms,
             "raw": {"infections": int(infected), "edges": float(removed), "seeds": int(seed_count)},
+            "weights": {"alpha_w": alpha_w, "beta_w": beta_w},
         }
 
 
@@ -348,7 +384,7 @@ class SeedPolicyRun:
                  q=False, q_mech=("ic", 0.02), adherence=None, mc=1000,
                  algorithm="degree", k=None, batch_interval=2, info_spread=True,
                  cost_terms=("infections", "edges"), baseline_runs=10, baseline_seed=None,
-                 initial_state_dict=None):
+                 baseline_horizon=100, initial_state_dict=None, misinfo=None):
         n = contact_network.number_of_nodes()
         self.n = n
         self.G0 = contact_network
@@ -361,6 +397,10 @@ class SeedPolicyRun:
             raise ValueError(f"Seeds per batch K must be between 0 and the network's {n} nodes")
         self.batch_interval = int(batch_interval)
         self.info_spread = info_spread
+        # MultiplexSIRS's misinfo / misinfo_seeds / misinfo_mode / misinfo_val kwargs, passed
+        # to every batch's simulation: like information, misinformation restarts from its
+        # seeds (and the non-adherers) each batch, as a fresh Simulate_SIR call would
+        self.misinfo = dict(misinfo or {})
 
         # Same draws, in the same order, as MultiplexSIRS: adherence, then initial infections
         if isinstance(adherence, float) and 0 <= adherence <= 1:
@@ -376,8 +416,9 @@ class SeedPolicyRun:
             state = {u: np.random.choice(a=[1, 0], size=1, p=[init, 1 - init])[0] for u in range(n)}
         self.state = {u: int(s) for u, s in state.items()}
 
-        baselines = BaselineRuns(contact_network, beta, gamma, mu, init, baseline_runs, baseline_seed)
-        self.cost_model = CostModel(contact_network, cost_terms, self.batch_interval, baselines)
+        self.baselines = BaselineRuns(contact_network, beta, gamma, mu, init, baseline_runs,
+                                      baseline_seed, horizon=int(baseline_horizon))
+        self.cost_model = CostModel(contact_network, cost_terms, self.batch_interval, self.baselines)
 
         self.t = 0
         self.sim = None            # MultiplexSIRS for the current batch (or tick)
@@ -386,7 +427,7 @@ class SeedPolicyRun:
         self.removed_costs = []    # per tick
         self.costs = []            # one per completed batch
         self.batch = 0             # index of the batch being shown (1-based once running)
-        self.seeds = []            # seeds of the batch being shown (before t=1: the first batch's)
+        self.seeds = []            # seeds of the batch being shown (before t=1: the first batch's, once chosen)
         self.removed = set()       # MILP edge removals of that batch
         self.new_batch = False     # a batch started on the last step
         self.new_cost = None       # cost evaluated on the last step
@@ -395,19 +436,50 @@ class SeedPolicyRun:
         self.state_since = {u: 0 for u in range(n)}
         self.times_infected = {u: int(self.state[u] == 1) for u in range(n)}
         self.informed_at = {}
+        self.misinformed_at = {}
         self.quarantine_since = {}
         self.new_infected = []
         self.new_informed = []
+        self.new_misinformed = []
         self._prev_informed = set()
+        self._prev_misinformed = set()
 
         self.strategy = STRATEGIES[algorithm](self)
-        self._pending = self.strategy.select(self)
-        self.seeds = sorted(int(u) for u in self._pending[0])
+        # The first batch is chosen once the baselines are in (baseline_step), since the
+        # MILP's objective and every batch cost are normalized by them
+        self._pending = None
+
+    @property
+    def collecting_baselines(self):
+        return self._pending is None
+
+    def baseline_step(self):
+        """Collect one more no-quarantine baseline run; once all are in, choose the first batch."""
+        self.baselines.run_next()
+        if self.baselines.done and self._pending is None:
+            self._pending = self.strategy.select(self)
+            self.seeds = sorted(int(u) for u in self._pending[0])
+
+    def finish_baselines(self):
+        while self.collecting_baselines:
+            self.baseline_step()
 
     # Attributes Session.snapshot() reads from the live simulation
     @property
     def informed(self):
         return self.sim.informed if self.sim is not None else set()
+
+    @property
+    def misinformed(self):
+        return self.sim.misinformed if self.sim is not None else set()
+
+    @property
+    def misinfo_seed_nodes(self):
+        return self.sim.misinfo_seed_nodes if self.sim is not None else set()
+
+    @property
+    def fj_xm(self):
+        return self.sim.fj_xm if self.sim is not None else None
 
     @property
     def contact(self):
@@ -424,6 +496,7 @@ class SeedPolicyRun:
         return {u: 0.0 for u in range(self.n)} if self.q_mech[0] == "FJ" else None
 
     def step(self):
+        self.finish_baselines()
         t, bi = self.t, self.batch_interval
         self.new_batch = t % bi == 0
         if self.new_batch:
@@ -437,7 +510,7 @@ class SeedPolicyRun:
                 contact, deepcopy(self.social0), beta=self.beta, gamma=self.gamma, mu=self.mu,
                 init=self.init, q=self.q, q_mech=self.q_mech, adherence=set(self.adhering),
                 begin_q=0, seeds=list(self.seeds), initial_state_dict=self.state,
-                T=bi if self.info_spread else 0, mc=self.mc)
+                T=bi if self.info_spread else 0, mc=self.mc, **self.misinfo)
 
         prev = self.state
         self.sim.step()
@@ -477,6 +550,10 @@ class SeedPolicyRun:
         self.new_informed = sorted(informed - self._prev_informed)
         self._prev_informed = informed
         self.informed_at = {u: self.informed_at.get(u, t) for u in informed}
+        misinformed = set(int(u) for u in self.sim.misinformed)
+        self.new_misinformed = sorted(misinformed - self._prev_misinformed)
+        self._prev_misinformed = misinformed
+        self.misinformed_at = {u: self.misinformed_at.get(u, t) for u in misinformed}
 
     def static_info(self):
         return {
@@ -486,12 +563,30 @@ class SeedPolicyRun:
             "batch_interval": self.batch_interval,
             "info_spread": self.info_spread,
             "terms": list(self.cost_model.terms),
+            "baseline": self.baseline_info(curves=True),
         }
 
+    def baseline_info(self, curves=False):
+        b = self.baselines
+        info = {"done": len(b.counts), "runs": b.runs, "horizon": b.horizon}
+        if curves:
+            info["counts"] = [c[:b.horizon] for c in b.counts]
+        return info
+
     def snapshot_info(self):
-        return {
+        collecting = self.collecting_baselines
+        info = {
+            "phase": "baseline" if collecting else "run",
             "batch": self.batch,
             "new_batch": self.new_batch,
             "cost": self.new_cost,
             "milp_removed": len(self.removed),
+            "baseline": self.baseline_info(),
         }
+        # The newest run's curve, while runs are still being added (t = 0); afterwards the
+        # panel already has them all
+        if self.t == 0 and self.baselines.counts:
+            info["baseline"]["latest"] = self.baselines.counts[-1][:self.baselines.horizon]
+        if isinstance(self.strategy, HillClimb) and not collecting:
+            info["utilities"] = [round(float(self.strategy.utilities[u]), 4) for u in range(self.n)]
+        return info

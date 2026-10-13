@@ -16,6 +16,7 @@
   --r: #199e70;    /* recovered */
   --inf: #c98500;  /* informed */
   --uninf: #6f7889; /* not informed */
+  --misinf: #d55181; /* misinformed (always paired with the won't-adhere slash) */
   --q: #9085e9;    /* quarantining */
   --sel: #f0efec;  /* selection */
 
@@ -140,6 +141,7 @@ table.metrics .pct { color: var(--muted); font-size: 11px; margin-left: 4px; }
 .strip { display: flex; height: 14px; border-radius: 3px; overflow: hidden; gap: 1px; }
 .strip i { flex: 1; min-width: 1px; position: relative; }
 .strip i.inf::after { content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 2px; background: var(--inf); }
+.strip i.mis::after { content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 2px; background: var(--misinf); }
 .strip-wrap { padding-bottom: 5px; }
 .strip-axis { display: flex; justify-content: space-between; color: var(--muted); font-size: 10.5px; margin-top: 5px; }
 
@@ -162,7 +164,7 @@ table.metrics .pct { color: var(--muted); font-size: 11px; margin-left: 4px; }
 }
 .panel-head { display: flex; justify-content: space-between; align-items: flex-start; }
 .panel-head h1 { font-size: 17px; margin: 0 0 2px; font-weight: 650; letter-spacing: -0.01em; }
-.tick { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.tick { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; flex: none; margin-left: 12px; }
 .tick .muted { font-size: 13px; font-weight: 400; }
 .muted { color: var(--muted); }
 .small { font-size: 11.5px; }
@@ -185,7 +187,7 @@ button:disabled { opacity: .4; cursor: default; }
 .speed input { width: 70px; accent-color: var(--text-2); }
 #speed-value { width: 26px; text-align: right; font-variant-numeric: tabular-nums; color: var(--text-2); }
 
-.tiles { display: grid; grid-template-columns: repeat(5, minmax(max-content, 1fr)); gap: 5px; }
+.tiles { display: grid; grid-template-columns: repeat(var(--cols, 5), minmax(max-content, 1fr)); gap: 5px; }
 .tile { background: var(--surface-2); border-radius: 8px; padding: 7px 8px; min-width: 0; }
 .tile .lab { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-2); white-space: nowrap; overflow: hidden; }
 .tile .sw { width: 8px; height: 3px; border-radius: 2px; background: var(--c); flex: none; }
@@ -233,7 +235,7 @@ button:disabled { opacity: .4; cursor: default; }
 .scenario label.inline input { width: 110px; }
 .hint { font-size: 11.5px; color: var(--muted); line-height: 1.45; }
 .hint:empty { display: none; }
-[data-when][hidden], .form-error[hidden] { display: none !important; }
+[data-when][hidden], .form-error[hidden], .legend [hidden], #misinfo-fields[hidden] { display: none !important; }
 .hint b { color: var(--text-2); font-weight: 600; }
 .form-error {
   font-size: 12px; color: var(--text); background: rgba(217, 89, 38, 0.14);
@@ -276,3 +278,76 @@ button.wide { width: 100%; margin-top: 4px; }
   body { overflow: auto; }
   #help { display: none; }
 }
+
+/* ------------------------------------------------------- multiplexes ---- */
+:root {
+  /* Accent per multiplex slot: mirrors SLOT_COLORS in js/palette.js */
+  --slot-0: #e6e4dc;
+  --slot-1: #e377c2;
+  --slot-2: #17becf;
+}
+.slot-badge {
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  min-width: 17px; height: 17px; padding: 0 4px; border-radius: 4px; margin-right: 6px;
+  background: var(--slot, var(--text-2)); color: var(--page);
+  font-size: 11px; font-weight: 700; letter-spacing: 0; text-transform: none; vertical-align: 1px;
+}
+.layer-label { border-color: color-mix(in srgb, var(--slot, #fff) 55%, transparent); }
+.tick .slot-badge { font-size: 12px; height: 20px; min-width: 20px; vertical-align: 3px; }
+#hover-tip .slot-badge { height: 15px; min-width: 15px; font-size: 10px; margin-right: 4px; }
+
+.slot-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-top: -6px; }
+.slot-tab {
+  display: flex; align-items: center; gap: 2px; padding: 5px 6px 5px 8px; min-width: 0;
+  background: var(--surface-2); border: 1px solid var(--border); border-left: 3px solid var(--slot);
+  border-radius: 8px; cursor: pointer; flex: 1 1 120px;
+}
+.slot-tab:hover { border-color: color-mix(in srgb, var(--slot) 45%, transparent); border-left-color: var(--slot); }
+.slot-tab.on { background: color-mix(in srgb, var(--slot) 10%, var(--surface-2)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--slot) 70%, transparent); }
+.slot-tab:focus-visible { outline: 2px solid var(--slot); outline-offset: 1px; }
+.slot-meta { display: flex; flex-direction: column; min-width: 0; line-height: 1.25; }
+.slot-meta b { font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.slot-meta .muted { font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.slot-remove {
+  margin-left: auto; background: none; border: 0; color: var(--muted); cursor: pointer;
+  font-size: 16px; line-height: 1; padding: 2px 5px; border-radius: 4px;
+}
+.slot-remove:hover { color: var(--text); background: var(--surface); }
+.slot-add {
+  flex: 0 1 auto; background: none; border: 1px dashed var(--axis); border-radius: 8px;
+  color: var(--text-2); padding: 5px 10px; cursor: pointer;
+}
+.slot-add:hover { color: var(--text); border-color: var(--muted); }
+
+#node-card, #group-card { border-top: 2px solid var(--slot, var(--border)); }
+
+/* Preliminary baseline collection: amber dashed, so it never reads as the experiment */
+#phase-banner {
+  position: absolute; top: 58px; left: 50%; transform: translateX(-50%); z-index: 8;
+  width: min(560px, calc(100% - 28px)); padding: 9px 13px; border-radius: 10px;
+  background: rgba(26, 26, 25, 0.96); border: 1px dashed rgba(201, 133, 0, 0.75);
+  box-shadow: 0 10px 30px rgba(0,0,0,.5); display: flex; flex-direction: column; gap: 4px;
+}
+#phase-banner[hidden] { display: none; }
+.phase-title {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--inf); font-weight: 600;
+}
+.spinner.small { width: 11px; height: 11px; border-width: 2px; border-top-color: var(--inf); }
+
+#baseline-wrap.collecting { border: 1px dashed rgba(201, 133, 0, 0.6); border-radius: 8px; padding: 2px 10px 10px; }
+#baseline-wrap.collecting .sub-title { color: var(--inf); }
+.progress { height: 6px; border-radius: 3px; background: var(--grid); overflow: hidden; margin: 6px 0 8px; }
+.progress span { display: block; height: 100%; width: 0; background: var(--inf); transition: width .2s ease; }
+#baseline-chart { margin-top: 6px; }
+
+.note { font-size: 11px; color: var(--muted); line-height: 1.45; margin: -4px 0 10px; }
+.note b { color: var(--text-2); font-weight: 500; }
+#tie-weights-row[hidden] { display: none; }
+.scenario label.check#tie-weights-row { padding-top: 0; }
+table.ties td:first-child .muted { font-size: 10.5px; margin-left: 3px; }
+table.ties tr.none td { color: var(--muted); }
+.hint table.ties { margin: 8px 0 6px; }
+.hint .note { margin: 0; }
+.kv .pct { color: var(--muted); font-size: 11px; margin-left: 6px; }
+table.ties td + td, table.ties th + th { padding-left: 10px; }

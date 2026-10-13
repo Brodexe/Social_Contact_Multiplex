@@ -100,6 +100,146 @@ def restore_edges(g_init, g, node, already_quarantining):
     return g
 
 
+# ---------------------------------------------------------------------------------------
+# Misinformation (optional; off unless Simulate_SIR is called with misinfo=True)
+#
+# A second cascade competes with information on the social network. Misinformers start
+# as a seed set at begin_q just like informers, and every non-adherer is one of them:
+# with misinformation on, non-adherence is no longer a fixed label but the misinformed
+# state itself. The people the adherence draw leaves out are misinformation seeds;
+# anyone misinformed later stops adhering (never quarantines, and one already
+# quarantining breaks it off); anyone won back by information adheres again.
+# Misinformation spreads by the same mechanism as information (IC / LT / FJ), with its
+# own cascade value (misinfo_val: IC p, LT threshold, or FJ kappa; default the same).
+#
+# misinfo_mode:
+#   "takeover" -- each side converts the other side's members it reaches (seeds of
+#                 either kind never switch). LT only converts with a strict majority of
+#                 active predecessors, so a node can't flip back and forth every tick.
+#   "collide"  -- only uninformed people can be reached; whoever reaches them first
+#                 keeps them and no one switches sides afterwards.
+# Someone reached by both sides in the same tick goes to one of them at random (LT: to
+# the side with more active predecessors, at random on a tie). A person in both seed
+# sets is an information seed.
+#
+# FJ: misinformation has its own belief field xm, spread from its own seeds exactly as
+# information's field x is from information seeds (each seed set pinned at 1), so x is
+# the same field as without misinformation. Each tick a person not yet on a side is
+# reached by information with probability x^kappa and by misinformation with
+# probability xm^kappa_m (with takeover, a non-seed on the other side is too). Edge
+# cutting uses x as before, but zero for misinformed people, since they don't quarantine.
+# ---------------------------------------------------------------------------------------
+MISINFO_MODES = ("takeover", "collide")
+
+
+def misinfo_seed_set(social_network, misinfo_seeds, non_adhering, informed):
+    """Initial misinformed set: the explicit misinformation seeds (a list/set, or a count
+    drawn like find_seeds.find_seed_set, with probability proportional to degree^2, from
+    people who aren't information seeds) plus every non-adherer, minus information seeds."""
+    informed = set(informed)
+    if isinstance(misinfo_seeds, (set, list)):
+        chosen = set(misinfo_seeds)
+    elif isinstance(misinfo_seeds, int) and misinfo_seeds > 0:
+        degrees = dict(social_network.degree())
+        nodes = [u for u in degrees if u not in informed]
+        if misinfo_seeds > len(nodes):
+            raise ValueError(f"Cannot choose {misinfo_seeds} misinformation seeds: only "
+                             f"{len(nodes)} people aren't information seeds")
+        probs = np.array([degrees[u] ** 2 + 1e-6 for u in nodes])
+        chosen = set(np.random.choice(nodes, size=misinfo_seeds, replace=False, p=probs / probs.sum()))
+    else:
+        chosen = set()
+    return (chosen | set(non_adhering)) - informed
+
+
+def set_info_label(contact_network, social_network, node, label):
+    """Label a node 'Informed', 'Misinformed' or 'Uninformed' in both layers. With
+    misinformation on, adherence follows it: only the misinformed don't adhere."""
+    adheres = 'No' if label == 'Misinformed' else 'Yes'
+    for g in (contact_network, social_network):
+        g.nodes[node]['Informed?'] = label
+        g.nodes[node]['Adheres?'] = adheres
+
+
+def break_quarantine(g_init, g, nodes, quarantine_statuses, already_quarantining):
+    """Newly misinformed people stop quarantining: their contacts are restored (except to
+    people still quarantining) and their quarantine status cleared."""
+    for u in sorted(nodes):
+        if quarantine_statuses[u] > 0 or u in already_quarantining:
+            quarantine_statuses[u] = 0
+            restore_edges(g_init, g, u, already_quarantining)
+            while u in already_quarantining:
+                already_quarantining.remove(u)
+
+
+def fj_belief_update(social_network, x, stubborn):
+    """One Friedkin-Johnsen step: x_i <- (s_i + sum_j x_j) / (1 + deg_i), s_i = 0 off the
+    stubborn set, whose beliefs stay pinned at 1 (as Simulate_SIR's FJ update does)."""
+    return {node: 1.0 if node in stubborn
+            else sum(x[nb] for nb in social_network.neighbors(node)) / (1 + social_network.degree(node))
+            for node in social_network.nodes()}
+
+
+def competing_spread_step(social_network, mech_type, mech_val, misinfo_val, informed, misinformed,
+                          info_seeds, misinfo_seeds, mode="takeover", fj_x=None, fj_xm=None, mc=1000):
+    """One tick of information and misinformation spreading side by side on the social
+    network (see the block comment above). Both sides spread from the start-of-tick sets.
+    Returns (informed, misinformed, fj_x, fj_xm, info_prob_matrix) as new objects;
+    info_prob_matrix is IM.IC_prob_matrix's marginals for information under IC, else None."""
+    I, M = set(informed), set(misinformed)
+    takeover = mode == "takeover"
+    prob_matrix = None
+    reach_I, reach_M = set(), set()
+    count_I = count_M = None  # LT: active predecessors per side, for ties and takeovers
+
+    if mech_type == "ic":
+        if I:
+            prob_matrix, reached = IM.IC_prob_matrix(social_network, S=list(I), p=mech_val, mc=mc)
+            reach_I = set(reached) - I
+        if M:
+            reach_M = set(IM.IC_prob_matrix(social_network, S=list(M), p=misinfo_val, mc=mc)[1]) - M
+    elif mech_type == "lt":
+        if I:
+            reach_I = set(IM.lt_prob_matrix(social_network, S=list(I), threshold=mech_val)[1]) - I
+        if M:
+            reach_M = set(IM.lt_prob_matrix(social_network, S=list(M), threshold=misinfo_val)[1]) - M
+        count_I = {u: sum(1 for p in social_network.predecessors(u) if p in I) for u in reach_I | reach_M}
+        count_M = {u: sum(1 for p in social_network.predecessors(u) if p in M) for u in reach_I | reach_M}
+    elif mech_type == "FJ":
+        fj_x = fj_belief_update(social_network, fj_x, info_seeds)
+        fj_xm = fj_belief_update(social_network, fj_xm, misinfo_seeds)
+        # One draw per side for each person that side could still win
+        for node in social_network.nodes():
+            if node not in I and (node not in M or (takeover and node not in misinfo_seeds)):
+                if random.random() < fj_x[node] ** mech_val:
+                    reach_I.add(node)
+            if node not in M and (node not in I or (takeover and node not in info_seeds)):
+                if random.random() < fj_xm[node] ** misinfo_val:
+                    reach_M.add(node)
+    else:
+        raise ValueError(f"Unknown spread mechanism {mech_type!r}")
+
+    new_I, new_M = set(I), set(M)
+    for u in sorted(reach_I | reach_M):
+        if u in I:  # only misinformation can reach an informed person
+            if takeover and u not in info_seeds and (count_M is None or count_M[u] > count_I[u]):
+                new_I.discard(u)
+                new_M.add(u)
+        elif u in M:
+            if takeover and u not in misinfo_seeds and (count_I is None or count_I[u] > count_M[u]):
+                new_M.discard(u)
+                new_I.add(u)
+        elif u in reach_I and u in reach_M:  # uninformed, reached by both this tick
+            if count_I is not None and count_I[u] != count_M[u]:
+                to_info = count_I[u] > count_M[u]
+            else:
+                to_info = random.random() < 0.5
+            (new_I if to_info else new_M).add(u)
+        else:
+            (new_I if u in reach_I else new_M).add(u)
+    return new_I, new_M, fj_x, fj_xm, prob_matrix
+
+
 # q: Set to True if you want quarantine with fixed/variable periods and edge restoration after quarantine ends
 #    Set to False to disable quarantine entirely
 #    Set to "r" if you want quarantine (edges removed on infection) but restore edges immediately upon recovery (no fixed period)
@@ -122,13 +262,26 @@ def restore_edges(g_init, g, node, already_quarantining):
 #            Can also be a list of nodes that adhere to quarantine
 # seeds: a list of seed nodes for information spread. If None, seeds are chosen randomly.
 # initial_state_dict: Optional dictionary mapping node -> state (0=S, 1=I, 2=R). If provided, uses this instead of random initial infections.
+# misinfo: Set to True to add competing misinformation (see the block comment above competing_spread_step).
+#          Off by default, in which case nothing below changes. With it on, every non-adherer
+#          is a misinformation seed and adherence becomes "not misinformed".
+# misinfo_seeds: extra misinformation seeds beyond the non-adherers: a list/set of nodes, or a count
+#          drawn with probability proportional to social degree^2 (as find_seeds does for `seeds`).
+# misinfo_mode: "takeover" (each side can convert the other's members) or "collide" (first come, kept).
+# misinfo_val: misinformation's IC p / LT threshold / FJ kappa; None uses q_mech's value.
 def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
-                 q=False, q_mech=("ic", 0.02), adherence=None, begin_q=0, seeds=None, initial_state_dict=None):
+                 q=False, q_mech=("ic", 0.02), adherence=None, begin_q=0, seeds=None, initial_state_dict=None,
+                 misinfo=False, misinfo_seeds=None, misinfo_mode="takeover", misinfo_val=None):
 
     if begin_q is None:
         begin_q = 0
 
     mech_type, mech_val = q_mech
+    if misinfo:
+        if misinfo_mode not in MISINFO_MODES:
+            raise ValueError(f"misinfo_mode must be one of {MISINFO_MODES}")
+        if misinfo_val is None:
+            misinfo_val = mech_val
 
     if social_network is None:
         social_network = correlated_graphs.create_social_graph(contact_network)[0]
@@ -252,6 +405,12 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
     informed = set()
     previous_informed = set()
 
+    # Misinformation (only used when misinfo is True)
+    misinformed = set()
+    info_seed_set, misinfo_seed_nodes = set(), set()
+    fj_xm = None  # FJ: misinformation's belief field
+    misinformed_series = []  # Hold list of misinformed at each time step
+
     for t in range(T):
 
         #-------------
@@ -287,10 +446,22 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
                 nx.set_node_attributes(contact_network, {node: {'Informed?': 'Informed'}})
                 nx.set_node_attributes(social_network, {node: {'Informed?': 'Informed'}})
 
+            if misinfo:
+                # Misinformers: the explicit misinformation seeds plus every non-adherer
+                info_seed_set = set(informed)
+                misinformed = misinfo_seed_set(social_network, misinfo_seeds, non_adhering, informed)
+                misinfo_seed_nodes = set(misinformed)
+                for node in informed:
+                    set_info_label(contact_network, social_network, node, 'Informed')
+                for node in misinformed:
+                    set_info_label(contact_network, social_network, node, 'Misinformed')
+
             if mech_type == "FJ":
                 # s_i = 1 for seeds, 0 for everyone else
                 fj_s = {node: (1.0 if node in informed else 0.0)
                         for node in social_network.nodes()}
+                if misinfo:  # misinformation's own field, pinned at 1 on its seeds
+                    fj_xm = {node: (1.0 if node in misinformed else 0.0) for node in social_network.nodes()}
                 # Seeds are stubborn: pin their beliefs at 1.0 from the start
                 for node in social_network.nodes():
                     fj_x[node] = fj_s[node]
@@ -299,8 +470,24 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
         #  branch above: when T_param == 1 (a single-tick call with spread requested), both
         #  the initial seeding AND one round of spread must happen within that same tick.
         if (t > begin_q) or (t == begin_q and T_param == 1):
+            if misinfo:
+                # Information and misinformation compete; each spreads if it has anyone
+                if informed or misinformed:
+                    prev_I, prev_M = informed, misinformed
+                    informed, misinformed, fj_x, fj_xm, prob_matrix = competing_spread_step(
+                        social_network, mech_type, mech_val, misinfo_val, informed, misinformed,
+                        info_seed_set, misinfo_seed_nodes, misinfo_mode, fj_x=fj_x, fj_xm=fj_xm, mc=1000)
+                    if prob_matrix is not None and isinstance(mech_val, float):
+                        quarantine_prob_matrix[t] = prob_matrix
+                    for node in informed - prev_I:
+                        set_info_label(contact_network, social_network, node, 'Informed')
+                    for node in misinformed - prev_M:
+                        set_info_label(contact_network, social_network, node, 'Misinformed')
+                    # Misinformed people don't quarantine: anyone just misinformed breaks it off
+                    break_quarantine(G_initial, contact_network, misinformed - prev_M,
+                                     quarantine_statuses, already_quarantining)
             # Can only spread if there are some seed nodes
-            if initial_informed_lst != []:
+            elif initial_informed_lst != []:
                 if mech_type == "ic":
                     ic_results = IM.IC_prob_matrix(social_network, S=list(informed), p=mech_val, mc=1000, quarantining=quarantine_statuses)
                     prob_matrix = ic_results[0]
@@ -381,8 +568,11 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
                 # higher shared conviction raises the chance of severing the tie, and a node can
                 # lose some ties while keeping others.
                 if t > begin_q and fj_x is not None:
+                    # Misinformed people don't quarantine, so their conviction cuts no ties
+                    cut_x = fj_x if not misinfo else {
+                        u: (0.0 if u in misinformed else x) for u, x in fj_x.items()}
                     for (u, v) in list(contact_network.edges()):
-                        if random.random() < 1.0 - math.exp(-(fj_x[u] + fj_x[v])):
+                        if random.random() < 1.0 - math.exp(-(cut_x[u] + cut_x[v])):
                             contact_network.remove_edge(u, v)
                             e = (min(u, v), max(u, v))
                             if q == "r":
@@ -446,6 +636,7 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
 
         informed_infected_series.append(i_prime_current)
         informed_series.append(infm_current)
+        misinformed_series.append(sorted(misinformed))
 
         quarantine_series.append(quarantine_statuses.copy())
         state_series.append(state.copy())
@@ -500,4 +691,5 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
     # See how far off avg. actually removed is from expected (k_0)
     # print("Average of avg. degrees of just-started quarantining nodes, over all time steps: ", np.mean([x for x in avg_avg_just if x is not None]))
 
-    return contact_network, state_changes, infection_data, quarantine_prob_matrix, state_series, social_network, dynamic_degree, informed_infected_series, informed_series, adhering, all_edges
+    # misinformed_series (index 11) is a list of empty lists unless misinfo is on
+    return contact_network, state_changes, infection_data, quarantine_prob_matrix, state_series, social_network, dynamic_degree, informed_infected_series, informed_series, adhering, all_edges, misinformed_series

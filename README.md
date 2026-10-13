@@ -65,9 +65,9 @@ Analysis: Parse outputs using MFA tools (extract_mfa.py) and compute adherence, 
 
 Visualization: Generate publication-quality plots of infection, informed populations, optimizer estimates, sensitivity/identifiability analyses, and quarantine-strategy comparisons.
 
-Interactive app: `python -m app.server` from the repo root, then open http://127.0.0.1:8000. It shows the social and contact layers as two rotatable 3D planes while the dual process runs, with play/pause/step, click or shift-drag selection, per-node and sub-population statistics, and a scenario panel. The panel builds both layers from parameters (app/networks.py): the contact layer as Erdős–Rényi G(n, p), a clustered random graph (same density, with a clustering share of edges placed by triadic closure), or any non-empty high-school time bin; the social layer as k-hop similarity (correlated_graphs.create_social_graph with chosen k and density), an edge-level correlation c in [-1, 1] with the contact layer (c = 1 copies its edges, c = -1 takes its complement, c = 0 is independent), or the high-school friendship survey. Node counts must match across layers and the app reports an error otherwise; the one exception is a high-school bin paired with the survey, which are aligned on the students present in both. The panel also sets the dynamics (IC/LT/FJ, quarantine mode, adherence, seeds, rates). The simulation is app/engine.py's MultiplexSIRS, a step-at-a-time version of SIR.Simulate_SIR built from SIR.py's own helpers; tests/test_engine_equivalence.py checks it reproduces Simulate_SIR exactly under identical RNG seeds, so update both together if the Simulate_SIR loop changes.
+Interactive app: `python -m app.server` from the repo root, then open http://127.0.0.1:8000. It shows the social and contact layers as two rotatable 3D planes while the dual process runs, with play/pause/step, click or shift-drag selection, per-node and sub-population statistics, and a scenario panel. Up to three multiplexes can run at once, each with its own scenario (tabs A/B/C, each framed in its own color in the scene); play and step advance all of them together. Layers can be laid out by force, by Louvain cluster (communities as separate islands), or on a grid grouped by community, each layer by its own structure or aligned on the contact layer's positions, with animated transitions. The panel builds both layers from parameters (app/networks.py): the contact layer as Erdős–Rényi G(n, p), a stochastic block model (same density, with the number of clusters, the share of block-model edges between clusters, and a triadic-closure share that sets the clustering coefficient separately), any non-empty high-school time bin, or a Reality Commons time bin (rc_weighted_contact_bin{i}.gml, whose edge weights feed the edge-removal cost); the social layer as k-hop similarity (correlated_graphs.create_social_graph with chosen k and density), an edge-level correlation c in [-1, 1] with the contact layer (c = 1 copies its edges, c = -1 takes its complement, c = 0 is independent), the high-school friendship survey, or the Reality Commons relationship survey (rc_social_network.gml; node cards and the scenario panel show its relationship-type weights and why they were chosen, from mit_rc_network_creation.py; with independent cascade, the weights can optionally serve as per-tie cascade probabilities in place of the single p). Node counts must match across layers and the app reports an error otherwise; the exception is a real contact bin paired with its own survey, which are aligned on the people present in both. The panel also sets the dynamics (IC/LT/FJ, quarantine mode, adherence, seeds, rates). An optional Misinformation section (off by default) adds a competing misinformation cascade (see SIR.py below): extra misinformation seeds, misinformation's own cascade value, and whether the two sides take each other's people over or only collide. With it on, misinformed people are magenta and slashed (they never adhere) in the social layer, misinformation seeds are magenta diamonds, misinformation's frontier ties are magenta, and the tiles, population chart, node and group cards add a Misinformed count. The Labels button in the view bar hides each network's multiplex letter and layer name. The simulation is app/engine.py's MultiplexSIRS, a step-at-a-time version of SIR.Simulate_SIR built from SIR.py's own helpers; tests/test_engine_equivalence.py checks it reproduces Simulate_SIR exactly under identical RNG seeds, so update both together if the Simulate_SIR loop changes.
 
-The scenario panel's Seed selection section runs the capstone seed-selection strategies in the app (app/seeding.py): hill-climb, degree-based, coreness-over-betweenness, and random from adaptive_seed_selection.py, and the step-wise MILP from milp.py. With a strategy chosen, seeds are re-selected every batch of ticks from t = 0, and each batch restarts with only its seeds informed and quarantine cuts lifted, as the research scripts do by calling Simulate_SIR once per batch. The user sets the seeds per batch K (default 3/4 of the nodes, as in the scripts), the batch length, whether information spreads within a batch, the number of no-quarantine baseline runs that normalize the infection term, and which cost terms count: infections, edge removals, and seeds (seed-set size / n). Hill-climb accepts or rejects swaps on those terms and the MILP minimizes them, so the choice changes which seeds those two pick; the other strategies only report the cost. Seeds are drawn as diamonds in both layers, while people informed by spread stay discs. The panel can also show the cost per batch (total and each term) and visualize_adaptive.py's chart of selected seeds by degree, coreness, and betweenness, updated as the run goes, with every node's count in each range behind the seed bars. The app's hill-climb differs from hill2 in two ways: it keeps a swap that does not raise the batch cost (hill2 overwrites the candidate at the top of every tick, so it never accepts one), and it starts from exactly K seeds. Edge-removal cost also uses each tick's own live edges, whereas Simulate_SIR returns live views of one graph, so every tick of a research batch reports the end-of-batch edges. tests/test_seed_policies.py checks the app's batch loop against a Simulate_SIR reference loop, and its cost against global_cost_function. In the hosted build, scipy (for the MILP) is downloaded only when the MILP is first chosen.
+The scenario panel's Seed selection section runs the capstone seed-selection strategies in the app (app/seeding.py): hill-climb, degree-based, coreness-over-betweenness, and random from adaptive_seed_selection.py, and the step-wise MILP from milp.py. With a strategy chosen, the no-quarantine baseline runs are collected first, as a visibly separate preliminary phase (each run covers Baseline T ticks, 100 by default as in the scripts' T, and is extended if the experiment runs longer); the strategy picks its first batch only once they are in, so the MILP's objective and every batch cost use the baseline-normalized weights. Then seeds are re-selected every batch of ticks from t = 0, and each batch restarts with only its seeds informed and quarantine cuts lifted, as the research scripts do by calling Simulate_SIR once per batch. The user sets the seeds per batch K (default 3/4 of the nodes, as in the scripts), the batch length, whether information spreads within a batch, the number of no-quarantine baseline runs that normalize the infection term, and which cost terms count: infections, edge removals, and seeds (seed-set size / n). Hill-climb accepts or rejects swaps on those terms and the MILP minimizes them, so the choice changes which seeds those two pick; the other strategies only report the cost. Seeds are drawn as diamonds in both layers, while people informed by spread stay discs. The panel can also show the baseline curves, the cost per batch (total and each term, with α_w and β_w), and visualize_adaptive.py's chart of selected seeds by degree, coreness, and betweenness, updated as the run goes, drawn as probability distributions: each bar is the share of all seed picks in that range, over the share of all nodes in it. Hill-climb seeds' node cards show their utilities. The app's hill-climb differs from hill2 in two ways: it keeps a swap that does not raise the batch cost (hill2 overwrites the candidate at the top of every tick, so it never accepts one), and it starts from exactly K seeds. Edge-removal cost also uses each tick's own live edges, whereas Simulate_SIR returns live views of one graph, so every tick of a research batch reports the end-of-batch edges. tests/test_seed_policies.py checks the app's batch loop against a Simulate_SIR reference loop, and its cost against global_cost_function. In the hosted build, scipy (for the MILP) is downloaded only when the MILP is first chosen.
 
 Hosted app: https://tarlok04-multiplex-sirs.static.hf.space (Hugging Face Space: https://huggingface.co/spaces/tarlok04/multiplex-sirs). It is a static build in which the same simulation code runs in the visitor's browser under Pyodide (app/static/js/pyodide-worker.js loads app/browser_api.py, which wraps app/core.py exactly as app/server.py does over HTTP), so no server is needed. The front end uses app/server.py when /api/ is reachable and falls back to Pyodide otherwise. To republish after changes: `hf auth login` once, then `python deploy/push_to_hf.py` from the repo root (it runs deploy/build_static.py, which writes deploy/site/; preview that locally with `python -m http.server -d deploy/site 8001`).
 
@@ -235,7 +235,8 @@ neighbors still quarantining) once its quarantine ends.
 
 `Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
 q=False, q_mech=("ic", 0.02), adherence=None, begin_q=0, seeds=None,
-initial_state_dict=None)` is the main entry point.
+initial_state_dict=None, misinfo=False, misinfo_seeds=None,
+misinfo_mode="takeover", misinfo_val=None)` is the main entry point.
   - `q` controls the quarantine mechanism: False (none); True (fixed-length
     or Normal(14, 2)-sampled duration, with edges restored once the period
     ends — pass an int > 1 to fix the duration); or "r" (edges removed on
@@ -256,9 +257,30 @@ initial_state_dict=None)` is the main entry point.
     `begin_q` delays the start of spread/quarantine; `initial_state_dict`
     lets a caller supply an explicit S/I/R assignment instead of sampling
     from `init`.
-  - Returns an 11-tuple: `(contact_network, state_changes, infection_data,
+  - `misinfo=True` adds competing misinformation (off by default, when
+    nothing else changes). Misinformation spreads on the social network by
+    the same mechanism as information (`misinfo_val` is its own IC p / LT
+    threshold / FJ kappa; None uses q_mech's), from a seed set that starts at
+    `begin_q` just like information's: `misinfo_seeds` (a node set, or a
+    count drawn with probability proportional to social degree^2 from people
+    who aren't information seeds) plus every non-adherer. Misinformed people
+    act as non-adherers: they never quarantine, and anyone misinformed
+    mid-quarantine breaks it off (`break_quarantine`). Adherence is then
+    "not misinformed", so someone won back by information adheres again.
+    `misinfo_mode="takeover"` lets each side convert the other's non-seed
+    members it reaches (LT needs a strict majority of active predecessors, so
+    nodes don't flip every tick); `"collide"` only lets either side claim
+    people who have neither, and no one switches afterwards. A person reached
+    by both in one tick goes to one side at random (LT: to the side with more
+    active predecessors). Under FJ, misinformation has its own belief field
+    pinned at 1 on its seeds; information's field and its edge cutting are
+    unchanged, except that misinformed people cut no ties. The per-tick step
+    is `competing_spread_step`, shared with the app's engine.
+  - Returns a 12-tuple: `(contact_network, state_changes, infection_data,
     quarantine_prob_matrix, state_series, social_network, dynamic_degree,
-    informed_infected_series, informed_series, adhering, all_edges)`.
+    informed_infected_series, informed_series, adhering, all_edges,
+    misinformed_series)`; `misinformed_series` holds empty lists when
+    misinfo is off.
 
 Depends on find_seeds.py, correlated_graphs.py, and IM.py.
 
@@ -317,6 +339,10 @@ Current top-level functions:
   - `plot_information_dynamics(plot_data=False)` — informed-node count over
     time with begin_q=30, q="r", adherence=1.0; saves
     result_figures/proportion_informed.pdf.
+  - `misinformation_dynamics(plot_data=False, num_trials=10, adherence=0.8,
+    misinfo_seeds=NUM_SEEDS, begin_q=0)` — informed, misinformed and
+    infected counts with no misinformation, takeover and collide; saves
+    result_figures/misinformation_dynamics.pdf.
   - `run_simulations()` — orchestrates informed_vs_noninformed,
     const_quarantines, normal_dist_quarantines, r_quarantine,
     permanent_quarantine, random_vs_nonrandom_seeds(10),

@@ -859,6 +859,50 @@ def plot_informed_infected_overlap(plot_data=False, num_trials=25, begin_q=30):
 
     return (x, informed_mean, informed_std), (x, infected_mean, infected_std), (x, overlap_mean, overlap_std)
 
+# Information vs. competing misinformation (SIR.Simulate_SIR(misinfo=True)), under both
+# meeting rules, plus a no-misinformation reference. With misinformation on, every
+# non-adherer (1 - adherence of the nodes) is a misinformation seed alongside
+# misinfo_seeds, and the misinformed never quarantine.
+def misinformation_dynamics(plot_data=False, num_trials=10, adherence=0.8, misinfo_seeds=NUM_SEEDS, begin_q=0):
+    x = np.arange(T)
+    scenarios = {"none": {}, "takeover": {"misinfo_mode": "takeover"}, "collide": {"misinfo_mode": "collide"}}
+    results = {}
+    for name, opts in scenarios.items():
+        informed_runs, misinformed_runs, infected_runs = [], [], []
+        for _ in range(num_trials):
+            result = SIR.Simulate_SIR(
+                contact_network=deepcopy(contact_network),
+                social_network=deepcopy(social_network),
+                T=T, beta=beta, gamma=gamma, mu=mu, init=init,
+                q="r", adherence=adherence, begin_q=begin_q, seeds=NUM_SEEDS,
+                misinfo=bool(opts), misinfo_seeds=misinfo_seeds, **opts
+            )
+            informed_runs.append([len(result[8][t]) for t in range(T)])
+            misinformed_runs.append([len(result[11][t]) for t in range(T)])
+            infected_runs.append(result[2][1][1:T + 1])
+        results[name] = {key: (np.mean(runs, axis=0), np.std(runs, axis=0)) for key, runs in
+                         (("informed", informed_runs), ("misinformed", misinformed_runs), ("infected", infected_runs))}
+
+    if plot_data:
+        fig, axes = plt.subplots(1, 3, figsize=(15, 4), sharey=True)
+        for ax, name in zip(axes, scenarios):
+            for key, color in (("informed", 'goldenrod'), ("misinformed", 'magenta'), ("infected", 'red')):
+                if name == "none" and key == "misinformed":
+                    continue
+                mean, std = results[name][key]
+                ax.plot(x, mean, color=color, label=key.capitalize())
+                ax.fill_between(x, mean - std, mean + std, color=color, alpha=0.25)
+            ax.set_title("No misinformation" if name == "none" else f"Misinformation: {name}")
+            ax.set_xlabel("Time (days)")
+            ax.grid(True, alpha=0.3)
+        axes[0].set_ylabel("# of Individuals")
+        axes[-1].legend()
+        plt.tight_layout()
+        plt.savefig('result_figures/misinformation_dynamics.pdf', bbox_inches='tight')
+        plt.close(fig)
+
+    return x, results
+
 def run_simulations():
     data0 = informed_vs_noninformed()
     data1 = const_quarantines()

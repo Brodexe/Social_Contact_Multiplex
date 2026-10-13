@@ -35,11 +35,21 @@ class MultiplexSIRS:
     # mc is the Monte-Carlo count passed to IM.IC_prob_matrix (Simulate_SIR uses 1000).
     def __init__(self, contact_network, social_network, beta, gamma, mu, init,
                  q=False, q_mech=("ic", 0.02), adherence=None, begin_q=0, seeds=None,
-                 initial_state_dict=None, T=None, mc=1000):
+                 initial_state_dict=None, T=None, mc=1000,
+                 misinfo=False, misinfo_seeds=None, misinfo_mode="takeover", misinfo_val=None):
         if begin_q is None:
             begin_q = 0
 
         self.mech_type, self.mech_val = q_mech
+        if misinfo:
+            if misinfo_mode not in SIR.MISINFO_MODES:
+                raise ValueError(f"misinfo_mode must be one of {SIR.MISINFO_MODES}")
+            if misinfo_val is None:
+                misinfo_val = self.mech_val
+        self.misinfo = misinfo
+        self.misinfo_seeds = misinfo_seeds
+        self.misinfo_mode = misinfo_mode
+        self.misinfo_val = misinfo_val
 
         if social_network is None:
             social_network = correlated_graphs.create_social_graph(contact_network)[0]
@@ -67,6 +77,7 @@ class MultiplexSIRS:
         self.adhering = adhering
 
         non_adhering = set(contact_network.nodes()) - adhering
+        self.non_adhering = non_adhering
         for node in non_adhering:
             nx.set_node_attributes(contact_network, {node: {'Adheres?': 'No'}})
             nx.set_node_attributes(social_network, {node: {'Adheres?': 'No'}})
@@ -119,15 +130,23 @@ class MultiplexSIRS:
         self.previous_informed = set()
         self.initial_informed_lst = None
 
+        # Misinformation (only used when misinfo is True; see SIR.competing_spread_step)
+        self.misinformed = set()
+        self.info_seed_set = set()
+        self.misinfo_seed_nodes = set()
+        self.fj_xm = None  # FJ: misinformation's belief field
+
         self.t = 0  # number of completed steps
 
         # --- Display-only bookkeeping (never read by the dynamics) ---
         self.state_since = {u: 0 for u in range(n)}
         self.times_infected = {u: int(state[u] == 1) for u in range(n)}
         self.informed_at = {}
+        self.misinformed_at = {}
         self.quarantine_since = {}
         self.new_infected = []
         self.new_informed = []
+        self.new_misinformed = []
 
     # Advance one tick. Body follows the `for t in range(T)` loop of SIR.Simulate_SIR.
     def step(self):
@@ -138,6 +157,7 @@ class MultiplexSIRS:
         q, begin_q = self.q, self.begin_q
 
         # ---- Social network changes ----
+        prev_misinformed = set(self.misinformed)  # display only (pulses / timestamps)
         if t < begin_q:
             pass
         elif t == begin_q:
@@ -156,14 +176,40 @@ class MultiplexSIRS:
                 nx.set_node_attributes(contact_network, {node: {'Informed?': 'Informed'}})
                 nx.set_node_attributes(social_network, {node: {'Informed?': 'Informed'}})
 
+            if self.misinfo:
+                self.info_seed_set = set(self.informed)
+                self.misinformed = SIR.misinfo_seed_set(social_network, self.misinfo_seeds,
+                                                        self.non_adhering, self.informed)
+                self.misinfo_seed_nodes = set(self.misinformed)
+                for node in self.informed:
+                    SIR.set_info_label(contact_network, social_network, node, 'Informed')
+                for node in self.misinformed:
+                    SIR.set_info_label(contact_network, social_network, node, 'Misinformed')
+
             if mech_type == "FJ":
                 self.fj_s = {node: (1.0 if node in self.informed else 0.0)
                              for node in social_network.nodes()}
+                if self.misinfo:
+                    self.fj_xm = {node: (1.0 if node in self.misinformed else 0.0)
+                                  for node in social_network.nodes()}
                 for node in social_network.nodes():
                     self.fj_x[node] = self.fj_s[node]
 
         if (t > begin_q) or (t == begin_q and self.T_param == 1):
-            if self.initial_informed_lst != []:
+            if self.misinfo:
+                if self.informed or self.misinformed:
+                    prev_I, prev_M = self.informed, self.misinformed
+                    self.informed, self.misinformed, self.fj_x, self.fj_xm, _ = SIR.competing_spread_step(
+                        social_network, mech_type, mech_val, self.misinfo_val, self.informed,
+                        self.misinformed, self.info_seed_set, self.misinfo_seed_nodes,
+                        self.misinfo_mode, fj_x=self.fj_x, fj_xm=self.fj_xm, mc=self.mc)
+                    for node in self.informed - prev_I:
+                        SIR.set_info_label(contact_network, social_network, node, 'Informed')
+                    for node in self.misinformed - prev_M:
+                        SIR.set_info_label(contact_network, social_network, node, 'Misinformed')
+                    SIR.break_quarantine(self.G_initial, contact_network, self.misinformed - prev_M,
+                                         self.quarantine_statuses, self.already_quarantining)
+            elif self.initial_informed_lst != []:
                 if mech_type == "ic":
                     ic_results = IM.IC_prob_matrix(social_network, S=list(self.informed), p=mech_val,
                                                    mc=self.mc, quarantining=self.quarantine_statuses)
@@ -217,7 +263,8 @@ class MultiplexSIRS:
         if q is not False:
             if mech_type == "FJ":
                 if t > begin_q and self.fj_x is not None:
-                    fj_x = self.fj_x
+                    fj_x = self.fj_x if not self.misinfo else {
+                        u: (0.0 if u in self.misinformed else x) for u, x in self.fj_x.items()}
                     for (u, v) in list(contact_network.edges()):
                         if random.random() < 1.0 - math.exp(-(fj_x[u] + fj_x[v])):
                             contact_network.remove_edge(u, v)
@@ -260,9 +307,9 @@ class MultiplexSIRS:
                                       already_quarantining=self.already_quarantining)
 
         self.t = t + 1
-        self._update_display_bookkeeping(copy_state, new_informed)
+        self._update_display_bookkeeping(copy_state, new_informed, self.misinformed - prev_misinformed)
 
-    def _update_display_bookkeeping(self, prev_state, new_informed):
+    def _update_display_bookkeeping(self, prev_state, new_informed, new_misinformed=()):
         t = self.t
         self.new_infected = []
         for u in range(self.n):
@@ -276,5 +323,14 @@ class MultiplexSIRS:
             else:
                 self.quarantine_since.pop(u, None)
         self.new_informed = sorted(int(u) for u in new_informed)
+        self.new_misinformed = sorted(int(u) for u in new_misinformed)
+        if self.misinfo:
+            # Sides can change hands: keep only the current side's start time
+            for u in self.new_informed:
+                self.informed_at[u] = t
+                self.misinformed_at.pop(u, None)
+            for u in self.new_misinformed:
+                self.misinformed_at[u] = t
+                self.informed_at.pop(u, None)
         for u in self.new_informed:
             self.informed_at.setdefault(u, t)
