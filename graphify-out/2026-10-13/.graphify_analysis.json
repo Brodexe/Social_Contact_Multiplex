@@ -643,7 +643,7 @@
   "questions": [
     {
       "type": "bridge_node",
-      "question": "Why does `SeedPolicyRun` connect `Community 3` to `Community 2`, `Community 4`, `Community 12`?",
+      "question": "Why does `SeedPolicyRun` connect `Multiplex SIRS Engine & Tests` to `SIR Model & Network Generation`, `App Server & Session API`, `Baseline Runs & RNG`?",
       "why": "High betweenness centrality (0.029) - this node is a cross-community bridge."
     },
     {
@@ -653,27 +653,27 @@
     },
     {
       "type": "low_cohesion",
-      "question": "Should `Community 0` be split into smaller, more focused modules?",
+      "question": "Should `Web UI Charts & Main` be split into smaller, more focused modules?",
       "why": "Cohesion score 0.0528169014084507 - nodes in this community are weakly interconnected."
     },
     {
       "type": "bridge_node",
-      "question": "Why does `MultiplexScene` connect `Community 5` to `Community 0`?",
+      "question": "Why does `MultiplexScene` connect `3D Multiplex Scene` to `Web UI Charts & Main`?",
       "why": "High betweenness centrality (0.021) - this node is a cross-community bridge."
     },
     {
       "type": "low_cohesion",
-      "question": "Should `Community 1` be split into smaller, more focused modules?",
+      "question": "Should `Cost Curves & Plotting` be split into smaller, more focused modules?",
       "why": "Cohesion score 0.07093253968253968 - nodes in this community are weakly interconnected."
     },
     {
       "type": "bridge_node",
-      "question": "Why does `HillClimb` connect `Community 9` to `Community 2`?",
+      "question": "Why does `HillClimb` connect `Seed Selection Strategies` to `SIR Model & Network Generation`?",
       "why": "High betweenness centrality (0.019) - this node is a cross-community bridge."
     },
     {
       "type": "low_cohesion",
-      "question": "Should `Community 2` be split into smaller, more focused modules?",
+      "question": "Should `SIR Model & Network Generation` be split into smaller, more focused modules?",
       "why": "Cohesion score 0.07662337662337662 - nodes in this community are weakly interconnected."
     }
   ]

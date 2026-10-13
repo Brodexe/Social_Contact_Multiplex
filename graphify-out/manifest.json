@@ -232,5 +232,59 @@
     "seen": 1791909172.368476,
     "ast_hash": "ad2d0d315de71076868b39156729cd99",
     "semantic_hash": "ad2d0d315de71076868b39156729cd99"
+  },
+  ".claude/settings.json": {
+    "mtime": 1791910117.22781,
+    "seen": 1791910444.9803963,
+    "ast_hash": "95805f0ce8b7f357ef18a13465c5b328",
+    "semantic_hash": ""
+  },
+  ".mcp.json": {
+    "mtime": 1791909309.2194896,
+    "seen": 1791910444.9804032,
+    "ast_hash": "fd9f632d3036ad550a8956f431609058",
+    "semantic_hash": ""
+  },
+  ".serena/project.yml": {
+    "mtime": 1791909953.993534,
+    "seen": 1791910444.9804833,
+    "ast_hash": "e2e58f936e3bd0bbd38d01d91012d176",
+    "semantic_hash": ""
+  },
+  "CLAUDE.md": {
+    "mtime": 1791909214.0422645,
+    "seen": 1791910444.980485,
+    "ast_hash": "590ee0511921383fc9c2c97e262f1d91",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1791862541.8533387,
+    "seen": 1791910444.9804873,
+    "ast_hash": "d67346e117f3fbf78dcee961cedc7ae0",
+    "semantic_hash": ""
+  },
+  "README_main.txt": {
+    "mtime": 1788918392.1838164,
+    "seen": 1791910444.9804888,
+    "ast_hash": "b11c91de763fca0e3853d57973151bc7",
+    "semantic_hash": ""
+  },
+  "app/static/index.html": {
+    "mtime": 1791844914.7587292,
+    "seen": 1791910444.98049,
+    "ast_hash": "27396b728047d3af8f68691d23ecaa01",
+    "semantic_hash": ""
+  },
+  "deploy/hf_space/README.md": {
+    "mtime": 1791833252.390783,
+    "seen": 1791910444.980491,
+    "ast_hash": "0e646472bbf460db56d058b89e53ef32",
+    "semantic_hash": ""
+  },
+  "experiment_settings.txt": {
+    "mtime": 1783118191.749004,
+    "seen": 1791910444.9804926,
+    "ast_hash": "849f9b91c0c566671762896d1ed9b852",
+    "semantic_hash": ""
   }
 }
