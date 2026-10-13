@@ -2,6 +2,7 @@ import { MultiplexScene } from './scene.js';
 import { LineChart } from './chart.js';
 import { COLORS, STATE_NAMES } from './palette.js';
 import { NetworkIndex, renderNodeCard, renderGroupCard } from './inspector.js';
+import { SeedMetricChart } from './seedchart.js';
 
 const $ = (sel) => document.querySelector(sel);
 
@@ -61,6 +62,28 @@ const SERIES = [
   { key: 'informed', label: 'Informed', color: COLORS.informed },
   { key: 'quarantining', label: 'Quarantining', color: COLORS.quarantine, dashed: true },
 ];
+// Cost per batch: the total plus each term the scenario counts (one shared cost axis)
+const COST_SERIES = {
+  cost: { key: 'cost', label: 'Total', color: COLORS.text },
+  infections: { key: 'infections', label: 'Infections', color: COLORS.I, dash: '5 3' },
+  edges: { key: 'edges', label: 'Edge removals', color: COLORS.quarantine, dash: '1.5 3' },
+  seeds: { key: 'seeds', label: 'Seeds', color: COLORS.informed, dash: '8 3 2 3' },
+};
+const ALGO_HINTS = {
+  none: 'The Seeds count above is drawn once at begin q, with probability ∝ social degree², and information spreads from them.',
+  hill: 'Starts from K random seeds. Each batch tests the kept set with one swap and keeps the swap if the batch cost did not rise (adaptive_seed_selection.hill2).',
+  degree: 'Each batch: the K people with the highest degree in the current, quarantine-pruned contact network.',
+  cob: 'Each batch: the top K by normalized coreness ÷ normalized betweenness in the current contact network.',
+  random: 'Each batch: K people chosen uniformly at random.',
+  milp: 'Each batch: a mixed-integer program picks up to K seeds and which contacts to remove, minimizing the chosen cost terms with a linear exposure proxy (milp.py). Removed contacts show as cut.',
+};
+const ALGO_COMMON = ' Seeds are re-chosen every batch from t = 0, and each batch restarts with only its seeds informed and all quarantine cuts lifted, as in the research scripts. Seeds and Begin q above are not used.';
+const COST_HINTS = {
+  hill: 'Swaps are kept or rejected on these terms. A swap keeps the seed count at K, so the seeds term is the same for every candidate.',
+  milp: 'The MILP minimizes these terms, so they change which seeds and cuts it picks.',
+  other: 'These terms are only reported; they do not change which seeds are chosen.',
+};
+
 const MECH = {
   ic: { label: 'p (edge prob.)', value: 0.02, step: 'any' },
   lt: { label: 'Threshold', value: 1, step: 1 },
@@ -72,6 +95,12 @@ const app = {
   history: [],
   selection: [],
   anchor: null,          // {i, layer} the single-node pop-up follows
+  policy: null,          // seed-selection strategy info (static.policy), or null
+  costRows: [],          // one per completed batch
+  seedCounts: null,      // per node: batches it was a seed in
+  batches: 0,
+  seedView: 'ever',      // seed metric chart: 'ever' chosen or this 'batch'
+  metricLayer: 'social',
   playing: false,
   busy: false,
   speed: 3,
@@ -79,6 +108,8 @@ const app = {
 
 const scene = new MultiplexScene($('#canvas-host'));
 const chart = new LineChart($('#chart'), SERIES, { height: 150 });
+const seedChart = new SeedMetricChart($('#seed-chart'));
+let costChart = null;
 
 // ------------------------------------------------------------------ UI bits ---
 
@@ -117,11 +148,72 @@ function refreshPanel() {
     t: h.t,
     values: Object.fromEntries(SERIES.map(s => [s.key, h.counts[s.key] / stat.n])),
   })));
+  refreshPolicy();
+}
+
+// ------------------------------------------------------- seed selection ---
+
+function setupPolicy() {
+  const pol = app.policy = app.stat.policy ?? null;
+  app.costRows = [];
+  app.seedCounts = new Uint32Array(app.stat.n);
+  app.batches = 0;
+  $('#policy-panel').hidden = !pol;
+  if (!pol) return;
+  const bi = pol.batch_interval;
+  $('#policy-label').textContent = `· ${pol.label}, K = ${pol.k}, batches of ${bi} tick${bi === 1 ? '' : 's'}`;
+  const series = [COST_SERIES.cost, ...pol.terms.map(k => COST_SERIES[k])];
+  costChart?.destroy();
+  $('#cost-chart').replaceChildren();
+  costChart = new LineChart($('#cost-chart'), series, { height: 130, minT: 10, yMax: 'auto', format: v => v.toFixed(3) });
+  $('#cost-legend').innerHTML = series.map(s => `<span><svg width="18" height="4" aria-hidden="true"><line x1="0" x2="18" y1="2" y2="2" stroke="${s.color}" stroke-width="2" ${s.dash ? `stroke-dasharray="${s.dash}"` : ''}/></svg>${s.label}</span>`).join('');
+  $('#cost-sub').textContent = `· ${pol.terms.length} term${pol.terms.length === 1 ? '' : 's'}, each capped at 1`;
+}
+
+function recordPolicy(snap) {
+  const p = snap.policy;
+  if (!p) return;
+  if (p.new_batch) {
+    app.batches++;
+    for (const u of snap.seeds) app.seedCounts[u]++;
+  }
+  if (p.cost) app.costRows.push({ t: p.cost.t, values: { cost: p.cost.cost, ...p.cost.terms } });
+}
+
+function refreshPolicy() {
+  const pol = app.policy;
+  if (!pol) return;
+  const { snap, stat } = app;
+  const last = app.costRows[app.costRows.length - 1];
+  const ever = app.seedCounts.reduce((a, c) => a + (c > 0), 0);
+  const seedSet = new Set(snap.seeds);
+  const bySpread = snap.informed.reduce((a, v, i) => a + (v && !seedSet.has(i)), 0);
+  const cells = [
+    [app.batches || '–', 'batch'],
+    [snap.seeds.length, app.batches ? 'seeds this batch' : 'seeds, first batch'],
+    [`${ever}<span class="muted" style="font-size:12px">/${stat.n}</span>`, 'ever chosen'],
+    [last ? last.values.cost.toFixed(3) : '–', 'last batch cost'],
+    [bySpread, 'informed by spread'],
+    pol.algorithm === 'milp' ? [snap.policy.milp_removed, 'contacts cut by MILP'] : [snap.counts.cut_edges, 'contacts cut'],
+  ];
+  $('#policy-stats').innerHTML = cells.map(([v, l]) => `<div><b>${v}</b><span>${l}</span></div>`).join('');
+
+  const showCost = $('#show-cost').checked, showMetrics = $('#show-metrics').checked;
+  $('#cost-wrap').hidden = !showCost;
+  $('#metrics-wrap').hidden = !showMetrics;
+  if (showCost) costChart.setRows(app.costRows);
+  if (showMetrics) {
+    const mask = app.seedView === 'ever'
+      ? Array.from(app.seedCounts, c => (c > 0 ? 1 : 0))
+      : Array.from({ length: stat.n }, (_, i) => (seedSet.has(i) ? 1 : 0));
+    seedChart.setData(pol.metrics[app.metricLayer], mask, app.seedView === 'ever' ? 'Ever chosen' : 'This batch');
+  }
 }
 
 function refreshInspector() {
   const nodeCard = $('#node-card'), groupCard = $('#group-card');
-  const ctx = { stat: app.stat, snap: app.snap, history: app.history, config: app.config, idx: app.idx };
+  const ctx = { stat: app.stat, snap: app.snap, history: app.history, config: app.config, idx: app.idx,
+                policy: app.policy, seedCounts: app.seedCounts, batches: app.batches };
   if (app.selection.length === 1) {
     renderNodeCard(nodeCard, { ...ctx, i: app.selection[0] });
     nodeCard.hidden = false;
@@ -181,6 +273,7 @@ async function restart(config) {
     app.history = [compact(res.snapshot)];
     scene.load(app.stat);
     scene.applySnapshot(app.snap, { animate: false });
+    setupPolicy();
     const sm = app.stat.summary;
     $('#network-name').textContent = `${app.stat.label} · ${app.stat.n} people`;
     $('#network-stats').textContent = `Contact: ${sm.contact_edges} edges, clustering ${sm.contact_clustering}`
@@ -206,6 +299,7 @@ async function stepOnce() {
     const snap = await call('POST', '/api/step');
     app.snap = snap;
     app.history.push(compact(snap));
+    recordPolicy(snap);
     scene.applySnapshot(snap);
     refreshPanel();
     if (app.selection.length) refreshInspector();
@@ -292,6 +386,7 @@ host.addEventListener('pointermove', (e) => {
 function hoverText(i, layer) {
   const { snap, stat, config } = app;
   const parts = [];
+  if (snap.seeds.includes(i)) parts.push(app.policy ? `seed, ${app.policy.label}` : 'seed');
   if (layer === 'contact') {
     parts.push(STATE_NAMES[snap.state[i]]);
     if (snap.quarantine_days[i] >= 0) parts.push(`quarantining, day ${snap.quarantine_days[i]}`);
@@ -380,6 +475,19 @@ for (const btn of document.querySelectorAll('[data-layout]')) {
 }
 $('#btn-camera').addEventListener('click', () => scene.resetCamera(true));
 $('#show-cut').addEventListener('change', (e) => scene.setShowCut(e.target.checked));
+for (const id of ['#show-cost', '#show-metrics']) {
+  $(id).addEventListener('change', () => { if (app.snap) refreshPolicy(); });
+}
+for (const [attr, prop] of [['seedset', 'seedView'], ['metriclayer', 'metricLayer']]) {
+  const btns = document.querySelectorAll(`[data-${attr}]`);
+  for (const btn of btns) {
+    btn.addEventListener('click', () => {
+      btns.forEach(b => b.classList.toggle('on', b === btn));
+      app[prop] = btn.dataset[attr];
+      if (app.snap) refreshPolicy();
+    });
+  }
+}
 
 // ---------------------------------------------------------------- scenario ---
 
@@ -414,6 +522,15 @@ function syncFormState() {
   const bin = HS.bins.find(b => b.bin === Number(f.hs_bin.value));
   const contact = f.contact_model.value, social = f.social_model.value;
   const contactN = contact === 'hs_bin' ? bin?.n : Number(f.contact_n.value);
+  const nodes = contact === 'hs_bin' && social === 'hs_survey' ? bin?.n_with_survey
+    : social === 'hs_survey' ? HS.survey_n : contactN;
+
+  const algo = f.seed_algo.value, policy = algo !== 'none';
+  f.seeds.disabled = policy;
+  f.begin_q.disabled = policy;
+  f.seed_k.placeholder = nodes ? `¾·n = ${Math.floor(0.75 * nodes)}` : '¾·n';
+  $('#algo-hint').textContent = ALGO_HINTS[algo] + (policy ? ALGO_COMMON : '');
+  $('#cost-hint').textContent = COST_HINTS[algo] ?? COST_HINTS.other;
   $('#contact-hint').innerHTML = contact === 'hs_bin' && bin
     ? `Bin ${bin.bin}: <b>${bin.n}</b> students, ${bin.edges} contacts (${bin.n_with_survey} also in the survey).`
     : contact === 'clustered'
@@ -461,6 +578,14 @@ function readForm() {
     beta: num('beta'),
     rng_seed: f.rng_seed.value === '' ? null : num('rng_seed'),
     mc: num('mc'),
+    seed_algo: f.seed_algo.value,
+    seed_k: f.seed_k.value === '' ? null : num('seed_k'),
+    batch_interval: num('batch_interval'),
+    info_spread: f.info_spread.checked,
+    cost_infections: f.cost_infections.checked,
+    cost_edges: f.cost_edges.checked,
+    cost_seeds: f.cost_seeds.checked,
+    cost_baselines: num('cost_baselines'),
   };
 }
 
@@ -491,7 +616,7 @@ form.addEventListener('submit', (e) => {
     HS = opts.high_school;
     form.elements.hs_bin.innerHTML = HS.bins
       .map(b => `<option value="${b.bin}">Bin ${b.bin} · ${b.n} students</option>`).join('');
-    for (const name of ['contact_n', 'social_n']) form.elements[name].max = opts.max_nodes;
+    for (const name of ['contact_n', 'social_n', 'seed_k']) form.elements[name].max = opts.max_nodes;
     fillForm(opts.defaults);
     await restart(opts.defaults);
   } catch (err) {

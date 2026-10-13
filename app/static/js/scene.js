@@ -2,7 +2,9 @@
 // contact layer (disease), each a disc of nodes + edges. A person appears once per
 // layer, and each copy shows only that layer's process: contact copies are colored
 // by S/I/R (hollow = quarantining), social copies by informed / not informed (slash =
-// won't adhere). Selected people get a dashed inter-layer link joining their copies.
+// won't adhere). Seeds -- people informed directly, by a seed-selection strategy or
+// the begin_q draw, rather than by spread -- are drawn as diamonds in both layers.
+// Selected people get a dashed inter-layer link joining their copies.
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { LineSegments2 } from 'three/addons/lines/LineSegments2.js';
@@ -26,10 +28,12 @@ const NODE_VERT = /* glsl */`
   attribute vec4 aFlags;   // slashed (won't adhere), hollow (quarantining), selected, dimmed  (all 0..1)
   attribute float aSize;   // node disc radius in world units
   attribute float aHover;
+  attribute float aSeed;   // 1 = diamond (seed), 0 = disc; eased between
   uniform float uScale;    // framebuffer px per world unit at unit view depth
   varying vec3 vColor;
   varying vec4 vFlags;
   varying float vPx;
+  varying float vSeed;
   void main() {
     vec4 mv = modelViewMatrix * vec4(position, 1.0);
     float r = aSize * (1.0 + 0.35 * aHover + 0.12 * aFlags.z);
@@ -37,6 +41,7 @@ const NODE_VERT = /* glsl */`
     vPx = gl_PointSize;
     vColor = aColor;
     vFlags = aFlags;
+    vSeed = aSeed;
     gl_Position = projectionMatrix * mv;
   }
 `;
@@ -47,6 +52,7 @@ const NODE_FRAG = /* glsl */`
   varying vec3 vColor;
   varying vec4 vFlags;
   varying float vPx;
+  varying float vSeed;
 
   float band(float r, float a, float b, float aa) {
     return smoothstep(a - aa, a + aa, r) * (1.0 - smoothstep(b - aa, b + aa, r));
@@ -57,7 +63,8 @@ const NODE_FRAG = /* glsl */`
 
   void main() {
     vec2 p = gl_PointCoord * 2.0 - 1.0;
-    float r = length(p);
+    // Shape metric: disc, or for seeds a diamond of equal area (|x|+|y| scaled by 0.8)
+    float r = mix(length(p), (abs(p.x) + abs(p.y)) * 0.8, vSeed);
     if (r > 1.0) discard;
     float aa = 1.2 / vPx;          // ~0.6px soft edge in sprite units
     float slash = vFlags.x, hollow = vFlags.y, sel = vFlags.z, dim = vFlags.w;
@@ -250,6 +257,8 @@ export class MultiplexScene {
       this.flagCur[name] = new Float32Array(n * 4);
       this.flagTarget[name] = new Float32Array(n * 4);
     }
+    this.seedCur = new Float32Array(n);
+    this.seedTarget = new Float32Array(n);
     this.hoverCur = new Float32Array(n);
     this.sizes = {};
 
@@ -266,6 +275,7 @@ export class MultiplexScene {
       geo.setAttribute('aFlags', new THREE.BufferAttribute(this.flagCur[name], 4));
       geo.setAttribute('aSize', new THREE.BufferAttribute(size, 1));
       geo.setAttribute('aHover', new THREE.BufferAttribute(this.hoverCur, 1));
+      geo.setAttribute('aSeed', new THREE.BufferAttribute(this.seedCur, 1));
       const mat = new THREE.ShaderMaterial({
         vertexShader: NODE_VERT, fragmentShader: NODE_FRAG,
         uniforms: {
@@ -342,12 +352,15 @@ export class MultiplexScene {
       sFlag[i * 4] = this.data.adheres[i] ? 0 : 1;
       sFlag[i * 4 + 1] = 0;
     }
+    this.seedTarget.fill(0);
+    for (const u of snap.seeds ?? []) this.seedTarget[u] = 1;
     this._writeSelectionFlags();
     if (!animate || !prev) {
       for (const name of LAYERS) {
         this.colorCur[name].set(this.colorTarget[name]);
         this.flagCur[name].set(this.flagTarget[name]);
       }
+      this.seedCur.set(this.seedTarget);
       this._markNodeAttrsDirty();
     }
     if (animate && prev) {
@@ -393,6 +406,7 @@ export class MultiplexScene {
       a.aColor.needsUpdate = true;
       a.aFlags.needsUpdate = true;
       a.aHover.needsUpdate = true;
+      a.aSeed.needsUpdate = true;
     }
   }
 
@@ -652,6 +666,7 @@ export class MultiplexScene {
         approach(this.colorCur[name], this.colorTarget[name]);
         approach(this.flagCur[name], this.flagTarget[name]);
       }
+      approach(this.seedCur, this.seedTarget);
       for (let i = 0; i < this.hoverCur.length; i++) {
         const target = i === this.hovered ? 1 : 0;
         const d = target - this.hoverCur[i];

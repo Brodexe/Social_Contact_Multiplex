@@ -29,6 +29,7 @@ PY_BUNDLE = [
     "app/core.py",
     "app/engine.py",
     "app/networks.py",
+    "app/seeding.py",
     "IM.py",
     "SIR.py",
     "correlated_graphs.py",

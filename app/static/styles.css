@@ -210,6 +210,8 @@ button:disabled { opacity: .4; cursor: default; }
 /* Slash from top-left to bottom-right, matching the scene's won't-adhere glyph */
 .k-dot.slashed, .chip .dot.slashed { background: linear-gradient(45deg, var(--c) 40%, var(--surface) 40% 60%, var(--c) 60%); }
 .k-dot.hollow { background: none; border: 3.5px solid var(--c); width: 5px; height: 5px; }
+.k-dot.diamond { border-radius: 1.5px; width: 9px; height: 9px; margin: 0 1.5px; transform: rotate(45deg); }
+.chip .dot.diamond { border-radius: 1px; width: 7px; height: 7px; transform: rotate(45deg); }
 .k-dot.selected { box-shadow: 0 0 0 1.5px var(--surface), 0 0 0 3px var(--sel); width: 9px; height: 9px; margin: 0 1.5px; }
 .k-line { width: 16px; height: 0; border-top: 2px solid var(--c); flex: none; }
 .k-line.dashed { border-top-style: dashed; }
@@ -239,6 +241,32 @@ button:disabled { opacity: .4; cursor: default; }
 }
 #network-stats { margin-top: 2px; }
 button.wide { width: 100%; margin-top: 4px; }
+
+/* ------------------------------------------------------ seed selection ---- */
+.policy [hidden] { display: none !important; }
+.sub-title-row { display: flex; align-items: center; gap: 8px; margin: 10px 0 6px; flex-wrap: wrap; }
+.sub-title-row .sub-title { margin: 0 auto 0 0; }
+.seg.small button { padding: 2px 8px; font-size: 11.5px; }
+.chart-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 11.5px; color: var(--text-2); margin-top: 6px; }
+.chart-legend > span { display: inline-flex; align-items: center; gap: 6px; }
+.chart-legend .sw { width: 16px; height: 0; border-top: 2px solid var(--c); }
+.chart-legend .sw.bar { width: 9px; height: 9px; border: 0; border-radius: 2px; background: var(--c); }
+.chart-legend .sw.dash { border-top-style: dashed; }
+.chart-legend .sw.dot { border-top-style: dotted; }
+.seed-chart { position: relative; }
+.seed-chart svg { display: block; width: 100%; overflow: visible; }
+.seed-chart .tip {
+  position: absolute; pointer-events: none; background: var(--page); border: 1px solid var(--border);
+  border-radius: 6px; padding: 5px 8px; font-size: 11.5px; white-space: nowrap; z-index: 2;
+  box-shadow: 0 6px 18px rgba(0,0,0,.5);
+}
+.seed-chart .tip .row { display: flex; align-items: center; gap: 6px; justify-content: space-between; }
+.seed-chart .tip .sw { width: 9px; height: 9px; border-radius: 2px; background: var(--c); }
+.seed-chart .tip b { font-variant-numeric: tabular-nums; font-weight: 600; margin-left: 10px; }
+.sub-label { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+.algo-fields { display: flex; flex-direction: column; gap: 8px; }
+.scenario .checks { display: flex; gap: 14px; flex-wrap: wrap; }
+.scenario .checks label.check, .algo-fields > label.check { padding-top: 0; }
 
 @media (max-width: 900px) {
   #app { flex-direction: column; }

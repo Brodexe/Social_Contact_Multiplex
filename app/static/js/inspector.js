@@ -48,7 +48,7 @@ function quarantineText(snap, i, config) {
 }
 
 export function renderNodeCard(card, ctx) {
-  const { stat, snap, history, i, config, idx } = ctx;
+  const { stat, snap, history, i, config, idx, policy, seedCounts, batches } = ctx;
   const m = stat.metrics;
   const st = snap.state[i];
   const sinceSteps = snap.t - snap.state_since[i];
@@ -88,7 +88,13 @@ export function renderNodeCard(card, ctx) {
       ? `<span class="chip">Adheres</span>`
       : `<span class="chip off"><span class="dot slashed" style="--c:${COLORS.uninformed}"></span>Won't adhere</span>`,
   ];
+  // Seeds are informed directly (diamonds in the scene), not by spread
+  if (snap.seeds.includes(i)) {
+    const when = policy ? (batches ? 'this batch' : 'first batch') : `chosen at t=${config.begin_q}`;
+    infoChips.push(`<span class="chip"><span class="dot diamond" style="--c:${COLORS.informed}"></span>Seed <span class="muted">${when}</span></span>`);
+  }
   const infoKv = [];
+  if (policy) infoKv.push([`Seed under ${esc(policy.label)}`, `${seedCounts[i]} of ${batches} batch${batches === 1 ? '' : 'es'}`]);
   if (snap.belief) infoKv.push(['FJ belief x', snap.belief[i].toFixed(3)]);
   const kvList = (rows) => rows.length ? `<dl class="kv">${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>` : '';
 

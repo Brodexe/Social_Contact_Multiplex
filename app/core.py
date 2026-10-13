@@ -16,8 +16,9 @@ import networkx as nx
 import numpy as np
 from pydantic import BaseModel, Field
 
-from app import networks
+from app import networks, seeding
 from app.engine import MultiplexSIRS
+from app.seeding import SeedPolicyRun
 
 # Fields that determine the two networks (everything else is dynamics); the built
 # networks and their layouts/metrics are cached on these.
@@ -55,17 +56,20 @@ class ScenarioConfig(BaseModel):
     mu: float = Field(0.05, ge=0, le=1)
     mc: int = Field(1000, ge=1, le=5000)
     rng_seed: Optional[int] = None
+    # Seed selection (app/seeding.py). "none" keeps the single degree^2-weighted seeding
+    # at begin_q above; any other strategy re-selects seeds every batch_interval ticks
+    # from t = 0, so `seeds` and `begin_q` are unused.
+    seed_algo: Literal["none", "hill", "degree", "cob", "random", "milp"] = "none"
+    seed_k: Optional[int] = Field(None, ge=0, le=MAX_NODES)  # None: 3/4 of the nodes, as in the research scripts
+    batch_interval: int = Field(2, ge=1, le=200)
+    info_spread: bool = True                         # info spreads within a batch (else seeds only)
+    cost_infections: bool = True
+    cost_edges: bool = True
+    cost_seeds: bool = False
+    cost_baselines: int = Field(10, ge=1, le=50)     # no-quarantine runs normalizing the infection term
 
 
 # ---------------------------------------------------------------- networks ---
-
-def _betweenness(G):
-    # Exact betweenness is O(nm); sample sources on dense graphs (e.g. strongly
-    # anti-correlated social layers) so building stays interactive.
-    if G.number_of_edges() > 6000:
-        return nx.betweenness_centrality(G, k=min(64, G.number_of_nodes()), seed=0)
-    return nx.betweenness_centrality(G)
-
 
 def _normalized_layout(G, seed):
     """Force-directed layout scaled into (roughly) the unit disk."""
@@ -96,8 +100,8 @@ def _static_payload(key):
 
     contact_core = nx.core_number(nx.Graph(contact))
     social_core = nx.core_number(social_u)
-    contact_btw = _betweenness(contact)
-    social_btw = _betweenness(social)
+    contact_btw = seeding.betweenness(contact)
+    social_btw = seeding.betweenness(social)
     # Overlap: share of social ties (undirected) that are also contacts
     shared = sum(1 for a, b in social_u.edges() if contact.has_edge(a, b))
 
@@ -137,6 +141,29 @@ def _static_payload(key):
     return payload, contact, social, betas
 
 
+@lru_cache(maxsize=6)
+def _seed_metrics(key):
+    """Per-node degree / coreness / betweenness for the seed-selection chart. The social
+    values are on the undirected social network, as visualize_adaptive.py computes them."""
+    payload, contact, social, _ = _static_payload(key)
+    nodes = sorted(contact.nodes())
+    social_u = social.to_undirected()
+    m = payload["metrics"]
+    social_btw = seeding.betweenness(social_u)
+    return {
+        "social": {
+            "degree": [social_u.degree(u) for u in nodes],
+            "coreness": m["social_core"],
+            "betweenness": [round(social_btw[u], 5) for u in nodes],
+        },
+        "contact": {
+            "degree": m["contact_degree"],
+            "coreness": m["contact_core"],
+            "betweenness": m["contact_btw"],
+        },
+    }
+
+
 # -------------------------------------------------------------- simulation ---
 
 class Session:
@@ -161,12 +188,26 @@ class Session:
             q = max(2, int(cfg.q_period))  # Simulate_SIR treats ints > 1 as a fixed period
         mech_val = cfg.mech_val if cfg.mechanism != "lt" else int(round(cfg.mech_val))
 
-        sim = MultiplexSIRS(
-            deepcopy(contact), deepcopy(social),
-            beta=beta, gamma=cfg.gamma, mu=cfg.mu, init=cfg.init,
-            q=q, q_mech=(cfg.mechanism, mech_val), adherence=float(cfg.adherence),
-            begin_q=cfg.begin_q, seeds=int(cfg.seeds), mc=cfg.mc,
-        )
+        if cfg.seed_algo == "none":
+            sim = MultiplexSIRS(
+                deepcopy(contact), deepcopy(social),
+                beta=beta, gamma=cfg.gamma, mu=cfg.mu, init=cfg.init,
+                q=q, q_mech=(cfg.mechanism, mech_val), adherence=float(cfg.adherence),
+                begin_q=cfg.begin_q, seeds=int(cfg.seeds), mc=cfg.mc,
+            )
+        else:
+            terms = [t for t in seeding.COST_TERMS if getattr(cfg, f"cost_{t}")]
+            if not terms:
+                raise ValueError("Pick at least one cost term (infections, edge removals or seeds)")
+            sim = SeedPolicyRun(
+                deepcopy(contact), deepcopy(social),
+                beta=beta, gamma=cfg.gamma, mu=cfg.mu, init=cfg.init,
+                q=q, q_mech=(cfg.mechanism, mech_val), adherence=float(cfg.adherence), mc=cfg.mc,
+                algorithm=cfg.seed_algo, k=cfg.seed_k, batch_interval=cfg.batch_interval,
+                info_spread=cfg.info_spread, cost_terms=terms, baseline_runs=cfg.cost_baselines,
+                # Baselines draw from their own stream (see seeding.BaselineRuns)
+                baseline_seed=None if cfg.rng_seed is None else cfg.rng_seed + 7919,
+            )
 
         self.sim, self.config, self.static = sim, cfg, static
         self.edge_index = [tuple(e) for e in static["contact_edges"]]
@@ -206,18 +247,24 @@ class Session:
         }
         if sim.fj_x is not None:
             snap["belief"] = [round(float(sim.fj_x[u]), 4) for u in range(n)]
+        # Seeds informed directly (by a strategy, or the begin_q draw) rather than by spread
+        if isinstance(sim, SeedPolicyRun):
+            snap["seeds"] = sim.seeds
+            snap["policy"] = sim.snapshot_info()
+        else:
+            snap["seeds"] = sorted(int(u) for u in (sim.initial_informed_lst or []))
         return snap
 
     def reset_payload(self):
         """Response body for a reset: config, static network payload, t=0 snapshot."""
-        return {
-            "config": self.config.model_dump(),
-            "static": {**self.static, "beta": self.beta_values,
-                       "adheres": [1 if u in self.sim.adhering else 0 for u in range(self.sim.n)]},
-            "snapshot": self.snapshot(),
-        }
+        static = {**self.static, "beta": self.beta_values,
+                  "adheres": [1 if u in self.sim.adhering else 0 for u in range(self.sim.n)]}
+        if isinstance(self.sim, SeedPolicyRun):
+            static["policy"] = {**self.sim.static_info(),
+                                "metrics": _seed_metrics(_network_key(self.config))}
+        return {"config": self.config.model_dump(), "static": static, "snapshot": self.snapshot()}
 
 
 def options():
     return {"high_school": networks.hs_info(), "max_nodes": MAX_NODES,
-            "defaults": ScenarioConfig().model_dump()}
+            "defaults": ScenarioConfig().model_dump(), "seed_algorithms": seeding.ALGORITHMS}

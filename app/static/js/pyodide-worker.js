@@ -9,10 +9,12 @@ import { loadPyodide } from 'https://cdn.jsdelivr.net/pyodide/v314.0.7/full/pyod
 const PYODIDE_URL = 'https://cdn.jsdelivr.net/pyodide/v314.0.7/full/';
 
 let api = null;
+let pyodide = null;
+let scipyLoaded = null;
 
 async function init(bundleUrl) {
   postMessage({ type: 'status', text: 'Loading Python runtime…' });
-  const pyodide = await loadPyodide();
+  pyodide = await loadPyodide();
   postMessage({ type: 'status', text: 'Loading numpy & networkx…' });
   const [, bundle] = await Promise.all([
     (async () => {
@@ -44,6 +46,15 @@ self.onmessage = async ({ data }) => {
   const { id, method, path, body } = data;
   try {
     await ready;
+    // The MILP strategy needs scipy (~10 MB); fetch it the first time it's asked for
+    if (path === '/api/reset' && body?.seed_algo === 'milp') {
+      if (!scipyLoaded) {
+        postMessage({ type: 'status', text: 'Loading scipy for the MILP…' });
+        scipyLoaded = pyodide.loadPackage('scipy').catch((err) => { scipyLoaded = null; throw err; });
+      }
+      await scipyLoaded;
+      postMessage({ type: 'status', text: 'Building networks…' });
+    }
     const response = api.handle(method, path, body === undefined ? null : JSON.stringify(body));
     postMessage({ id, response });
   } catch (err) {

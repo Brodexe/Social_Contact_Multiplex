@@ -83,6 +83,34 @@
         <div id="chart"></div>
       </section>
 
+      <section class="policy" id="policy-panel" hidden>
+        <div class="section-title">Seed selection <span class="muted" id="policy-label"></span></div>
+        <div class="stat-grid" id="policy-stats"></div>
+        <div id="cost-wrap">
+          <div class="sub-title">Cost per batch <span class="muted" id="cost-sub"></span></div>
+          <div id="cost-chart"></div>
+          <div class="chart-legend" id="cost-legend"></div>
+        </div>
+        <div id="metrics-wrap">
+          <div class="sub-title-row">
+            <div class="sub-title">Seeds by node metric</div>
+            <div class="seg small" role="group" aria-label="Which seeds">
+              <button type="button" data-seedset="ever" class="on" title="Nodes chosen as a seed in at least one batch so far">Ever chosen</button>
+              <button type="button" data-seedset="batch" title="This batch's seeds">This batch</button>
+            </div>
+            <div class="seg small" role="group" aria-label="Metric layer">
+              <button type="button" data-metriclayer="social" class="on" title="Metrics on the undirected social network, as visualize_adaptive.py computes them">Social</button>
+              <button type="button" data-metriclayer="contact">Contact</button>
+            </div>
+          </div>
+          <div id="seed-chart"></div>
+          <div class="chart-legend">
+            <span><span class="sw bar" style="--c:var(--text-2)"></span>Seeds (bar color = metric)</span>
+            <span><span class="sw bar" style="--c:rgba(240,239,236,0.25)"></span>All nodes in that range</span>
+          </div>
+        </div>
+      </section>
+
       <section class="legend">
         <div class="section-title">Reading the networks</div>
         <div class="layer-title"><b>Contact</b> · disease</div>
@@ -103,6 +131,8 @@
         </ul>
         <div class="layer-title">Both</div>
         <ul>
+          <li><span class="k-dot diamond" style="--c: var(--inf)"></span> Diamond = seed (informed directly)</li>
+          <li><span class="k-dot" style="--c: var(--inf)"></span> Disc = informed by spread</li>
           <li><span class="k-dot selected" style="--c: var(--uninf)"></span> White ring = selected</li>
           <li><span class="k-line link"></span> Same person, social ↔ contact</li>
         </ul>
@@ -190,6 +220,39 @@
             <label>RNG seed <input name="rng_seed" type="number" step="1" placeholder="random"></label>
           </div>
           <label>IC Monte-Carlo runs <input name="mc" type="number" step="1" min="1"></label>
+
+          <div class="layer-title"><b>Seed selection</b> · who is informed directly</div>
+          <label>Algorithm
+            <select name="seed_algo">
+              <option value="none">None · degree²-weighted draw at begin q</option>
+              <option value="hill">Hill-climb (adaptive)</option>
+              <option value="degree">Degree-based</option>
+              <option value="cob">Coreness / betweenness</option>
+              <option value="random">Random</option>
+              <option value="milp">MILP</option>
+            </select>
+          </label>
+          <div class="hint" id="algo-hint"></div>
+          <div class="algo-fields" data-when="seed_algo=hill,degree,cob,random,milp">
+            <div class="row3">
+              <label>Seeds K <input name="seed_k" type="number" step="1" min="0"></label>
+              <label>Batch (ticks) <input name="batch_interval" type="number" step="1" min="1"></label>
+              <label title="No-quarantine runs whose per-tick worst case normalizes the infection term">Baseline runs <input name="cost_baselines" type="number" step="1" min="1" max="50"></label>
+            </div>
+            <label class="check"><input name="info_spread" type="checkbox"> Information spreads within each batch</label>
+            <div class="sub-label">Cost terms</div>
+            <div class="checks">
+              <label class="check"><input name="cost_infections" type="checkbox"> Infections</label>
+              <label class="check"><input name="cost_edges" type="checkbox"> Edge removals</label>
+              <label class="check"><input name="cost_seeds" type="checkbox"> Seeds (K / n)</label>
+            </div>
+            <div class="hint" id="cost-hint"></div>
+            <div class="sub-label">Show <span class="muted">· applies immediately</span></div>
+            <div class="checks">
+              <label class="check"><input id="show-cost" type="checkbox" checked> Cost over time</label>
+              <label class="check"><input id="show-metrics" type="checkbox" checked> Seeds by metric</label>
+            </div>
+          </div>
           <div id="form-error" class="form-error" role="alert" hidden></div>
           <button type="submit" class="primary wide">Apply &amp; restart</button>
         </form>
