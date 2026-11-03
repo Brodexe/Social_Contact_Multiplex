@@ -50,6 +50,8 @@ STORE_PATH = "cost_curves_data.pkl"
 METHOD_STYLE = {
     "Degree-Based": "C1",
     "Core over Btw": "C5",
+    "Core over Deg": "C6",
+    "Core Alone":   "C7",
     "Random Seeds": "C3",
     "Adaptive":     "C0",
     "MILP":         "C2",
@@ -183,7 +185,7 @@ def plot_joint_cost_comparison(path=STORE_PATH,
     ax.set_xlabel("Time (in days)")
     ax.set_ylabel("Cost")
     ax.set_title("Cost Comparison of Seed Selection Methods")
-    ax.legend(loc="upper center", ncols=len(labels), fontsize=12,
+    ax.legend(loc="upper center", ncols=min(len(labels), 4), fontsize=12,
               bbox_to_anchor=(0.5, -0.18), bbox_transform=ax.transAxes)
     ax.grid(True, linewidth=0.4)
     fig.tight_layout()

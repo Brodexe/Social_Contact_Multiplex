@@ -1,25 +1,25 @@
-# Graph Report - Social_Contact_Multiplex  (2026-10-13)
+# Graph Report - Social_Contact_Multiplex  (2026-11-03)
 
 ## Corpus Check
-- 44 files · ~66,816 words
+- 44 files · ~67,197 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 5 file(s) not represented in the graph (top: (none) 4, .css 1)
 
 ## Summary
-- 590 nodes · 1348 edges · 27 communities (21 shown, 6 thin omitted)
-- Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 71 edges (avg confidence: 0.91)
+- 598 nodes · 1376 edges · 27 communities (20 shown, 7 thin omitted)
+- Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 74 edges (avg confidence: 0.91)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `01d86bb8`
+- Built from commit: `70caf47c`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - main.js
 - numpy
-- README.md
-- random
+- networkx
+- core.py
 - server.py
 - MultiplexScene
 - adaptive_seed_selection.py
@@ -27,21 +27,21 @@
 - drive_seed_selection.py
 - _Strategy
 - serena
-- networkx
+- networks.py
 - CLAUDE.md
 - SeedMetricChart
 - inspector.js
 - Project Config
 - restart
-- browser_api.py
-- test_engine_equivalence.py
+- milp.py
+- Session
 - SeedPolicyRun
 - LineChart
-- core.py
-- Session
-- seeding.py
-- sbm_graph
+- _static_payload
+- Workspace
+- _normalized_layout
 - stepOnce
+- BaselineRuns
 - hf_space/README.md
 
 ## God Nodes (most connected - your core abstractions)
@@ -61,17 +61,17 @@
   app/networks.py → correlated_graphs.py
 - `build()` --calls--> `laplacian_smooth_beta()`  [EXTRACTED]
   app/networks.py → network_setup.py
-- `_reference()` --calls--> `edge_key()`  [EXTRACTED]
-  tests/test_seed_policies.py → app/seeding.py
-- `_check_case()` --calls--> `SeedPolicyRun`  [EXTRACTED]
-  tests/test_seed_policies.py → app/seeding.py
-- `test_hill_climb_accepts_non_worsening_swap()` --calls--> `SeedPolicyRun`  [EXTRACTED]
-  tests/test_seed_policies.py → app/seeding.py
+- `_run_pair()` --calls--> `load_shared_network()`  [EXTRACTED]
+  tests/test_engine_equivalence.py → network_setup.py
+- `_setup()` --calls--> `load_shared_network()`  [EXTRACTED]
+  tests/test_seed_policies.py → network_setup.py
+- `reset()` --uses--> `ScenarioConfig`  [INFERRED]
+  app/server.py → app/core.py
 
 ## Import Cycles
 - None detected.
 
-## Communities (27 total, 6 thin omitted)
+## Communities (27 total, 7 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.08
@@ -79,47 +79,47 @@ Nodes (29): ALGO_HINTS, app, BASELINE_SERIES, baselineChart, chart, compact(), C
 
 ### Community 1 - "numpy"
 Cohesion: 0.07
-Nodes (31): _expand_to_ticks(), _lighten(), load_all(), _normalize_entry(), plot_joint_cost_comparison(), plot_joint_cost_elements(), push_curve(), compare_infections_adherence() (+23 more)
+Nodes (33): _expand_to_ticks(), _lighten(), load_all(), _normalize_entry(), plot_joint_cost_comparison(), plot_joint_cost_elements(), push_curve(), _draw_network() (+25 more)
 
-### Community 2 - "README.md"
-Cohesion: 0.09
-Nodes (31): init(), parse_matrices(), simplify_matrices(), write_matrices_to_file(), find_seed_set(), initialize_social_IM(), greedy_for_ic(), greedy_for_ic_target() (+23 more)
+### Community 2 - "networkx"
+Cohesion: 0.06
+Nodes (47): init(), create_correlated_digraph(), create_social_graph(), create_w_k_hop_correlation(), jaccard_similarity(), parse_matrices(), simplify_matrices(), write_matrices_to_file() (+39 more)
 
-### Community 3 - "random"
-Cohesion: 0.09
-Nodes (24): create_correlated_digraph(), create_social_graph(), create_w_k_hop_correlation(), jaccard_similarity(), break_quarantine(), competing_spread_step(), fj_belief_update(), misinfo_seed_set() (+16 more)
+### Community 3 - "core.py"
+Cohesion: 0.21
+Nodes (5): _error(), handle(), _json_default(), options(), ScenarioConfig
 
 ### Community 4 - "server.py"
-Cohesion: 0.11
-Nodes (7): Workspace, index(), options(), remove(), reset(), _session(), step()
+Cohesion: 0.16
+Nodes (6): index(), options(), remove(), reset(), _session(), step()
 
 ### Community 5 - "MultiplexScene"
 Cohesion: 0.09
-Nodes (5): positionNodeCard(), hexToRgb(), ease(), MultiplexScene, MultiplexView
+Nodes (4): positionNodeCard(), hexToRgb(), MultiplexScene, MultiplexView
 
 ### Community 6 - "adaptive_seed_selection.py"
-Cohesion: 0.07
-Nodes (32): baseline_infections(), build_tagged_network(), compute_beta_clustering(), compute_node_beta(), core_over_btw(), degree_based_selection(), given_at_time(), global_cost_function() (+24 more)
+Cohesion: 0.11
+Nodes (23): baseline_infections(), build_tagged_network(), compute_beta_clustering(), compute_node_beta(), core_alone(), _core_alone_score(), core_over_btw(), _core_over_btw_score() (+15 more)
 
 ### Community 7 - "scene.js"
-Cohesion: 0.29
-Nodes (7): COLORS, SLOT_COLORS, SLOT_NAMES, STATE_COLORS, STATE_NAMES, ARRANGEMENTS, LAYERS
+Cohesion: 0.25
+Nodes (8): COLORS, SLOT_COLORS, SLOT_NAMES, STATE_COLORS, STATE_NAMES, ARRANGEMENTS, ease(), LAYERS
 
 ### Community 8 - "drive_seed_selection.py"
-Cohesion: 0.12
-Nodes (6): build(), main(), Dataset, _draw_comparison(), _draw_network(), truncate_files()
+Cohesion: 0.13
+Nodes (5): build(), main(), Dataset, _draw_comparison(), truncate_files()
 
 ### Community 9 - "_Strategy"
-Cohesion: 0.11
-Nodes (5): DegreeBased, HillClimb, Milp, RandomSeeds, _Strategy
+Cohesion: 0.10
+Nodes (6): CoreOverBetweenness, DegreeBased, HillClimb, Milp, RandomSeeds, _Strategy
 
 ### Community 10 - "serena"
 Cohesion: 0.50
 Nodes (3): C:/Users/cates/.local/bin/serena.exe, serena, start-mcp-server
 
-### Community 11 - "networkx"
-Cohesion: 0.14
-Nodes (15): _bin_info(), build(), correlated_social(), er_graph(), _hs_bin_raw(), hs_info(), _hs_social_raw(), khop_social() (+7 more)
+### Community 11 - "networks.py"
+Cohesion: 0.10
+Nodes (17): _bin_info(), build(), correlated_social(), describe(), er_graph(), _hs_bin_raw(), hs_info(), _hs_social_raw() (+9 more)
 
 ### Community 13 - "SeedMetricChart"
 Cohesion: 0.35
@@ -133,25 +133,21 @@ Nodes (11): esc(), fmtPct(), mean(), metricCell(), NetworkIndex, quarantineText(
 Cohesion: 0.27
 Nodes (17): activeSlot(), addSlot(), call(), clearSelection(), fillForm(), handleClick(), httpCall(), refreshPanel() (+9 more)
 
-### Community 17 - "browser_api.py"
-Cohesion: 0.33
-Nodes (3): _error(), handle(), _json_default()
-
-### Community 18 - "test_engine_equivalence.py"
-Cohesion: 0.10
-Nodes (18): MultiplexSIRS, CostModel, edge_key(), _check(), _run_pair(), test_fj_q_r(), test_fj_q_true(), test_ic_no_q() (+10 more)
+### Community 17 - "milp.py"
+Cohesion: 0.11
+Nodes (16): contact_network_path(), main(), run_adaptive(), run_milp(), baseline_infections(), compute_node_beta(), given_at_time(), global_cost_function() (+8 more)
 
 ### Community 19 - "SeedPolicyRun"
-Cohesion: 0.08
-Nodes (3): BaselineRuns, _RngStream, SeedPolicyRun
+Cohesion: 0.05
+Nodes (28): MultiplexSIRS, CostModel, edge_key(), SeedPolicyRun, _check(), _run_pair(), test_fj_q_r(), test_fj_q_true() (+20 more)
 
 ### Community 20 - "LineChart"
 Cohesion: 0.24
 Nodes (6): el(), LineChart, niceStep(), buildTiles(), seriesFor(), syncSeries()
 
-### Community 21 - "core.py"
-Cohesion: 0.13
-Nodes (11): _cluster_layout(), _communities(), _fit_disc(), _grid_layout(), _normalized_layout(), options(), ScenarioConfig, _seed_metrics() (+3 more)
+### Community 21 - "_static_payload"
+Cohesion: 0.22
+Nodes (6): _cluster_layout(), _communities(), _grid_layout(), _seed_metrics(), _static_payload(), betweenness()
 
 ### Community 26 - "stepOnce"
 Cohesion: 0.39
@@ -160,22 +156,22 @@ Nodes (7): collecting(), playLoop(), refreshPhaseBanner(), setPlaying(), sleep()
 ## Knowledge Gaps
 - **3 isolated node(s):** `C:/Users/cates/.local/bin/serena.exe`, `start-mcp-server`, `Social_Contact_Multiplex`
   These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 176 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **6 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **7 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `SeedPolicyRun` connect `SeedPolicyRun` to `random`, `test_engine_equivalence.py`, `core.py`, `Session`, `seeding.py`?**
-  _High betweenness centrality (0.042) - this node is a cross-community bridge._
+- **Why does `SeedPolicyRun` connect `SeedPolicyRun` to `networkx`, `BaselineRuns`, `Session`, `core.py`?**
+  _High betweenness centrality (0.041) - this node is a cross-community bridge._
 - **What connects `C:/Users/cates/.local/bin/serena.exe`, `start-mcp-server`, `Social_Contact_Multiplex` to the rest of the system?**
   _3 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
   _Cohesion score 0.08064516129032258 - nodes in this community are weakly interconnected._
-- **Why does `BaselineRuns` connect `SeedPolicyRun` to `seeding.py`?**
-  _High betweenness centrality (0.022) - this node is a cross-community bridge._
-- **Should `numpy` be split into smaller, more focused modules?**
-  _Cohesion score 0.0701484895033282 - nodes in this community are weakly interconnected._
-- **Why does `MultiplexScene` connect `MultiplexScene` to `main.js`, `stepOnce`, `scene.js`?**
+- **Why does `BaselineRuns` connect `BaselineRuns` to `networkx`, `adaptive_seed_selection.py`?**
   _High betweenness centrality (0.019) - this node is a cross-community bridge._
-- **Should `README.md` be split into smaller, more focused modules?**
-  _Cohesion score 0.08888888888888889 - nodes in this community are weakly interconnected._
+- **Should `numpy` be split into smaller, more focused modules?**
+  _Cohesion score 0.07067307692307692 - nodes in this community are weakly interconnected._
+- **Why does `MultiplexScene` connect `MultiplexScene` to `main.js`, `stepOnce`, `scene.js`?**
+  _High betweenness centrality (0.018) - this node is a cross-community bridge._
+- **Should `networkx` be split into smaller, more focused modules?**
+  _Cohesion score 0.05518207282913165 - nodes in this community are weakly interconnected._
