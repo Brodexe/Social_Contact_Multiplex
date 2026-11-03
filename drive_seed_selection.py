@@ -12,6 +12,15 @@ Without an argument the script uses bin 10 and produces the standard single
 comparison plot.  With an explicit bin index it produces a dual figure:
 contact-network visualization on the left, full method comparison on the right,
 saved to  capstone_result_figures/dual_bin{bin_index}.pdf
+
+Scale experiment
+----------------
+    python drive_seed_selection.py scale
+
+Runs adaptive_seed_selection.run_methods() once per scale in SCALES, injecting
+scale into _core_over_btw_score / _core_over_deg_score.  Each scale's curves go to
+its own AdaptSelect_coreness_scale_experiment_scale{scale}.pkl (never to
+cost_curves_data.pkl); point cost_curve_store's plot functions at one by path.
 """
 
 import sys
@@ -39,6 +48,23 @@ import adaptive_seed_selection as asm
 # ── argument parsing ──────────────────────────────────────────────────────────
 DEFAULT_BIN = 25
 BIN_RANGE   = range(13, 20)   # 1 … 19 inclusive
+
+# ── scale experiment ──────────────────────────────────────────────────────────
+SCALES = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0]
+SCALE_STORE_TEMPLATE = "AdaptSelect_coreness_scale_experiment_scale{scale}.pkl"
+
+def run_scale_experiment():
+    # Initialize once so every scale shares the same baselines, betas and injections.
+    asm.initialize(asm.CONTACT_NETWORK_PATH, asm.SOCIAL_NETWORK_PATH)
+    for scale in SCALES:
+        store_path = SCALE_STORE_TEMPLATE.format(scale=scale)
+        print(f"\n[scale] {scale} -> {store_path}")
+        asm.run_methods(scale=scale, store_path=store_path)
+    print("[done] Scale experiment complete.")
+
+if len(sys.argv) > 1 and sys.argv[1] == "scale":
+    run_scale_experiment()
+    sys.exit(0)
 
 if len(sys.argv) > 1:
     bins_to_run  = [int(sys.argv[1])]
@@ -246,4 +272,3 @@ for bin_idx in bins_to_run:
         plt.close(fig)
 
 print("[done] All bins processed.")
-ee-

@@ -654,11 +654,53 @@ def degree_based_selection():
             all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_full_dynamics, tagged,
             all_alpha_w_curves, all_beta_w_curves)
 
-# Coreness-over-betweenness selection: at each batch, score nodes in the CURRENT contact network
-# by normalized coreness / normalized betweenness, and take the top K.
+# Coreness-based selection: at each batch, score nodes in the CURRENT contact network with
+# score_fn(current_graph) -> {node: score}, and take the top K. Shared by core_over_btw,
+# core_over_deg, and core_alone, which differ only in their scoring rule.
 # Allows re-selection
 COB_EPS = 1e-9
-def core_over_btw():
+
+# score(u) = c'(u) / b'(u), with c' and b' normalized by their network-wide max.
+# COB_EPS keeps zero-betweenness nodes finite; they still rank first, ordered by c'.
+def _core_over_btw_score(current_graph, scale):
+    core_dict = nx.core_number(current_graph)
+    btw_dict = nx.betweenness_centrality(current_graph)
+    max_core = max(core_dict.values()) or 1
+    max_btw = max(btw_dict.values()) or 1
+    return {
+        node: ((core_dict[node] / max_core) ** scale) / (btw_dict[node] / max_btw + COB_EPS)
+        for node in current_graph.nodes()
+    }
+
+# score(u) = c'(u) / d'(u), with c' and d' normalized by their network-wide max.
+# COB_EPS keeps isolated (degree-0) nodes finite; their coreness is 0 too, so they rank last.
+def _core_over_deg_score(current_graph, scale):
+    core_dict = nx.core_number(current_graph)
+    deg_dict = dict(current_graph.degree())
+    max_core = max(core_dict.values()) or 1
+    max_deg = max(deg_dict.values()) or 1
+    return {
+        node: ((core_dict[node] / max_core) ** scale) / (deg_dict[node] / max_deg + COB_EPS)
+        for node in current_graph.nodes()
+    }
+
+# score(u) = c(u), the raw k-core number.
+def _core_alone_score(current_graph):
+    return nx.core_number(current_graph)
+
+# scale: exponent on normalized coreness c'(u) in the score (1.0 = plain ratio).
+def core_over_btw(scale=1.0):
+    return _coreness_selection("Core-over-Betweenness",
+                               lambda g: _core_over_btw_score(g, scale))
+
+def core_over_deg(scale=1.0):
+    return _coreness_selection("Core-over-Degree",
+                               lambda g: _core_over_deg_score(g, scale))
+
+def core_alone():
+    return _coreness_selection("Core-Alone", _core_alone_score)
+
+def _coreness_selection(method_name, score_fn):
     all_cost_curves = []
     all_infection_term_curves = []
     all_edge_term_curves = []
@@ -679,7 +721,7 @@ def core_over_btw():
         t_batch = batch_interval
 
     for i in range(num_simulations):
-        print("Core-over-Betweenness Simulation:", i)
+        print(f"{method_name} Simulation:", i)
 
         # Fresh networks for each simulation
         contact_network = deepcopy(initial_contact)
@@ -714,16 +756,7 @@ def core_over_btw():
                 # core_number does not accept self-loops
                 current_graph.remove_edges_from(list(nx.selfloop_edges(current_graph)))
 
-                # score(u) = c'(u) / b'(u), with c' and b' normalized by their network-wide max.
-                # COB_EPS keeps zero-betweenness nodes finite; they still rank first, ordered by c'.
-                core_dict = nx.core_number(current_graph)
-                btw_dict = nx.betweenness_centrality(current_graph)
-                max_core = max(core_dict.values()) or 1
-                max_btw = max(btw_dict.values()) or 1
-                score = {
-                    node: (core_dict[node] / max_core) / (btw_dict[node] / max_btw + COB_EPS)
-                    for node in current_graph.nodes()
-                }
+                score = score_fn(current_graph)
                 seed_set = sorted(score, key=lambda node: score[node], reverse=True)[:K]
 
             # Introduce random new infections
@@ -776,7 +809,7 @@ def core_over_btw():
                     len(seed_set),
                     t_cur
                 )
-                print(f"Core-over-Betweenness, {t_cur}, {cost}")
+                print(f"{method_name}, {t_cur}, {cost}")
                 cost_lst.append(cost)
                 infection_term_lst.append(cost_elements[0])
                 edge_term_lst.append(cost_elements[1])
@@ -1083,32 +1116,34 @@ def plot_prevalence_and_new_infections(
     fig.savefig("capstone_result_figures/prevalence_and_new_infections.pdf", format="pdf")
     plt.show()
 
-if __name__ == "__main__":
-    # ── CHOOSE NETWORK FILES HERE ───────────────────────────────────────────
-    # Swap these two paths to run against a different contact/social pair (or set
-    # both to None to fall back to the synthetic network shared with milp.py).
-    # CONTACT_NETWORK_PATH = "capstone_proj_data/rc_weighted_contact_bin14.gml"
-    # SOCIAL_NETWORK_PATH  = "capstone_proj_data/rc_social_network.gml"
+# ── CHOOSE NETWORK FILES HERE ───────────────────────────────────────────────
+# Swap these two paths to run against a different contact/social pair (or set
+# both to None to fall back to the synthetic network shared with milp.py).
+# Module-level so drive_seed_selection.py's scale experiment uses the same pair.
+# CONTACT_NETWORK_PATH = "capstone_proj_data/rc_weighted_contact_bin14.gml"
+# SOCIAL_NETWORK_PATH  = "capstone_proj_data/rc_social_network.gml"
 
-    CONTACT_NETWORK_PATH = None
-    SOCIAL_NETWORK_PATH = None
+CONTACT_NETWORK_PATH = "capstone_proj_data/rc_contact_network_bin15.gml"
+SOCIAL_NETWORK_PATH  = "capstone_proj_data/rc_social_network.gml"
 
-    # ─────────────────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
 
-    initialize(CONTACT_NETWORK_PATH, SOCIAL_NETWORK_PATH)
-
+# Run the selected methods on the already-initialize()d network and push their curves.
+# scale is injected into the coreness scores of core_over_btw / core_over_deg;
+# store_path lets callers (e.g. the scale experiment) avoid overwriting the default store.
+def run_methods(scale=1.0, store_path=cost_curve_store.STORE_PATH):
     # Run hill2 (single-swap per batch, accept first improvement) -- the "adaptive" approach
-    (_, hill_cost_curves, hill_infection_curves, hill_edge_term_curves, hill_edge_curves,
-     hill_newly_counts, hill_newly_frac, hill_dynamics_list, tagged_contact_hill,
-     hill_batch_seed_sets, hill_alpha_w_curves, hill_beta_w_curves) = hill2()
+    # (_, hill_cost_curves, hill_infection_curves, hill_edge_term_curves, hill_edge_curves,
+    #  hill_newly_counts, hill_newly_frac, hill_dynamics_list, tagged_contact_hill,
+    #  hill_batch_seed_sets, hill_alpha_w_curves, hill_beta_w_curves) = hill2()
 
-    # Save every seed set of every batch of every run of the adaptive approach, along with
-    # the social network it was selected against, for visualize_adaptive.py.
-    with open("adaptive_seed_data.pkl", "wb") as f:
-        pickle.dump({
-            "batch_seed_sets": hill_batch_seed_sets,  # [sim][batch] -> list of node ids
-            "social_network": initial_social,
-        }, f)
+    # # Save every seed set of every batch of every run of the adaptive approach, along with
+    # # the social network it was selected against, for visualize_adaptive.py.
+    # with open("adaptive_seed_data.pkl", "wb") as f:
+    #     pickle.dump({
+    #         "batch_seed_sets": hill_batch_seed_sets,  # [sim][batch] -> list of node ids
+    #         "social_network": initial_social,
+    #     }, f)
 
     # Run degree baseline
     (_, degree_cost_curves, degree_infection_curves, degree_edge_term_curves, degree_edge_curves,
@@ -1118,7 +1153,17 @@ if __name__ == "__main__":
     # Run coreness-over-betweenness baseline
     (_, cob_cost_curves, cob_infection_curves, cob_edge_term_curves, cob_edge_curves,
      cob_newly_counts, cob_newly_frac, cob_dynamics_list, tagged_contact_cob,
-     cob_alpha_w_curves, cob_beta_w_curves) = core_over_btw()
+     cob_alpha_w_curves, cob_beta_w_curves) = core_over_btw(scale)
+
+    # Run coreness-over-degree baseline
+    (_, cod_cost_curves, cod_infection_curves, cod_edge_term_curves, cod_edge_curves,
+     cod_newly_counts, cod_newly_frac, cod_dynamics_list, tagged_contact_cod,
+     cod_alpha_w_curves, cod_beta_w_curves) = core_over_deg(scale)
+
+    # Run coreness-alone baseline
+    # (_, core_cost_curves, core_infection_curves, core_edge_term_curves, core_edge_curves,
+    #  core_newly_counts, core_newly_frac, core_dynamics_list, tagged_contact_core,
+    #  core_alpha_w_curves, core_beta_w_curves) = core_alone()
 
     # Run random seed selection baseline
     (_, rand_cost_curves, rand_infection_curves, rand_edge_term_curves, rand_edge_curves,
@@ -1126,7 +1171,7 @@ if __name__ == "__main__":
      rand_alpha_w_curves, rand_beta_w_curves) = random_seed_selection()
 
     # Cytoscape visualization (uses tagged network from first solver)
-    send_to_cytoscape(tagged_contact_hill, title="Contact Network (Hill Climb)")
+    # send_to_cytoscape(tagged_contact_hill, title="Contact Network (Hill Climb)")
 
     # Beta distribution histogram
     # plot_beta_histogram(tagged_contact_hill)
@@ -1136,19 +1181,31 @@ if __name__ == "__main__":
     # with milp.py. Once milp.py has also been run, call
     # cost_curve_store.plot_joint_cost_comparison() / plot_joint_cost_elements() (e.g.
     # `python cost_curve_store.py`) to render the combined figures.
-    cost_curve_store.push_curve("Degree-Based", degree_cost_curves,
-                                 infection_curves=degree_infection_curves, edge_curves=degree_edge_term_curves,
-                                 alpha_curves=degree_alpha_w_curves, beta_curves=degree_beta_w_curves,
-                                 batch_interval=batch_interval, T=T)
+    # cost_curve_store.push_curve("Degree-Based", degree_cost_curves,
+    #                              infection_curves=degree_infection_curves, edge_curves=degree_edge_term_curves,
+    #                              alpha_curves=degree_alpha_w_curves, beta_curves=degree_beta_w_curves,
+    #                              batch_interval=batch_interval, T=T, path=store_path)
     cost_curve_store.push_curve("Core over Btw", cob_cost_curves,
                                  infection_curves=cob_infection_curves, edge_curves=cob_edge_term_curves,
                                  alpha_curves=cob_alpha_w_curves, beta_curves=cob_beta_w_curves,
-                                 batch_interval=batch_interval, T=T)
+                                 batch_interval=batch_interval, T=T, path=store_path)
+    cost_curve_store.push_curve("Core over Deg", cod_cost_curves,
+                                 infection_curves=cod_infection_curves, edge_curves=cod_edge_term_curves,
+                                 alpha_curves=cod_alpha_w_curves, beta_curves=cod_beta_w_curves,
+                                 batch_interval=batch_interval, T=T, path=store_path)
+    # cost_curve_store.push_curve("Core Alone", core_cost_curves,
+    #                              infection_curves=core_infection_curves, edge_curves=core_edge_term_curves,
+    #                              alpha_curves=core_alpha_w_curves, beta_curves=core_beta_w_curves,
+    #                              batch_interval=batch_interval, T=T, path=store_path)
     cost_curve_store.push_curve("Random Seeds", rand_cost_curves,
                                  infection_curves=rand_infection_curves, edge_curves=rand_edge_term_curves,
                                  alpha_curves=rand_alpha_w_curves, beta_curves=rand_beta_w_curves,
-                                 batch_interval=batch_interval, T=T)
-    cost_curve_store.push_curve("Adaptive", hill_cost_curves,
-                                 infection_curves=hill_infection_curves, edge_curves=hill_edge_term_curves,
-                                 alpha_curves=hill_alpha_w_curves, beta_curves=hill_beta_w_curves,
-                                 batch_interval=batch_interval, T=T)
+                                 batch_interval=batch_interval, T=T, path=store_path)
+    # cost_curve_store.push_curve("Adaptive", hill_cost_curves,
+    #                              infection_curves=hill_infection_curves, edge_curves=hill_edge_term_curves,
+    #                              alpha_curves=hill_alpha_w_curves, beta_curves=hill_beta_w_curves,
+    #                              batch_interval=batch_interval, T=T, path=store_path)
+
+if __name__ == "__main__":
+    initialize(CONTACT_NETWORK_PATH, SOCIAL_NETWORK_PATH)
+    run_methods()
