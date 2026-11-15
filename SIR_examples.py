@@ -754,6 +754,64 @@ def plot_newly_infected():
     plt.show()
     plt.close()
 
+# Plot mean-field model evaluations vs ground-truth new infections, using the data that
+# mean_field_approx.py appends to experiment_data/mfa_xy_data.txt.
+#   Model:        n_i ~= (w1 * x1) * (x2 - w2), with x1 = beta * n_r / gamma, x2 = 1 - n_r / gamma
+#                 use_true_weights=False -> estimated (w1, w2), mean +- std over optimizer runs ("y_pred all runs")
+#                 use_true_weights=True  -> true (<k>, r) plugged in ("y_model values")
+#   Ground truth: actual newly infected ratio from the simulation ("Given Newly Infected Ratio")
+# Plots the most recent run in the file (both halves if it was split at quarantine).
+def plot_mfa_new_infections(data_file='experiment_data/mfa_xy_data.txt', use_true_weights=False):
+    import os, sys
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'result_figures'))
+    import extract_mfa
+
+    samples = extract_mfa.parse_sample_data(data_file)
+    if not samples:
+        print(f"No samples found in {data_file}. Run mean_field_approx.py first.")
+        return None
+
+    # A split run writes two samples; the second half starts at x > 0
+    last = samples[-1]
+    run = samples[-2:] if len(samples) > 1 and last['y_model values']['x'][0] > 0 else [last]
+    split_t = run[1]['y_model values']['x'][0] if len(run) == 2 else None
+
+    t_model, model_mean, model_std, t_true, y_true = [], [], [], [], []
+    for s in run:
+        t_model.extend(s['y_model values']['x'])
+        if use_true_weights:
+            model_mean.extend(s['y_model values']['y'])
+        else:
+            runs = np.array([r for r in s['y_pred all runs']['y'] if len(r) > 0])
+            model_mean.extend(runs.mean(axis=0))
+            model_std.extend(runs.std(axis=0))
+        t_true.extend(s['Given Newly Infected Ratio']['x'])
+        y_true.extend(s['Given Newly Infected Ratio']['y'])
+
+    t_model, model_mean = np.array(t_model), np.array(model_mean)
+
+    fig, ax = plt.subplots(figsize=FIGURE_SIZE_LINE)
+    ax.plot(t_true, y_true, color='#2196F3', label='Ground Truth')
+    model_label = r'Model: $(w_1 x_1)(x_2 - w_2)$' + (' (true $w$)' if use_true_weights else ' (estimated $w$)')
+    ax.plot(t_model, model_mean, color='#FF5722', linestyle='--', label=model_label)
+    if model_std:
+        model_std = np.array(model_std)
+        ax.fill_between(t_model, model_mean - model_std, model_mean + model_std, color='#FF5722', alpha=0.2)
+    if split_t is not None:
+        ax.axvline(split_t, color='gray', linestyle='dotted', label='Quarantine Start')
+
+    ax.set_xlabel('Time (days)')
+    ax.set_ylabel(r'Newly Infected Ratio ($\eta_i$)')
+    ax.set_title('Mean-Field Approximation of New Infections')
+    ax.legend()
+    ax.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('result_figures/mfa_new_infections.pdf', bbox_inches='tight')
+    plt.show()
+    plt.close(fig)
+
+    return (t_model, model_mean), (np.array(t_true), np.array(y_true))
+
 def plot_information_dynamics(plot_data=False):
     split_point = 30
     num_trials = 25
@@ -952,4 +1010,5 @@ if __name__ == "__main__":
     # plot_newly_infected()
     # compare_FJ_IC(plot_data=True)
     # plot_all_quarantine(num_trials=5)
-    plot_informed_infected_overlap(plot_data=True, num_trials=10, begin_q=30)
+    # plot_informed_infected_overlap(plot_data=True, num_trials=10, begin_q=30)
+    plot_mfa_new_infections(data_file='experiment_data/mfa_xy_data.txt', use_true_weights=False)

@@ -46,7 +46,7 @@ import networkx as nx
 import adaptive_seed_selection as asm
 
 # ── argument parsing ──────────────────────────────────────────────────────────
-DEFAULT_BIN = 25
+DEFAULT_BIN = 15
 BIN_RANGE   = range(13, 20)   # 1 … 19 inclusive
 
 # ── scale experiment ──────────────────────────────────────────────────────────

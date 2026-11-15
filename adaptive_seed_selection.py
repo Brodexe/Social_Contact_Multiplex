@@ -41,7 +41,7 @@ beta_R = 0.25   # Upper bound for heterogeneous beta
 Gamma  = 2      # Shape parameter: higher values skew beta toward beta_R
 
 adherence = 1.0
-num_simulations = 10
+num_simulations = 30
 
 batch_interval = 2  # Seeds and cost updated once every batch_interval steps
 information_spread = True
@@ -1123,7 +1123,7 @@ def plot_prevalence_and_new_infections(
 # CONTACT_NETWORK_PATH = "capstone_proj_data/rc_weighted_contact_bin14.gml"
 # SOCIAL_NETWORK_PATH  = "capstone_proj_data/rc_social_network.gml"
 
-CONTACT_NETWORK_PATH = "capstone_proj_data/rc_contact_network_bin15.gml"
+CONTACT_NETWORK_PATH = "capstone_proj_data/rc_contact_network_bin16.gml"
 SOCIAL_NETWORK_PATH  = "capstone_proj_data/rc_social_network.gml"
 
 # ─────────────────────────────────────────────────────────────────────────────
