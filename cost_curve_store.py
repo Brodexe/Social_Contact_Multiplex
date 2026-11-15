@@ -44,6 +44,7 @@ plt.rcParams.update({
 
 FIGURE_SIZE_LINE = (10, 6)
 
+# STORE_PATH = "AdaptSelect_coreness_scale_experiment_scale1.0.pkl"
 STORE_PATH = "cost_curves_data.pkl"
 
 # Canonical label -> color, and the fixed legend/plot order.

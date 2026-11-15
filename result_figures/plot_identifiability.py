@@ -154,6 +154,159 @@ def plot_model(samples, even_or_odd=2):
 
 # ---------------------------------------------------------------------------
 #
+#  Delta plot: one-step change in newly infected, model vs. ground truth.
+#
+#    Model:        y_pred(t) - n_i(t-1)
+#    Ground truth: n_i(t)    - n_i(t-1)
+#
+#    Time alignment (from mean_field_approx.save_xy_data):
+#      - "y_pred all runs" x = absolute t, starting at x_ofs (0 or split_point).
+#        y_pred(t) is the estimate of n_i(t) from given_at_time(t).
+#      - "Given Newly Infected Ratio" x = absolute t, starting at 1 for the
+#        pre-quarantine half (n_i(0) is the seed count, not written) and at
+#        split_point for the post-quarantine half.
+#    Both series are keyed by absolute t, so n_i(t-1) is looked up by t-1.
+#    The deltas are only defined for t >= 2 (n_i(t-1) must itself be a real
+#    newly-infected value, i.e. t-1 >= 1).
+#
+#    For a post-quarantine sample, n_i(split_point - 1) lives in the paired
+#    pre-quarantine sample (index i-1), so it is borrowed from there.
+#
+# ---------------------------------------------------------------------------
+def _n_i_lookup(sample):
+    if 'Given Newly Infected Ratio' not in sample:
+        return {}
+    xs = sample['Given Newly Infected Ratio']['x']
+    ys = sample['Given Newly Infected Ratio']['y']
+    return {int(t): float(y) for t, y in zip(xs, ys)}
+
+
+def delta_model(samples, even_or_odd=2, t_min=2):
+    plt.figure(figsize=(12, 7))
+
+    results_list = []
+    legend_added = set()
+
+    # Same pre/post split detection as plot_model
+    split_t = None
+    if even_or_odd == 2:
+        pre_max = None
+        post_min = None
+        for i, s in enumerate(samples):
+            if 'y_model values' not in s:
+                continue
+            t = s['y_model values']['x']
+            if not t:
+                continue
+            if i % 2 == 0:
+                pre_max = max(t) if pre_max is None else max(pre_max, max(t))
+            else:
+                post_min = min(t) if post_min is None else min(post_min, min(t))
+        if pre_max is not None and post_min is not None:
+            split_t = (pre_max + post_min) / 2
+
+    for i, sample in enumerate(samples):
+
+        if not (even_or_odd == 2 or i % 2 == even_or_odd):
+            continue
+
+        if 'y_pred all runs' not in sample or 'Given Newly Infected Ratio' not in sample:
+            continue
+
+        y_pred_runs = [list(run) for run in sample['y_pred all runs']['y'] if len(run) > 0]
+        if not y_pred_runs:
+            continue
+
+        # Align run lengths (pad with last value if necessary)
+        max_len = max(len(run) for run in y_pred_runs)
+        for run in y_pred_runs:
+            while len(run) < max_len:
+                run.append(run[-1])
+
+        y_pred_arr = np.array(y_pred_runs)
+        t_pred = np.array(sample['y_pred all runs']['x'][:max_len], dtype=int)
+
+        # n_i keyed by absolute t; borrow the preceding half's values for t-1 lookups
+        n_i = _n_i_lookup(sample)
+        if i % 2 == 1 and i - 1 >= 0:
+            for t, y in _n_i_lookup(samples[i - 1]).items():
+                n_i.setdefault(t, y)
+
+        # --- Model delta: y_pred(t) - n_i(t-1), per run ---
+        model_mask = np.array([t >= t_min and (t - 1) in n_i for t in t_pred], dtype=bool)
+        t_model = t_pred[model_mask]
+        prev_model = np.array([n_i[t - 1] for t in t_model])
+        delta_model_runs = y_pred_arr[:, model_mask] - prev_model[None, :]
+        delta_model_mean = np.mean(delta_model_runs, axis=0)
+        delta_model_std = np.std(delta_model_runs, axis=0)
+
+        # --- Ground-truth delta: n_i(t) - n_i(t-1), over this sample's own t range ---
+        t_own = np.array(sorted(_n_i_lookup(sample).keys()), dtype=int)
+        t_true = np.array([t for t in t_own if t >= t_min and (t - 1) in n_i], dtype=int)
+        delta_true = np.array([n_i[t] - n_i[t - 1] for t in t_true])
+
+        # --- Plot ground-truth delta ---
+        if len(t_true) > 0:
+            label = r'True $\Delta\eta_i$' if 'y_true' not in legend_added else '_nolegend_'
+            legend_added.add('y_true')
+            plt.plot(
+                t_true, delta_true,
+                color=CURVE_COLORS['y_true'], linestyle='-',
+                label=label
+            )
+
+        # --- Plot model delta (mean ± std over optimizer runs) ---
+        if len(t_model) > 0:
+            label = r'Model $\Delta\eta_i$ (Estimator Mean)' if 'y_pred' not in legend_added else '_nolegend_'
+            legend_added.add('y_pred')
+            plt.plot(
+                t_model, delta_model_mean,
+                color=CURVE_COLORS['y_pred'], linestyle=':',
+                label=label
+            )
+            plt.fill_between(
+                t_model, delta_model_mean - delta_model_std, delta_model_mean + delta_model_std,
+                alpha=0.15, color=CURVE_COLORS['y_pred']
+            )
+
+        results_list.append({
+            "sample_index": i,
+            "t_model": t_model,
+            "delta_model_mean": delta_model_mean,
+            "delta_model_std": delta_model_std,
+            "t_true": t_true,
+            "delta_true": delta_true,
+        })
+
+    if split_t is not None:
+        plt.axvline(split_t, color='gray', linestyle='--', linewidth=1.5, label='Quarantine Start')
+
+    plt.axhline(0, color='black', linewidth=0.8)
+    plt.xlabel('Time (days)')
+    plt.ylabel(r'$\Delta$ Newly Infected ($\eta_i(t) - \eta_i(t-1)$)')
+    if even_or_odd == 0:
+        plt.title(r'One-Step Change in $\eta_i$ (Pre-Quarantine)')
+    elif even_or_odd == 1:
+        plt.title(r'One-Step Change in $\eta_i$ (Post-Quarantine)')
+    else:
+        plt.title(r'One-Step Change in $\eta_i$: Estimator vs True')
+    plt.legend()
+    plt.grid(True)
+
+    plt.savefig(
+        "result_figures/delta_model_results.pdf",
+        format="pdf",
+        bbox_inches="tight"
+    )
+
+    plt.show()
+
+    with open("result_figures/delta_model_data.pkl", "wb") as f:
+        pickle.dump(results_list, f)
+
+
+# ---------------------------------------------------------------------------
+#
 #  Identifiability plot: true vs. predicted n_i and n_r time-series.
 #
 #    Pulls from these blocks in mfa_xy_data.txt:
@@ -325,4 +478,5 @@ def plot_identifiability_results(samples, even_or_odd=2):
 
 if __name__ == "__main__":
     samples = extract_mfa.parse_sample_data('experiment_data/mfa_xy_data.txt')
-    plot_identifiability_results(samples, even_or_odd=2)
+    # plot_identifiability_results(samples, even_or_odd=2)
+    plot_model(samples, even_or_odd=0)
