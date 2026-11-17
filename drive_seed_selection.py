@@ -21,6 +21,30 @@ Runs adaptive_seed_selection.run_methods() once per scale in SCALES, injecting
 scale into _core_over_btw_score / _core_over_deg_score.  Each scale's curves go to
 its own AdaptSelect_coreness_scale_experiment_scale{scale}.pkl (never to
 cost_curves_data.pkl); point cost_curve_store's plot functions at one by path.
+
+Robustness experiment (cascade time x seed set size)
+----------------------------------------------------
+    python drive_seed_selection.py robustness [hill-climb] [milp] [random] [--plot-only]
+
+Runs each chosen method for every cascade time in CASCADE_TIMES (batch interval;
+None = no information cascade) and seed set size in SEED_FRACTIONS on
+asm.CONTACT_NETWORK_PATH / asm.SOCIAL_NETWORK_PATH, stores the curves in
+robustness_experiment.pkl, then plots one total-cost heatmap per method
+(cost_curve_store.plot_robustness_heatmaps). Random runs once per seed size and
+is duplicated across cascade times. Methods default to hill-climb + random.
+
+Correlation ablation
+--------------------
+    python drive_seed_selection.py correlation [hill-climb] [milp] [random] [--plot-only]
+
+Holds rc_contact_network_bin{CORRELATION_BIN}.gml fixed and rebuilds the social
+layer at each alignment in CORRELATIONS (Correlate3.make_correlated_social),
+cascade time CORRELATION_CASCADE. Stores curves in correlation_ablation.pkl and
+plots cost_curve_store.plot_correlation_ablation. Random runs once, on the
+observed social layer, and is drawn as a single curve.
+
+--plot-only skips the runs and re-plots whatever is already stored, e.g. after
+running methods separately:  ... robustness milp  then  ... robustness hill-climb milp random --plot-only
 """
 
 import sys
@@ -62,8 +86,180 @@ def run_scale_experiment():
         asm.run_methods(scale=scale, store_path=store_path)
     print("[done] Scale experiment complete.")
 
+# ── shared helpers for the robustness / correlation experiments ──────────────
+import cost_curve_store
+import Correlate1
+import Correlate3
+
+# None = no information cascade: info never spreads past the seeds, and seeds are
+# re-chosen every step (batch_interval = NO_CASCADE_BATCH_INTERVAL).
+NO_CASCADE_BATCH_INTERVAL = 1
+DEFAULT_EXPERIMENT_METHODS = ["hill-climb", "random"]
+
+
+def _set_cascade(module, cascade):
+    """Point a seed-selection module (asm or milp) at one cascade time."""
+    if cascade is None:
+        module.information_spread = False
+        module.batch_interval = NO_CASCADE_BATCH_INTERVAL
+    else:
+        module.information_spread = True
+        module.batch_interval = cascade
+
+
+def _run_cost_curves(method):
+    """Run one method on its already-initialized module; return its per-batch cost curves."""
+    if method == "hill-climb":
+        return asm.hill2()[1]
+    if method == "random":
+        return asm.random_seed_selection()[1]
+    if method == "milp":
+        import milp
+        return milp.milp_seed_selection_stepwise()[1]
+    raise ValueError(method)
+
+
+def _module_for(method):
+    if method == "milp":
+        import milp
+        return milp
+    return asm
+
+
+def _push(method, key, curves, path):
+    module = _module_for(method)
+    cost_curve_store.push_experiment_curve(
+        cost_curve_store.METHOD_ALIASES[method], key, curves,
+        batch_interval=module.batch_interval, T=module.T, path=path)
+
+
+def _parse_experiment_args(args):
+    """[methods...] [--plot-only] -> (methods, plot_only). Methods default to hill-climb + random."""
+    plot_only = "--plot-only" in args
+    methods = [a.lower() for a in args if a != "--plot-only"] or list(DEFAULT_EXPERIMENT_METHODS)
+    bad = [m for m in methods if m not in cost_curve_store.EXPERIMENT_METHODS]
+    if bad:
+        sys.exit(f"Unknown method(s) {bad}; choose from {list(cost_curve_store.EXPERIMENT_METHODS)}")
+    return methods, plot_only
+
+
+def _initialize_modules(methods, contact_path, social_path):
+    """Initialize only the modules the chosen methods need; return them."""
+    modules = []
+    if "hill-climb" in methods or "random" in methods:
+        asm.initialize(contact_path, social_path)
+        modules.append(asm)
+    if "milp" in methods:
+        import milp
+        milp.initialize(contact_path, social_path)
+        modules.append(milp)
+    return modules
+
+
+# ── Experiment 1: cascade time x seed set size robustness ────────────────────
+#   python drive_seed_selection.py robustness [hill-climb] [milp] [random] [--plot-only]
+CASCADE_TIMES  = [None, 5, 10, 15]          # batch intervals; None = no cascade
+SEED_FRACTIONS = [0.10, 0.25, 0.50, 0.75]   # seed set size as a fraction of n
+# Random's choices don't depend on cascade time: it is run once per seed size at
+# this cascade time and the result is duplicated across every cascade-time row.
+RANDOM_REFERENCE_CASCADE = 5
+
+def run_robustness_experiment(methods):
+    path = cost_curve_store.ROBUSTNESS_STORE_PATH
+    # Initialize once so every configuration shares the same betas, injections and baselines.
+    _initialize_modules(methods, asm.CONTACT_NETWORK_PATH, asm.SOCIAL_NETWORK_PATH)
+
+    for frac in SEED_FRACTIONS:
+        if "hill-climb" in methods or "random" in methods:
+            asm.K = max(1, int(frac * asm.n))
+        if "milp" in methods:
+            import milp
+            milp.seed_fraction = frac
+
+        for method in ("hill-climb", "milp"):
+            if method not in methods:
+                continue
+            for cascade in CASCADE_TIMES:
+                _set_cascade(_module_for(method), cascade)
+                print(f"\n[robustness] {method}: cascade={cascade}, seeds={frac:.0%}")
+                _push(method, (cascade, frac), _run_cost_curves(method), path)
+
+        if "random" in methods:
+            _set_cascade(asm, RANDOM_REFERENCE_CASCADE)
+            print(f"\n[robustness] random: seeds={frac:.0%} (duplicated across cascade times)")
+            curves = _run_cost_curves("random")
+            for cascade in CASCADE_TIMES:
+                _push("random", (cascade, frac), curves, path)
+
+    print("[done] Robustness experiment complete.")
+
+
+# ── Experiment 3: inter-layer correlation ablation ───────────────────────────
+#   python drive_seed_selection.py correlation [hill-climb] [milp] [random] [--plot-only]
+CORRELATIONS        = [0, 0.25, 0.5, 0.75, 1.0]
+CORRELATION_CASCADE = 5
+CORRELATION_BIN     = 16
+CORRELATION_SEED    = 123   # fixed so every module builds identical correlated social layers
+
+def _measured_correlation(contact, social):
+    """Pearson inter-layer degree correlation (Correlate1), social treated as undirected."""
+    return Correlate1.degree_correlation_over_time(social.to_undirected(), [contact])[0]["degree_correlation"]
+
+
+def run_correlation_experiment(methods):
+    path = cost_curve_store.CORRELATION_STORE_PATH
+    contact_path = f"capstone_proj_data/rc_contact_network_bin{CORRELATION_BIN}.gml"
+    modules = _initialize_modules(methods, contact_path, asm.SOCIAL_NETWORK_PATH)
+    for module in modules:
+        _set_cascade(module, CORRELATION_CASCADE)
+    observed_social = {module: module.initial_social for module in modules}
+
+    ref = modules[0]
+    measured = {"observed": _measured_correlation(ref.initial_contact, ref.initial_social)}
+    print(f"[correlation] observed social layer: r = {measured['observed']:.3f}")
+
+    for corr in CORRELATIONS:
+        # Same contact layer every time; only the social layer's alignment changes.
+        for module in modules:
+            module.initial_social, _ = Correlate3.make_correlated_social(
+                module.initial_contact, observed_social[module], corr, random_seed=CORRELATION_SEED)
+        measured[corr] = _measured_correlation(ref.initial_contact, ref.initial_social)
+        print(f"\n[correlation] alignment={corr:g}  ->  measured r = {measured[corr]:.3f}")
+
+        for method in ("hill-climb", "milp"):
+            if method in methods:
+                _push(method, corr, _run_cost_curves(method), path)
+
+    if "random" in methods:
+        # Random's seed choices ignore the social layer's alignment: one run, on the
+        # observed (unpermuted) social network, stands in for every correlation.
+        asm.initial_social = observed_social[asm]
+        print("\n[correlation] random (single, correlation-independent curve)")
+        _push("random", cost_curve_store.RANDOM_ALL_KEY, _run_cost_curves("random"), path)
+
+    cost_curve_store.push_experiment_meta("measured_correlation", measured, path)
+    print("[done] Correlation ablation complete.")
+
+
 if len(sys.argv) > 1 and sys.argv[1] == "scale":
     run_scale_experiment()
+    sys.exit(0)
+
+if len(sys.argv) > 1 and sys.argv[1] == "robustness":
+    _methods, _plot_only = _parse_experiment_args(sys.argv[2:])
+    if not _plot_only:
+        run_robustness_experiment(_methods)
+    cost_curve_store.plot_robustness_heatmaps(
+        methods=_methods, path=cost_curve_store.ROBUSTNESS_STORE_PATH,
+        cascade_times=CASCADE_TIMES, seed_fractions=SEED_FRACTIONS)
+    sys.exit(0)
+
+if len(sys.argv) > 1 and sys.argv[1] == "correlation":
+    _methods, _plot_only = _parse_experiment_args(sys.argv[2:])
+    if not _plot_only:
+        run_correlation_experiment(_methods)
+    cost_curve_store.plot_correlation_ablation(
+        methods=_methods, path=cost_curve_store.CORRELATION_STORE_PATH, correlations=CORRELATIONS)
     sys.exit(0)
 
 if len(sys.argv) > 1:

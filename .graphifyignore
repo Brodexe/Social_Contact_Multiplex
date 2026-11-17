@@ -1,13 +1,14 @@
 # Generated outputs and raw data -- not useful in the knowledge graph
-result_figures/
-capstone_result_figures/
-capstone_proj_data/
-experiment_data/
 logs/
 my-repo-backup.git/
 .venv/
 __pycache__/
 *.pkl
+# ...but keep everything in the data/figure folders, pickles included
+!capstone_proj_data/**/*.pkl
+!capstone_result_figures/**/*.pkl
+!experiment_data/**/*.pkl
+!result_figures/**/*.pkl
 # Third-party vendored libs and the deploy build copy of app/static
 **/vendor/
 deploy/site/

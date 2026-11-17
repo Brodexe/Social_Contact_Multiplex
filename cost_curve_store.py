@@ -60,6 +60,239 @@ METHOD_STYLE = {
 }
 
 
+# ── experiment stores (drive_seed_selection.py robustness / correlation) ─────
+# Experiment curves are keyed by configuration rather than by method alone:
+#   robustness:  {label: {(cascade_time, seed_fraction): cost_array}}
+#   correlation: {label: {correlation: cost_array}}  (Random Seeds: {"all": cost_array})
+# plus a reserved "_meta" entry for side information (e.g. measured correlations).
+ROBUSTNESS_STORE_PATH  = "robustness_experiment.pkl"
+CORRELATION_STORE_PATH = "correlation_ablation.pkl"
+META_KEY = "_meta"
+RANDOM_ALL_KEY = "all"  # Random Seeds' single, configuration-independent curve
+
+# User-facing method names for the experiments -> canonical METHOD_STYLE labels.
+METHOD_ALIASES = {
+    "hill-climb": "Adaptive",
+    "milp":       "MILP",
+    "random":     "Random Seeds",
+}
+EXPERIMENT_METHODS = tuple(METHOD_ALIASES)  # ("hill-climb", "milp", "random")
+
+
+def resolve_methods(methods):
+    """Map any mix of aliases ("hill-climb", "milp", "random") or canonical labels
+    ("Adaptive", "MILP", "Random Seeds") to canonical labels, in METHOD_STYLE order."""
+    labels = set()
+    for m in methods:
+        label = METHOD_ALIASES.get(str(m).lower(), m)
+        if label not in METHOD_STYLE:
+            raise ValueError(f"Unknown method {m!r}; choose from {list(METHOD_ALIASES)}")
+        labels.add(label)
+    return [l for l in METHOD_STYLE if l in labels]
+
+
+def push_experiment_curve(label, key, cost_curves, batch_interval=1, T=None, path=ROBUSTNESS_STORE_PATH):
+    """Store one method's cost curves for one experiment configuration `key`.
+    Per-batch curves are expanded to per-tick (see push_curve) so configurations
+    with different batch intervals share a T-tick time axis."""
+    if label not in METHOD_STYLE:
+        raise ValueError(f"Unknown method label {label!r}; expected one of {list(METHOD_STYLE)}")
+    if batch_interval > 1:
+        if T is None:
+            raise ValueError("T must be given when batch_interval > 1.")
+        cost_curves = _expand_to_ticks(cost_curves, batch_interval, T)
+    data = load_all(path)
+    data.setdefault(label, {})[key] = np.asarray(cost_curves, dtype=float)
+    with open(path, "wb") as f:
+        pickle.dump(data, f)
+
+
+def push_experiment_meta(name, value, path):
+    """Store side information (e.g. measured correlations) alongside experiment curves."""
+    data = load_all(path)
+    data.setdefault(META_KEY, {})[name] = value
+    with open(path, "wb") as f:
+        pickle.dump(data, f)
+
+
+def _lookup(table, key):
+    """dict lookup for numeric keys that tolerates float rounding (0.5 vs 0.50000001)."""
+    if key in table:
+        return table[key]
+    return next((v for k, v in table.items()
+                 if isinstance(k, (int, float)) and np.isclose(k, key)), None)
+
+
+def _total_cost(arr, aggregate):
+    """Per-simulation total cost over time -> (mean, std) across simulations.
+    aggregate="sum": cost summed over every tick; "mean": time-averaged cost."""
+    per_sim = arr.sum(axis=1) if aggregate == "sum" else arr.mean(axis=1)
+    return float(per_sim.mean()), float(per_sim.std())
+
+
+def _cascade_label(cascade):
+    return "None" if cascade is None else str(cascade)
+
+
+def plot_robustness_heatmaps(methods=("hill-climb", "random"), path=ROBUSTNESS_STORE_PATH,
+                             cascade_times=(None, 5, 10, 15), seed_fractions=(0.10, 0.25, 0.50, 0.75),
+                             aggregate="sum",
+                             save_path="capstone_result_figures/robustness_heatmaps.pdf"):
+    """Experiment 1: one heatmap per chosen method (any subset of "hill-climb",
+    "milp", "random"), cascade time (batch interval) on y, seed-set size on x,
+    cell = mean total cost over time. All panels share one color scale so cells
+    compare across methods; lower is better. Random Seeds doesn't depend on
+    cascade time, so its rows repeat the same per-seed-size results."""
+    data = load_all(path)
+    labels = resolve_methods(methods)
+    present = [l for l in labels if l in data]
+    for l in labels:
+        if l not in data:
+            print(f"Note: no robustness data for {l} in {path}; skipping it.")
+    if not present:
+        print(f"No robustness data found in {path}; run `python drive_seed_selection.py robustness` first.")
+        return
+
+    grids = {}
+    for label in present:
+        grid = np.full((len(cascade_times), len(seed_fractions)), np.nan)
+        for r, cascade in enumerate(cascade_times):
+            for c, frac in enumerate(seed_fractions):
+                arr = next((v for k, v in data[label].items()
+                            if k[0] == cascade and np.isclose(k[1], frac)), None)
+                if arr is not None:
+                    grid[r, c] = _total_cost(arr, aggregate)[0]
+        grids[label] = grid
+
+    finite = np.concatenate([g[np.isfinite(g)] for g in grids.values()])
+    if finite.size == 0:
+        print("Robustness store has no cells matching the requested cascade times / seed sizes.")
+        return
+    vmin, vmax = finite.min(), finite.max()
+    cmap = plt.get_cmap("Blues").copy()
+    cmap.set_bad("#e6e6e6")
+    norm = mcolors.Normalize(vmin=vmin, vmax=vmax)
+
+    fig, axes = plt.subplots(1, len(present), figsize=(6.2 * len(present) + 1.2, 6.2),
+                             squeeze=False, constrained_layout=True)
+    axes = axes[0]
+    for ax, label in zip(axes, present):
+        grid = grids[label]
+        im = ax.imshow(np.ma.masked_invalid(grid), cmap=cmap, norm=norm, aspect="auto")
+        for r in range(grid.shape[0]):
+            for c in range(grid.shape[1]):
+                val = grid[r, c]
+                if np.isfinite(val):
+                    # Dark ink on light cells, white ink on dark cells.
+                    ink = "white" if norm(val) > 0.55 else "#1a1a1a"
+                    ax.text(c, r, f"{val:.1f}" if aggregate == "sum" else f"{val:.3f}",
+                            ha="center", va="center", fontsize=13, color=ink)
+                else:
+                    ax.text(c, r, "n/a", ha="center", va="center", fontsize=12, color="#666666")
+        ax.set_xticks(range(len(seed_fractions)), [f"{int(round(f * 100))}%" for f in seed_fractions])
+        ax.set_yticks(range(len(cascade_times)), [_cascade_label(t) for t in cascade_times])
+        ax.set_xlabel("Seed set size (% of nodes)")
+        ax.set_ylabel("Cascade time (steps)")
+        title = "Hill Climb" if label == "Adaptive" else label
+        if label == "Random Seeds":
+            title += "\n(cascade-independent)"
+        ax.set_title(title, fontsize=18)
+        # Thin white cell separators.
+        ax.set_xticks(np.arange(-0.5, len(seed_fractions), 1), minor=True)
+        ax.set_yticks(np.arange(-0.5, len(cascade_times), 1), minor=True)
+        ax.grid(which="minor", color="white", linewidth=2)
+        ax.tick_params(which="minor", length=0)
+        for spine in ax.spines.values():
+            spine.set_visible(False)
+
+    cb = fig.colorbar(im, ax=list(axes), fraction=0.046, pad=0.02)
+    cb.set_label("Total cost over time" if aggregate == "sum" else "Time-averaged cost")
+    fig.suptitle("Robustness to Cascade Time and Seed Set Size", fontsize=20)
+    os.makedirs(os.path.dirname(save_path) or ".", exist_ok=True)
+    fig.savefig(save_path, format="pdf", bbox_inches="tight")
+    print(f"[saved] {save_path}")
+    plt.show()
+
+
+def plot_correlation_ablation(methods=("hill-climb", "random"), path=CORRELATION_STORE_PATH,
+                              correlations=(0, 0.25, 0.5, 0.75, 1.0), aggregate="sum",
+                              save_path="capstone_result_figures/correlation_ablation.pdf"):
+    """Experiment 3: effect of inter-layer degree correlation on cost, for any
+    subset of "hill-climb", "milp", "random".
+
+    Left:  mean cost over time -- one curve per correlation for each adaptive
+           method (shades of the method's color, light = 0 -> dark = 1), and a
+           single dashed curve for Random Seeds, whose seed choices don't depend
+           on correlation.
+    Right: total cost vs correlation (mean +/- std across simulations), with
+           Random Seeds as a horizontal reference line.
+    X tick labels carry the measured Pearson degree correlation when stored."""
+    data = load_all(path)
+    labels = resolve_methods(methods)
+    present = [l for l in labels if l in data]
+    for l in labels:
+        if l not in data:
+            print(f"Note: no correlation-ablation data for {l} in {path}; skipping it.")
+    if not present:
+        print(f"No correlation-ablation data in {path}; run `python drive_seed_selection.py correlation` first.")
+        return
+    measured = data.get(META_KEY, {}).get("measured_correlation", {})
+
+    fig, (ax_t, ax_c) = plt.subplots(1, 2, figsize=(20, 7.5), constrained_layout=True)
+
+    for label in present:
+        base = METHOD_STYLE[label]
+        name = "Hill Climb" if label == "Adaptive" else label
+        if label == "Random Seeds":
+            arr = data[label].get(RANDOM_ALL_KEY)
+            if arr is None:
+                continue
+            mean = arr.mean(axis=0)
+            ax_t.plot(np.arange(len(mean)), mean, color=base, linestyle="--", linewidth=2.2,
+                      label=f"{name} (any correlation)", zorder=4)
+            tot_mean, tot_std = _total_cost(arr, aggregate)
+            ax_c.axhline(tot_mean, color=base, linestyle="--", linewidth=2.2, label=name, zorder=2)
+            ax_c.axhspan(tot_mean - tot_std, tot_mean + tot_std, color=base, alpha=0.10, zorder=1)
+            continue
+
+        xs, ys, es = [], [], []
+        for i, corr in enumerate(correlations):
+            arr = _lookup(data[label], corr)
+            if arr is None:
+                continue
+            shade = _lighten(base, 0.70 * (1 - i / max(1, len(correlations) - 1)))
+            mean = arr.mean(axis=0)
+            ax_t.plot(np.arange(len(mean)), mean, color=shade, linewidth=2.0,
+                      label=f"{name}, corr = {corr:g}", zorder=3)
+            tot_mean, tot_std = _total_cost(arr, aggregate)
+            xs.append(corr); ys.append(tot_mean); es.append(tot_std)
+        if xs:
+            ax_c.errorbar(xs, ys, yerr=es, color=base, marker="o", markersize=9, linewidth=2.2,
+                          capsize=5, label=name, zorder=3)
+
+    ax_t.set_xlabel("Time (in days)")
+    ax_t.set_ylabel("Cost")
+    ax_t.set_title("Cost over Time by Correlation")
+    ax_t.grid(True, linewidth=0.4)
+    ax_t.legend(fontsize=11, ncols=2, loc="upper center", bbox_to_anchor=(0.5, -0.14))
+
+    tick_labels = []
+    for corr in correlations:
+        r = _lookup(measured, corr) if measured else None
+        tick_labels.append(f"{corr:g}" if r is None or not np.isfinite(r) else f"{corr:g}\n(r = {r:.2f})")
+    ax_c.set_xticks(list(correlations), tick_labels)
+    ax_c.set_xlabel("Degree-rank alignment (measured Pearson r)")
+    ax_c.set_ylabel("Total cost over time" if aggregate == "sum" else "Time-averaged cost")
+    ax_c.set_title("Total Cost vs. Inter-Layer Correlation")
+    ax_c.grid(True, linewidth=0.4)
+    ax_c.legend(fontsize=13, loc="upper center", bbox_to_anchor=(0.5, -0.20), ncols=3)
+
+    os.makedirs(os.path.dirname(save_path) or ".", exist_ok=True)
+    fig.savefig(save_path, format="pdf", bbox_inches="tight")
+    print(f"[saved] {save_path}")
+    plt.show()
+
+
 def _lighten(color, amount):
     """Blend `color` toward white by `amount` in [0, 1] (0 = original color, 1 = white)."""
     r, g, b = mcolors.to_rgb(color)
@@ -262,5 +495,16 @@ def plot_joint_cost_elements(path=STORE_PATH,
 
 
 if __name__ == "__main__":
-    plot_joint_cost_comparison()
-    plot_joint_cost_elements()
+    # python cost_curve_store.py                                -> joint comparison figures
+    # python cost_curve_store.py robustness  [hill-climb milp random]
+    # python cost_curve_store.py correlation [hill-climb milp random]
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] in ("robustness", "correlation"):
+        chosen = sys.argv[2:] or ["hill-climb", "random"]
+        if sys.argv[1] == "robustness":
+            plot_robustness_heatmaps(methods=chosen)
+        else:
+            plot_correlation_ablation(methods=chosen)
+    else:
+        plot_joint_cost_comparison()
+        plot_joint_cost_elements()

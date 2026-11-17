@@ -54,6 +54,7 @@ num_simulations = 10
 
 batch_interval = 5  # MILP is re-solved and cost updated once every batch_interval steps
 information_spread = True
+seed_fraction = 3/4  # Seed budget K = int(seed_fraction * n); matches adaptive_seed_selection.py's default
 
 # Beta-generation params, only used when initialize() is given a custom network
 # (a shared network's betas come pre-generated from network_setup's own copies of
@@ -281,7 +282,7 @@ def milp_seed_selection_stepwise():
     edge_weights = np.array([initial_contact[u][v].get('weight', 1) for u, v in edges])
     edge_cost_bound = edge_weights.sum()  # cost of losing every edge in one step
 
-    K = int((3/4) * n)  # Seed budget, matches adaptive_seed_selection.py
+    K = int(seed_fraction * n)  # Seed budget, matches adaptive_seed_selection.py
 
     # ------------------------------------------------------------------ #
     #  Constraint matrix  (built once; reused every step)                 #

@@ -7,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "C:/Users/cates/.local/bin/serena-hooks.exe activate --client=claude-code",
+            "command": "C:/Users/cates/AppData/Roaming/uv/tools/serena-agent/Scripts/python.exe -c \"from serena.hooks import hook_commands; hook_commands()\" activate --client=claude-code",
             "timeout": 15
           }
         ]
@@ -19,7 +19,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "C:/Users/cates/.local/bin/serena-hooks.exe cleanup --client=claude-code",
+            "command": "C:/Users/cates/AppData/Roaming/uv/tools/serena-agent/Scripts/python.exe -c \"from serena.hooks import hook_commands; hook_commands()\" cleanup --client=claude-code",
             "timeout": 15
           }
         ]
@@ -31,7 +31,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "C:/Users/cates/.local/bin/serena-hooks.exe remind --client=claude-code",
+            "command": "C:/Users/cates/AppData/Roaming/uv/tools/serena-agent/Scripts/python.exe -c \"from serena.hooks import hook_commands; hook_commands()\" remind --client=claude-code",
             "timeout": 10
           }
         ]
@@ -41,7 +41,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "C:/Users/cates/AppData/Roaming/Python/Python314/Scripts/graphify.EXE hook-guard search",
+            "command": "C:/Users/cates/AppData/Local/Python/pythoncore-3.14-64/python.exe -m graphify hook-guard search",
             "timeout": 10
           }
         ]
@@ -51,7 +51,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "C:/Users/cates/AppData/Roaming/Python/Python314/Scripts/graphify.EXE hook-guard read",
+            "command": "C:/Users/cates/AppData/Local/Python/pythoncore-3.14-64/python.exe -m graphify hook-guard read",
             "timeout": 10
           }
         ]
