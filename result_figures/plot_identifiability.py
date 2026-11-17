@@ -32,6 +32,45 @@ ID_COLORS = {
     'n_r_pred': '#EF9A9A',  # light red
 }
 
+def _series(sample, key):
+    """Return {absolute t: value} for an x/y block of a sample (empty if absent)."""
+    if key not in sample:
+        return {}
+    xs = sample[key]['x']
+    ys = sample[key]['y']
+    return {int(t): float(y) for t, y in zip(xs, ys)}
+
+
+def _aggregate(series_list):
+    """Mean/std across samples at each absolute t.
+
+    series_list: list of {t: value}, one per sample. A t missing from some
+    samples is averaged over the samples that have it; `count` records how many.
+    """
+    ts = sorted(set().union(*series_list)) if series_list else []
+    mean, std, count = [], [], []
+    for t in ts:
+        vals = [s[t] for s in series_list if t in s]
+        mean.append(np.mean(vals))
+        std.append(np.std(vals))
+        count.append(len(vals))
+    return np.array(ts, dtype=int), np.array(mean), np.array(std), np.array(count)
+
+
+def _plot_band(t, mean, std, count, color):
+    """Shade mean ± std only where more than one sample contributes."""
+    mask = count > 1
+    if mask.any():
+        plt.fill_between(t, mean - std, mean + std, where=mask,
+                         alpha=0.15, color=color)
+
+
+def _parities(even_or_odd):
+    # Pre (even) and post (odd) halves are aggregated separately so the two
+    # curves stay disjoint at the quarantine split.
+    return [0, 1] if even_or_odd == 2 else [even_or_odd]
+
+
 def plot_model(samples, even_or_odd=2):
     plt.figure(figsize=(12, 7))
 
@@ -56,74 +95,56 @@ def plot_model(samples, even_or_odd=2):
         if pre_max is not None and post_min is not None:
             split_t = (pre_max + post_min) / 2
 
-    for i, sample in enumerate(samples):
+    for parity in _parities(even_or_odd):
+        model_series, true_series, used = [], [], []
+        for i, sample in enumerate(samples):
+            if i % 2 != parity or 'y_model values' not in sample:
+                continue
+            m = _series(sample, 'y_model values')
+            if not m:
+                continue
+            model_series.append(m)
+            used.append(i)
+            t = _series(sample, 'Given Newly Infected Ratio')
+            if t:
+                true_series.append(t)
 
-        if not (even_or_odd == 2 or i % 2 == even_or_odd):
+        if not model_series:
             continue
 
-        if 'y_pred all runs' not in sample or 'y_model values' not in sample:
-            continue
+        t_model, model_mean, model_std, model_n = _aggregate(model_series)
+        t_true, true_mean, true_std, true_n = _aggregate(true_series)
 
-        y_pred_runs = sample['y_pred all runs']['y']
-        y_model_vals = sample['y_model values']['y']
-        t_vals = np.array(sample['y_model values']['x'])
-
-        y_pred_runs = [run for run in y_pred_runs if len(run) > 0]
-        if not y_pred_runs or not y_model_vals:
-            continue
-
-        # Align run lengths (pad with last value if necessary)
-        max_len = max(len(run) for run in y_pred_runs)
-        for run in y_pred_runs:
-            while len(run) < max_len:
-                run.append(run[-1])
-
-        y_pred_arr = np.array(y_pred_runs)
-        y_pred_mean = np.mean(y_pred_arr, axis=0)
-        y_pred_std = np.std(y_pred_arr, axis=0)
-        y_model_arr = np.array(y_model_vals)
-
-        # y_true: newly infected from simulation
-        y_true_arr = None
-        t_vals_true = None
-        if 'Given Newly Infected Ratio' in sample:
-            t_vals_true = np.array(sample['Given Newly Infected Ratio']['x'])
-            y_true_raw = np.array(sample['Given Newly Infected Ratio']['y'])
-            min_len = min(len(t_vals_true), len(y_true_raw))
-            t_vals_true = t_vals_true[:min_len]
-            y_true_arr = y_true_raw[:min_len]
-
-        # --- Plot y_true (newly infected) ---
-        if y_true_arr is not None:
+        # --- Plot y_true (newly infected, mean across samples) ---
+        if len(t_true) > 0:
             label = 'y_true (Newly Infected)' if 'y_true' not in legend_added else '_nolegend_'
             legend_added.add('y_true')
             plt.plot(
-                t_vals_true, y_true_arr,
+                t_true, true_mean,
                 color=CURVE_COLORS['y_true'], linestyle='-',
                 label=label
             )
 
-        # --- Plot y_pred (estimator mean ± std) ---
-        label = 'y_pred (Estimator Mean)' if 'y_pred' not in legend_added else '_nolegend_'
-        legend_added.add('y_pred')
+        # --- Plot y_model (mean ± std across samples) ---
+        label = 'y_model (Sample Mean)' if 'y_model' not in legend_added else '_nolegend_'
+        legend_added.add('y_model')
         plt.plot(
-            t_vals, y_pred_mean,
-            color=CURVE_COLORS['y_pred'], linestyle=':',
+            t_model, model_mean,
+            color=CURVE_COLORS['y_model'], linestyle=':',
             label=label
         )
-        plt.fill_between(
-            t_vals, y_pred_mean - y_pred_std, y_pred_mean + y_pred_std,
-            alpha=0.15, color=CURVE_COLORS['y_pred']
-        )
+        _plot_band(t_model, model_mean, model_std, model_n, CURVE_COLORS['y_model'])
 
         results_list.append({
-            "sample_index": i,
-            "time_points": t_vals,
-            "t_vals_true": t_vals_true,
-            "y_true": y_true_arr,
-            "y_model": y_model_arr,
-            "y_pred_mean": y_pred_mean,
-            "y_pred_std": y_pred_std,
+            "half": parity,
+            "sample_indices": used,
+            "t_model": t_model,
+            "y_model_mean": model_mean,
+            "y_model_std": model_std,
+            "y_model_n": model_n,
+            "t_true": t_true,
+            "y_true_mean": true_mean,
+            "y_true_std": true_std,
         })
 
     if split_t is not None:
@@ -156,12 +177,15 @@ def plot_model(samples, even_or_odd=2):
 #
 #  Delta plot: one-step change in newly infected, model vs. ground truth.
 #
-#    Model:        y_pred(t) - n_i(t-1)
-#    Ground truth: n_i(t)    - n_i(t-1)
+#    Model:        y_model(t) - n_i(t-1)
+#    Ground truth: n_i(t)     - n_i(t-1)
+#
+#    Each is computed per sample, then averaged across samples at each t;
+#    the std band is across samples (absent where only one sample exists).
 #
 #    Time alignment (from mean_field_approx.save_xy_data):
-#      - "y_pred all runs" x = absolute t, starting at x_ofs (0 or split_point).
-#        y_pred(t) is the estimate of n_i(t) from given_at_time(t).
+#      - "y_model values" x = absolute t, starting at x_ofs (0 or split_point).
+#        y_model(t) is the model's n_i(t) using the true w1, w2.
 #      - "Given Newly Infected Ratio" x = absolute t, starting at 1 for the
 #        pre-quarantine half (n_i(0) is the seed count, not written) and at
 #        split_point for the post-quarantine half.
@@ -205,77 +229,71 @@ def delta_model(samples, even_or_odd=2, t_min=2):
         if pre_max is not None and post_min is not None:
             split_t = (pre_max + post_min) / 2
 
-    for i, sample in enumerate(samples):
+    for parity in _parities(even_or_odd):
+        model_series, true_series, used = [], [], []
+        for i, sample in enumerate(samples):
+            if i % 2 != parity:
+                continue
+            if 'y_model values' not in sample or 'Given Newly Infected Ratio' not in sample:
+                continue
 
-        if not (even_or_odd == 2 or i % 2 == even_or_odd):
+            y_model = _series(sample, 'y_model values')
+            if not y_model:
+                continue
+
+            # n_i keyed by absolute t; borrow the preceding half's values for t-1 lookups
+            own_n_i = _n_i_lookup(sample)
+            n_i = dict(own_n_i)
+            if i % 2 == 1 and i - 1 >= 0:
+                for t, y in _n_i_lookup(samples[i - 1]).items():
+                    n_i.setdefault(t, y)
+
+            # Model delta: y_model(t) - n_i(t-1)
+            model_series.append({t: v - n_i[t - 1] for t, v in y_model.items()
+                                 if t >= t_min and (t - 1) in n_i})
+            # Ground-truth delta: n_i(t) - n_i(t-1), over this sample's own t range
+            true_series.append({t: own_n_i[t] - n_i[t - 1] for t in own_n_i
+                                if t >= t_min and (t - 1) in n_i})
+            used.append(i)
+
+        if not model_series:
             continue
 
-        if 'y_pred all runs' not in sample or 'Given Newly Infected Ratio' not in sample:
-            continue
+        t_model, delta_model_mean, delta_model_std, delta_model_n = _aggregate(model_series)
+        t_true, delta_true_mean, delta_true_std, _ = _aggregate(true_series)
 
-        y_pred_runs = [list(run) for run in sample['y_pred all runs']['y'] if len(run) > 0]
-        if not y_pred_runs:
-            continue
-
-        # Align run lengths (pad with last value if necessary)
-        max_len = max(len(run) for run in y_pred_runs)
-        for run in y_pred_runs:
-            while len(run) < max_len:
-                run.append(run[-1])
-
-        y_pred_arr = np.array(y_pred_runs)
-        t_pred = np.array(sample['y_pred all runs']['x'][:max_len], dtype=int)
-
-        # n_i keyed by absolute t; borrow the preceding half's values for t-1 lookups
-        n_i = _n_i_lookup(sample)
-        if i % 2 == 1 and i - 1 >= 0:
-            for t, y in _n_i_lookup(samples[i - 1]).items():
-                n_i.setdefault(t, y)
-
-        # --- Model delta: y_pred(t) - n_i(t-1), per run ---
-        model_mask = np.array([t >= t_min and (t - 1) in n_i for t in t_pred], dtype=bool)
-        t_model = t_pred[model_mask]
-        prev_model = np.array([n_i[t - 1] for t in t_model])
-        delta_model_runs = y_pred_arr[:, model_mask] - prev_model[None, :]
-        delta_model_mean = np.mean(delta_model_runs, axis=0)
-        delta_model_std = np.std(delta_model_runs, axis=0)
-
-        # --- Ground-truth delta: n_i(t) - n_i(t-1), over this sample's own t range ---
-        t_own = np.array(sorted(_n_i_lookup(sample).keys()), dtype=int)
-        t_true = np.array([t for t in t_own if t >= t_min and (t - 1) in n_i], dtype=int)
-        delta_true = np.array([n_i[t] - n_i[t - 1] for t in t_true])
-
-        # --- Plot ground-truth delta ---
+        # --- Plot ground-truth delta (mean across samples) ---
         if len(t_true) > 0:
             label = r'True $\Delta\eta_i$' if 'y_true' not in legend_added else '_nolegend_'
             legend_added.add('y_true')
             plt.plot(
-                t_true, delta_true,
+                t_true, delta_true_mean,
                 color=CURVE_COLORS['y_true'], linestyle='-',
                 label=label
             )
 
-        # --- Plot model delta (mean ± std over optimizer runs) ---
+        # --- Plot model delta (mean ± std across samples) ---
         if len(t_model) > 0:
-            label = r'Model $\Delta\eta_i$ (Estimator Mean)' if 'y_pred' not in legend_added else '_nolegend_'
-            legend_added.add('y_pred')
+            label = r'Model $\Delta\eta_i$ (Sample Mean)' if 'y_model' not in legend_added else '_nolegend_'
+            legend_added.add('y_model')
             plt.plot(
                 t_model, delta_model_mean,
-                color=CURVE_COLORS['y_pred'], linestyle=':',
+                color=CURVE_COLORS['y_model'], linestyle=':',
                 label=label
             )
-            plt.fill_between(
-                t_model, delta_model_mean - delta_model_std, delta_model_mean + delta_model_std,
-                alpha=0.15, color=CURVE_COLORS['y_pred']
-            )
+            _plot_band(t_model, delta_model_mean, delta_model_std, delta_model_n,
+                       CURVE_COLORS['y_model'])
 
         results_list.append({
-            "sample_index": i,
+            "half": parity,
+            "sample_indices": used,
             "t_model": t_model,
             "delta_model_mean": delta_model_mean,
             "delta_model_std": delta_model_std,
+            "delta_model_n": delta_model_n,
             "t_true": t_true,
-            "delta_true": delta_true,
+            "delta_true_mean": delta_true_mean,
+            "delta_true_std": delta_true_std,
         })
 
     if split_t is not None:
@@ -479,4 +497,4 @@ def plot_identifiability_results(samples, even_or_odd=2):
 if __name__ == "__main__":
     samples = extract_mfa.parse_sample_data('experiment_data/mfa_xy_data.txt')
     # plot_identifiability_results(samples, even_or_odd=2)
-    plot_model(samples, even_or_odd=0)
+    delta_model(samples, even_or_odd=0, t_min=2)
