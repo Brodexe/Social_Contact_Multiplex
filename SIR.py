@@ -641,8 +641,7 @@ def Simulate_SIR(contact_network, social_network, T, beta, gamma, mu, init,
         quarantine_series.append(quarantine_statuses.copy())
         state_series.append(state.copy())
 
-        live_edges = contact_network.edges()
-        all_edges.append(live_edges)
+        all_edges.append(list(contact_network.edges()))
 
         # quick diagnostics
         m_init = G_initial.number_of_edges()
