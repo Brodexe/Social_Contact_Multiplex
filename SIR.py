@@ -21,7 +21,7 @@ def sirs_step(G, state, L, beta, gamma, mu):
                     beta_val = beta
                 else:
                     beta_val = beta[u]
-                if state[v] == 0 and L[u] == 0:
+                if state[v] == 0:
                     if random.random() < beta_val:
                         new_state[v] = 1
 

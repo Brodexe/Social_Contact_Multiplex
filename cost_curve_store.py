@@ -107,6 +107,15 @@ def push_experiment_curve(label, key, cost_curves, batch_interval=1, T=None, pat
         pickle.dump(data, f)
 
 
+def clear_experiment_label(label, path):
+    """Remove every stored configuration for one method label (no-op if absent)."""
+    data = load_all(path)
+    if data.pop(label, None) is not None:
+        with open(path, "wb") as f:
+            pickle.dump(data, f)
+        print(f"[store] cleared previous {label} results from {path}")
+
+
 def push_experiment_meta(name, value, path):
     """Store side information (e.g. measured correlations) alongside experiment curves."""
     data = load_all(path)
@@ -134,27 +143,36 @@ def _cascade_label(cascade):
     return "None" if cascade is None else str(cascade)
 
 
-def plot_robustness_heatmaps(methods=("hill-climb", "random"), path=ROBUSTNESS_STORE_PATH,
-                             cascade_times=(None, 5, 10, 15), seed_fractions=(0.10, 0.25, 0.50, 0.75),
+ROBUSTNESS_BASELINE = "Random Seeds"
+
+
+def plot_robustness_heatmaps(methods=("hill-climb", "milp"), path=ROBUSTNESS_STORE_PATH,
+                             cascade_times=(None, 5, 10, 15),
+                             seed_fractions=tuple(round(0.1 * i, 2) for i in range(1, 11)),
                              aggregate="sum",
                              save_path="capstone_result_figures/robustness_heatmaps.pdf"):
-    """Experiment 1: one heatmap per chosen method (any subset of "hill-climb",
-    "milp", "random"), cascade time (batch interval) on y, seed-set size on x,
-    cell = mean total cost over time. All panels share one color scale so cells
-    compare across methods; lower is better. Random Seeds doesn't depend on
-    cascade time, so its rows repeat the same per-seed-size results."""
+    """Experiment 1: one heatmap per method under consideration (hill-climb and/or
+    MILP, whichever are in the store), cascade time (batch interval) on y,
+    seed-set size on x. Each cell is the % improvement over Random Seeds at the
+    same (cascade time, seed size): 100 * (random_cost - method_cost) / random_cost,
+    using mean total cost over time. Positive = cheaper than random. Random itself
+    is the baseline and gets no panel. Panels share one color scale centered at 0."""
     data = load_all(path)
-    labels = resolve_methods(methods)
+    labels = [l for l in resolve_methods(methods) if l != ROBUSTNESS_BASELINE]
     present = [l for l in labels if l in data]
     for l in labels:
         if l not in data:
             print(f"Note: no robustness data for {l} in {path}; skipping it.")
     if not present:
-        print(f"No robustness data found in {path}; run `python drive_seed_selection.py robustness` first.")
+        print(f"No hill-climb / MILP robustness data found in {path}; "
+              "run `python drive_seed_selection.py robustness hill-climb` (or milp) first.")
+        return
+    if ROBUSTNESS_BASELINE not in data:
+        print(f"No {ROBUSTNESS_BASELINE} data in {path}; run "
+              "`python drive_seed_selection.py robustness random` first -- it is the baseline.")
         return
 
-    grids = {}
-    for label in present:
+    def cost_grid(label):
         grid = np.full((len(cascade_times), len(seed_fractions)), np.nan)
         for r, cascade in enumerate(cascade_times):
             for c, frac in enumerate(seed_fractions):
@@ -162,18 +180,30 @@ def plot_robustness_heatmaps(methods=("hill-climb", "random"), path=ROBUSTNESS_S
                             if k[0] == cascade and np.isclose(k[1], frac)), None)
                 if arr is not None:
                     grid[r, c] = _total_cost(arr, aggregate)[0]
-        grids[label] = grid
+        return grid
+
+    baseline = cost_grid(ROBUSTNESS_BASELINE)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        grids = {label: 100.0 * (baseline - cost_grid(label)) / baseline for label in present}
+    for g in grids.values():
+        g[~np.isfinite(g)] = np.nan   # missing cell on either side, or random cost of 0
 
     finite = np.concatenate([g[np.isfinite(g)] for g in grids.values()])
     if finite.size == 0:
-        print("Robustness store has no cells matching the requested cascade times / seed sizes.")
+        print("No cells have both a method result and a random baseline for the "
+              "requested cascade times / seed sizes.")
         return
-    vmin, vmax = finite.min(), finite.max()
-    cmap = plt.get_cmap("Blues").copy()
+    # Diverging scale centered on 0 (= same as random): blue better, red worse.
+    lim = max(np.abs(finite).max(), 1e-9)
+    cmap = plt.get_cmap("RdBu").copy()
     cmap.set_bad("#e6e6e6")
-    norm = mcolors.Normalize(vmin=vmin, vmax=vmax)
+    norm = mcolors.Normalize(vmin=-lim, vmax=lim)
 
-    fig, axes = plt.subplots(1, len(present), figsize=(6.2 * len(present) + 1.2, 6.2),
+    # Panel width grows with the number of seed-size columns so annotations stay legible.
+    ncols = len(seed_fractions)
+    panel_w = max(6.2, 0.85 * ncols + 1.5)
+    cell_fs = 13 if ncols <= 5 else 10
+    fig, axes = plt.subplots(1, len(present), figsize=(panel_w * len(present) + 1.2, 6.2),
                              squeeze=False, constrained_layout=True)
     axes = axes[0]
     for ax, label in zip(axes, present):
@@ -183,19 +213,17 @@ def plot_robustness_heatmaps(methods=("hill-climb", "random"), path=ROBUSTNESS_S
             for c in range(grid.shape[1]):
                 val = grid[r, c]
                 if np.isfinite(val):
-                    # Dark ink on light cells, white ink on dark cells.
-                    ink = "white" if norm(val) > 0.55 else "#1a1a1a"
-                    ax.text(c, r, f"{val:.1f}" if aggregate == "sum" else f"{val:.3f}",
-                            ha="center", va="center", fontsize=13, color=ink)
+                    # Dark ink near the pale center, white ink on saturated ends.
+                    ink = "white" if abs(norm(val) - 0.5) > 0.3 else "#1a1a1a"
+                    ax.text(c, r, f"{val:+.1f}%",
+                            ha="center", va="center", fontsize=cell_fs, color=ink)
                 else:
-                    ax.text(c, r, "n/a", ha="center", va="center", fontsize=12, color="#666666")
+                    ax.text(c, r, "n/a", ha="center", va="center", fontsize=cell_fs - 1, color="#666666")
         ax.set_xticks(range(len(seed_fractions)), [f"{int(round(f * 100))}%" for f in seed_fractions])
         ax.set_yticks(range(len(cascade_times)), [_cascade_label(t) for t in cascade_times])
         ax.set_xlabel("Seed set size (% of nodes)")
         ax.set_ylabel("Cascade time (steps)")
         title = "Hill Climb" if label == "Adaptive" else label
-        if label == "Random Seeds":
-            title += "\n(cascade-independent)"
         ax.set_title(title, fontsize=18)
         # Thin white cell separators.
         ax.set_xticks(np.arange(-0.5, len(seed_fractions), 1), minor=True)
@@ -206,8 +234,9 @@ def plot_robustness_heatmaps(methods=("hill-climb", "random"), path=ROBUSTNESS_S
             spine.set_visible(False)
 
     cb = fig.colorbar(im, ax=list(axes), fraction=0.046, pad=0.02)
-    cb.set_label("Total cost over time" if aggregate == "sum" else "Time-averaged cost")
-    fig.suptitle("Robustness to Cascade Time and Seed Set Size", fontsize=20)
+    cb.set_label("% improvement over random\n(" +
+                 ("total cost over time" if aggregate == "sum" else "time-averaged cost") + ")")
+    fig.suptitle("Improvement over Random Seeds by Cascade Time and Seed Set Size", fontsize=20)
     os.makedirs(os.path.dirname(save_path) or ".", exist_ok=True)
     fig.savefig(save_path, format="pdf", bbox_inches="tight")
     print(f"[saved] {save_path}")
@@ -502,7 +531,7 @@ if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] in ("robustness", "correlation"):
         chosen = sys.argv[2:] or ["hill-climb", "random"]
         if sys.argv[1] == "robustness":
-            plot_robustness_heatmaps(methods=chosen)
+            plot_robustness_heatmaps()   # hill-climb + MILP vs random, whichever are stored
         else:
             plot_correlation_ablation(methods=chosen)
     else:

@@ -30,8 +30,9 @@ Runs each chosen method for every cascade time in CASCADE_TIMES (batch interval;
 None = no information cascade) and seed set size in SEED_FRACTIONS on
 asm.CONTACT_NETWORK_PATH / asm.SOCIAL_NETWORK_PATH, stores the curves in
 robustness_experiment.pkl, then plots one total-cost heatmap per method
-(cost_curve_store.plot_robustness_heatmaps). Random runs once per seed size and
-is duplicated across cascade times. Methods default to hill-climb + random.
+(cost_curve_store.plot_robustness_heatmaps). Every method, random included, is
+run for every (cascade time, seed size) cell. Running a method clears that
+method's old robustness results first. Methods default to hill-climb + random.
 
 Correlation ablation
 --------------------
@@ -159,13 +160,13 @@ def _initialize_modules(methods, contact_path, social_path):
 # ── Experiment 1: cascade time x seed set size robustness ────────────────────
 #   python drive_seed_selection.py robustness [hill-climb] [milp] [random] [--plot-only]
 CASCADE_TIMES  = [None, 5, 10, 15]          # batch intervals; None = no cascade
-SEED_FRACTIONS = [0.10, 0.25, 0.50, 0.75]   # seed set size as a fraction of n
-# Random's choices don't depend on cascade time: it is run once per seed size at
-# this cascade time and the result is duplicated across every cascade-time row.
-RANDOM_REFERENCE_CASCADE = 5
-
+SEED_FRACTIONS = [round(0.1 * i, 2) for i in range(1, 11)]   # 10%, 20%, ..., 100% of n
 def run_robustness_experiment(methods):
     path = cost_curve_store.ROBUSTNESS_STORE_PATH
+    # Drop each method's previous robustness results so no stale cells (old seed
+    # sizes, or random's old cascade-duplicated rows) survive a rerun.
+    for method in methods:
+        cost_curve_store.clear_experiment_label(cost_curve_store.METHOD_ALIASES[method], path)
     # Initialize once so every configuration shares the same betas, injections and baselines.
     _initialize_modules(methods, asm.CONTACT_NETWORK_PATH, asm.SOCIAL_NETWORK_PATH)
 
@@ -176,20 +177,13 @@ def run_robustness_experiment(methods):
             import milp
             milp.seed_fraction = frac
 
-        for method in ("hill-climb", "milp"):
+        for method in ("hill-climb", "milp", "random"):
             if method not in methods:
                 continue
             for cascade in CASCADE_TIMES:
                 _set_cascade(_module_for(method), cascade)
                 print(f"\n[robustness] {method}: cascade={cascade}, seeds={frac:.0%}")
                 _push(method, (cascade, frac), _run_cost_curves(method), path)
-
-        if "random" in methods:
-            _set_cascade(asm, RANDOM_REFERENCE_CASCADE)
-            print(f"\n[robustness] random: seeds={frac:.0%} (duplicated across cascade times)")
-            curves = _run_cost_curves("random")
-            for cascade in CASCADE_TIMES:
-                _push("random", (cascade, frac), curves, path)
 
     print("[done] Robustness experiment complete.")
 
@@ -249,8 +243,10 @@ if len(sys.argv) > 1 and sys.argv[1] == "robustness":
     _methods, _plot_only = _parse_experiment_args(sys.argv[2:])
     if not _plot_only:
         run_robustness_experiment(_methods)
+    # Always plot hill-climb + MILP (whichever are stored) as % improvement over random,
+    # regardless of which methods this invocation just ran.
     cost_curve_store.plot_robustness_heatmaps(
-        methods=_methods, path=cost_curve_store.ROBUSTNESS_STORE_PATH,
+        path=cost_curve_store.ROBUSTNESS_STORE_PATH,
         cascade_times=CASCADE_TIMES, seed_fractions=SEED_FRACTIONS)
     sys.exit(0)
 
