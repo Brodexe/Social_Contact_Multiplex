@@ -18,9 +18,9 @@
     "semantic_hash": ""
   },
   "adaptive_seed_selection.py": {
-    "mtime": 1795029256.0419211,
-    "seen": 1795029260.6492484,
-    "ast_hash": "db52ea9f878f51f6fd3d72a8dd4485fd",
+    "mtime": 1795057358.2210186,
+    "seen": 1795057384.7806249,
+    "ast_hash": "b994ff0af8b76d2910fe8d77d69af2d7",
     "semantic_hash": ""
   },
   "app/__init__.py": {
@@ -114,8 +114,8 @@
     "semantic_hash": "47cf9e7279bcfae3fca9ec33753c9e64"
   },
   "cost_curve_store.py": {
-    "mtime": 1795022404.7200892,
-    "seen": 1795022427.7165725,
+    "mtime": 1795045323.568309,
+    "seen": 1795057384.7806482,
     "ast_hash": "459e179fe43c8a37248d45bd6681b974",
     "semantic_hash": ""
   },
@@ -162,9 +162,9 @@
     "semantic_hash": "49fea0dbc3ff3f939ef5383f018ed8bc"
   },
   "mean_field_approx.py": {
-    "mtime": 1794954821.8411875,
-    "seen": 1794972725.6848118,
-    "ast_hash": "4f2f749ebbe888018ee03b99b332d135",
+    "mtime": 1795047148.1943104,
+    "seen": 1795057384.7806628,
+    "ast_hash": "ee2fa28b8ce553b548db688128751084",
     "semantic_hash": ""
   },
   "mfa_drive_compute.py": {
@@ -612,15 +612,15 @@
     "semantic_hash": ""
   },
   "capstone_result_figures/joint_cost_comparison.pdf": {
-    "mtime": 1794334112.8673894,
-    "seen": 1794784865.8394268,
-    "ast_hash": "fa3b9713140b893b8e4b19e0e79a36c3",
+    "mtime": 1795036961.6139278,
+    "seen": 1795057384.780761,
+    "ast_hash": "6a596c060df1caa0e05414c0f2c82cd6",
     "semantic_hash": ""
   },
   "capstone_result_figures/joint_cost_elements_comparison.pdf": {
-    "mtime": 1794334131.9504726,
-    "seen": 1794784865.8394275,
-    "ast_hash": "171748183e1f4f444fa01256a331caaa",
+    "mtime": 1795036963.1048036,
+    "seen": 1795057384.7807627,
+    "ast_hash": "247277b42d2f067b088e0ba328cf9e13",
     "semantic_hash": ""
   },
   "capstone_result_figures/milp_comparison.pdf": {
@@ -918,9 +918,9 @@
     "semantic_hash": ""
   },
   "capstone_result_figures/robustness_heatmaps.pdf": {
-    "mtime": 1794985562.4562697,
-    "seen": 1795022185.913368,
-    "ast_hash": "d6fe55c1cad79677672a467eb8337cbc",
+    "mtime": 1795051232.9010694,
+    "seen": 1795057384.7807674,
+    "ast_hash": "7503335e293705cdcec6744bc3fafec1",
     "semantic_hash": ""
   }
 }
