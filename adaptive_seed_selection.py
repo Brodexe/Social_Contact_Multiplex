@@ -63,6 +63,8 @@ _num_to_infect    = None
 infection_candidates = None
 baseline_runs     = None
 global_betas      = None  # List of beta maps (one per simulation), computed once in initialize()
+hill2_accepted_seed_sets = None  # Set by hill2(): [sim][batch] -> ACCEPTED seed set at that batch boundary
+hill2_decision_edges     = None  # Set by hill2(): [sim][batch] -> live contact edges at that boundary
 
 def make_initial_state(graph):
     nodes = list(graph.nodes())
@@ -331,6 +333,7 @@ def global_cost_function(newly_infected, live_edges, seed_set_size, t_cur):
     # Cap each term at 1 so the maximum possible total cost per step is 2.
     infection_term = min(alpha_w * newly_infected_sum, 1.0)
     edge_term = min(beta_w * total_edge_removal_cost, 1.0)
+
     return infection_term + edge_term, cost_elements
     # return alpha_w * newly_infected_sum, cost_elements
 
@@ -340,7 +343,8 @@ def global_cost_function(newly_infected, live_edges, seed_set_size, t_cur):
 # accepts the first cost-improving swap, and updates per-node utilities with EWMA of
 # the cost delta — mirroring the Hill2.py Hamming-distance logic but driven by the
 # global cost function instead.
-def hill2():
+# NOTE: potential problem: seed set is unintentionally reverted
+def hill():
     EWMA_alpha = 0.5
 
     winner_sets = []
@@ -522,19 +526,30 @@ def hill2():
             all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_state_vectors,
             tagged, all_batch_seed_sets, all_alpha_w_curves, all_beta_w_curves)
 
-# Degree based selection: at each time step, select top K nodes by degree in the CURRENT contact network as seeds
-# Allows re-selection
-def degree_based_selection():
+
+# Stochastic hill-climber that tests exactly one seed swap per batch.
+# seed_vec is the ACCEPTED seed set and S_prop is the proposal under test. Each batch
+# runs on S_prop; at the batch boundary the proposal is accepted (seed_vec = S_prop) if
+# the batch cost did not increase, and rejected otherwise. That decision is final:
+# seed_vec only changes at a boundary and nothing reverts it afterwards. A new proposal,
+# one swap away from the accepted set, is then drawn for the next batch. Utilities are
+# EWMA-updated only for the two nodes involved in the tested swap.
+def hill2():
+    EWMA_alpha = 0.5
+
+    winner_sets = []
     all_cost_curves = []
     all_infection_term_curves = []
     all_edge_term_curves = []
     all_alpha_w_curves = []
     all_beta_w_curves = []
-    winner_sets = []
     all_edge_curves = []
     all_newly_infected_counts = []
     all_newly_infected_frac = []
-    all_full_dynamics = []
+    all_state_vectors = []
+    all_batch_seed_sets = []      # per-simulation list of per-batch TESTED seed sets
+    all_accepted_seed_sets = []   # per-simulation list of per-batch ACCEPTED seed sets
+    all_decision_edges = []       # per-simulation list of per-batch live contact edges
 
     # t_batch=0: no information spread at all (seeds are quarantined if infected, but info
     #   never reaches non-seed nodes) -- one T=1 call every tick.
@@ -545,162 +560,290 @@ def degree_based_selection():
         t_batch = batch_interval
 
     for i in range(num_simulations):
-        print("Degree-based Simulation:", i)
+        print("Hill-Climb Simulation:", i)
 
-        # Fresh networks for each simulation
         contact_network = deepcopy(initial_contact)
         social_network = deepcopy(initial_social)
+        all_nodes = list(contact_network.nodes())
+
+        utilities = {node: random.uniform(0, 1) for node in all_nodes}
+
+        initial_seeds = set(random.sample(all_nodes, K))
+        seed_vec = np.array([1 if node in initial_seeds else 0 for node in all_nodes])  # accepted
+        S_prop = None   # proposal tested in the current batch; None means the batch runs on seed_vec
+        swap = None     # (added_node, dropped_node) that turned seed_vec into S_prop
+        new_seed_set = [node for node in all_nodes if seed_vec[node] == 1]
 
         cost_lst = []
         infection_term_lst = []
         edge_term_lst = []
         alpha_w_lst = []
         beta_w_lst = []
-        full_dynamics = None
+        states_at_time = None
         prev_state_dict = make_initial_state(contact_network)
         static_beta = global_betas[i]
-        full_live_edges = None
+
+        live_edge_at_time = None
         edge_counts = []
-        seed_set = None
-        newly_infected_per_sim = []
+        last_batch_cost = None
+        newly_infected_at_time = []
         newly_infected_frac_per_sim = []
+        batch_seed_sets = []
+        accepted_seed_sets = []
+        decision_edges = []   # live contact edges at each boundary, paired with accepted_seed_sets
 
         for t_cur in range(T):
-            # At batch boundary: select new seeds from the most recently known graph
+            # Record the seed set that will be used (tested) for this batch
             if t_cur % batch_interval == 0:
-                current_graph = nx.Graph()
-                current_graph.add_nodes_from(contact_network.nodes())
-                if full_live_edges:
-                    live_edge_set = set(tuple(sorted(e)) for e in full_live_edges[-1])
-                    for u, v, data in initial_contact.edges(data=True):
-                        if tuple(sorted((u, v))) in live_edge_set:
-                            current_graph.add_edge(u, v, **data)
-                else:
-                    current_graph.add_edges_from(initial_contact.edges(data=True))
+                batch_seed_sets.append(list(new_seed_set))
 
-                degree_dict = dict(current_graph.degree())
-                seed_set = sorted(degree_dict, key=lambda node: degree_dict[node], reverse=True)[:K]
-
-            # Introduce random new infections
+            # Introduce infections at batch boundary
             if t_cur % introduced_infections[1] == 0 and t_cur > 0:
                 new_infections = infection_candidates[i][injection_times.index(t_cur)]
                 for node in new_infections:
-                    if prev_state_dict[node] == 2:  # Only infect if node is currently susceptible
+                    if prev_state_dict[node] == 2:
                         prev_state_dict[node] = 1
 
             # With information diffusion enabled, only re-simulate at batch boundaries -- one
-            # call covers the whole batch_interval window. Without it, advance one real step
-            # every tick.
+            # call covers the whole batch_interval window, letting info actually reach non-seed
+            # nodes. Without it, advance one real step every tick.
             call_now = (t_cur % batch_interval == 0) if information_spread else True
             if call_now:
                 simulation_results = SIR.Simulate_SIR(
-                    contact_network=contact_network,
-                    social_network=social_network,
+                    contact_network=contact_network, social_network=social_network,
                     T=t_batch,
-                    beta=static_beta,
-                    gamma=gamma,
-                    mu=mu,
-                    init=init,
+                    beta=static_beta, gamma=gamma, mu=mu, init=init,
                     q=q,
                     adherence=adherence,
                     begin_q=0,
-                    seeds=seed_set,
+                    seeds=new_seed_set,
                     initial_state_dict=prev_state_dict
                 )
 
                 contact_network = deepcopy(initial_contact)
-
-                sirs_dynamics = simulation_results[4]
-                prev_state_dict = sirs_dynamics[-1]
-                full_dynamics = sirs_dynamics if full_dynamics is None else full_dynamics + sirs_dynamics
+                sirs_states = simulation_results[4]
+                prev_state_dict = sirs_states[-1]
+                states_at_time = sirs_states if states_at_time is None else states_at_time + sirs_states
 
                 graph_vec = simulation_results[10]
-                live_edges = [list(network) for network in graph_vec]
-                full_live_edges = live_edges if full_live_edges is None else full_live_edges + live_edges
+                live_edges = [list(edge_set) for edge_set in graph_vec]
+                live_edge_at_time = live_edges if live_edge_at_time is None else live_edge_at_time + live_edges
 
-            current_new_i = given_at_time(t_cur, full_dynamics, contact_network)
-            newly_infected_per_sim.append(current_new_i)
+            current_new_i = given_at_time(t_cur, states_at_time, contact_network)
+            newly_infected_at_time.append(current_new_i)
             newly_infected_frac_per_sim.append(current_new_i / n)
-            edge_counts.append(len(full_live_edges[t_cur]))
+            edge_counts.append(len(live_edge_at_time[t_cur]))
 
-            # At batch boundary: compute cost
+            # Batch boundary: decide on the tested proposal, then draw the next one
             if (t_cur + 1) % batch_interval == 0 or t_cur == T - 1:
-                cost, cost_elements = global_cost_function(
-                    newly_infected_per_sim,
-                    full_live_edges,
-                    len(seed_set),
-                    t_cur
-                )
-                print(f"Degree-based, {t_cur}, {cost}")
+                cost, cost_elements = global_cost_function(newly_infected_at_time, live_edge_at_time, len(new_seed_set), t_cur)
+                print(f"Hill-Climb, {t_cur}, {cost}")
                 cost_lst.append(cost)
                 infection_term_lst.append(cost_elements[0])
                 edge_term_lst.append(cost_elements[1])
                 alpha_w_lst.append(cost_elements[3])
                 beta_w_lst.append(cost_elements[4])
 
-        winner_sets.append(seed_set)
+                #--------------
+                #
+                #  Decision on the proposal tested this batch (final, never reverted)
+                #
+                #--------------
+                if S_prop is not None and last_batch_cost is not None:
+                    delta = last_batch_cost - cost   # > 0 means the proposal lowered cost
+                    if cost <= last_batch_cost:
+                        seed_vec = S_prop            # accept
+                    # else: reject, seed_vec stays as it was
+
+                    # Credit the swap: the added node gains, the dropped node loses
+                    added, dropped = swap
+                    utilities[added] = EWMA_alpha * delta + (1 - EWMA_alpha) * utilities[added]
+                    utilities[dropped] = EWMA_alpha * (-delta) + (1 - EWMA_alpha) * utilities[dropped]
+
+                last_batch_cost = cost
+                accepted_seed_sets.append([j for j in all_nodes if seed_vec[j] == 1])
+                decision_edges.append(list(live_edge_at_time[t_cur]))
+
+                #--------------
+                #
+                #  Propose at most 1 swap from the ACCEPTED set for the next batch
+                #
+                #--------------
+                S_prop = seed_vec.copy()
+                swap = None
+                order = all_nodes[:]
+                random.shuffle(order)
+
+                for node in order:
+                    # If this node is not a seed
+                    if seed_vec[node] == 0:
+                        # Try adding this node: remove an active seed, low utility more likely
+                        active_seeds = [j for j in all_nodes if seed_vec[j] == 1]
+                        if not active_seeds:
+                            continue
+                        weights = np.array([np.exp(-utilities[j]) for j in active_seeds])
+                        probs = weights / weights.sum()
+                        drop_node = np.random.choice(active_seeds, p=probs)
+                        S_prop[drop_node] = 0
+                        S_prop[node] = 1
+                        swap = (node, drop_node)
+                        break
+                    # If this node is currently a seed
+                    else:
+                        # Try removing this node: add a random non-seed to compensate
+                        non_seeds = [j for j in all_nodes if seed_vec[j] == 0]
+                        if not non_seeds:
+                            continue
+                        add_node = random.choice(non_seeds)
+                        S_prop[node] = 0
+                        S_prop[add_node] = 1
+                        swap = (add_node, node)
+                        break
+
+                if swap is None:
+                    S_prop = None
+                tested_vec = S_prop if S_prop is not None else seed_vec
+                new_seed_set = [j for j in all_nodes if tested_vec[j] == 1]
+
+        final_seed_set = [node for node in all_nodes if seed_vec[node] == 1]
+        winner_sets.append(final_seed_set)
         all_cost_curves.append(cost_lst)
         all_infection_term_curves.append(infection_term_lst)
         all_edge_term_curves.append(edge_term_lst)
         all_alpha_w_curves.append(alpha_w_lst)
         all_beta_w_curves.append(beta_w_lst)
         all_edge_curves.append(edge_counts)
-        all_newly_infected_counts.append(newly_infected_per_sim)
+        all_newly_infected_counts.append(newly_infected_at_time)
         all_newly_infected_frac.append(newly_infected_frac_per_sim)
-        all_full_dynamics.append(full_dynamics)
+        all_state_vectors.append(states_at_time)
+        all_batch_seed_sets.append(batch_seed_sets)
+        all_accepted_seed_sets.append(accepted_seed_sets)
+        all_decision_edges.append(decision_edges)
+
+    seed_set_counts = Counter(tuple(seed_set) for seed_set in winner_sets)
+    most_common_seed_set = seed_set_counts.most_common(1)[0][0]
 
     tagged = build_tagged_network(global_betas[0])
-    return (winner_sets[0], all_cost_curves, all_infection_term_curves, all_edge_term_curves,
-            all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_full_dynamics, tagged,
-            all_alpha_w_curves, all_beta_w_curves)
+    # Return signature unchanged so run_methods() still unpacks it; accepted sets are
+    # exposed as a module global for inspection.
+    global hill2_accepted_seed_sets, hill2_decision_edges
+    hill2_accepted_seed_sets = all_accepted_seed_sets
+    hill2_decision_edges = all_decision_edges
+    return (most_common_seed_set, all_cost_curves, all_infection_term_curves, all_edge_term_curves,
+            all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_state_vectors,
+            tagged, all_batch_seed_sets, all_alpha_w_curves, all_beta_w_curves)
 
-# Coreness-based selection: at each batch, score nodes in the CURRENT contact network with
-# score_fn(current_graph) -> {node: score}, and take the top K. Shared by core_over_btw,
-# core_over_deg, and core_alone, which differ only in their scoring rule.
-# Allows re-selection
-COB_EPS = 1e-9
+# ─────────────────────────────────────────────────────────────────────────────
+# Rule-based optimizer distilled from hill2.
+#   bin-score_x(i, t) = min(k_x - 1, floor(k_x * F_t(x_i(t)))), F_t the empirical CDF of
+#     centrality x over V in the live contact network at decision point t. (These k_x
+#     quantile levels are unrelated to the contact-network time bins in the GML names.)
+#   S_pi(t) = mean over i in pi of [deg, core, btw] bin-scores  (a 3-vector).
+#   S_bar   = mean of S_pi(t) over hill2's ACCEPTED sets, all realizations and boundaries.
+#   RB picks, at each decision point, pi*(t) in argmin_{|pi| = K} ||S_bar - S_pi(t)||_2.
+# ─────────────────────────────────────────────────────────────────────────────
+RB_QUANTILE_LEVELS = (10, 10, 10)  # (k_d, k_c, k_b) for degree, coreness, betweenness
 
-# score(u) = c'(u) / b'(u), with c' and b' normalized by their network-wide max.
-# COB_EPS keeps zero-betweenness nodes finite; they still rank first, ordered by c'.
-def _core_over_btw_score(current_graph, scale):
-    core_dict = nx.core_number(current_graph)
-    btw_dict = nx.betweenness_centrality(current_graph)
-    max_core = max(core_dict.values()) or 1
-    max_btw = max(btw_dict.values()) or 1
-    return {
-        node: ((core_dict[node] / max_core) ** scale) / (btw_dict[node] / max_btw + COB_EPS)
-        for node in current_graph.nodes()
-    }
+rule_based_target   = None  # Set by rule_based(): the rule vector S_bar it matched against
+rule_based_deviance = None  # Set by rule_based(): [sim][decision] -> achieved L2 deviance
 
-# score(u) = c'(u) / d'(u), with c' and d' normalized by their network-wide max.
-# COB_EPS keeps isolated (degree-0) nodes finite; their coreness is 0 too, so they rank last.
-def _core_over_deg_score(current_graph, scale):
-    core_dict = nx.core_number(current_graph)
-    deg_dict = dict(current_graph.degree())
-    max_core = max(core_dict.values()) or 1
-    max_deg = max(deg_dict.values()) or 1
-    return {
-        node: ((core_dict[node] / max_core) ** scale) / (deg_dict[node] / max_deg + COB_EPS)
-        for node in current_graph.nodes()
-    }
 
-# score(u) = c(u), the raw k-core number.
-def _core_alone_score(current_graph):
-    return nx.core_number(current_graph)
+def _live_contact_graph(live_edges):
+    """initial_contact restricted to live_edges (None -> full network), self-loops removed."""
+    graph = nx.Graph()
+    graph.add_nodes_from(initial_contact.nodes())
+    if live_edges is None:
+        graph.add_edges_from(initial_contact.edges(data=True))
+    else:
+        live = set(tuple(sorted(e)) for e in live_edges)
+        for u, v, data in initial_contact.edges(data=True):
+            if tuple(sorted((u, v))) in live:
+                graph.add_edge(u, v, **data)
+    graph.remove_edges_from(list(nx.selfloop_edges(graph)))
+    return graph
 
-# scale: exponent on normalized coreness c'(u) in the score (1.0 = plain ratio).
-def core_over_btw(scale=1.0):
-    return _coreness_selection("Core-over-Betweenness",
-                               lambda g: _core_over_btw_score(g, scale))
 
-def core_over_deg(scale=1.0):
-    return _coreness_selection("Core-over-Degree",
-                               lambda g: _core_over_deg_score(g, scale))
+def _bin_scores(values, k):
+    """{node: x} -> {node: min(k-1, floor(k * F(x)))}, F(c) = (1/|V|) sum_j 1[x_j <= c]."""
+    nodes = list(values)
+    x = np.array([values[node] for node in nodes], dtype=float)
+    F = np.searchsorted(np.sort(x), x, side="right") / len(x)
+    return dict(zip(nodes, np.minimum(k - 1, np.floor(k * F)).astype(int)))
 
-def core_alone():
-    return _coreness_selection("Core-Alone", _core_alone_score)
 
-def _coreness_selection(method_name, score_fn):
+def centrality_bin_scores(graph, levels=RB_QUANTILE_LEVELS):
+    """{node: [degree, coreness, betweenness] bin-score vector} on graph."""
+    k_d, k_c, k_b = levels
+    d = _bin_scores(dict(graph.degree()), k_d)
+    c = _bin_scores(nx.core_number(graph), k_c)
+    b = _bin_scores(nx.betweenness_centrality(graph), k_b)
+    return {node: np.array([d[node], c[node], b[node]], dtype=float) for node in graph.nodes()}
+
+
+def set_profile(score_map, seed_set):
+    """S_pi(t): mean bin-score vector of seed_set."""
+    return np.mean([score_map[node] for node in seed_set], axis=0)
+
+
+def hill2_rule(accepted_seed_sets, decision_edges, levels=RB_QUANTILE_LEVELS):
+    """Rule vector S_bar from hill2's accepted sets and the live edges they were scored on
+    (hill2_accepted_seed_sets and hill2_decision_edges from the SAME hill2 call).
+    Returns (S_bar, profiles), profiles[sim][batch] = S_pi(t), kept for inspecting spread."""
+    profiles = []
+    for sim_sets, sim_edges in zip(accepted_seed_sets, decision_edges):
+        profiles.append([set_profile(centrality_bin_scores(_live_contact_graph(edges), levels), seed_set)
+                         for seed_set, edges in zip(sim_sets, sim_edges)])
+    profiles = np.array(profiles)
+    return profiles.reshape(-1, 3).mean(axis=0), profiles
+
+
+def rule_argmin(score_map, target, size):
+    """Approximate argmin_{|pi| = size} ||target - S_pi||_2 by best-improvement single swaps
+    from a random start. Nodes with equal bin-score vectors are interchangeable, so many sets
+    tie; the random start and order break ties at random. Returns (seed_set, achieved L2)."""
+    nodes = list(score_map)
+    random.shuffle(nodes)
+    chosen, rest = nodes[:size], nodes[size:]
+    if not chosen:
+        return chosen, float("inf")
+
+    X_in = np.array([score_map[node] for node in chosen])
+    total = X_in.sum(axis=0)
+    best = float(np.linalg.norm(total / size - target))
+    if not rest:
+        return chosen, best
+
+    X_out = np.array([score_map[node] for node in rest])
+    while True:
+        # cand[a, b] = profile sum after swapping chosen[a] out and rest[b] in
+        cand = total[None, None, :] - X_in[:, None, :] + X_out[None, :, :]
+        dist = np.linalg.norm(cand / size - target, axis=2)
+        a, b = np.unravel_index(np.argmin(dist), dist.shape)
+        if dist[a, b] >= best - 1e-12:
+            break
+        total, best = cand[a, b], float(dist[a, b])
+        chosen[a], rest[b] = rest[b], chosen[a]
+        X_in[a], X_out[b] = X_out[b].copy(), X_in[a].copy()
+    return chosen, best
+
+
+# Rule-based selection: at each batch boundary, choose the size-K set whose
+# [degree, coreness, betweenness] bin-score profile is L2-closest to hill2's S_bar on the
+# CURRENT contact network. With no arguments, runs hill2() first; otherwise pass
+# hill2_accepted_seed_sets and hill2_decision_edges from one hill2 call. Same simulation
+# loop and return tuple as random_seed_selection, so the curves go straight into push_curve.
+def rule_based(accepted_seed_sets=None, decision_edges=None, levels=RB_QUANTILE_LEVELS):
+    global rule_based_target, rule_based_deviance
+
+    if accepted_seed_sets is None:
+        hill2()
+        accepted_seed_sets = hill2_accepted_seed_sets
+    if decision_edges is None:
+        decision_edges = hill2_decision_edges
+
+    target, _ = hill2_rule(accepted_seed_sets, decision_edges, levels)
+    print(f"Rule-Based target S_bar [deg, core, btw] = {np.round(target, 3)}")
+
     all_cost_curves = []
     all_infection_term_curves = []
     all_edge_term_curves = []
@@ -711,6 +854,7 @@ def _coreness_selection(method_name, score_fn):
     all_newly_infected_counts = []
     all_newly_infected_frac = []
     all_full_dynamics = []
+    all_deviances = []
 
     # t_batch=0: no information spread at all (seeds are quarantined if infected, but info
     #   never reaches non-seed nodes) -- one T=1 call every tick.
@@ -721,9 +865,8 @@ def _coreness_selection(method_name, score_fn):
         t_batch = batch_interval
 
     for i in range(num_simulations):
-        print(f"{method_name} Simulation:", i)
+        print("Rule-Based Simulation:", i)
 
-        # Fresh networks for each simulation
         contact_network = deepcopy(initial_contact)
         social_network = deepcopy(initial_social)
 
@@ -740,35 +883,22 @@ def _coreness_selection(method_name, score_fn):
         seed_set = None
         newly_infected_per_sim = []
         newly_infected_frac_per_sim = []
+        deviances = []
 
         for t_cur in range(T):
-            # At batch boundary: select new seeds from the most recently known graph
+            # At batch boundary: match the rule on the most recently known graph
             if t_cur % batch_interval == 0:
-                current_graph = nx.Graph()
-                current_graph.add_nodes_from(contact_network.nodes())
-                if full_live_edges:
-                    live_edge_set = set(tuple(sorted(e)) for e in full_live_edges[-1])
-                    for u, v, data in initial_contact.edges(data=True):
-                        if tuple(sorted((u, v))) in live_edge_set:
-                            current_graph.add_edge(u, v, **data)
-                else:
-                    current_graph.add_edges_from(initial_contact.edges(data=True))
-                # core_number does not accept self-loops
-                current_graph.remove_edges_from(list(nx.selfloop_edges(current_graph)))
-
-                score = score_fn(current_graph)
-                seed_set = sorted(score, key=lambda node: score[node], reverse=True)[:K]
+                current_graph = _live_contact_graph(full_live_edges[-1] if full_live_edges else None)
+                seed_set, dev = rule_argmin(centrality_bin_scores(current_graph, levels), target, K)
+                deviances.append(dev)
 
             # Introduce random new infections
             if t_cur % introduced_infections[1] == 0 and t_cur > 0:
                 new_infections = infection_candidates[i][injection_times.index(t_cur)]
                 for node in new_infections:
-                    if prev_state_dict[node] == 2:  # Only infect if node is currently susceptible
+                    if prev_state_dict[node] == 2:
                         prev_state_dict[node] = 1
 
-            # With information diffusion enabled, only re-simulate at batch boundaries -- one
-            # call covers the whole batch_interval window. Without it, advance one real step
-            # every tick.
             call_now = (t_cur % batch_interval == 0) if information_spread else True
             if call_now:
                 simulation_results = SIR.Simulate_SIR(
@@ -801,7 +931,6 @@ def _coreness_selection(method_name, score_fn):
             newly_infected_frac_per_sim.append(current_new_i / n)
             edge_counts.append(len(full_live_edges[t_cur]))
 
-            # At batch boundary: compute cost
             if (t_cur + 1) % batch_interval == 0 or t_cur == T - 1:
                 cost, cost_elements = global_cost_function(
                     newly_infected_per_sim,
@@ -809,7 +938,7 @@ def _coreness_selection(method_name, score_fn):
                     len(seed_set),
                     t_cur
                 )
-                print(f"{method_name}, {t_cur}, {cost}")
+                print(f"Rule-Based, {t_cur}, {cost}")
                 cost_lst.append(cost)
                 infection_term_lst.append(cost_elements[0])
                 edge_term_lst.append(cost_elements[1])
@@ -826,7 +955,9 @@ def _coreness_selection(method_name, score_fn):
         all_newly_infected_counts.append(newly_infected_per_sim)
         all_newly_infected_frac.append(newly_infected_frac_per_sim)
         all_full_dynamics.append(full_dynamics)
+        all_deviances.append(deviances)
 
+    rule_based_target, rule_based_deviance = target, all_deviances
     tagged = build_tagged_network(global_betas[0])
     return (winner_sets[0], all_cost_curves, all_infection_term_curves, all_edge_term_curves,
             all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_full_dynamics, tagged,
@@ -1129,7 +1260,7 @@ SOCIAL_NETWORK_PATH  = "capstone_proj_data/rc_social_network.gml"
 # ─────────────────────────────────────────────────────────────────────────────
 
 # Run the selected methods on the already-initialize()d network and push their curves.
-# scale is injected into the coreness scores of core_over_btw / core_over_deg;
+# scale is currently unused (kept so drive_seed_selection.py callers still work);
 # store_path lets callers (e.g. the scale experiment) avoid overwriting the default store.
 def run_methods(scale=1.0, store_path=cost_curve_store.STORE_PATH):
     # Run hill2 (single-swap per batch, accept first improvement) -- the "adaptive" approach
@@ -1144,26 +1275,6 @@ def run_methods(scale=1.0, store_path=cost_curve_store.STORE_PATH):
     #         "batch_seed_sets": hill_batch_seed_sets,  # [sim][batch] -> list of node ids
     #         "social_network": initial_social,
     #     }, f)
-
-    # Run degree baseline
-    (_, degree_cost_curves, degree_infection_curves, degree_edge_term_curves, degree_edge_curves,
-     degree_newly_counts, degree_newly_frac, degree_dynamics_list, tagged_contact_degree,
-     degree_alpha_w_curves, degree_beta_w_curves) = degree_based_selection()
-
-    # Run coreness-over-betweenness baseline
-    (_, cob_cost_curves, cob_infection_curves, cob_edge_term_curves, cob_edge_curves,
-     cob_newly_counts, cob_newly_frac, cob_dynamics_list, tagged_contact_cob,
-     cob_alpha_w_curves, cob_beta_w_curves) = core_over_btw(scale)
-
-    # Run coreness-over-degree baseline
-    (_, cod_cost_curves, cod_infection_curves, cod_edge_term_curves, cod_edge_curves,
-     cod_newly_counts, cod_newly_frac, cod_dynamics_list, tagged_contact_cod,
-     cod_alpha_w_curves, cod_beta_w_curves) = core_over_deg(scale)
-
-    # Run coreness-alone baseline
-    # (_, core_cost_curves, core_infection_curves, core_edge_term_curves, core_edge_curves,
-    #  core_newly_counts, core_newly_frac, core_dynamics_list, tagged_contact_core,
-    #  core_alpha_w_curves, core_beta_w_curves) = core_alone()
 
     # Run random seed selection baseline
     (_, rand_cost_curves, rand_infection_curves, rand_edge_term_curves, rand_edge_curves,
@@ -1181,22 +1292,6 @@ def run_methods(scale=1.0, store_path=cost_curve_store.STORE_PATH):
     # with milp.py. Once milp.py has also been run, call
     # cost_curve_store.plot_joint_cost_comparison() / plot_joint_cost_elements() (e.g.
     # `python cost_curve_store.py`) to render the combined figures.
-    # cost_curve_store.push_curve("Degree-Based", degree_cost_curves,
-    #                              infection_curves=degree_infection_curves, edge_curves=degree_edge_term_curves,
-    #                              alpha_curves=degree_alpha_w_curves, beta_curves=degree_beta_w_curves,
-    #                              batch_interval=batch_interval, T=T, path=store_path)
-    cost_curve_store.push_curve("Core over Btw", cob_cost_curves,
-                                 infection_curves=cob_infection_curves, edge_curves=cob_edge_term_curves,
-                                 alpha_curves=cob_alpha_w_curves, beta_curves=cob_beta_w_curves,
-                                 batch_interval=batch_interval, T=T, path=store_path)
-    cost_curve_store.push_curve("Core over Deg", cod_cost_curves,
-                                 infection_curves=cod_infection_curves, edge_curves=cod_edge_term_curves,
-                                 alpha_curves=cod_alpha_w_curves, beta_curves=cod_beta_w_curves,
-                                 batch_interval=batch_interval, T=T, path=store_path)
-    # cost_curve_store.push_curve("Core Alone", core_cost_curves,
-    #                              infection_curves=core_infection_curves, edge_curves=core_edge_term_curves,
-    #                              alpha_curves=core_alpha_w_curves, beta_curves=core_beta_w_curves,
-    #                              batch_interval=batch_interval, T=T, path=store_path)
     cost_curve_store.push_curve("Random Seeds", rand_cost_curves,
                                  infection_curves=rand_infection_curves, edge_curves=rand_edge_term_curves,
                                  alpha_curves=rand_alpha_w_curves, beta_curves=rand_beta_w_curves,

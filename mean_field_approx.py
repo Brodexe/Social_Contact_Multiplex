@@ -64,7 +64,7 @@ elif mode == "YJMOB":
 elif mode == "sensitivity analysis":
     write_file = sys.argv[3]
 
-adherence = 0 # Proportion of individuals who sever contact edges upon infection
+adherence = 0.6 # Proportion of individuals who sever contact edges upon infection
 # Overwrite adherence if provided as command line argument
 if mode == "adherence":
     adherence = float(sys.argv[2])
