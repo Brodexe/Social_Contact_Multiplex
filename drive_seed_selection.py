@@ -190,7 +190,7 @@ def run_robustness_experiment(methods):
 
 # ── Experiment 3: inter-layer correlation ablation ───────────────────────────
 #   python drive_seed_selection.py correlation [hill-climb] [milp] [random] [--plot-only]
-CORRELATIONS        = [0, 0.25, 0.5, 0.75, 1.0]
+CORRELATIONS        = [-1.0, -0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75, 1.0]
 CORRELATION_CASCADE = 5
 CORRELATION_BIN     = 16
 CORRELATION_SEED    = 123   # fixed so every module builds identical correlated social layers

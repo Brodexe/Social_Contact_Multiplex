@@ -244,13 +244,14 @@ def plot_robustness_heatmaps(methods=("hill-climb", "milp"), path=ROBUSTNESS_STO
 
 
 def plot_correlation_ablation(methods=("hill-climb", "random"), path=CORRELATION_STORE_PATH,
-                              correlations=(0, 0.25, 0.5, 0.75, 1.0), aggregate="sum",
+                              correlations=(-1.0, -0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75, 1.0),
+                              aggregate="sum",
                               save_path="capstone_result_figures/correlation_ablation.pdf"):
     """Experiment 3: effect of inter-layer degree correlation on cost, for any
     subset of "hill-climb", "milp", "random".
 
     Left:  mean cost over time -- one curve per correlation for each adaptive
-           method (shades of the method's color, light = 0 -> dark = 1), and a
+           method (shades of the method's color, light = most negative -> dark = 1), and a
            single dashed curve for Random Seeds, whose seed choices don't depend
            on correlation.
     Right: total cost vs correlation (mean +/- std across simulations), with

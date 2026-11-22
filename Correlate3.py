@@ -312,18 +312,25 @@ def make_contact_layer_conditions(
 def make_correlated_social(contact, social, correlation, random_seed=123):
     """
     Relabel `social` onto `contact`'s nodes so that inter-layer degree
-    alignment is controlled by `correlation` in [0, 1].
+    alignment is controlled by `correlation` in [-1, 1].
 
-    Reuses partial_rank_mapping with the two layers' roles swapped: here the
-    contact layer is held fixed and the SOCIAL layer is relabeled. The top
-    `correlation` fraction of social nodes (by social degree) are mapped, rank
-    for rank, onto the top `correlation` fraction of contact nodes (by contact
-    degree); every remaining social node is mapped onto a remaining contact
-    node at random.
+    Positive correlation reuses partial_rank_mapping with the two layers' roles
+    swapped: here the contact layer is held fixed and the SOCIAL layer is
+    relabeled. The top `correlation` fraction of social nodes (by social
+    degree) are mapped, rank for rank, onto the top `correlation` fraction of
+    contact nodes (by contact degree); every remaining social node is mapped
+    onto a remaining contact node at random.
 
-        correlation = 1 -> full degree-rank alignment (maximum achievable
-                           correlation for these two degree sequences)
-        correlation = 0 -> pure random relabeling (~zero correlation)
+    Negative correlation is the anti-aligned mirror: the top |correlation|
+    fraction of social nodes are mapped in reverse rank onto the BOTTOM
+    |correlation| fraction of contact nodes (highest social degree -> lowest
+    contact degree, second highest -> second lowest, ...); the rest are random.
+
+        correlation =  1 -> full degree-rank alignment (maximum achievable
+                            correlation for these two degree sequences)
+        correlation =  0 -> pure random relabeling (~zero correlation)
+        correlation = -1 -> full reverse-rank alignment (most negative
+                            achievable correlation)
 
     The social layer's own structure (degree sequence, clustering, direction)
     is untouched; only which contact node each social node sits on changes.
@@ -334,8 +341,33 @@ def make_correlated_social(contact, social, correlation, random_seed=123):
     """
     if set(contact.nodes()) != set(social.nodes()):
         raise ValueError("contact and social must share the same node set.")
-    if not 0 <= correlation <= 1:
-        raise ValueError("correlation must be in [0, 1].")
+    if not -1 <= correlation <= 1:
+        raise ValueError("correlation must be in [-1, 1].")
+
+    if correlation < 0:
+        # Not delegated to partial_rank_mapping: its "low" group is ordered
+        # high-to-low, so pairing it with a "high" group gives the wrong
+        # within-group order (and at fraction 1 it collapses to +1 alignment).
+        rng = random.Random(random_seed)
+        nodes = list(social.nodes())
+        n_extreme = max(1, int(np.ceil(len(nodes) * -correlation)))
+
+        social_high_to_low = sorted(
+            nodes, key=lambda u: (social.degree(u), str(u)), reverse=True)
+        contact_low_to_high = sorted(
+            nodes, key=lambda u: (contact.degree(u), str(u)))
+
+        selected_social = social_high_to_low[:n_extreme]
+        selected_contact = contact_low_to_high[:n_extreme]
+        mapping = dict(zip(selected_social, selected_contact))
+
+        chosen_social, chosen_contact = set(selected_social), set(selected_contact)
+        remaining_social = [u for u in nodes if u not in chosen_social]
+        remaining_contact = [u for u in nodes if u not in chosen_contact]
+        rng.shuffle(remaining_contact)
+        mapping.update(zip(remaining_social, remaining_contact))
+
+        return nx.relabel_nodes(social, mapping, copy=True), mapping
 
     if correlation == 0:
         # partial_rank_mapping always rank-aligns at least one node, so the
