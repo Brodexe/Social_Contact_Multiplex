@@ -963,6 +963,253 @@ def rule_based(accepted_seed_sets=None, decision_edges=None, levels=RB_QUANTILE_
             all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_full_dynamics, tagged,
             all_alpha_w_curves, all_beta_w_curves)
 
+# Degree-based selection: at each batch boundary, choose the K highest-degree nodes in the
+# CURRENT contact layer (initial_contact restricted to the most recently known live edges).
+# Same simulation loop and return tuple as random_seed_selection.
+def degree_based_selection():
+    all_cost_curves = []
+    all_infection_term_curves = []
+    all_edge_term_curves = []
+    all_alpha_w_curves = []
+    all_beta_w_curves = []
+    winner_sets = []
+    all_edge_curves = []
+    all_newly_infected_counts = []
+    all_newly_infected_frac = []
+    all_full_dynamics = []
+
+    # t_batch=0: no information spread at all (seeds are quarantined if infected, but info
+    #   never reaches non-seed nodes) -- one T=1 call every tick.
+    # t_batch=batch_interval: one call per batch, run only at batch boundaries, letting info
+    #   spread across the whole batch_interval window before the next seed refinement.
+    t_batch = 0
+    if information_spread:
+        t_batch = batch_interval
+
+    for i in range(num_simulations):
+        print("Degree-Based Simulation:", i)
+
+        contact_network = deepcopy(initial_contact)
+        social_network = deepcopy(initial_social)
+
+        cost_lst = []
+        infection_term_lst = []
+        edge_term_lst = []
+        alpha_w_lst = []
+        beta_w_lst = []
+        full_dynamics = None
+        prev_state_dict = make_initial_state(contact_network)
+        static_beta = global_betas[i]
+        full_live_edges = None
+        edge_counts = []
+        seed_set = None
+        newly_infected_per_sim = []
+        newly_infected_frac_per_sim = []
+
+        for t_cur in range(T):
+            # At batch boundary: take the K highest-degree nodes on the most recently known graph
+            if t_cur % batch_interval == 0:
+                current_graph = _live_contact_graph(full_live_edges[-1] if full_live_edges else None)
+                degree = dict(current_graph.degree())
+                seed_set = sorted(degree, key=lambda node: degree[node], reverse=True)[:K]
+
+            # Introduce random new infections
+            if t_cur % introduced_infections[1] == 0 and t_cur > 0:
+                new_infections = infection_candidates[i][injection_times.index(t_cur)]
+                for node in new_infections:
+                    if prev_state_dict[node] == 2:
+                        prev_state_dict[node] = 1
+
+            call_now = (t_cur % batch_interval == 0) if information_spread else True
+            if call_now:
+                simulation_results = SIR.Simulate_SIR(
+                    contact_network=contact_network,
+                    social_network=social_network,
+                    T=t_batch,
+                    beta=static_beta,
+                    gamma=gamma,
+                    mu=mu,
+                    init=init,
+                    q=q,
+                    adherence=adherence,
+                    begin_q=0,
+                    seeds=seed_set,
+                    initial_state_dict=prev_state_dict
+                )
+
+                contact_network = deepcopy(initial_contact)
+
+                sirs_dynamics = simulation_results[4]
+                prev_state_dict = sirs_dynamics[-1]
+                full_dynamics = sirs_dynamics if full_dynamics is None else full_dynamics + sirs_dynamics
+
+                graph_vec = simulation_results[10]
+                live_edges = [list(network) for network in graph_vec]
+                full_live_edges = live_edges if full_live_edges is None else full_live_edges + live_edges
+
+            current_new_i = given_at_time(t_cur, full_dynamics, contact_network)
+            newly_infected_per_sim.append(current_new_i)
+            newly_infected_frac_per_sim.append(current_new_i / n)
+            edge_counts.append(len(full_live_edges[t_cur]))
+
+            if (t_cur + 1) % batch_interval == 0 or t_cur == T - 1:
+                cost, cost_elements = global_cost_function(
+                    newly_infected_per_sim,
+                    full_live_edges,
+                    len(seed_set),
+                    t_cur
+                )
+                print(f"Degree-Based, {t_cur}, {cost}")
+                cost_lst.append(cost)
+                infection_term_lst.append(cost_elements[0])
+                edge_term_lst.append(cost_elements[1])
+                alpha_w_lst.append(cost_elements[3])
+                beta_w_lst.append(cost_elements[4])
+
+        winner_sets.append(seed_set)
+        all_cost_curves.append(cost_lst)
+        all_infection_term_curves.append(infection_term_lst)
+        all_edge_term_curves.append(edge_term_lst)
+        all_alpha_w_curves.append(alpha_w_lst)
+        all_beta_w_curves.append(beta_w_lst)
+        all_edge_curves.append(edge_counts)
+        all_newly_infected_counts.append(newly_infected_per_sim)
+        all_newly_infected_frac.append(newly_infected_frac_per_sim)
+        all_full_dynamics.append(full_dynamics)
+
+    tagged = build_tagged_network(global_betas[0])
+    return (winner_sets[0], all_cost_curves, all_infection_term_curves, all_edge_term_curves,
+            all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_full_dynamics, tagged,
+            all_alpha_w_curves, all_beta_w_curves)
+
+
+# Social degree-based selection: at every batch, the seeds are the K highest-degree nodes of
+# the SOCIAL network. The social layer is static, so the same set is chosen every batch; it is
+# computed once. The social network is directed: mode picks "total" (in + out, the default),
+# "in", or "out" degree. Same simulation loop and return tuple as random_seed_selection.
+def social_degree_based(mode="total"):
+    degree_views = {"total": initial_social.degree, "in": getattr(initial_social, "in_degree", None),
+                    "out": getattr(initial_social, "out_degree", None)}
+    if degree_views.get(mode) is None:
+        raise ValueError(f"social_degree_based: mode must be 'total', 'in' or 'out' "
+                         f"(directed social network only for 'in'/'out'), got {mode!r}")
+    degree = dict(degree_views[mode]())
+    static_seed_set = sorted(degree, key=lambda node: degree[node], reverse=True)[:K]
+
+    all_cost_curves = []
+    all_infection_term_curves = []
+    all_edge_term_curves = []
+    all_alpha_w_curves = []
+    all_beta_w_curves = []
+    winner_sets = []
+    all_edge_curves = []
+    all_newly_infected_counts = []
+    all_newly_infected_frac = []
+    all_full_dynamics = []
+
+    # t_batch=0: no information spread at all (seeds are quarantined if infected, but info
+    #   never reaches non-seed nodes) -- one T=1 call every tick.
+    # t_batch=batch_interval: one call per batch, run only at batch boundaries, letting info
+    #   spread across the whole batch_interval window before the next seed refinement.
+    t_batch = 0
+    if information_spread:
+        t_batch = batch_interval
+
+    for i in range(num_simulations):
+        print("Social Degree-Based Simulation:", i)
+
+        contact_network = deepcopy(initial_contact)
+        social_network = deepcopy(initial_social)
+
+        cost_lst = []
+        infection_term_lst = []
+        edge_term_lst = []
+        alpha_w_lst = []
+        beta_w_lst = []
+        full_dynamics = None
+        prev_state_dict = make_initial_state(contact_network)
+        static_beta = global_betas[i]
+        full_live_edges = None
+        edge_counts = []
+        seed_set = None
+        newly_infected_per_sim = []
+        newly_infected_frac_per_sim = []
+
+        for t_cur in range(T):
+            # At batch boundary: the (static) K highest social-degree nodes
+            if t_cur % batch_interval == 0:
+                seed_set = list(static_seed_set)
+
+            # Introduce random new infections
+            if t_cur % introduced_infections[1] == 0 and t_cur > 0:
+                new_infections = infection_candidates[i][injection_times.index(t_cur)]
+                for node in new_infections:
+                    if prev_state_dict[node] == 2:
+                        prev_state_dict[node] = 1
+
+            call_now = (t_cur % batch_interval == 0) if information_spread else True
+            if call_now:
+                simulation_results = SIR.Simulate_SIR(
+                    contact_network=contact_network,
+                    social_network=social_network,
+                    T=t_batch,
+                    beta=static_beta,
+                    gamma=gamma,
+                    mu=mu,
+                    init=init,
+                    q=q,
+                    adherence=adherence,
+                    begin_q=0,
+                    seeds=seed_set,
+                    initial_state_dict=prev_state_dict
+                )
+
+                contact_network = deepcopy(initial_contact)
+
+                sirs_dynamics = simulation_results[4]
+                prev_state_dict = sirs_dynamics[-1]
+                full_dynamics = sirs_dynamics if full_dynamics is None else full_dynamics + sirs_dynamics
+
+                graph_vec = simulation_results[10]
+                live_edges = [list(network) for network in graph_vec]
+                full_live_edges = live_edges if full_live_edges is None else full_live_edges + live_edges
+
+            current_new_i = given_at_time(t_cur, full_dynamics, contact_network)
+            newly_infected_per_sim.append(current_new_i)
+            newly_infected_frac_per_sim.append(current_new_i / n)
+            edge_counts.append(len(full_live_edges[t_cur]))
+
+            if (t_cur + 1) % batch_interval == 0 or t_cur == T - 1:
+                cost, cost_elements = global_cost_function(
+                    newly_infected_per_sim,
+                    full_live_edges,
+                    len(seed_set),
+                    t_cur
+                )
+                print(f"Social Degree-Based, {t_cur}, {cost}")
+                cost_lst.append(cost)
+                infection_term_lst.append(cost_elements[0])
+                edge_term_lst.append(cost_elements[1])
+                alpha_w_lst.append(cost_elements[3])
+                beta_w_lst.append(cost_elements[4])
+
+        winner_sets.append(seed_set)
+        all_cost_curves.append(cost_lst)
+        all_infection_term_curves.append(infection_term_lst)
+        all_edge_term_curves.append(edge_term_lst)
+        all_alpha_w_curves.append(alpha_w_lst)
+        all_beta_w_curves.append(beta_w_lst)
+        all_edge_curves.append(edge_counts)
+        all_newly_infected_counts.append(newly_infected_per_sim)
+        all_newly_infected_frac.append(newly_infected_frac_per_sim)
+        all_full_dynamics.append(full_dynamics)
+
+    tagged = build_tagged_network(global_betas[0])
+    return (winner_sets[0], all_cost_curves, all_infection_term_curves, all_edge_term_curves,
+            all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_full_dynamics, tagged,
+            all_alpha_w_curves, all_beta_w_curves)
+
+
 def random_seed_selection():
     all_cost_curves = []
     all_infection_term_curves = []

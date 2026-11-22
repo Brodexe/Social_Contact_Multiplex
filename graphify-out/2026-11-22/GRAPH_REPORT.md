@@ -1,17 +1,17 @@
-# Graph Report - Social_Contact_Multiplex  (2026-11-18)
+# Graph Report - Social_Contact_Multiplex  (2026-11-22)
 
 ## Corpus Check
-- 57 files · ~515,978 words
+- 57 files · ~516,154 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 131 file(s) not represented in the graph (top: .gml 89, .pkl 14, .csv 9)
 
 ## Summary
-- 721 nodes · 1675 edges · 42 communities (33 shown, 9 thin omitted)
+- 721 nodes · 1676 edges · 42 communities (33 shown, 9 thin omitted)
 - Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 76 edges (avg confidence: 0.91)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `b2fccd17`
+- Built from commit: `bf5887db`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -67,21 +67,21 @@
 5. `LineChart` - 15 edges
 6. `restart()` - 14 edges
 7. `_check()` - 14 edges
-8. `MultiplexSIRS` - 12 edges
-9. `refreshPanel()` - 12 edges
-10. `create_social_graph()` - 12 edges
+8. `_static_payload()` - 12 edges
+9. `MultiplexSIRS` - 12 edges
+10. `refreshPanel()` - 12 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `khop_social()` --calls--> `create_social_graph()`  [EXTRACTED]
+  app/networks.py → correlated_graphs.py
+- `build()` --calls--> `laplacian_smooth_beta()`  [EXTRACTED]
+  app/networks.py → network_setup.py
+- `_reference()` --calls--> `edge_key()`  [EXTRACTED]
+  tests/test_seed_policies.py → app/seeding.py
 - `_check_case()` --calls--> `SeedPolicyRun`  [EXTRACTED]
   tests/test_seed_policies.py → app/seeding.py
 - `test_hill_climb_accepts_non_worsening_swap()` --calls--> `SeedPolicyRun`  [EXTRACTED]
   tests/test_seed_policies.py → app/seeding.py
-- `test_milp_seed_term_shrinks_seed_set()` --calls--> `SeedPolicyRun`  [EXTRACTED]
-  tests/test_seed_policies.py → app/seeding.py
-- `build()` --calls--> `laplacian_smooth_beta()`  [EXTRACTED]
-  app/networks.py → network_setup.py
-- `_run_pair()` --calls--> `load_shared_network()`  [EXTRACTED]
-  tests/test_engine_equivalence.py → network_setup.py
 
 ## Import Cycles
 - None detected.

@@ -114,10 +114,20 @@ def _run_cost_curves(method):
         return asm.hill2()[1]
     if method == "random":
         return asm.random_seed_selection()[1]
+    if method == "degree":
+        return asm.degree_based_selection()[1]
     if method == "milp":
         import milp
         return milp.milp_seed_selection_stepwise()[1]
     raise ValueError(method)
+
+
+def _comparison_curves(result):
+    """(cost_curves, edge_curves, newly_infected_counts, newly_infected_frac, full_dynamics)
+    from a seed-selection policy's result. hill2, degree_based_selection and
+    random_seed_selection all start (winner, cost, infection_term, edge_term, edge, counts,
+    frac, dynamics, tagged, ...); hill2 adds batch_seed_sets before the alpha/beta curves."""
+    return result[1], result[4], result[5], result[6], result[7]
 
 
 def _module_for(method):
@@ -396,16 +406,16 @@ for bin_idx in bins_to_run:
 
     # ── run all four methods ──────────────────────────────────────────────────
     print("[run] Hill Climb (hill2) …")
-    _, hill_cc, hill_ec, hill_nc, hill_nf, hill_dyn = asm.hill2()
+    hill_cc, hill_ec, hill_nc, hill_nf, hill_dyn = _comparison_curves(asm.hill2())
 
     print("[run] Degree-Based Selection …")
-    _, deg_cc, deg_ec, deg_nc, deg_nf, deg_dyn = asm.degree_based_selection()
+    deg_cc, deg_ec, deg_nc, deg_nf, deg_dyn = _comparison_curves(asm.degree_based_selection())
 
     # print("[run] No-Quarantine Baseline …")
     # nq_cc, nq_ec, nq_nc, nq_nf, nq_dyn = asm.no_quarantine_baseline_runs()
 
     print("[run] Random Seed Selection …")
-    _, rand_cc, rand_ec, rand_nc, rand_nf, rand_dyn = asm.random_seed_selection()
+    rand_cc, rand_ec, rand_nc, rand_nf, rand_dyn = _comparison_curves(asm.random_seed_selection())
 
     comparison_methods = [
         {
