@@ -54,6 +54,7 @@ METHOD_STYLE = {
     "Core over Deg": "C6",
     "Core Alone":   "C7",
     "Random Seeds": "C3",
+    "Social Rule-Based": "C8",
     "Adaptive":     "C0",
     "MILP":         "C2",
     "MILP-Local":   "C4",
@@ -63,7 +64,7 @@ METHOD_STYLE = {
 # ── experiment stores (drive_seed_selection.py robustness / correlation) ─────
 # Experiment curves are keyed by configuration rather than by method alone:
 #   robustness:  {label: {(cascade_time, seed_fraction): cost_array}}
-#   correlation: {label: {correlation: cost_array}}  (Random Seeds: {"all": cost_array})
+#   correlation: {label: {(social_group, contact_group): cost_array}}  (Random Seeds: {"all": cost_array})
 # plus a reserved "_meta" entry for side information (e.g. measured correlations).
 ROBUSTNESS_STORE_PATH  = "robustness_experiment.pkl"
 CORRELATION_STORE_PATH = "correlation_ablation.pkl"
@@ -254,20 +255,31 @@ def plot_robustness_heatmaps(methods=("hill-climb", "milp"), path=ROBUSTNESS_STO
     plt.close(fig)  # non-blocking: review the PDF afterwards
 
 
-def plot_correlation_ablation(methods=("hill-climb", "random"), path=CORRELATION_STORE_PATH,
-                              correlations=(-1.0, -0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75, 1.0),
-                              aggregate="sum",
-                              save_path="capstone_result_figures/correlation_ablation.pdf"):
-    """Experiment 3: effect of inter-layer degree correlation on cost, for any
-    subset of "hill-climb", "milp", "random".
+CORRELATION_CONDITIONS = (("high", "high"), ("high", "low"), ("low", "high"), ("low", "low"))
 
-    Left:  mean cost over time -- one curve per correlation for each adaptive
-           method (shades of the method's color, light = most negative -> dark = 1), and a
+
+def _condition_label(cond, sep=" / "):
+    social, contact = cond
+    return f"{social.capitalize()} social{sep}{contact.capitalize()} contact"
+
+
+def plot_correlation_ablation(methods=("hill-climb", "random"), path=CORRELATION_STORE_PATH,
+                              conditions=CORRELATION_CONDITIONS, aggregate="sum",
+                              save_path="capstone_result_figures/correlation_ablation.pdf"):
+    """Experiment 3: effect of inter-layer degree alignment on cost, for any
+    subset of "hill-climb", "milp", "random". Each condition is a
+    (social group, contact group) cell of the high/low x high/low matrix
+    (Correlate3.partial_rank_mapping): high/low-degree social nodes placed on
+    high/low-degree contact nodes, everything else random.
+
+    Left:  mean cost over time -- one curve per condition for each adaptive
+           method (shades of the method's color, in `conditions` order), and a
            single dashed curve for Random Seeds, whose seed choices don't depend
-           on correlation.
-    Right: total cost vs correlation (mean +/- std across simulations), with
+           on the social layer's placement.
+    Right: total cost per condition (mean +/- std across simulations), with
            Random Seeds as a horizontal reference line.
     X tick labels carry the measured Pearson degree correlation when stored."""
+    conditions = [tuple(c) for c in conditions]
     data = load_all(path)
     labels = resolve_methods(methods)
     present = [l for l in labels if l in data]
@@ -281,6 +293,10 @@ def plot_correlation_ablation(methods=("hill-climb", "random"), path=CORRELATION
 
     fig, (ax_t, ax_c) = plt.subplots(1, 2, figsize=(20, 7.5), constrained_layout=True)
 
+    # Small horizontal offsets so error bars of different methods don't overlap.
+    adaptive = [l for l in present if l != "Random Seeds"]
+    offsets = {l: (k - (len(adaptive) - 1) / 2) * 0.12 for k, l in enumerate(adaptive)}
+
     for label in present:
         base = METHOD_STYLE[label]
         name = "Hill Climb" if label == "Adaptive" else label
@@ -290,43 +306,45 @@ def plot_correlation_ablation(methods=("hill-climb", "random"), path=CORRELATION
                 continue
             mean = arr.mean(axis=0)
             ax_t.plot(np.arange(len(mean)), mean, color=base, linestyle="--", linewidth=2.2,
-                      label=f"{name} (any correlation)", zorder=4)
+                      label=f"{name} (any condition)", zorder=4)
             tot_mean, tot_std = _total_cost(arr, aggregate)
             ax_c.axhline(tot_mean, color=base, linestyle="--", linewidth=2.2, label=name, zorder=2)
             ax_c.axhspan(tot_mean - tot_std, tot_mean + tot_std, color=base, alpha=0.10, zorder=1)
             continue
 
         xs, ys, es = [], [], []
-        for i, corr in enumerate(correlations):
-            arr = _lookup(data[label], corr)
+        for i, cond in enumerate(conditions):
+            arr = data[label].get(cond)
             if arr is None:
                 continue
-            shade = _lighten(base, 0.70 * (1 - i / max(1, len(correlations) - 1)))
+            shade = _lighten(base, 0.70 * (1 - i / max(1, len(conditions) - 1)))
             mean = arr.mean(axis=0)
             ax_t.plot(np.arange(len(mean)), mean, color=shade, linewidth=2.0,
-                      label=f"{name}, corr = {corr:g}", zorder=3)
+                      label=f"{name}, {_condition_label(cond)}", zorder=3)
             tot_mean, tot_std = _total_cost(arr, aggregate)
-            xs.append(corr); ys.append(tot_mean); es.append(tot_std)
+            xs.append(i + offsets[label]); ys.append(tot_mean); es.append(tot_std)
         if xs:
-            ax_c.errorbar(xs, ys, yerr=es, color=base, marker="o", markersize=9, linewidth=2.2,
-                          capsize=5, label=name, zorder=3)
+            ax_c.errorbar(xs, ys, yerr=es, color=base, marker="o", markersize=9, linestyle="none",
+                          elinewidth=2.2, capsize=5, label=name, zorder=3)
 
     ax_t.set_xlabel("Time (in days)")
     ax_t.set_ylabel("Cost")
-    ax_t.set_title("Cost over Time by Correlation")
+    ax_t.set_title("Cost over Time by Degree Alignment")
     ax_t.grid(True, linewidth=0.4)
     ax_t.legend(fontsize=11, ncols=2, loc="upper center", bbox_to_anchor=(0.5, -0.14))
 
     tick_labels = []
-    for corr in correlations:
-        r = _lookup(measured, corr) if measured else None
-        tick_labels.append(f"{corr:g}" if r is None or not np.isfinite(r) else f"{corr:g}\n(r = {r:.2f})")
-    ax_c.set_xticks(list(correlations), tick_labels)
-    ax_c.set_xlabel("Degree-rank alignment (measured Pearson r)")
+    for cond in conditions:
+        r = measured.get(cond) if measured else None
+        text = _condition_label(cond, sep="\n")
+        tick_labels.append(text if r is None or not np.isfinite(r) else f"{text}\n(r = {r:.2f})")
+    ax_c.set_xticks(range(len(conditions)), tick_labels)
+    ax_c.set_xlim(-0.5, len(conditions) - 0.5)
+    ax_c.set_xlabel("Degree alignment condition (measured Pearson r)")
     ax_c.set_ylabel("Total cost over time" if aggregate == "sum" else "Time-averaged cost")
-    ax_c.set_title("Total Cost vs. Inter-Layer Correlation")
+    ax_c.set_title("Total Cost by Inter-Layer Degree Alignment")
     ax_c.grid(True, linewidth=0.4)
-    ax_c.legend(fontsize=13, loc="upper center", bbox_to_anchor=(0.5, -0.20), ncols=3)
+    ax_c.legend(fontsize=13, loc="upper center", bbox_to_anchor=(0.5, -0.24), ncols=3)
 
     os.makedirs(os.path.dirname(save_path) or ".", exist_ok=True)
     fig.savefig(save_path, format="pdf", bbox_inches="tight")

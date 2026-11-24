@@ -545,7 +545,7 @@ if __name__ == "__main__":
     # CONTACT_NETWORK_PATH = "capstone_proj_data/rc_weighted_contact_bin14.gml"
     # SOCIAL_NETWORK_PATH  = "capstone_proj_data/rc_social_network.gml"
 
-    CONTACT_NETWORK_PATH = "capstone_proj_data/rc_contact_network_bin15.gml"
+    CONTACT_NETWORK_PATH = "capstone_proj_data/rc_contact_network_bin10.gml"
     SOCIAL_NETWORK_PATH  = "capstone_proj_data/rc_social_network.gml"
 
 

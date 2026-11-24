@@ -669,7 +669,7 @@ def rc():
 
     rc_social = nx.read_gml('capstone_proj_data/rc_social_network.gml')
     # 15 is a well-connected bin
-    rc_contact = nx.read_gml('capstone_proj_data/rc_contact_network_bin15.gml')
+    rc_contact = nx.read_gml('capstone_proj_data/rc_contact_network_bin10.gml')
 
     # Compare social_network and contact_network nodes to ensure they are aligned
     social_nodes = set(rc_social.nodes())

@@ -39,8 +39,9 @@ Correlation ablation
     python drive_seed_selection.py correlation [hill-climb] [milp] [random] [--plot-only]
 
 Holds rc_contact_network_bin{CORRELATION_BIN}.gml fixed and rebuilds the social
-layer at each alignment in CORRELATIONS (Correlate3.make_correlated_social),
-cascade time CORRELATION_CASCADE. Stores curves in correlation_ablation.pkl and
+layer for each (social, contact) cell of the high/low x high/low matrix in
+CORRELATION_CONDITIONS (Correlate3.partial_rank_mapping, top/bottom
+CORRELATION_EXTREME_FRACTION of nodes), cascade time CORRELATION_CASCADE. Stores curves in correlation_ablation.pkl and
 plots cost_curve_store.plot_correlation_ablation. Random runs once, on the
 observed social layer, and is drawn as a single curve.
 
@@ -200,9 +201,14 @@ def run_robustness_experiment(methods):
 
 # ── Experiment 3: inter-layer correlation ablation ───────────────────────────
 #   python drive_seed_selection.py correlation [hill-climb] [milp] [random] [--plot-only]
-CORRELATIONS        = [-1.0, -0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75, 1.0]
+# (social group, contact group) cells of the high/low x high/low matrix, as in
+# Correlate3.make_contact_layer_conditions: the top/bottom CORRELATION_EXTREME_FRACTION
+# of social nodes (by social degree) are rank-mapped onto the top/bottom fraction of
+# contact nodes (by contact degree); every other node is placed at random.
+CORRELATION_CONDITIONS        = [("high", "high"), ("high", "low"), ("low", "high"), ("low", "low")]
+CORRELATION_EXTREME_FRACTION  = 0.25
 CORRELATION_CASCADE = 5
-CORRELATION_BIN     = 16
+CORRELATION_BIN     = 10
 CORRELATION_SEED    = 123   # fixed so every module builds identical correlated social layers
 
 def _measured_correlation(contact, social):
@@ -210,8 +216,24 @@ def _measured_correlation(contact, social):
     return Correlate1.degree_correlation_over_time(social.to_undirected(), [contact])[0]["degree_correlation"]
 
 
+def _social_for_condition(contact, social, social_group, contact_group):
+    """Relabel `social` onto `contact`'s nodes for one (social, contact) high/low cell.
+    The contact layer is held fixed and the SOCIAL layer is relabeled, so the two layers
+    swap roles relative to partial_rank_mapping's argument names (its G is the fixed
+    reference, its H the graph being relabeled, and its group names follow G / H)."""
+    return Correlate3.partial_rank_mapping(
+        G=contact, H=social,
+        social_group=contact_group,   # group of G (= contact layer here)
+        contact_group=social_group,   # group of H (= social layer here)
+        extreme_fraction=CORRELATION_EXTREME_FRACTION,
+        random_seed=CORRELATION_SEED)
+
+
 def run_correlation_experiment(methods):
     path = cost_curve_store.CORRELATION_STORE_PATH
+    # Drop each method's previous correlation results so no stale cells survive a rerun.
+    for method in methods:
+        cost_curve_store.clear_experiment_label(cost_curve_store.METHOD_ALIASES[method], path)
     contact_path = f"capstone_proj_data/rc_contact_network_bin{CORRELATION_BIN}.gml"
     modules = _initialize_modules(methods, contact_path, asm.SOCIAL_NETWORK_PATH)
     for module in modules:
@@ -222,17 +244,17 @@ def run_correlation_experiment(methods):
     measured = {"observed": _measured_correlation(ref.initial_contact, ref.initial_social)}
     print(f"[correlation] observed social layer: r = {measured['observed']:.3f}")
 
-    for corr in CORRELATIONS:
-        # Same contact layer every time; only the social layer's alignment changes.
+    for cond in CORRELATION_CONDITIONS:
+        # Same contact layer every time; only the social layer's placement changes.
         for module in modules:
-            module.initial_social, _ = Correlate3.make_correlated_social(
-                module.initial_contact, observed_social[module], corr, random_seed=CORRELATION_SEED)
-        measured[corr] = _measured_correlation(ref.initial_contact, ref.initial_social)
-        print(f"\n[correlation] alignment={corr:g}  ->  measured r = {measured[corr]:.3f}")
+            module.initial_social, _ = _social_for_condition(
+                module.initial_contact, observed_social[module], *cond)
+        measured[cond] = _measured_correlation(ref.initial_contact, ref.initial_social)
+        print(f"\n[correlation] {cond[0]} social -> {cond[1]} contact  ->  measured r = {measured[cond]:.3f}")
 
         for method in ("hill-climb", "milp"):
             if method in methods:
-                _push(method, corr, _run_cost_curves(method), path)
+                _push(method, cond, _run_cost_curves(method), path)
 
     if "random" in methods:
         # Random's seed choices ignore the social layer's alignment: one run, on the
@@ -265,7 +287,8 @@ if len(sys.argv) > 1 and sys.argv[1] == "correlation":
     if not _plot_only:
         run_correlation_experiment(_methods)
     cost_curve_store.plot_correlation_ablation(
-        methods=_methods, path=cost_curve_store.CORRELATION_STORE_PATH, correlations=CORRELATIONS)
+        methods=_methods, path=cost_curve_store.CORRELATION_STORE_PATH,
+        conditions=CORRELATION_CONDITIONS)
     sys.exit(0)
 
 if len(sys.argv) > 1:

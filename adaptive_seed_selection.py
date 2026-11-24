@@ -337,196 +337,6 @@ def global_cost_function(newly_infected, live_edges, seed_set_size, t_cur):
     return infection_term + edge_term, cost_elements
     # return alpha_w * newly_infected_sum, cost_elements
 
-# Stochastic hill-climber that considers exactly one seed swap per batch step.
-# For each node in a shuffled order, it tentatively swaps it in/out (removing the
-# lowest-softmax-utility active seed when adding, or a random non-seed when removing),
-# accepts the first cost-improving swap, and updates per-node utilities with EWMA of
-# the cost delta — mirroring the Hill2.py Hamming-distance logic but driven by the
-# global cost function instead.
-# NOTE: potential problem: seed set is unintentionally reverted
-def hill():
-    EWMA_alpha = 0.5
-
-    winner_sets = []
-    all_cost_curves = []
-    all_infection_term_curves = []
-    all_edge_term_curves = []
-    all_alpha_w_curves = []
-    all_beta_w_curves = []
-    all_edge_curves = []
-    all_newly_infected_counts = []
-    all_newly_infected_frac = []
-    all_state_vectors = []
-    all_batch_seed_sets = []  # per-simulation list of per-batch seed sets (list of node ids)
-
-    # t_batch=0: no information spread at all (seeds are quarantined if infected, but info
-    #   never reaches non-seed nodes) -- one T=1 call every tick.
-    # t_batch=batch_interval: one call per batch, run only at batch boundaries, letting info
-    #   spread across the whole batch_interval window before the next seed refinement.
-    t_batch = 0
-    if information_spread:
-        t_batch = batch_interval
-
-    for i in range(num_simulations):
-        print("Hill-Climb Simulation:", i)
-
-        contact_network = deepcopy(initial_contact)
-        social_network = deepcopy(initial_social)
-
-        utilities = {node: random.uniform(0, 1) for node in contact_network.nodes()}
-
-        seed_vec = np.array([1 if node in random.sample(list(contact_network.nodes()), K) else 0
-                             for node in contact_network.nodes()])
-        new_seed_set = [node for node in contact_network.nodes() if seed_vec[node] == 1]
-
-        cost_lst = []
-        infection_term_lst = []
-        edge_term_lst = []
-        alpha_w_lst = []
-        beta_w_lst = []
-        states_at_time = None
-        prev_state_dict = make_initial_state(contact_network)
-        static_beta = global_betas[i]
-
-        live_edge_at_time = None
-        edge_counts = []
-        last_batch_cost = None
-        newly_infected_at_time = []
-        newly_infected_frac_per_sim = []
-        batch_seed_sets = []  # this simulation's seed set at each batch
-
-        for t_cur in range(T):
-            # Record the seed set that will be used for this batch
-            if t_cur % batch_interval == 0:
-                batch_seed_sets.append(list(new_seed_set))
-
-            # Seed set to modify
-            S_new = seed_vec.copy()
-            # Seet set to revert to if needed
-            S_save = seed_vec.copy()
-
-            # Introduce infections at batch boundary
-            if t_cur % introduced_infections[1] == 0 and t_cur > 0:
-                new_infections = infection_candidates[i][injection_times.index(t_cur)]
-                for node in new_infections:
-                    if prev_state_dict[node] == 2:
-                        prev_state_dict[node] = 1
-
-            # With information diffusion enabled, only re-simulate at batch boundaries -- one
-            # call covers the whole batch_interval window, letting info actually reach non-seed
-            # nodes. Without it, advance one real step every tick.
-            call_now = (t_cur % batch_interval == 0) if information_spread else True
-            if call_now:
-                simulation_results = SIR.Simulate_SIR(
-                    contact_network=contact_network, social_network=social_network,
-                    T=t_batch,
-                    beta=static_beta, gamma=gamma, mu=mu, init=init,
-                    q=q,
-                    adherence=adherence,
-                    begin_q=0,
-                    seeds=new_seed_set,
-                    initial_state_dict=prev_state_dict
-                )
-
-                contact_network = deepcopy(initial_contact)
-                sirs_states = simulation_results[4]
-                prev_state_dict = sirs_states[-1]
-                states_at_time = sirs_states if states_at_time is None else states_at_time + sirs_states
-
-                graph_vec = simulation_results[10]
-                live_edges = [list(edge_set) for edge_set in graph_vec]
-                live_edge_at_time = live_edges if live_edge_at_time is None else live_edge_at_time + live_edges
-
-            current_new_i = given_at_time(t_cur, states_at_time, contact_network)
-            newly_infected_at_time.append(current_new_i)
-            newly_infected_frac_per_sim.append(current_new_i / n)
-            edge_counts.append(len(live_edge_at_time[t_cur]))
-
-            # Perform swapping operation only at batch boundaries
-            if (t_cur + 1) % batch_interval == 0 or t_cur == T - 1:
-                cost, cost_elements = global_cost_function(newly_infected_at_time, live_edge_at_time, len(new_seed_set), t_cur)
-                print(f"Hill-Climb, {t_cur}, {cost}")
-                cost_lst.append(cost)
-                infection_term_lst.append(cost_elements[0])
-                edge_term_lst.append(cost_elements[1])
-                alpha_w_lst.append(cost_elements[3])
-                beta_w_lst.append(cost_elements[4])
-                # NOTE: Hamming should be here?
-                delta = (last_batch_cost - cost) if last_batch_cost is not None else 0.0
-
-                for node in contact_network.nodes():
-                    # EWMA utility update for the candidate node
-                    utilities[node] = EWMA_alpha * delta + (1 - EWMA_alpha) * utilities[node]
-
-                # If swap was not an improvement, revert to last accepted seed_vec
-                if last_batch_cost is not None and cost <= last_batch_cost:
-                    seed_vec = S_new
-                else:
-                    seed_vec = S_save
-
-                # Single-swap hill-climb: iterate nodes in random order, accept first improvement
-                nodes = list(contact_network.nodes())
-                random.shuffle(nodes)
-
-                S_new = seed_vec.copy()
-                S_save = seed_vec.copy()
-
-                #--------------
-                #
-                #  Perform atmost 1 swap-per batch
-                #   Accept if cost improves
-                #
-                #--------------
-
-                for node in nodes:
-                    # If this node is not a seed
-                    if seed_vec[node] == 0:
-                        # Try adding this node: remove the active seed with lowest softmax utility
-                        active_seeds = [j for j in contact_network.nodes() if seed_vec[j] == 1]
-                        if not active_seeds:
-                            continue
-                        weights = np.array([np.exp(-utilities[j]) for j in active_seeds])
-                        probs = weights / weights.sum()
-                        drop_node = np.random.choice(active_seeds, p=probs)
-                        S_new[drop_node] = 0
-                        S_new[node] = 1
-                        break
-                    # If this node is currently a seed
-                    else:
-                        # Try removing this node: add a random non-seed to compensate
-                        non_seeds = [j for j in contact_network.nodes() if seed_vec[j] == 0]
-                        if not non_seeds:
-                            continue
-                        add_node = random.choice(non_seeds)
-                        S_new[node] = 0
-                        S_new[add_node] = 1
-                        break
-
-                new_seed_set = [j for j in contact_network.nodes() if S_new[j] == 1]
-                last_batch_cost = cost
-
-        final_seed_set = [node for node in contact_network.nodes() if seed_vec[node] == 1]
-        winner_sets.append(final_seed_set)
-        all_cost_curves.append(cost_lst)
-        all_infection_term_curves.append(infection_term_lst)
-        all_edge_term_curves.append(edge_term_lst)
-        all_alpha_w_curves.append(alpha_w_lst)
-        all_beta_w_curves.append(beta_w_lst)
-        all_edge_curves.append(edge_counts)
-        all_newly_infected_counts.append(newly_infected_at_time)
-        all_newly_infected_frac.append(newly_infected_frac_per_sim)
-        all_state_vectors.append(states_at_time)
-        all_batch_seed_sets.append(batch_seed_sets)
-
-    seed_set_counts = Counter(tuple(seed_set) for seed_set in winner_sets)
-    most_common_seed_set = seed_set_counts.most_common(1)[0][0]
-
-    tagged = build_tagged_network(global_betas[0])
-    return (most_common_seed_set, all_cost_curves, all_infection_term_curves, all_edge_term_curves,
-            all_edge_curves, all_newly_infected_counts, all_newly_infected_frac, all_state_vectors,
-            tagged, all_batch_seed_sets, all_alpha_w_curves, all_beta_w_curves)
-
-
 # Stochastic hill-climber that tests exactly one seed swap per batch.
 # seed_vec is the ACCEPTED seed set and S_prop is the proposal under test. Each batch
 # runs on S_prop; at the batch boundary the proposal is accepted (seed_vec = S_prop) if
@@ -1671,7 +1481,7 @@ def plot_prevalence_and_new_infections(
 # CONTACT_NETWORK_PATH = "capstone_proj_data/rc_weighted_contact_bin14.gml"
 # SOCIAL_NETWORK_PATH  = "capstone_proj_data/rc_social_network.gml"
 
-CONTACT_NETWORK_PATH = "capstone_proj_data/rc_contact_network_bin16.gml"
+CONTACT_NETWORK_PATH = "capstone_proj_data/rc_contact_network_bin10.gml"
 SOCIAL_NETWORK_PATH  = "capstone_proj_data/rc_social_network.gml"
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1684,9 +1494,9 @@ MILP_OWNED_LABELS = ("MILP", "MILP-Local")
 # store_path lets callers (e.g. the scale experiment) avoid overwriting the default store.
 def run_methods(scale=1.0, store_path=cost_curve_store.STORE_PATH):
     # Run hill2 (single-swap per batch, accept first improvement) -- the "adaptive" approach
-    # (_, hill_cost_curves, hill_infection_curves, hill_edge_term_curves, hill_edge_curves,
-    #  hill_newly_counts, hill_newly_frac, hill_dynamics_list, tagged_contact_hill,
-    #  hill_batch_seed_sets, hill_alpha_w_curves, hill_beta_w_curves) = hill2()
+    (_, hill_cost_curves, hill_infection_curves, hill_edge_term_curves, hill_edge_curves,
+     hill_newly_counts, hill_newly_frac, hill_dynamics_list, tagged_contact_hill,
+     hill_batch_seed_sets, hill_alpha_w_curves, hill_beta_w_curves) = hill2()
 
     # # Save every seed set of every batch of every run of the adaptive approach, along with
     # # the social network it was selected against, for visualize_adaptive.py.
@@ -1700,6 +1510,13 @@ def run_methods(scale=1.0, store_path=cost_curve_store.STORE_PATH):
     (_, rand_cost_curves, rand_infection_curves, rand_edge_term_curves, rand_edge_curves,
      rand_newly_counts, rand_newly_frac, rand_dynamics_list, tagged_contact_rand,
      rand_alpha_w_curves, rand_beta_w_curves) = random_seed_selection()
+
+    # Social rule-based, distilled from the hill2 run above (reuses its accepted seed sets
+    # rather than re-running hill2).
+    (_, srb_cost_curves, srb_infection_curves, srb_edge_term_curves, srb_edge_curves,
+     srb_newly_counts, srb_newly_frac, srb_dynamics_list, tagged_contact_srb,
+     srb_alpha_w_curves, srb_beta_w_curves) = social_rule_based(
+        accepted_seed_sets=hill2_accepted_seed_sets)
 
     # Cytoscape visualization (uses tagged network from first solver)
     # send_to_cytoscape(tagged_contact_hill, title="Contact Network (Hill Climb)")
@@ -1720,10 +1537,14 @@ def run_methods(scale=1.0, store_path=cost_curve_store.STORE_PATH):
                                  infection_curves=rand_infection_curves, edge_curves=rand_edge_term_curves,
                                  alpha_curves=rand_alpha_w_curves, beta_curves=rand_beta_w_curves,
                                  batch_interval=batch_interval, T=T, path=store_path)
-    # cost_curve_store.push_curve("Adaptive", hill_cost_curves,
-    #                              infection_curves=hill_infection_curves, edge_curves=hill_edge_term_curves,
-    #                              alpha_curves=hill_alpha_w_curves, beta_curves=hill_beta_w_curves,
-    #                              batch_interval=batch_interval, T=T, path=store_path)
+    cost_curve_store.push_curve("Social Rule-Based", srb_cost_curves,
+                                 infection_curves=srb_infection_curves, edge_curves=srb_edge_term_curves,
+                                 alpha_curves=srb_alpha_w_curves, beta_curves=srb_beta_w_curves,
+                                 batch_interval=batch_interval, T=T, path=store_path)
+    cost_curve_store.push_curve("Adaptive", hill_cost_curves,
+                                 infection_curves=hill_infection_curves, edge_curves=hill_edge_term_curves,
+                                 alpha_curves=hill_alpha_w_curves, beta_curves=hill_beta_w_curves,
+                                 batch_interval=batch_interval, T=T, path=store_path)
 
 if __name__ == "__main__":
     initialize(CONTACT_NETWORK_PATH, SOCIAL_NETWORK_PATH)
