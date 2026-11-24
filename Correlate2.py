@@ -1,3 +1,4 @@
+import os
 import random
 from datetime import datetime
 
@@ -249,8 +250,11 @@ def simulate_temporal_multiplex(
     }
 
 
-def plot_new_infections(results):
-    """Plot mean new infections across temporal contact snapshots."""
+def plot_new_infections(
+    results,
+    save_path="capstone_result_figures/temporal_new_infections.pdf",
+):
+    """Plot mean new infections across temporal contact snapshots and save as PDF."""
     timestamps = [
         datetime.fromtimestamp(t)
         for t in results["time"]
@@ -286,9 +290,13 @@ def plot_new_infections(results):
     plt.legend()
     plt.grid(alpha=0.25)
 
-    plt.gcf().autofmt_xdate()
+    fig = plt.gcf()
+    fig.autofmt_xdate()
     plt.tight_layout()
-    plt.show()
+    os.makedirs(os.path.dirname(save_path) or ".", exist_ok=True)
+    fig.savefig(save_path, format="pdf", bbox_inches="tight")
+    print(f"[saved] {save_path}")
+    plt.close(fig)  # non-blocking: review the PDF afterwards
 
 
 G = read_social("HighSchool2013_facebook_known_pairs.csv")
@@ -351,5 +359,8 @@ null_results = simulate_temporal_multiplex(
     iterations=250
 )
 
-plot_new_infections(null_results)
+plot_new_infections(
+    null_results,
+    save_path="capstone_result_figures/temporal_new_infections_null.pdf",
+)
 '''

@@ -91,7 +91,7 @@ def plot_correlation_bars(bins, correlations, save_path=SAVE_PATH):
     os.makedirs(os.path.dirname(save_path) or ".", exist_ok=True)
     fig.savefig(save_path, format="pdf", bbox_inches="tight")
     print(f"[saved] {save_path}")
-    plt.show()
+    plt.close(fig)  # non-blocking: review the PDF afterwards
 
 
 if __name__ == "__main__":

@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 import networkx as nx
 import numpy as np
@@ -5,7 +7,10 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 
 
-def plot_degree_correlation(correlations):
+def plot_degree_correlation(
+    correlations,
+    save_path="capstone_result_figures/degree_correlation_over_time.pdf",
+):
     """
     Plot degree correlation between the social graph and contact graphs.
 
@@ -44,9 +49,13 @@ def plot_degree_correlation(correlations):
     plt.legend()
     plt.grid(alpha=0.25)
 
-    plt.gcf().autofmt_xdate()
+    fig = plt.gcf()
+    fig.autofmt_xdate()
     plt.tight_layout()
-    plt.show()
+    os.makedirs(os.path.dirname(save_path) or ".", exist_ok=True)
+    fig.savefig(save_path, format="pdf", bbox_inches="tight")
+    print(f"[saved] {save_path}")
+    plt.close(fig)  # non-blocking: review the PDF afterwards
 
 
 def degree_correlation_over_time(G, temporal_graphs):

@@ -1,3 +1,4 @@
+import os
 import random
 
 import matplotlib.pyplot as plt
@@ -566,7 +567,10 @@ def simulate_all_conditions(
 # Plot five curves
 # ============================================================
 
-def plot_five_conditions(mean_results):
+def plot_five_conditions(
+    mean_results,
+    save_path="capstone_result_figures/five_conditions_new_infections.pdf",
+):
     colors = {
         "observed": "black",
         "rewired": "tab:blue",
@@ -623,12 +627,11 @@ def plot_five_conditions(mean_results):
     plt.legend(fontsize=10)
     plt.tight_layout()
 
-    plt.savefig(
-        "Five_Conditions_New_Infections.png",
-        dpi=200
-    )
+    os.makedirs(os.path.dirname(save_path) or ".", exist_ok=True)
+    plt.savefig(save_path, format="pdf", bbox_inches="tight")
+    print(f"[saved] {save_path}")
 
-    plt.show()
+    plt.close()  # non-blocking: review the PDF afterwards
 
 
 # ============================================================

@@ -116,6 +116,17 @@ def clear_experiment_label(label, path):
         print(f"[store] cleared previous {label} results from {path}")
 
 
+def clear_labels(labels, path=STORE_PATH):
+    """Remove the given method labels from the joint store (absent labels are ignored),
+    so a re-run leaves no stale curves from methods it no longer produces."""
+    data = load_all(path)
+    removed = [l for l in labels if data.pop(l, None) is not None]
+    if removed:
+        with open(path, "wb") as f:
+            pickle.dump(data, f)
+        print(f"[store] cleared previous {removed} results from {path}")
+
+
 def push_experiment_meta(name, value, path):
     """Store side information (e.g. measured correlations) alongside experiment curves."""
     data = load_all(path)
@@ -240,7 +251,7 @@ def plot_robustness_heatmaps(methods=("hill-climb", "milp"), path=ROBUSTNESS_STO
     os.makedirs(os.path.dirname(save_path) or ".", exist_ok=True)
     fig.savefig(save_path, format="pdf", bbox_inches="tight")
     print(f"[saved] {save_path}")
-    plt.show()
+    plt.close(fig)  # non-blocking: review the PDF afterwards
 
 
 def plot_correlation_ablation(methods=("hill-climb", "random"), path=CORRELATION_STORE_PATH,
@@ -320,7 +331,7 @@ def plot_correlation_ablation(methods=("hill-climb", "random"), path=CORRELATION
     os.makedirs(os.path.dirname(save_path) or ".", exist_ok=True)
     fig.savefig(save_path, format="pdf", bbox_inches="tight")
     print(f"[saved] {save_path}")
-    plt.show()
+    plt.close(fig)  # non-blocking: review the PDF afterwards
 
 
 def _lighten(color, amount):
@@ -454,8 +465,10 @@ def plot_joint_cost_comparison(path=STORE_PATH,
     ax.grid(True, linewidth=0.4)
     fig.tight_layout()
     fig.subplots_adjust(bottom=0.28)
+    os.makedirs(os.path.dirname(save_path) or ".", exist_ok=True)
     fig.savefig(save_path, format="pdf", bbox_inches="tight")
-    plt.show()
+    print(f"[saved] {save_path}")
+    plt.close(fig)  # non-blocking: review the PDF afterwards
 
 
 def plot_joint_cost_elements(path=STORE_PATH,
@@ -520,8 +533,10 @@ def plot_joint_cost_elements(path=STORE_PATH,
     ax.grid(True, linewidth=0.4)
     fig.tight_layout()
     fig.subplots_adjust(bottom=0.34)
+    os.makedirs(os.path.dirname(save_path) or ".", exist_ok=True)
     fig.savefig(save_path, format="pdf", bbox_inches="tight")
-    plt.show()
+    print(f"[saved] {save_path}")
+    plt.close(fig)  # non-blocking: review the PDF afterwards
 
 
 if __name__ == "__main__":

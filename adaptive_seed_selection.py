@@ -1594,7 +1594,7 @@ def plot_beta_histogram(tagged_network, bins=20):
     ax.grid(True, linewidth=0.4)
     fig.tight_layout()
     fig.savefig("capstone_result_figures/beta_histogram.pdf", format="pdf", bbox_inches="tight")
-    plt.show()
+    plt.close(fig)  # non-blocking: review the PDF afterwards
 
 
 def plot_prevalence_and_new_infections(
@@ -1662,7 +1662,7 @@ def plot_prevalence_and_new_infections(
     ax_prev.grid(True, linewidth=0.4)
     fig.tight_layout()
     fig.savefig("capstone_result_figures/prevalence_and_new_infections.pdf", format="pdf")
-    plt.show()
+    plt.close(fig)  # non-blocking: review the PDF afterwards
 
 # ── CHOOSE NETWORK FILES HERE ───────────────────────────────────────────────
 # Swap these two paths to run against a different contact/social pair (or set
@@ -1675,6 +1675,9 @@ CONTACT_NETWORK_PATH = "capstone_proj_data/rc_contact_network_bin16.gml"
 SOCIAL_NETWORK_PATH  = "capstone_proj_data/rc_social_network.gml"
 
 # ─────────────────────────────────────────────────────────────────────────────
+
+# Store labels written by milp.py / milp_local.py -- left untouched when this script overwrites.
+MILP_OWNED_LABELS = ("MILP", "MILP-Local")
 
 # Run the selected methods on the already-initialize()d network and push their curves.
 # scale is currently unused (kept so drive_seed_selection.py callers still work);
@@ -1709,6 +1712,10 @@ def run_methods(scale=1.0, store_path=cost_curve_store.STORE_PATH):
     # with milp.py. Once milp.py has also been run, call
     # cost_curve_store.plot_joint_cost_comparison() / plot_joint_cost_elements() (e.g.
     # `python cost_curve_store.py`) to render the combined figures.
+    # Overwrite: wipe every label this script owns (all but milp.py's) so a re-run never
+    # leaves stale curves from earlier runs or from methods that are now commented out.
+    cost_curve_store.clear_labels(
+        [l for l in cost_curve_store.METHOD_STYLE if l not in MILP_OWNED_LABELS], path=store_path)
     cost_curve_store.push_curve("Random Seeds", rand_cost_curves,
                                  infection_curves=rand_infection_curves, edge_curves=rand_edge_term_curves,
                                  alpha_curves=rand_alpha_w_curves, beta_curves=rand_beta_w_curves,
