@@ -7,6 +7,7 @@ import correlated_graphs
 import cost_curve_store
 import network_setup
 import pickle
+import os
 from collections import Counter
 from copy import deepcopy
 import py4cytoscape as p4c
@@ -558,6 +559,27 @@ rule_based_target   = None  # Set by rule_based(): the rule vector S_bar it matc
 rule_based_deviance = None  # Set by rule_based(): [sim][decision] -> achieved L2 deviance
 
 
+CONTACT_RULE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "contact_rule_based.txt")
+SOCIAL_RULE_FILE  = os.path.join(os.path.dirname(os.path.abspath(__file__)), "social_rule_based.txt")
+
+
+RULE_FILE_HEADER = "# [degree, coreness, betweenness]\n"
+
+
+def format_rule_lines(rule, bins):
+    """The 'rule: ...' / 'bins: ...' lines shared by every rule file."""
+    return ("rule: " + " ".join(f"{float(v):.6g}" for v in rule) + "\n"
+            + "bins: " + " ".join(str(int(b)) for b in bins) + "\n")
+
+
+def write_rule_file(path, rule, bins):
+    """Overwrite path with the rule vector and the bin count of each element
+    ([degree, coreness, betweenness])."""
+    with open(path, "w") as f:
+        f.write(RULE_FILE_HEADER)
+        f.write(format_rule_lines(rule, bins))
+
+
 def _live_contact_graph(live_edges):
     """initial_contact restricted to live_edges (None -> full network), self-loops removed."""
     graph = nx.Graph()
@@ -653,6 +675,7 @@ def rule_based(accepted_seed_sets=None, decision_edges=None, levels=RB_QUANTILE_
 
     target, _ = hill2_rule(accepted_seed_sets, decision_edges, levels)
     print(f"Rule-Based target S_bar [deg, core, btw] = {np.round(target, 3)}")
+    write_rule_file(CONTACT_RULE_FILE, target, levels)
 
     all_cost_curves = []
     all_infection_term_curves = []
@@ -1045,6 +1068,17 @@ def social_bin_scores(graph, bins):
     return {node: (int(d[node]), int(c[node]), int(b[node])) for node in graph.nodes()}
 
 
+def social_rule_from_seed_sets(accepted_seed_sets, bins=3):
+    """(rule, counts, score_map): the most frequent social [deg, core, btw] bin vector
+    among hill2's ACCEPTED seeds, counted over seeds x batch boundaries x realizations."""
+    score_map = social_bin_scores(initial_social, bins)
+    counts = Counter(score_map[node]
+                     for sim_sets in accepted_seed_sets
+                     for seed_set in sim_sets
+                     for node in seed_set)
+    return counts.most_common(1)[0][0], counts, score_map
+
+
 # Social rule-based selection. With no arguments, runs hill2() first; otherwise pass
 # hill2_accepted_seed_sets from a hill2 call. bins is B, the number of percentile bins per
 # centrality. Same simulation loop and return tuple as social_degree_based.
@@ -1055,16 +1089,10 @@ def social_rule_based(accepted_seed_sets=None, bins=3):
         hill2()
         accepted_seed_sets = hill2_accepted_seed_sets
 
-    score_map = social_bin_scores(initial_social, bins)
-
-    # (2) Score frequency over seeds x batch boundaries x realizations
-    counts = Counter(score_map[node]
-                     for sim_sets in accepted_seed_sets
-                     for seed_set in sim_sets
-                     for node in seed_set)
-    rule = counts.most_common(1)[0][0]
+    rule, counts, score_map = social_rule_from_seed_sets(accepted_seed_sets, bins)
     print(f"Social Rule-Based rule [deg, core, btw] bins = {list(rule)} "
           f"(seen {counts[rule]} / {sum(counts.values())} times; B = {bins})")
+    write_rule_file(SOCIAL_RULE_FILE, rule, (bins, bins, bins))
 
     # (3) K nodes L2-closest to the rule; random order first so ties are broken at random
     nodes = list(score_map)

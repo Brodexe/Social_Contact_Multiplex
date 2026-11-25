@@ -45,6 +45,14 @@ CORRELATION_EXTREME_FRACTION of nodes), cascade time CORRELATION_CASCADE. Stores
 plots cost_curve_store.plot_correlation_ablation. Random runs once, on the
 observed social layer, and is drawn as a single curve.
 
+Social rule sweep
+-----------------
+    python drive_seed_selection.py social-rule
+
+Runs hill2 on rc_contact_network_bin{9..18}.gml (with asm.SOCIAL_NETWORK_PATH) and
+distills the social rule-based rule vector (5 bins per centrality) for each, writing
+every vector plus their nearest-bin mean to social_rule_based_sweep.txt.
+
 --plot-only skips the runs and re-plots whatever is already stored, e.g. after
 running methods separately:  ... robustness milp  then  ... robustness hill-climb milp random --plot-only
 """
@@ -266,6 +274,59 @@ def run_correlation_experiment(methods):
     cost_curve_store.push_experiment_meta("measured_correlation", measured, path)
     print("[done] Correlation ablation complete.")
 
+
+# ── Experiment 4: social rule-based rule vectors across contact bins ─────────
+#   python drive_seed_selection.py social-rule
+# For each rc_contact_network_bin{b}.gml (b in SOCIAL_RULE_BINS, paired with
+# asm.SOCIAL_NETWORK_PATH), runs hill2 and distills the social rule-based rule
+# ([deg, core, btw] bin vector, SOCIAL_RULE_NUM_BINS bins each) from its accepted seed
+# sets -- the same rule asm.social_rule_based() would use. Every rule, then the
+# element-wise mean snapped to the nearest bin, goes to SOCIAL_RULE_SWEEP_FILE.
+SOCIAL_RULE_BINS      = range(9, 19)   # 9 ... 18 inclusive
+SOCIAL_RULE_NUM_BINS  = 5
+SOCIAL_RULE_SWEEP_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                      "social_rule_based_sweep.txt")
+
+def run_social_rule_sweep(contact_bins=SOCIAL_RULE_BINS, bins=SOCIAL_RULE_NUM_BINS,
+                          out_path=SOCIAL_RULE_SWEEP_FILE):
+    bin_counts = (bins, bins, bins)
+    rules = {}
+    with open(out_path, "w") as f:
+        f.write(asm.RULE_FILE_HEADER)
+        for b in contact_bins:
+            contact_path = f"capstone_proj_data/rc_contact_network_bin{b}.gml"
+            print(f"\n[social-rule] Loading {contact_path}")
+            asm.initialize(contact_path, asm.SOCIAL_NETWORK_PATH)
+            if asm.n == 0:
+                print(f"[skip] bin {b} -- empty network, skipping.")
+                f.write(f"\n# rc_contact_network_bin{b}: empty network, skipped\n")
+                continue
+
+            asm.hill2()
+            rule, counts, _ = asm.social_rule_from_seed_sets(asm.hill2_accepted_seed_sets, bins)
+            rules[b] = rule
+            print(f"[social-rule] bin {b}: rule = {list(rule)} "
+                  f"(seen {counts[rule]} / {sum(counts.values())} times; B = {bins})")
+
+            f.write(f"\n# rc_contact_network_bin{b} (n = {asm.n}; seen {counts[rule]} / "
+                    f"{sum(counts.values())} times)\n")
+            f.write(asm.format_rule_lines(rule, bin_counts))
+            f.flush()   # keep finished bins on disk if a later bin crashes
+
+        if rules:
+            raw_mean = np.mean(np.array(list(rules.values()), dtype=float), axis=0)
+            mean_rule = np.clip(np.rint(raw_mean), 0, bins - 1).astype(int)
+            f.write(f"\n# mean over bins {list(rules)}, snapped to the nearest bin "
+                    f"(raw mean: {' '.join(f'{v:.6g}' for v in raw_mean)})\n")
+            f.write(asm.format_rule_lines(mean_rule, bin_counts))
+            print(f"\n[social-rule] mean rule = {mean_rule.tolist()} (raw {raw_mean.tolist()})")
+
+    print(f"[done] Social rule sweep written to {out_path}")
+
+
+if len(sys.argv) > 1 and sys.argv[1] == "social-rule":
+    run_social_rule_sweep()
+    sys.exit(0)
 
 if len(sys.argv) > 1 and sys.argv[1] == "scale":
     run_scale_experiment()
