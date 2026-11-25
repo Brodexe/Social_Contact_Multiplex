@@ -549,11 +549,13 @@ def hill2():
 #   bin-score_x(i, t) = min(k_x - 1, floor(k_x * F_t(x_i(t)))), F_t the empirical CDF of
 #     centrality x over V in the live contact network at decision point t. (These k_x
 #     quantile levels are unrelated to the contact-network time bins in the GML names.)
-#   S_pi(t) = mean over i in pi of [deg, core, btw] bin-scores  (a 3-vector).
+#   S_pi(t) = mean over i in pi of [deg, core] bin-scores  (a 2-vector).
 #   S_bar   = mean of S_pi(t) over hill2's ACCEPTED sets, all realizations and boundaries.
 #   RB picks, at each decision point, pi*(t) in argmin_{|pi| = K} ||S_bar - S_pi(t)||_2.
+#   Betweenness is not used: it is rank-correlated ~0.88 with degree, so it adds
+#   little information beyond degree.
 # ─────────────────────────────────────────────────────────────────────────────
-RB_QUANTILE_LEVELS = (10, 10, 10)  # (k_d, k_c, k_b) for degree, coreness, betweenness
+RB_QUANTILE_LEVELS = (10, 10)  # (k_d, k_c) for degree, coreness
 
 rule_based_target   = None  # Set by rule_based(): the rule vector S_bar it matched against
 rule_based_deviance = None  # Set by rule_based(): [sim][decision] -> achieved L2 deviance
@@ -563,7 +565,7 @@ CONTACT_RULE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "co
 SOCIAL_RULE_FILE  = os.path.join(os.path.dirname(os.path.abspath(__file__)), "social_rule_based.txt")
 
 
-RULE_FILE_HEADER = "# [degree, coreness, betweenness]\n"
+RULE_FILE_HEADER = "# [degree, coreness]\n"
 
 
 def format_rule_lines(rule, bins):
@@ -574,7 +576,7 @@ def format_rule_lines(rule, bins):
 
 def write_rule_file(path, rule, bins):
     """Overwrite path with the rule vector and the bin count of each element
-    ([degree, coreness, betweenness])."""
+    ([degree, coreness])."""
     with open(path, "w") as f:
         f.write(RULE_FILE_HEADER)
         f.write(format_rule_lines(rule, bins))
@@ -604,12 +606,11 @@ def _bin_scores(values, k):
 
 
 def centrality_bin_scores(graph, levels=RB_QUANTILE_LEVELS):
-    """{node: [degree, coreness, betweenness] bin-score vector} on graph."""
-    k_d, k_c, k_b = levels
+    """{node: [degree, coreness] bin-score vector} on graph."""
+    k_d, k_c = levels
     d = _bin_scores(dict(graph.degree()), k_d)
     c = _bin_scores(nx.core_number(graph), k_c)
-    b = _bin_scores(nx.betweenness_centrality(graph), k_b)
-    return {node: np.array([d[node], c[node], b[node]], dtype=float) for node in graph.nodes()}
+    return {node: np.array([d[node], c[node]], dtype=float) for node in graph.nodes()}
 
 
 def set_profile(score_map, seed_set):
@@ -626,7 +627,7 @@ def hill2_rule(accepted_seed_sets, decision_edges, levels=RB_QUANTILE_LEVELS):
         profiles.append([set_profile(centrality_bin_scores(_live_contact_graph(edges), levels), seed_set)
                          for seed_set, edges in zip(sim_sets, sim_edges)])
     profiles = np.array(profiles)
-    return profiles.reshape(-1, 3).mean(axis=0), profiles
+    return profiles.reshape(-1, len(levels)).mean(axis=0), profiles
 
 
 def rule_argmin(score_map, target, size):
@@ -660,7 +661,7 @@ def rule_argmin(score_map, target, size):
 
 
 # Rule-based selection: at each batch boundary, choose the size-K set whose
-# [degree, coreness, betweenness] bin-score profile is L2-closest to hill2's S_bar on the
+# [degree, coreness] bin-score profile is L2-closest to hill2's S_bar on the
 # CURRENT contact network. With no arguments, runs hill2() first; otherwise pass
 # hill2_accepted_seed_sets and hill2_decision_edges from one hill2 call. Same simulation
 # loop and return tuple as random_seed_selection, so the curves go straight into push_curve.
@@ -674,7 +675,7 @@ def rule_based(accepted_seed_sets=None, decision_edges=None, levels=RB_QUANTILE_
         decision_edges = hill2_decision_edges
 
     target, _ = hill2_rule(accepted_seed_sets, decision_edges, levels)
-    print(f"Rule-Based target S_bar [deg, core, btw] = {np.round(target, 3)}")
+    print(f"Rule-Based target S_bar [deg, core] = {np.round(target, 3)}")
     write_rule_file(CONTACT_RULE_FILE, target, levels)
 
     all_cost_curves = []
@@ -1047,7 +1048,8 @@ def social_degree_based(mode="total"):
 # Social rule-based optimizer distilled from hill2, scored on the STATIC social layer.
 #   bin_x(i) = min(B - 1, floor(B * F(x_i))), F the empirical CDF of centrality x over V in
 #     the social network -- so B=3 puts nodes in the ~0-32nd, 33rd-65th, 66th-99th percentiles.
-#   Each node gets a fixed [deg, core, btw] bin vector (the social layer never changes).
+#   Each node gets a fixed [deg, core] bin vector (the social layer never changes).
+#   Betweenness is not used (rank-correlated ~0.88 with degree; little added information).
 #   Count how often each vector appears among hill2's ACCEPTED seeds, over every seed in the
 #   set, every batch boundary and every realization; the most frequent vector is the rule.
 #   The seeds are the K nodes whose vectors are L2-closest to the rule (exact matches first),
@@ -1058,18 +1060,17 @@ social_rule_based_counts = None  # Set by social_rule_based(): Counter {bin vect
 
 
 def social_bin_scores(graph, bins):
-    """{node: (degree, coreness, betweenness) bin tuple} on the social graph, B bins each.
+    """{node: (degree, coreness) bin tuple} on the social graph, B bins each.
     Degree is total (in + out) degree on a directed graph; self-loops are ignored."""
     graph = graph.copy()
     graph.remove_edges_from(list(nx.selfloop_edges(graph)))
     d = _bin_scores(dict(graph.degree()), bins)
     c = _bin_scores(nx.core_number(graph), bins)
-    b = _bin_scores(nx.betweenness_centrality(graph), bins)
-    return {node: (int(d[node]), int(c[node]), int(b[node])) for node in graph.nodes()}
+    return {node: (int(d[node]), int(c[node])) for node in graph.nodes()}
 
 
 def social_rule_from_seed_sets(accepted_seed_sets, bins=3):
-    """(rule, counts, score_map): the most frequent social [deg, core, btw] bin vector
+    """(rule, counts, score_map): the most frequent social [deg, core] bin vector
     among hill2's ACCEPTED seeds, counted over seeds x batch boundaries x realizations."""
     score_map = social_bin_scores(initial_social, bins)
     counts = Counter(score_map[node]
@@ -1090,9 +1091,9 @@ def social_rule_based(accepted_seed_sets=None, bins=3):
         accepted_seed_sets = hill2_accepted_seed_sets
 
     rule, counts, score_map = social_rule_from_seed_sets(accepted_seed_sets, bins)
-    print(f"Social Rule-Based rule [deg, core, btw] bins = {list(rule)} "
+    print(f"Social Rule-Based rule [deg, core] bins = {list(rule)} "
           f"(seen {counts[rule]} / {sum(counts.values())} times; B = {bins})")
-    write_rule_file(SOCIAL_RULE_FILE, rule, (bins, bins, bins))
+    write_rule_file(SOCIAL_RULE_FILE, rule, (bins, bins))
 
     # (3) K nodes L2-closest to the rule; random order first so ties are broken at random
     nodes = list(score_map)

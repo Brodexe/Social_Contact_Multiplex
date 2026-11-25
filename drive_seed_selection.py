@@ -50,7 +50,7 @@ Social rule sweep
     python drive_seed_selection.py social-rule
 
 Runs hill2 on rc_contact_network_bin{9..18}.gml (with asm.SOCIAL_NETWORK_PATH) and
-distills the social rule-based rule vector (5 bins per centrality) for each, writing
+distills the social rule-based [degree, coreness] rule vector (5 bins each) for each, writing
 every vector plus their nearest-bin mean to social_rule_based_sweep.txt.
 
 --plot-only skips the runs and re-plots whatever is already stored, e.g. after
@@ -279,7 +279,7 @@ def run_correlation_experiment(methods):
 #   python drive_seed_selection.py social-rule
 # For each rc_contact_network_bin{b}.gml (b in SOCIAL_RULE_BINS, paired with
 # asm.SOCIAL_NETWORK_PATH), runs hill2 and distills the social rule-based rule
-# ([deg, core, btw] bin vector, SOCIAL_RULE_NUM_BINS bins each) from its accepted seed
+# ([deg, core] bin vector, SOCIAL_RULE_NUM_BINS bins each) from its accepted seed
 # sets -- the same rule asm.social_rule_based() would use. Every rule, then the
 # element-wise mean snapped to the nearest bin, goes to SOCIAL_RULE_SWEEP_FILE.
 SOCIAL_RULE_BINS      = range(9, 19)   # 9 ... 18 inclusive
@@ -289,7 +289,7 @@ SOCIAL_RULE_SWEEP_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__))
 
 def run_social_rule_sweep(contact_bins=SOCIAL_RULE_BINS, bins=SOCIAL_RULE_NUM_BINS,
                           out_path=SOCIAL_RULE_SWEEP_FILE):
-    bin_counts = (bins, bins, bins)
+    bin_counts = (bins, bins)
     rules = {}
     with open(out_path, "w") as f:
         f.write(asm.RULE_FILE_HEADER)
@@ -358,7 +358,6 @@ if len(sys.argv) > 1:
 else:
     bins_to_run  = list(BIN_RANGE)
     show_network = True
-
 os.makedirs("capstone_result_figures", exist_ok=True)
 
 # ── plotting helpers ──────────────────────────────────────────────────────────
