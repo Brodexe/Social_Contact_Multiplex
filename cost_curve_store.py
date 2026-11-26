@@ -161,14 +161,23 @@ ROBUSTNESS_BASELINE = "Random Seeds"
 def plot_robustness_heatmaps(methods=("hill-climb", "milp"), path=ROBUSTNESS_STORE_PATH,
                              cascade_times=(None, 5, 10, 15),
                              seed_fractions=tuple(round(0.1 * i, 2) for i in range(1, 11)),
+                             contact_bins=tuple(range(9, 19)),
+                             show_avg=True,
                              aggregate="sum",
                              save_path="capstone_result_figures/robustness_heatmaps.pdf"):
     """Experiment 1: one heatmap per method under consideration (hill-climb and/or
     MILP, whichever are in the store), cascade time (batch interval) on y,
-    seed-set size on x. Each cell is the % improvement over Random Seeds at the
-    same (cascade time, seed size): 100 * (random_cost - method_cost) / random_cost,
+    seed-set size on x. For each contact network (rc_contact_network_bin{b}) the
+    value is the % improvement over Random Seeds on that same network at the same
+    (cascade time, seed size): 100 * (random_cost - method_cost) / random_cost,
     using mean total cost over time. Positive = cheaper than random. Random itself
-    is the baseline and gets no panel. Panels share one color scale centered at 0."""
+    is the baseline and gets no panel. Panels share one color scale centered at 0.
+
+    show_avg=True:  each cell is one color, the mean improvement over contact_bins
+                    (networks missing either side are left out of the mean).
+    show_avg=False: each cell is split into len(contact_bins) vertical slices, one
+                    per network in contact_bins order (left to right); faint lines
+                    separate slices, bold lines separate (cascade, seed size) cells."""
     data = load_all(path)
     labels = [l for l in resolve_methods(methods) if l != ROBUSTNESS_BASELINE]
     present = [l for l in labels if l in data]
@@ -184,26 +193,43 @@ def plot_robustness_heatmaps(methods=("hill-climb", "milp"), path=ROBUSTNESS_STO
               "`python drive_seed_selection.py robustness random` first -- it is the baseline.")
         return
 
+    contact_bins = list(contact_bins)
+    n_casc, n_frac, n_bins = len(cascade_times), len(seed_fractions), len(contact_bins)
+
     def cost_grid(label):
-        grid = np.full((len(cascade_times), len(seed_fractions)), np.nan)
-        for r, cascade in enumerate(cascade_times):
-            for c, frac in enumerate(seed_fractions):
-                arr = next((v for k, v in data[label].items()
-                            if k[0] == cascade and np.isclose(k[1], frac)), None)
-                if arr is not None:
-                    grid[r, c] = _total_cost(arr, aggregate)[0]
+        """(cascade, seed size, contact bin) -> mean total cost; NaN where missing.
+        Keys are (cascade, frac, bin); older 2-tuple keys (single network) are ignored."""
+        grid = np.full((n_casc, n_frac, n_bins), np.nan)
+        for k, v in data[label].items():
+            if not (isinstance(k, tuple) and len(k) == 3) or k[2] not in contact_bins:
+                continue
+            r = next((i for i, t in enumerate(cascade_times) if t == k[0]), None)
+            c = next((i for i, f in enumerate(seed_fractions) if np.isclose(f, k[1])), None)
+            if r is not None and c is not None:
+                grid[r, c, contact_bins.index(k[2])] = _total_cost(v, aggregate)[0]
         return grid
 
     baseline = cost_grid(ROBUSTNESS_BASELINE)
     with np.errstate(divide="ignore", invalid="ignore"):
-        grids = {label: 100.0 * (baseline - cost_grid(label)) / baseline for label in present}
-    for g in grids.values():
+        # Per-network improvement: each method vs random on the same network.
+        per_bin = {label: 100.0 * (baseline - cost_grid(label)) / baseline for label in present}
+    for g in per_bin.values():
         g[~np.isfinite(g)] = np.nan   # missing cell on either side, or random cost of 0
+
+    if show_avg:
+        import warnings
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=RuntimeWarning)   # all-NaN cells -> NaN
+            grids = {label: np.nanmean(g, axis=2) for label, g in per_bin.items()}
+        counts = {label: np.isfinite(g).sum(axis=2) for label, g in per_bin.items()}
+    else:
+        # Flatten (seed size, bin) into columns: cell c spans columns c*n_bins ... (c+1)*n_bins-1.
+        grids = {label: g.reshape(n_casc, n_frac * n_bins) for label, g in per_bin.items()}
 
     finite = np.concatenate([g[np.isfinite(g)] for g in grids.values()])
     if finite.size == 0:
         print("No cells have both a method result and a random baseline for the "
-              "requested cascade times / seed sizes.")
+              "requested cascade times / seed sizes / contact networks.")
         return
     # Diverging scale centered on 0 (= same as random): blue better, red worse.
     lim = max(np.abs(finite).max(), 1e-9)
@@ -211,44 +237,67 @@ def plot_robustness_heatmaps(methods=("hill-climb", "milp"), path=ROBUSTNESS_STO
     cmap.set_bad("#e6e6e6")
     norm = mcolors.Normalize(vmin=-lim, vmax=lim)
 
-    # Panel width grows with the number of seed-size columns so annotations stay legible.
-    ncols = len(seed_fractions)
-    panel_w = max(6.2, 0.85 * ncols + 1.5)
-    cell_fs = 13 if ncols <= 5 else 10
+    # Panel width grows with the number of seed-size columns so annotations / slices stay legible.
+    panel_w = max(6.2, (0.85 if show_avg else 1.4) * n_frac + 1.5)
+    cell_fs = 13 if n_frac <= 5 else 10
     fig, axes = plt.subplots(1, len(present), figsize=(panel_w * len(present) + 1.2, 6.2),
                              squeeze=False, constrained_layout=True)
     axes = axes[0]
     for ax, label in zip(axes, present):
         grid = grids[label]
-        im = ax.imshow(np.ma.masked_invalid(grid), cmap=cmap, norm=norm, aspect="auto")
-        for r in range(grid.shape[0]):
-            for c in range(grid.shape[1]):
-                val = grid[r, c]
-                if np.isfinite(val):
-                    # Dark ink near the pale center, white ink on saturated ends.
-                    ink = "white" if abs(norm(val) - 0.5) > 0.3 else "#1a1a1a"
-                    ax.text(c, r, f"{val:+.1f}%",
-                            ha="center", va="center", fontsize=cell_fs, color=ink)
-                else:
-                    ax.text(c, r, "n/a", ha="center", va="center", fontsize=cell_fs - 1, color="#666666")
-        ax.set_xticks(range(len(seed_fractions)), [f"{int(round(f * 100))}%" for f in seed_fractions])
-        ax.set_yticks(range(len(cascade_times)), [_cascade_label(t) for t in cascade_times])
-        ax.set_xlabel("Seed set size (% of nodes)")
+        # extent keeps cell (r, c) centered at (c, r) in both modes, so ticks/lines line up.
+        im = ax.imshow(np.ma.masked_invalid(grid), cmap=cmap, norm=norm, aspect="auto",
+                       interpolation="nearest",
+                       extent=(-0.5, n_frac - 0.5, n_casc - 0.5, -0.5))
+        if show_avg:
+            for r in range(n_casc):
+                for c in range(n_frac):
+                    val = grid[r, c]
+                    if np.isfinite(val):
+                        # Dark ink near the pale center, white ink on saturated ends.
+                        ink = "white" if abs(norm(val) - 0.5) > 0.3 else "#1a1a1a"
+                        ax.text(c, r, f"{val:+.1f}%",
+                                ha="center", va="center", fontsize=cell_fs, color=ink)
+                        if counts[label][r, c] < n_bins:   # flag means over fewer networks
+                            ax.text(c + 0.45, r + 0.45, f"n={counts[label][r, c]}",
+                                    ha="right", va="bottom", fontsize=7, color=ink)
+                    else:
+                        ax.text(c, r, "n/a", ha="center", va="center", fontsize=cell_fs - 1, color="#666666")
+        else:
+            # Faint per-network slice separators inside each cell.
+            slice_x = [c - 0.5 + k / n_bins for c in range(n_frac) for k in range(1, n_bins)]
+            ax.vlines(slice_x, -0.5, n_casc - 0.5, colors="white", linewidth=0.5, alpha=0.55, zorder=2)
+
+        ax.set_xticks(range(n_frac), [f"{int(round(f * 100))}%" for f in seed_fractions])
+        ax.set_yticks(range(n_casc), [_cascade_label(t) for t in cascade_times])
+        if show_avg:
+            ax.set_xlabel("Seed set size (% of nodes)")
+        else:
+            ax.set_xlabel(f"Seed set size (% of nodes)\nslices in each cell: contact bin "
+                          f"{contact_bins[0]} → {contact_bins[-1]} (left to right)")
         ax.set_ylabel("Cascade time (steps)")
         title = "Hill Climb" if label == "Adaptive" else label
         ax.set_title(title, fontsize=18)
-        # Thin white cell separators.
-        ax.set_xticks(np.arange(-0.5, len(seed_fractions), 1), minor=True)
-        ax.set_yticks(np.arange(-0.5, len(cascade_times), 1), minor=True)
-        ax.grid(which="minor", color="white", linewidth=2)
+        # Bold (cascade time x seed size) cell separators, drawn above the faint slice lines.
+        ax.set_xticks(np.arange(-0.5, n_frac, 1), minor=True)
+        ax.set_yticks(np.arange(-0.5, n_casc, 1), minor=True)
+        if show_avg:
+            ax.grid(which="minor", color="white", linewidth=2)
+        else:
+            ax.grid(which="minor", color="#1a1a1a", linewidth=2.2, zorder=3)
+            ax.set_axisbelow(False)
         ax.tick_params(which="minor", length=0)
         for spine in ax.spines.values():
-            spine.set_visible(False)
+            spine.set_visible(not show_avg)
+            spine.set_color("#1a1a1a")
+            spine.set_linewidth(2.2)
 
     cb = fig.colorbar(im, ax=list(axes), fraction=0.046, pad=0.02)
     cb.set_label("% improvement over random\n(" +
-                 ("total cost over time" if aggregate == "sum" else "time-averaged cost") + ")")
-    fig.suptitle("Improvement over Random Seeds by Cascade Time and Seed Set Size", fontsize=20)
+                 ("total cost over time" if aggregate == "sum" else "time-averaged cost") +
+                 (f",\nmean over {n_bins} contact networks" if show_avg else ",\nper contact network") + ")")
+    fig.suptitle("Improvement over Random Seeds by Cascade Time,\nSeed Set Size and Contact Network",
+                 fontsize=20)
     os.makedirs(os.path.dirname(save_path) or ".", exist_ok=True)
     fig.savefig(save_path, format="pdf", bbox_inches="tight")
     print(f"[saved] {save_path}")

@@ -15,9 +15,26 @@ plt.rcParams.update({
     "lines.linewidth": 2.5,
 })
 
-# even_or_odd = 0: only pre-quarantine halves (even-indexed samples)
-# even_or_odd = 1: only post-quarantine halves (odd-indexed samples)
-# even_or_odd = 2: all samples
+# ---------------------------------------------------------------------------
+#
+#  Sample layout in mfa_xy_data.txt (written by mean_field_approx.save_xy_data)
+#
+#    split_point is None -> each run writes ONE full-window sample (t = 0..T-1).
+#    split_point = sp    -> each run writes TWO samples, back to back:
+#                           pre-quarantine  (t = 0..sp-1), then
+#                           post-quarantine (t = sp..T-1).
+#
+#  Samples are therefore grouped by the window they cover (read from their
+#  x-values), never by their index parity in the file:
+#    half 0 = sample starts at t = 0 (pre-quarantine half, or a full window)
+#    half 1 = sample starts at t > 0 (post-quarantine half)
+#
+#  even_or_odd keeps its old meaning for callers:
+#    0 = half 0 only, 1 = half 1 only, 2 = every half present, on one axes.
+#  The "Quarantine Start" line is drawn only when both halves are present.
+#
+# ---------------------------------------------------------------------------
+
 CURVE_COLORS = {
     'y_true':  '#2196F3',  # blue
     'y_model': '#FF5722',  # orange-red
@@ -32,6 +49,14 @@ ID_COLORS = {
     'n_r_pred': '#EF9A9A',  # light red
 }
 
+# Blocks whose x-values start at the sample's x offset (0 or split_point).
+# "Given Newly Infected Ratio" is NOT one of them: its pre-quarantine x starts at 1.
+_OFFSET_KEYS = ('y_model values', 'w1 True (Mean Node Degree)', 'n_i Predicted (Identifiability)')
+
+
+# ---------------------------------------------------------------------------
+#  Sample helpers
+# ---------------------------------------------------------------------------
 def _series(sample, key):
     """Return {absolute t: value} for an x/y block of a sample (empty if absent)."""
     if key not in sample:
@@ -39,6 +64,79 @@ def _series(sample, key):
     xs = sample[key]['x']
     ys = sample[key]['y']
     return {int(t): float(y) for t, y in zip(xs, ys)}
+
+
+def _start_t(sample):
+    """The sample's x offset (0 for a pre-quarantine or full-window sample), or None."""
+    for key in _OFFSET_KEYS:
+        if key in sample and sample[key]['x']:
+            return int(sample[key]['x'][0])
+    return None
+
+
+def _half(sample):
+    """0 if the sample starts at t = 0, 1 if it starts later (post-quarantine), None if unknown."""
+    start = _start_t(sample)
+    if start is None:
+        return None
+    return 0 if start == 0 else 1
+
+
+def _groups(samples, even_or_odd, require=()):
+    """{half: [sample indices]} for the halves selected by even_or_odd.
+
+    require: block names every returned sample must contain.
+    """
+    groups = {}
+    for i, s in enumerate(samples):
+        h = _half(s)
+        if h is None or any(key not in s for key in require):
+            continue
+        if even_or_odd != 2 and h != even_or_odd:
+            continue
+        groups.setdefault(h, []).append(i)
+    return dict(sorted(groups.items()))
+
+
+def _split_t(samples, groups, key):
+    """Midpoint between the last pre-quarantine t and the first post-quarantine t.
+
+    None unless both halves are present, so full-window runs get no split line.
+    """
+    if 0 not in groups or 1 not in groups:
+        return None
+    pre_ts = [t for i in groups[0] for t in _series(samples[i], key)]
+    post_ts = [t for i in groups[1] for t in _series(samples[i], key)]
+    if not pre_ts or not post_ts:
+        return None
+    return (max(pre_ts) + min(post_ts)) / 2
+
+
+def _pre_partner(samples, i):
+    """For a post-quarantine sample i, the pre-quarantine half of the SAME run, or None.
+
+    save_xy_data writes the pre half immediately before the post half, and the two
+    windows are contiguous. Anything else (e.g. the previous entry is another full-window
+    run) is rejected rather than borrowed from.
+    """
+    if i == 0 or _half(samples[i]) != 1 or _half(samples[i - 1]) != 0:
+        return None
+    pre_ts = _series(samples[i - 1], 'y_model values')
+    if not pre_ts or max(pre_ts) + 1 != _start_t(samples[i]):
+        return None
+    return samples[i - 1]
+
+
+def _check_homogeneous(samples, indices):
+    """Warn when the samples being averaged came from different configurations.
+
+    mean_field_approx.py appends to mfa_xy_data.txt unless clear=True, so a file can
+    silently mix runs with different sizes or adherence levels.
+    """
+    for field in ('Number of nodes', 'Adhering proportion'):
+        values = {str(samples[i].get(field)) for i in indices}
+        if len(values) > 1:
+            print(f"Warning: averaging samples with different '{field}': {sorted(values)}")
 
 
 def _aggregate(series_list):
@@ -65,79 +163,84 @@ def _plot_band(t, mean, std, count, color):
                          alpha=0.15, color=color)
 
 
-def _parities(even_or_odd):
-    # Pre (even) and post (odd) halves are aggregated separately so the two
-    # curves stay disjoint at the quarantine split.
-    return [0, 1] if even_or_odd == 2 else [even_or_odd]
+def _plot_mean(series_list, color, linestyle, label, key, legend_added, band=True):
+    """Plot the across-sample mean (and ± std band) of series_list; return the aggregate."""
+    t, mean, std, count = _aggregate(series_list)
+    if len(t) == 0:
+        return t, mean, std, count
+    plt.plot(t, mean, color=color, linestyle=linestyle,
+             label=label if key not in legend_added else '_nolegend_')
+    legend_added.add(key)
+    if band:
+        _plot_band(t, mean, std, count, color)
+    return t, mean, std, count
 
 
-def plot_model(samples, even_or_odd=2):
+def _sample_count_note(groups):
+    return ', '.join(f"{'pre/full' if h == 0 else 'post'}: n={len(idx)}" for h, idx in groups.items())
+
+
+def _title(base, even_or_odd, groups, samples):
+    """Base title, a pre/post suffix when one half is selected, and the sample counts."""
+    file_has_post = 1 in _groups(samples, 2)
+    if even_or_odd == 0 and file_has_post:
+        suffix = ' (Pre-Quarantine)'
+    elif even_or_odd == 1:
+        suffix = ' (Post-Quarantine)'
+    else:
+        suffix = ''
+    return f"{base}{suffix}\n[{_sample_count_note(groups)}]"
+
+
+def _finish(title, ylabel, split_t, pdf_path, pkl_path, results_list):
+    if split_t is not None:
+        plt.axvline(split_t, color='gray', linestyle='--', linewidth=1.5, label='Quarantine Start')
+    plt.xlabel('Time (days)')
+    plt.ylabel(ylabel)
+    plt.title(title)
+    plt.legend()
+    plt.grid(True)
+    plt.savefig(pdf_path, format="pdf", bbox_inches="tight")
+    plt.show()
+    with open(pkl_path, "wb") as f:
+        pickle.dump(results_list, f)
+
+
+# ---------------------------------------------------------------------------
+#
+#  Model plot: y_model (the paper's eta_i model at the true <k>, r) vs. true eta_i,
+#  each averaged across samples at each absolute t.
+#
+#    t_min = 1 by default: the code's t = 0 entry of "eta_i" is the prevalence i(0),
+#    not a newly-infected fraction, so there is no true value to compare y_model(0) to.
+#
+# ---------------------------------------------------------------------------
+def plot_model(samples, even_or_odd=2, t_min=1):
     plt.figure(figsize=(12, 7))
+
+    groups = _groups(samples, even_or_odd, require=('y_model values',))
+    split_t = _split_t(samples, groups, 'y_model values')
 
     results_list = []
     legend_added = set()
 
-    # Determine split point between pre/post quarantine when plotting all samples
-    split_t = None
-    if even_or_odd == 2:
-        pre_max = None
-        post_min = None
-        for i, s in enumerate(samples):
-            if 'y_model values' not in s:
-                continue
-            t = s['y_model values']['x']
-            if not t:
-                continue
-            if i % 2 == 0:
-                pre_max = max(t) if pre_max is None else max(pre_max, max(t))
-            else:
-                post_min = min(t) if post_min is None else min(post_min, min(t))
-        if pre_max is not None and post_min is not None:
-            split_t = (pre_max + post_min) / 2
+    for half, indices in groups.items():
+        _check_homogeneous(samples, indices)
 
-    for parity in _parities(even_or_odd):
-        model_series, true_series, used = [], [], []
-        for i, sample in enumerate(samples):
-            if i % 2 != parity or 'y_model values' not in sample:
-                continue
-            m = _series(sample, 'y_model values')
-            if not m:
-                continue
-            model_series.append(m)
-            used.append(i)
-            t = _series(sample, 'Given Newly Infected Ratio')
-            if t:
-                true_series.append(t)
+        model_series = [{t: v for t, v in _series(samples[i], 'y_model values').items() if t >= t_min}
+                        for i in indices]
+        true_series = [{t: v for t, v in _series(samples[i], 'Given Newly Infected Ratio').items() if t >= t_min}
+                       for i in indices]
+        true_series = [s for s in true_series if s]
 
-        if not model_series:
-            continue
-
-        t_model, model_mean, model_std, model_n = _aggregate(model_series)
-        t_true, true_mean, true_std, true_n = _aggregate(true_series)
-
-        # --- Plot y_true (newly infected, mean across samples) ---
-        if len(t_true) > 0:
-            label = 'y_true (Newly Infected)' if 'y_true' not in legend_added else '_nolegend_'
-            legend_added.add('y_true')
-            plt.plot(
-                t_true, true_mean,
-                color=CURVE_COLORS['y_true'], linestyle='-',
-                label=label
-            )
-
-        # --- Plot y_model (mean ± std across samples) ---
-        label = 'y_model (Sample Mean)' if 'y_model' not in legend_added else '_nolegend_'
-        legend_added.add('y_model')
-        plt.plot(
-            t_model, model_mean,
-            color=CURVE_COLORS['y_model'], linestyle=':',
-            label=label
-        )
-        _plot_band(t_model, model_mean, model_std, model_n, CURVE_COLORS['y_model'])
+        t_true, true_mean, true_std, true_n = _plot_mean(
+            true_series, CURVE_COLORS['y_true'], '-', 'y_true (Newly Infected)', 'y_true', legend_added)
+        t_model, model_mean, model_std, model_n = _plot_mean(
+            model_series, CURVE_COLORS['y_model'], ':', 'y_model (Sample Mean)', 'y_model', legend_added)
 
         results_list.append({
-            "half": parity,
-            "sample_indices": used,
+            "half": half,
+            "sample_indices": indices,
             "t_model": t_model,
             "y_model_mean": model_mean,
             "y_model_std": model_std,
@@ -145,32 +248,13 @@ def plot_model(samples, even_or_odd=2):
             "t_true": t_true,
             "y_true_mean": true_mean,
             "y_true_std": true_std,
+            "y_true_n": true_n,
         })
 
-    if split_t is not None:
-        plt.axvline(split_t, color='gray', linestyle='--', linewidth=1.5, label='Quarantine Start')
-
-    plt.xlabel('Time (days)')
-    plt.ylabel(r'Newly Infected ($\eta_i$)')
-    if even_or_odd == 0:
-        plt.title(r'Identifiability Test (Pre-Quarantine)')
-    elif even_or_odd == 1:
-        plt.title(r'Identifiability Test (Post-Quarantine)')
-    else:
-        plt.title(r'Identifiability Test: Estimator vs True')
-    plt.legend()
-    plt.grid(True)
-
-    plt.savefig(
-        "result_figures/identifiability_results.pdf",
-        format="pdf",
-        bbox_inches="tight"
-    )
-
-    plt.show()
-
-    with open("result_figures/plot_identifiability_data.pkl", "wb") as f:
-        pickle.dump(results_list, f)
+    base = 'Identifiability Test' if even_or_odd != 2 else 'Identifiability Test: Estimator vs True'
+    _finish(_title(base, even_or_odd, groups, samples), r'Newly Infected ($\eta_i$)', split_t,
+            "result_figures/identifiability_results.pdf",
+            "result_figures/plot_identifiability_data.pkl", results_list)
 
 
 # ---------------------------------------------------------------------------
@@ -185,316 +269,149 @@ def plot_model(samples, even_or_odd=2):
 #
 #    Time alignment (from mean_field_approx.save_xy_data):
 #      - "y_model values" x = absolute t, starting at x_ofs (0 or split_point).
-#        y_model(t) is the model's n_i(t) using the true w1, w2.
-#      - "Given Newly Infected Ratio" x = absolute t, starting at 1 for the
-#        pre-quarantine half (n_i(0) is the seed count, not written) and at
-#        split_point for the post-quarantine half.
-#    Both series are keyed by absolute t, so n_i(t-1) is looked up by t-1.
+#      - "Given Newly Infected Ratio" x = absolute t, starting at 1 for a sample
+#        that starts at t = 0 (n_i(0) is the prevalence, not written) and at
+#        split_point for a post-quarantine sample.
 #    The deltas are only defined for t >= 2 (n_i(t-1) must itself be a real
 #    newly-infected value, i.e. t-1 >= 1).
 #
-#    For a post-quarantine sample, n_i(split_point - 1) lives in the paired
-#    pre-quarantine sample (index i-1), so it is borrowed from there.
+#    For a post-quarantine sample, n_i(split_point - 1) lives in the pre-quarantine
+#    half of the same run; _pre_partner finds it and refuses unrelated samples.
 #
 # ---------------------------------------------------------------------------
 def _n_i_lookup(sample):
-    if 'Given Newly Infected Ratio' not in sample:
-        return {}
-    xs = sample['Given Newly Infected Ratio']['x']
-    ys = sample['Given Newly Infected Ratio']['y']
-    return {int(t): float(y) for t, y in zip(xs, ys)}
+    return _series(sample, 'Given Newly Infected Ratio')
 
 
 def delta_model(samples, even_or_odd=2, t_min=2):
     plt.figure(figsize=(12, 7))
 
+    groups = _groups(samples, even_or_odd, require=('y_model values', 'Given Newly Infected Ratio'))
+    split_t = _split_t(samples, groups, 'y_model values')
+
     results_list = []
     legend_added = set()
 
-    # Same pre/post split detection as plot_model
-    split_t = None
-    if even_or_odd == 2:
-        pre_max = None
-        post_min = None
-        for i, s in enumerate(samples):
-            if 'y_model values' not in s:
-                continue
-            t = s['y_model values']['x']
-            if not t:
-                continue
-            if i % 2 == 0:
-                pre_max = max(t) if pre_max is None else max(pre_max, max(t))
-            else:
-                post_min = min(t) if post_min is None else min(post_min, min(t))
-        if pre_max is not None and post_min is not None:
-            split_t = (pre_max + post_min) / 2
-
-    for parity in _parities(even_or_odd):
-        model_series, true_series, used = [], [], []
-        for i, sample in enumerate(samples):
-            if i % 2 != parity:
-                continue
-            if 'y_model values' not in sample or 'Given Newly Infected Ratio' not in sample:
-                continue
-
+    for half, indices in groups.items():
+        _check_homogeneous(samples, indices)
+        model_series, true_series = [], []
+        for i in indices:
+            sample = samples[i]
             y_model = _series(sample, 'y_model values')
-            if not y_model:
-                continue
-
-            # n_i keyed by absolute t; borrow the preceding half's values for t-1 lookups
             own_n_i = _n_i_lookup(sample)
             n_i = dict(own_n_i)
-            if i % 2 == 1 and i - 1 >= 0:
-                for t, y in _n_i_lookup(samples[i - 1]).items():
+            partner = _pre_partner(samples, i)
+            if partner is not None:
+                for t, y in _n_i_lookup(partner).items():
                     n_i.setdefault(t, y)
 
-            # Model delta: y_model(t) - n_i(t-1)
             model_series.append({t: v - n_i[t - 1] for t, v in y_model.items()
                                  if t >= t_min and (t - 1) in n_i})
-            # Ground-truth delta: n_i(t) - n_i(t-1), over this sample's own t range
             true_series.append({t: own_n_i[t] - n_i[t - 1] for t in own_n_i
                                 if t >= t_min and (t - 1) in n_i})
-            used.append(i)
 
-        if not model_series:
-            continue
-
-        t_model, delta_model_mean, delta_model_std, delta_model_n = _aggregate(model_series)
-        t_true, delta_true_mean, delta_true_std, _ = _aggregate(true_series)
-
-        # --- Plot ground-truth delta (mean across samples) ---
-        if len(t_true) > 0:
-            label = r'True $\Delta\eta_i$' if 'y_true' not in legend_added else '_nolegend_'
-            legend_added.add('y_true')
-            plt.plot(
-                t_true, delta_true_mean,
-                color=CURVE_COLORS['y_true'], linestyle='-',
-                label=label
-            )
-
-        # --- Plot model delta (mean ± std across samples) ---
-        if len(t_model) > 0:
-            label = r'Model $\Delta\eta_i$ (Sample Mean)' if 'y_model' not in legend_added else '_nolegend_'
-            legend_added.add('y_model')
-            plt.plot(
-                t_model, delta_model_mean,
-                color=CURVE_COLORS['y_model'], linestyle=':',
-                label=label
-            )
-            _plot_band(t_model, delta_model_mean, delta_model_std, delta_model_n,
-                       CURVE_COLORS['y_model'])
+        t_true, d_true_mean, d_true_std, d_true_n = _plot_mean(
+            true_series, CURVE_COLORS['y_true'], '-', r'True $\Delta\eta_i$', 'y_true', legend_added)
+        t_model, d_model_mean, d_model_std, d_model_n = _plot_mean(
+            model_series, CURVE_COLORS['y_model'], ':', r'Model $\Delta\eta_i$ (Sample Mean)', 'y_model',
+            legend_added)
 
         results_list.append({
-            "half": parity,
-            "sample_indices": used,
+            "half": half,
+            "sample_indices": indices,
             "t_model": t_model,
-            "delta_model_mean": delta_model_mean,
-            "delta_model_std": delta_model_std,
-            "delta_model_n": delta_model_n,
+            "delta_model_mean": d_model_mean,
+            "delta_model_std": d_model_std,
+            "delta_model_n": d_model_n,
             "t_true": t_true,
-            "delta_true_mean": delta_true_mean,
-            "delta_true_std": delta_true_std,
+            "delta_true_mean": d_true_mean,
+            "delta_true_std": d_true_std,
+            "delta_true_n": d_true_n,
         })
 
-    if split_t is not None:
-        plt.axvline(split_t, color='gray', linestyle='--', linewidth=1.5, label='Quarantine Start')
-
     plt.axhline(0, color='black', linewidth=0.8)
-    plt.xlabel('Time (days)')
-    plt.ylabel(r'$\Delta$ Newly Infected ($\eta_i(t) - \eta_i(t-1)$)')
-    if even_or_odd == 0:
-        plt.title(r'One-Step Change in $\eta_i$ (Pre-Quarantine)')
-    elif even_or_odd == 1:
-        plt.title(r'One-Step Change in $\eta_i$ (Post-Quarantine)')
-    else:
-        plt.title(r'One-Step Change in $\eta_i$: Estimator vs True')
-    plt.legend()
-    plt.grid(True)
-
-    plt.savefig(
-        "result_figures/delta_model_results.pdf",
-        format="pdf",
-        bbox_inches="tight"
-    )
-
-    plt.show()
-
-    with open("result_figures/delta_model_data.pkl", "wb") as f:
-        pickle.dump(results_list, f)
+    base = r'One-Step Change in $\eta_i$' + ('' if even_or_odd != 2 else ': Estimator vs True')
+    _finish(_title(base, even_or_odd, groups, samples), r'$\Delta$ Newly Infected ($\eta_i(t) - \eta_i(t-1)$)',
+            split_t, "result_figures/delta_model_results.pdf",
+            "result_figures/delta_model_data.pkl", results_list)
 
 
 # ---------------------------------------------------------------------------
 #
-#  Identifiability plot: true vs. predicted n_i and n_r time-series.
+#  Identifiability plot: true vs. predicted n_i and n_r time-series,
+#  each averaged across samples at each absolute t (± std band).
 #
 #    Pulls from these blocks in mfa_xy_data.txt:
 #      - Given Newly Infected Ratio       (true n_i, already a ratio)
 #      - Newly Recovered                  (true newly recovered, raw counts;
-#                                          divided by node count for n_r ratio)
+#                                          divided by that sample's node count)
 #      - n_i Predicted (Identifiability)  (n_i_pred from reduced model)
 #      - n_r Predicted (Identifiability)  (n_r_pred from inverting model)
 #
-#    even_or_odd: same convention as plot_model. 0 = pre-q halves only,
-#                 1 = post-q halves only, 2 = all samples on one axes.
+#    show_samples=True also draws every sample's curves faintly behind the means.
+#    t_min = 1 by default, for the same t = 0 reason as plot_model.
 #
 # ---------------------------------------------------------------------------
-def plot_identifiability_results(samples, even_or_odd=2):
+def _node_count(sample, default=200):
+    try:
+        n = int(sample.get('Number of nodes'))
+        return n if n > 0 else default
+    except (TypeError, ValueError):
+        return default
+
+
+def plot_identifiability_results(samples, even_or_odd=2, t_min=1, show_samples=False):
     plt.figure(figsize=(12, 7))
+
+    required = ('n_i Predicted (Identifiability)', 'n_r Predicted (Identifiability)')
+    groups = _groups(samples, even_or_odd, require=required)
+    split_t = _split_t(samples, groups, 'n_i Predicted (Identifiability)')
 
     results_list = []
     legend_added = set()
 
-    # Determine split point between pre/post quarantine when plotting all samples.
-    # Anchored to the n_i_pred time axis so the split line lines up with the
-    # identifiability series specifically.
-    split_t = None
-    if even_or_odd == 2:
-        pre_max = None
-        post_min = None
-        for i, s in enumerate(samples):
-            if 'n_i Predicted (Identifiability)' not in s:
-                continue
-            t = s['n_i Predicted (Identifiability)']['x']
-            if not t:
-                continue
-            if i % 2 == 0:
-                pre_max = max(t) if pre_max is None else max(pre_max, max(t))
-            else:
-                post_min = min(t) if post_min is None else min(post_min, min(t))
-        if pre_max is not None and post_min is not None:
-            split_t = (pre_max + post_min) / 2
+    for half, indices in groups.items():
+        _check_homogeneous(samples, indices)
+        per_quantity = {'n_i_true': [], 'n_i_pred': [], 'n_r_true': [], 'n_r_pred': []}
 
-    # Pull node count from the first sample so we can convert "Newly Recovered"
-    # raw counts into a ratio. Fall back to 200 (the default in the SIR script)
-    # if the field is missing.
-    node_count = None
-    for s in samples:
-        if 'Number of nodes' in s:
-            try:
-                node_count = int(s['Number of nodes'])
-            except (TypeError, ValueError):
-                pass
-            break
-    if node_count is None or node_count <= 0:
-        node_count = 200
+        for i in indices:
+            sample = samples[i]
+            n = _node_count(sample)
+            per_quantity['n_i_pred'].append(_series(sample, 'n_i Predicted (Identifiability)'))
+            per_quantity['n_r_pred'].append(_series(sample, 'n_r Predicted (Identifiability)'))
+            per_quantity['n_i_true'].append(_series(sample, 'Given Newly Infected Ratio'))
+            per_quantity['n_r_true'].append({t: v / n for t, v in _series(sample, 'Newly Recovered').items()})
 
-    for i, sample in enumerate(samples):
+        per_quantity = {q: [{t: v for t, v in s.items() if t >= t_min} for s in lst if s]
+                        for q, lst in per_quantity.items()}
 
-        if not (even_or_odd == 2 or i % 2 == even_or_odd):
-            continue
+        if show_samples:
+            for q, lst in per_quantity.items():
+                for s in lst:
+                    ts = sorted(s)
+                    plt.plot(ts, [s[t] for t in ts], color=ID_COLORS[q], alpha=0.15, linewidth=1,
+                             label='_nolegend_')
 
-        # Need at minimum the two predicted series to plot anything meaningful.
-        if 'n_i Predicted (Identifiability)' not in sample or \
-           'n_r Predicted (Identifiability)' not in sample:
-            continue
+        styles = {
+            'n_i_true': ('-', r'True $\eta_i$'),
+            'n_i_pred': ('--', r'Predicted $\eta_i$'),
+            'n_r_true': ('-', r'True $\eta_r$'),
+            'n_r_pred': ('--', r'Predicted $\eta_r$'),
+        }
+        entry = {"half": half, "sample_indices": indices}
+        for q, (ls, label) in styles.items():
+            t, mean, std, count = _plot_mean(per_quantity[q], ID_COLORS[q], ls, label, q, legend_added)
+            entry.update({f"{q}_t": t, f"{q}_mean": mean, f"{q}_std": std, f"{q}_n": count})
+        results_list.append(entry)
 
-        # --- Predicted n_i ---
-        n_i_pred_x = np.array(sample['n_i Predicted (Identifiability)']['x'])
-        n_i_pred_y = np.array(sample['n_i Predicted (Identifiability)']['y'])
-        m = min(len(n_i_pred_x), len(n_i_pred_y))
-        n_i_pred_x, n_i_pred_y = n_i_pred_x[:m], n_i_pred_y[:m]
-
-        # --- Predicted n_r ---
-        n_r_pred_x = np.array(sample['n_r Predicted (Identifiability)']['x'])
-        n_r_pred_y = np.array(sample['n_r Predicted (Identifiability)']['y'])
-        m = min(len(n_r_pred_x), len(n_r_pred_y))
-        n_r_pred_x, n_r_pred_y = n_r_pred_x[:m], n_r_pred_y[:m]
-
-        # --- True n_i (newly infected ratio) ---
-        n_i_true_x, n_i_true_y = None, None
-        if 'Given Newly Infected Ratio' in sample:
-            n_i_true_x = np.array(sample['Given Newly Infected Ratio']['x'])
-            n_i_true_y = np.array(sample['Given Newly Infected Ratio']['y'])
-            m = min(len(n_i_true_x), len(n_i_true_y))
-            n_i_true_x, n_i_true_y = n_i_true_x[:m], n_i_true_y[:m]
-
-        # --- True n_r (newly recovered ratio = count / n) ---
-        n_r_true_x, n_r_true_y = None, None
-        if 'Newly Recovered' in sample:
-            n_r_true_x = np.array(sample['Newly Recovered']['x'])
-            n_r_true_raw = np.array(sample['Newly Recovered']['y'], dtype=float)
-            m = min(len(n_r_true_x), len(n_r_true_raw))
-            n_r_true_x = n_r_true_x[:m]
-            n_r_true_y = n_r_true_raw[:m] / node_count
-
-        # --- Plot true n_i ---
-        if n_i_true_x is not None and len(n_i_true_x) > 0:
-            label = r'True $\eta_i$' if 'n_i_true' not in legend_added else '_nolegend_'
-            legend_added.add('n_i_true')
-            plt.plot(
-                n_i_true_x, n_i_true_y,
-                color=ID_COLORS['n_i_true'], linestyle='-',
-                label=label
-            )
-
-        # --- Plot predicted n_i ---
-        label = r'Predicted $\eta_i$' if 'n_i_pred' not in legend_added else '_nolegend_'
-        legend_added.add('n_i_pred')
-        plt.plot(
-            n_i_pred_x, n_i_pred_y,
-            color=ID_COLORS['n_i_pred'], linestyle='--',
-            label=label
-        )
-
-        # --- Plot true n_r ---
-        if n_r_true_x is not None and len(n_r_true_x) > 0:
-            label = r'True $\eta_r$' if 'n_r_true' not in legend_added else '_nolegend_'
-            legend_added.add('n_r_true')
-            plt.plot(
-                n_r_true_x, n_r_true_y,
-                color=ID_COLORS['n_r_true'], linestyle='-',
-                label=label
-            )
-
-        # --- Plot predicted n_r ---
-        label = r'Predicted $\eta_r$' if 'n_r_pred' not in legend_added else '_nolegend_'
-        legend_added.add('n_r_pred')
-        plt.plot(
-            n_r_pred_x, n_r_pred_y,
-            color=ID_COLORS['n_r_pred'], linestyle='--',
-            label=label
-        )
-
-        results_list.append({
-            "sample_index": i,
-            "n_i_true_x": n_i_true_x,
-            "n_i_true_y": n_i_true_y,
-            "n_i_pred_x": n_i_pred_x,
-            "n_i_pred_y": n_i_pred_y,
-            "n_r_true_x": n_r_true_x,
-            "n_r_true_y": n_r_true_y,
-            "n_r_pred_x": n_r_pred_x,
-            "n_r_pred_y": n_r_pred_y,
-        })
-
-    if split_t is not None:
-        plt.axvline(split_t, color='gray', linestyle='--', linewidth=1.5,
-                    label='Quarantine Start')
-
-    plt.xlabel('Time (days)')
-    plt.ylabel('Ratio')
-    if even_or_odd == 0:
-        plt.title(r'Identifiability: True vs Predicted $\eta_i$, $\eta_r$ (Pre-Quarantine)')
-    elif even_or_odd == 1:
-        plt.title(r'Identifiability: True vs Predicted $\eta_i$, $\eta_r$ (Post-Quarantine)')
-    else:
-        plt.title(r'Identifiability: True vs Predicted $\eta_i$, $\eta_r$')
-    plt.legend()
-    plt.grid(True)
-
-    plt.savefig(
-        "result_figures/identifiability_n_i_n_r.pdf",
-        format="pdf",
-        bbox_inches="tight"
-    )
-
-    plt.show()
-
-    with open("result_figures/plot_identifiability_n_i_n_r_data.pkl", "wb") as f:
-        pickle.dump(results_list, f)
+    base = r'Identifiability: True vs Predicted $\eta_i$, $\eta_r$'
+    _finish(_title(base, even_or_odd, groups, samples), 'Ratio', split_t,
+            "result_figures/identifiability_n_i_n_r.pdf",
+            "result_figures/plot_identifiability_n_i_n_r_data.pkl", results_list)
 
 
 if __name__ == "__main__":
     samples = extract_mfa.parse_sample_data('experiment_data/mfa_xy_data.txt')
+    plot_model(samples, even_or_odd=2)
+    # delta_model(samples, even_or_odd=2)
     # plot_identifiability_results(samples, even_or_odd=2)
-    delta_model(samples, even_or_odd=0, t_min=2)

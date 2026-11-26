@@ -22,17 +22,19 @@ scale into _core_over_btw_score / _core_over_deg_score.  Each scale's curves go 
 its own AdaptSelect_coreness_scale_experiment_scale{scale}.pkl (never to
 cost_curves_data.pkl); point cost_curve_store's plot functions at one by path.
 
-Robustness experiment (cascade time x seed set size)
-----------------------------------------------------
+Robustness experiment (cascade time x seed set size x contact network)
+----------------------------------------------------------------------
     python drive_seed_selection.py robustness [hill-climb] [milp] [random] [--plot-only]
 
 Runs each chosen method for every cascade time in CASCADE_TIMES (batch interval;
-None = no information cascade) and seed set size in SEED_FRACTIONS on
-asm.CONTACT_NETWORK_PATH / asm.SOCIAL_NETWORK_PATH, stores the curves in
-robustness_experiment.pkl, then plots one total-cost heatmap per method
-(cost_curve_store.plot_robustness_heatmaps). Every method, random included, is
-run for every (cascade time, seed size) cell. Running a method clears that
-method's old robustness results first. Methods default to hill-climb + random.
+None = no information cascade), seed set size in SEED_FRACTIONS and contact
+network rc_contact_network_bin{b}.gml, b in ROBUSTNESS_BINS (9..18), with
+asm.SOCIAL_NETWORK_PATH; stores the curves in robustness_experiment.pkl, then
+plots one heatmap per method (cost_curve_store.plot_robustness_heatmaps).
+ROBUSTNESS_SHOW_AVG = True colors each cell by the mean over networks; False
+splits each cell into one vertical slice per network. Every method, random
+included, is run for every cell. Running a method clears that method's old
+robustness results first. Methods default to hill-climb + random.
 
 Correlation ablation
 --------------------
@@ -176,33 +178,51 @@ def _initialize_modules(methods, contact_path, social_path):
     return modules
 
 
-# ── Experiment 1: cascade time x seed set size robustness ────────────────────
+# ── Experiment 1: cascade time x seed set size x contact network robustness ──
 #   python drive_seed_selection.py robustness [hill-climb] [milp] [random] [--plot-only]
-CASCADE_TIMES  = [None, 5, 10, 15]          # batch intervals; None = no cascade
-SEED_FRACTIONS = [round(0.1 * i, 2) for i in range(1, 11)]   # 10%, 20%, ..., 100% of n
-def run_robustness_experiment(methods):
+# Runs on every rc_contact_network_bin{b}.gml, b in ROBUSTNESS_BINS (paired with
+# asm.SOCIAL_NETWORK_PATH). Results are keyed (cascade, seed_fraction, bin).
+CASCADE_TIMES   = [None, 5, 10, 15]          # batch intervals; None = no cascade
+SEED_FRACTIONS  = [round(0.1 * i, 2) for i in range(6, 10)]   # 60%, 70%, 80%, 90% of n. 
+#              Lower fractions shown to be too small to be interesting on the rc networks.
+#              At 100%, no difference expected between methods, so it's omitted.
+ROBUSTNESS_BINS = list(range(9, 19))         # rc_contact_network_bin9 ... bin18
+# True: each heatmap cell is one color, the mean improvement over the contact networks.
+# False: each cell is split into len(ROBUSTNESS_BINS) vertical slices, one per network.
+ROBUSTNESS_SHOW_AVG = True
+
+
+def run_robustness_experiment(methods, contact_bins=ROBUSTNESS_BINS):
     path = cost_curve_store.ROBUSTNESS_STORE_PATH
     # Drop each method's previous robustness results so no stale cells (old seed
-    # sizes, or random's old cascade-duplicated rows) survive a rerun.
+    # sizes, old networks, random's old cascade-duplicated rows) survive a rerun.
     for method in methods:
         cost_curve_store.clear_experiment_label(cost_curve_store.METHOD_ALIASES[method], path)
-    # Initialize once so every configuration shares the same betas, injections and baselines.
-    _initialize_modules(methods, asm.CONTACT_NETWORK_PATH, asm.SOCIAL_NETWORK_PATH)
 
-    for frac in SEED_FRACTIONS:
-        if "hill-climb" in methods or "random" in methods:
-            asm.K = max(1, int(frac * asm.n))
-        if "milp" in methods:
-            import milp
-            milp.seed_fraction = frac
+    for b in contact_bins:
+        contact_path = f"capstone_proj_data/rc_contact_network_bin{b}.gml"
+        print(f"\n[robustness] Loading {contact_path}")
+        # Initialize once per network so every (cascade, seed size) configuration on it
+        # shares the same betas, injections and baselines.
+        modules = _initialize_modules(methods, contact_path, asm.SOCIAL_NETWORK_PATH)
+        if any(m.n == 0 for m in modules):
+            print(f"[skip] bin {b} -- empty network, skipping.")
+            continue
 
-        for method in ("hill-climb", "milp", "random"):
-            if method not in methods:
-                continue
-            for cascade in CASCADE_TIMES:
-                _set_cascade(_module_for(method), cascade)
-                print(f"\n[robustness] {method}: cascade={cascade}, seeds={frac:.0%}")
-                _push(method, (cascade, frac), _run_cost_curves(method), path)
+        for frac in SEED_FRACTIONS:
+            if "hill-climb" in methods or "random" in methods:
+                asm.K = max(1, int(frac * asm.n))
+            if "milp" in methods:
+                import milp
+                milp.seed_fraction = frac
+
+            for method in ("hill-climb", "milp", "random"):
+                if method not in methods:
+                    continue
+                for cascade in CASCADE_TIMES:
+                    _set_cascade(_module_for(method), cascade)
+                    print(f"\n[robustness] {method}: bin={b}, cascade={cascade}, seeds={frac:.0%}")
+                    _push(method, (cascade, frac, b), _run_cost_curves(method), path)
 
     print("[done] Robustness experiment complete.")
 
@@ -340,7 +360,8 @@ if len(sys.argv) > 1 and sys.argv[1] == "robustness":
     # regardless of which methods this invocation just ran.
     cost_curve_store.plot_robustness_heatmaps(
         path=cost_curve_store.ROBUSTNESS_STORE_PATH,
-        cascade_times=CASCADE_TIMES, seed_fractions=SEED_FRACTIONS)
+        cascade_times=CASCADE_TIMES, seed_fractions=SEED_FRACTIONS,
+        contact_bins=ROBUSTNESS_BINS, show_avg=ROBUSTNESS_SHOW_AVG)
     sys.exit(0)
 
 if len(sys.argv) > 1 and sys.argv[1] == "correlation":
